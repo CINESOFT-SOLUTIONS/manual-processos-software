@@ -711,9 +711,9 @@ O monólito modular reduz a complexidade operacional da primeira versão e permi
 
 ## 10.4 Backend
 
-- [x] Spring Boot.
+- [ ] Spring Boot.
 - [ ] .NET.
-- [ ] Node.js.
+- [x] Node.js.
 - [ ] Outro.
 
 ## 10.5 Banco de dados
@@ -1241,7 +1241,7 @@ Toda decisão arquitetural relevante deverá possuir registro contendo:
 
 - [x] Monólito modular.
 - [x] React.
-- [x] Spring Boot.
+- [x] Node.js.
 - [x] PostgreSQL.
 - [x] AWS.
 - [x] REST.
@@ -1805,7 +1805,7 @@ Esta seção deve ser preenchida pelo grupo antes da consolidação da versão o
 ## Arquitetura
 
 - [ ] Confirmar React.
-- [ ] Confirmar Spring Boot.
+- [ ] Confirmar Node.js.
 - [ ] Confirmar PostgreSQL.
 - [ ] Confirmar AWS.
 - [ ] Confirmar monólito modular.
@@ -1938,7 +1938,7 @@ A configuração recomendada para o estudo de caso é:
 | Modelo | SaaS |
 | Arquitetura | Monólito modular |
 | Frontend | React |
-| Backend | Spring Boot |
+| Backend | Node.js |
 | Banco | PostgreSQL |
 | Cloud | AWS |
 | API | REST |
