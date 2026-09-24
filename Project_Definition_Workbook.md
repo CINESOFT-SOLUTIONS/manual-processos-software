@@ -233,7 +233,7 @@ As marcações `[x]` são **recomendações de projeto**, não exigências da IS
 
 > O CineDoom é uma plataforma web de gerenciamento operacional para cinemas de pequeno e médio porte, destinada a centralizar o cadastro de filmes, salas, sessões, assentos, ingressos e clientes, apoiando as atividades administrativas e operacionais do estabelecimento.
 
-- [ ] Aprovar a descrição.
+- [x] Aprovar a descrição.
 - [ ] Alterar a descrição: ______________________________
 
 ### 1.4 Problema principal
@@ -366,12 +366,10 @@ Para cada stakeholder, decidir:
 | Stakeholder | Interesse | Influência | Responsabilidade |
 |---|---|---|---|
 | Proprietário | Alta | Alta | Aprovação estratégica |
-| Gerente | Alta | Alta | Validação operacional |
-| Atendente | Alta | Média | Validação de uso |
 | CineSoft | Alta | Alta | Desenvolvimento e manutenção |
-| Fornecedor cloud | Média | Média | Infraestrutura |
 
-- [ ] Validar matriz.
+
+- [x] Validar matriz.
 - [ ] Alterar: ______________________________
 
 ---
@@ -510,8 +508,8 @@ Decidir:
 - [x] Classificação indicativa.
 - [x] Sinopse.
 - [x] Data de lançamento.
-- [ ] Upload de trailer.
-- [ ] Streaming.
+- [x] Upload de trailer.
+- [x] Capa do Filme.
 
 ## 7.2 Salas
 
@@ -520,9 +518,7 @@ Decidir:
 - [x] Capacidade.
 - [x] Configuração de assentos.
 - [x] Status da sala.
-- [ ] Recursos especiais.
-- [ ] Tecnologia IMAX.
-- [ ] Gestão de equipamentos.
+- [x] Recursos especiais.
 
 ## 7.3 Sessões
 
@@ -532,8 +528,7 @@ Decidir:
 - [x] Definir horário.
 - [x] Consultar disponibilidade.
 - [x] Cancelar sessão.
-- [ ] Reagendar sessão na primeira versão.
-- [ ] Sessões recorrentes.
+
 
 ## 7.4 Ingressos
 
@@ -542,9 +537,9 @@ Decidir:
 - [x] Associação com sessão.
 - [x] Associação com assento.
 - [x] Registro de usuário responsável.
-- [ ] Reserva.
-- [ ] Reembolso financeiro automático.
-- [ ] Pagamento integrado.
+- [x] Reserva nos primeiros 20 minutos.
+- [x] Reembolso financeiro automático.
+- [x] Pagamento integrado.
 
 ## 7.5 Clientes
 
@@ -552,8 +547,6 @@ Decidir:
 - [x] Atualização.
 - [x] Consulta.
 - [x] Registro de interesse.
-- [ ] Programa de fidelidade.
-- [ ] Pontuação.
 
 ## 7.6 Relatórios
 
@@ -562,8 +555,6 @@ Decidir:
 - [x] Sessões realizadas.
 - [x] Filmes exibidos.
 - [x] Indicadores operacionais.
-- [ ] Relatório contábil.
-- [ ] Análise preditiva.
 
 ---
 
@@ -698,10 +689,10 @@ O monólito modular reduz a complexidade operacional da primeira versão e permi
 
 ## 10.2 Camadas
 
-- [x] Apresentação.
-- [x] Aplicação.
-- [x] Domínio.
-- [x] Persistência/infraestrutura.
+- [x] Controller.
+- [x] Service.
+- [x] Repository.
+- [x] Model.
 
 ## 10.3 Frontend
 
@@ -1434,7 +1425,7 @@ Definir:
 - [x] ISO/IEC/IEEE 12207 como referência principal de processos.
 - [ ] ISO/IEC 25010 para características de qualidade.
 - [ ] ISO/IEC 27001 para gestão de segurança.
-- [ ] LGPD para tratamento de dados pessoais, quando aplicável.
+- [x] LGPD para tratamento de dados pessoais, quando aplicável.
 
 A adoção de outras normas deverá ser declarada explicitamente no manual e não deve ser confundida com requisito da ISO 12207.
 
@@ -1632,7 +1623,7 @@ Avaliar:
 - [x] Provedor de nuvem.
 - [x] Serviço de monitoramento.
 - [x] Serviço de backup.
-- [ ] Serviço de e-mail.
+- [x] Serviço de e-mail.
 - [ ] Consultoria.
 
 ## 41.2 Avaliação periódica
@@ -1945,7 +1936,7 @@ A configuração recomendada para o estudo de caso é:
 | Ciclo de vida | Incremental |
 | Usuários | Administrador, gerente e atendente |
 | Cliente final | Fora do sistema administrativo na primeira versão |
-| Pagamentos | Fora do escopo inicial |
+| Pagamentos | Stripe |
 | Mobile | Fora do escopo inicial |
 | Streaming | Fora do escopo |
 | IA | Fora do escopo inicial |
