@@ -394,3 +394,35 @@ Para que a continuação do manual ocorra sem contradições, as seguintes decis
 6. **Operação**: definir SLA de suporte, severidade, escalonamento e horários de atendimento (seção 31 do PDW).
 7. **RTO/RPO e continuidade**: aprovar os valores propostos e definir plano de recuperação e testes periódicos.
 8. **Medição**: definir fórmula, fonte, responsável e frequência de cada métrica de qualidade.
+
+# Parte 3 – Processos de Gerenciamento Técnico
+**Sugestão IA**
+| **Elemento solicitado** | **_Como aplicar ao projeto_** |
+| -- | -- |
+| Escopo | Manter/expandir o que já está em 0.3–0.4 (escopo da v1, exclusões). Delimitar claramente escopo por incremento (1–5). |
+|Cronograma|Definir marcos por incremento (Incr. 1–5), atividades por incremento, dependências entre módulos, datas estimadas e critério de conclusão por incremento (já existente em 2.1). Registrar como parte do Plano de Projeto.|
+|Recursos|Mapear à matriz de papéis (2.4): quem executa cada atividade (RACI), infraestrutura/ambientes (2.2), ferramentas e serviços contratados (1.1). Considerar sobreposição de papéis (equipe enxuta).|
+|Entregas|Por incremento: artefatos + software executável + testes + documentação atualizada + revisão de qualidade. Incluir entregáveis de aceite (1.2) e versão liberada (release) por incremento.|
+
+## 3.1 Planejamento do Projeto
+  - 3.1.1 Escopo
+  - 3.1.2 Cronograma (incrementos, marcos, dependências)
+  - 3.1.3 Recursos (humanos, infraestrutura, ferramentas, aquisições)
+  - 3.1.4 Entregas por incremento e critérios de aceite
+
+## 3.2 Gestão de Riscos
+  - 3.2.1 Planejamento e critérios (probabilidade × impacto)
+  - 3.2.2 Registro de riscos (ID, descrição, categoria, prob, impacto, criticidade, resposta, ações, responsável, status, revisão)
+
+## 3.3 Gestão de Configuração
+  - 3.3.1 Itens de Configuração (CIs) e Baselines
+  - 3.3.2 Controle de versões (Git), branches, tags e releases (SemVer)
+  - 3.3.3 Fluxo de mudanças e auditorias de configuração
+
+## 3.4 Gestão de Decisões Técnicas (ADRs)
+  - 3.4.1 Política de registro (quando registrar, template, localização)
+  - 3.4.2 Lista de ADRs (ADR-001, ..., com status)
+
+## 3.5 Medição e Avaliação/Controle do Projeto
+  - 3.5.1 Plano de Medição (o que medir, porquê, fórmula, fonte, responsável, frequência, meta)
+  - 3.5.2 Acompanhamento por incremento (pontos de controle, relatórios de status, ações corretivas/preventivas)
