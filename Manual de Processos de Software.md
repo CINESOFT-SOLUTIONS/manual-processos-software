@@ -16,6 +16,7 @@
 | 16/09/2026 | 1.1 | Elaboração dos itens da Parte 0. |
 | 24/09/2026 | 1.2 | Alinhamento das Partes 0, 1 e 2 ao PDW e à ISO/IEC/IEEE 12207. |
 | 24/09/2026 | 1.3 | Revisão técnica: correção de contradições, inclusão de terminologia, justificativas de aquisição e índice de aderência à norma. |
+| 08/10/2026 | 1.4 | Incremento na parte 3 até 3.1.4 |
 | xxx | xx | xxx |
 
 **Sumário**
@@ -396,19 +397,53 @@ Para que a continuação do manual ocorra sem contradições, as seguintes decis
 8. **Medição**: definir fórmula, fonte, responsável e frequência de cada métrica de qualidade.
 
 # Parte 3 – Processos de Gerenciamento Técnico
-**Sugestão IA**
-| **Elemento solicitado** | **_Como aplicar ao projeto_** |
-| -- | -- |
-| Escopo | Manter/expandir o que já está em 0.3–0.4 (escopo da v1, exclusões). Delimitar claramente escopo por incremento (1–5). |
-|Cronograma|Definir marcos por incremento (Incr. 1–5), atividades por incremento, dependências entre módulos, datas estimadas e critério de conclusão por incremento (já existente em 2.1). Registrar como parte do Plano de Projeto.|
-|Recursos|Mapear à matriz de papéis (2.4): quem executa cada atividade (RACI), infraestrutura/ambientes (2.2), ferramentas e serviços contratados (1.1). Considerar sobreposição de papéis (equipe enxuta).|
-|Entregas|Por incremento: artefatos + software executável + testes + documentação atualizada + revisão de qualidade. Incluir entregáveis de aceite (1.2) e versão liberada (release) por incremento.|
-
 ## 3.1 Planejamento do Projeto
-  - 3.1.1 Escopo
-  - 3.1.2 Cronograma (incrementos, marcos, dependências)
-  - 3.1.3 Recursos (humanos, infraestrutura, ferramentas, aquisições)
-  - 3.1.4 Entregas por incremento e critérios de aceite
+### 3.1.1 Escopo
+
+O escopo é decomposto por incremento, conforme o modelo de ciclo de vida incremental (seção 2.1 e PDW, seção 14.2):
+
+| Incremento | Escopo funcional | Requisitos |
+|---|---|---|
+| 1 | Autenticação, usuários, filmes e salas | RF-01, RF-02, RF-03, RF-04 |
+| 2 | Sessões, assentos e disponibilidade | RF-05, RF-06 |
+| 3 | Venda, cancelamento e auditoria | RF-07, RF-08, RF-12 |
+| 4 | Clientes e registros de interesse | RF-09, RF-10 |
+| 5 | Relatórios, refinamentos e preparação para produção | RF-11 |
+
+### 3.1.2 Cronograma
+
+Todo incremento percorre as cinco etapas do modelo incremental (seção 2.1), produzindo funcionalidade executável ao término:
+
+| Etapa | Resultado esperado |
+|---|---|
+| Requisito | Requisitos do incremento detalhados e com critérios de aceite (seção 0.3) |
+| Design | Decisões de arquitetura e design do incremento, com ADRs quando aplicável (seção 3.3) |
+| Implementação | Código implementado, revisado e integrado (seção 2.2) |
+| Teste | Testes executados, defeitos registrados e críticos corrigidos (seção 3.1.4) |
+| Release | Versão do incremento liberada e identificada por tag (seção 3.5.2) |
+
+### 3.1.3 Recursos
+
+| Categoria | Composição | Referência |
+|---|---|---|
+| Humanos | Papéis do Gerente de Projeto, Analista de Requisitos, Arquiteto, Desenvolvedores Frontend e Backend, Engenheiro de Testes, DevOps, Analista de Qualidade e Suporte, com atribuições conforme a matriz RACI | [Seção 2.4](#24-gestão-de-recursos-humanos); PDW 16 e 17 |
+| Infraestrutura | Ambientes de desenvolvimento, testes, homologação e produção | [Seção 2.2](#22-gestão-da-infraestrutura) |
+| Ferramentas | Git/GitHub, GitHub Projects, Visual Studio Code, ferramenta de modelagem UML, GitHub Actions | [Seção 2.2](#22-gestão-da-infraestrutura) |
+| Serviços contratados | Computação e banco de dados na AWS, monitoramento, backup e gateway de pagamento (Stripe), conforme justificativas de aquisição | [Seção 1.1](#11-processo-de-aquisição) |
+| Restrições | Prazo do semestre, equipe enxuta com sobreposição de papéis, orçamento controlado | [Seção 2.4](#24-gestão-de-recursos-humanos); PDW 15.3 |
+
+### 3.1.4 Entregas por incremento e critérios de aceite
+
+Cada incremento entrega, obrigatoriamente:
+
+- Funcionalidade executável e liberada (release identificada por tag de versão, [seção 3.5.2](#352-acompanhamento-por-incremento-pontos-de-controle-relatórios-de-status-ações-corretivaspreventivas)).
+- Requisitos e artefatos de arquitetura atualizados e rastreados, mencionada na [seção 0.3](#03-escopo-e-funcionalidades).
+- Relatório de testes do incremento, com registro de defeitos.
+- Documentação técnica atualizada.
+- Registro de configuração atualizado ([seção 3.5](#35-medição-e-avaliaçãocontrole-do-projeto)).
+- Registro de lições aprendidas ([seção 2.6](#26-gestão-do-conhecimento)).
+
+Um incremento só é considerado concluído quando os critérios estiverem atendidos: requisitos do incremento implementados, verificação concluída, testes executados, defeitos críticos corrigidos, documentação atualizada e revisão de qualidade realizada. A aprovação interna da conclusão é do Gerente de Projeto, com o Analista de Qualidade e o Engenheiro de Testes como responsáveis pelas verificações (RACI, [seção 2.4](#matriz-raci)).
 
 ## 3.2 Gestão de Riscos
   - 3.2.1 Planejamento e critérios (probabilidade × impacto)
@@ -424,5 +459,7 @@ Para que a continuação do manual ocorra sem contradições, as seguintes decis
   - 3.4.2 Lista de ADRs (ADR-001, ..., com status)
 
 ## 3.5 Medição e Avaliação/Controle do Projeto
-  - 3.5.1 Plano de Medição (o que medir, porquê, fórmula, fonte, responsável, frequência, meta)
-  - 3.5.2 Acompanhamento por incremento (pontos de controle, relatórios de status, ações corretivas/preventivas)
+
+### 3.5.1 Plano de Medição (o que medir, porquê, fórmula, fonte, responsável, frequência, meta)
+
+### 3.5.2 Acompanhamento por incremento (pontos de controle, relatórios de status, ações corretivas/preventivas)
