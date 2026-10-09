@@ -177,14 +177,14 @@ Desvios identificados originam ações corretivas ou preventivas registradas, co
 
 A gestão de decisões (ISO/IEC/IEEE 12207 – 6.3.3) garante que alternativas sejam identificadas, avaliadas e registradas antes da implementação. No CineDoom, adotam-se dois registros, conforme a natureza da decisão:
 
-- **ADRs (Architecture Decision Records)** – decisões técnicas e arquiteturais; autoridade: Arquiteto e equipe técnica (PDW, seção 43).
-- **Registro de mudanças** – decisões de escopo, contrato e iterações do plano; autoridade: Gerente de Projeto e representante do cliente (PDW, seções 22 e 43).
+- **ADRs (Architecture Decision Records)** – decisões técnicas e arquiteturais; autoridade: Arquiteto e equipe técnica.
+- **Registro de mudanças** – decisões de escopo, contrato e iterações do plano; autoridade: Gerente de Projeto e representante do cliente.
 
 ### 3.3.1. Política de registro de ADRs
 
-Toda decisão técnica relevante é registrada por ADR contendo, no mínimo (PDW, seção 26.1): contexto, problema, alternativas avaliadas, decisão, consequências, data e responsável.
+Toda decisão técnica relevante é registrada por ADR contendo, no mínimo: contexto, problema, alternativas avaliadas, decisão, consequências, data e responsável.
 
-São registradas como ADR as decisões que afetam arquitetura, stack tecnológica, modelo de dados, segurança, estratégia de implantação ou integração com serviços externos. Os ADRs são documentos controlados (seção 3.6), versionados no repositório Git junto ao código e aos diagramas (itens de configuração, seção 3.5.1). ADRs incorporados só são revogados por novo ADR que explicitamente os substitua.
+São registradas como ADR as decisões que afetam arquitetura, stack tecnológica, modelo de dados, segurança, estratégia de implantação ou integração com serviços externos. Os ADRs são documentos controlados (seção 3.6), versionados no repositório Git junto ao código e aos diagramas (itens de configuração, seção 3.x.1). ADRs incorporados só são revogados por novo ADR que explicitamente os substitua.
 
 ### 3.3.2. ADRs previstos
 
@@ -230,11 +230,12 @@ Registro inicial de riscos (proposta sujeita a aprovação do grupo):
 
 A gestão de configuração (ISO/IEC/IEEE 12207 – 6.3.5) identifica e controla os itens de configuração, as mudanças e a integridade das linhas de base ao longo do projeto.
 
-### 3.5.1. Itens de configuração e linhas de base
+### 3.3.1. Itens de configuração e linhas de base
 
-São itens de configuração (PDW, seções 21.1 e 37.1): código-fonte, requisitos, arquitetura e diagramas, ADRs, casos de teste e relatórios de teste, scripts de infraestrutura, documentação técnica e do usuário, configurações relevantes e releases.
+São itens de configuração: código-fonte, requisitos, arquitetura e diagramas, ADRs, casos de teste e relatórios de teste, scripts de infraestrutura, documentação técnica e do usuário, configurações relevantes e releases.
 
-Linhas de base (proposta, sujeita a aprovação; PDW, seção 37.2):
+> [!WARNING]
+> Linhas de base (proposta, sujeita a aprovação):
 
 | Linha de base | Conteúdo | Momento |
 |---|---|---|
@@ -242,18 +243,18 @@ Linhas de base (proposta, sujeita a aprovação; PDW, seção 37.2):
 | Arquitetura | Diagramas e ADRs vigentes | Ao conclusão da etapa de design de cada incremento |
 | Release | Tag de versão com código, testes e documentação do incremento | Na liberação de cada incremento (M1–M5) |
 
-### 3.5.2. Controle de versão
+### 3.3.2. Controle de versão
 
-O controle de versão usa Git com repositório remoto no GitHub (seção 2.2 e PDW, seção 21.2), com as seguintes regras:
+O controle de versão usa Git com repositório remoto no GitHub (seção 2.2), com as seguintes regras:
 
 - Branch `main` contém o código liberado; `develop` concentra o trabalho do incremento em andamento; branches de funcionalidade são criadas a partir de `develop` com identificação do requisito (ex.: `feature/RF-07-venda`).
 - Integrações ocorrem por pull request, com revisão de código obrigatória antes da mesclagem.
-- Cada incremento concluído é marcado por tag de versão conforme versionamento semântico (PDW, seção 37.3): incrementos 1 a 4 correspondem a versões internas `0.x.y`; a primeira versão liberada ao cliente, ao final do incremento 5, é `1.0.0`.
+- Cada incremento concluído é marcado por tag de versão conforme versionamento semântico: incrementos 1 a 4 correspondem a versões internas `0.x.y`; a primeira versão liberada ao cliente, ao final do incremento 5, é `1.0.0`.
 - Toda release possui notas de versão e registro de alterações.
 
 ### 3.5.3. Controle de mudanças e auditorias de configuração
 
-Mudanças em itens de configuração seguem o processo do PDW (seção 22): registrar solicitação, classificar, avaliar impacto, estimar esforço, avaliar riscos, aprovar ou rejeitar, planejar, implementar, testar, atualizar documentação e encerrar. Nenhum item de configuração é alterado sem solicitação registrada; a aprovação observa a autoridade definida no PDW (seção 43).
+Mudanças em itens de configuração seguem o processo definido: registrar solicitação, classificar, avaliar impacto, estimar esforço, avaliar riscos, aprovar ou rejeitar, planejar, implementar, testar, atualizar documentação e encerrar. Nenhum item de configuração é alterado sem solicitação registrada.
 
 Auditorias de configuração são executadas ao final de cada incremento, junto à auditoria de conformidade (seção 2.5), e verificam: identificação, versão e status de todos os itens de configuração; correspondência entre tags de release e linhas de base; e integridade dos ADRs em relação ao código implantado.
 
