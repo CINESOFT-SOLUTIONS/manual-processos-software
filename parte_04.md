@@ -218,3 +218,63 @@
 
 
 > **Sugestão:** Fazer um diagrama de componentes ou somente escrever os componentes da arquitetura. Dar justificativas para as decisões tomadas.
+
+
+# O que precisa constar na parte 4
+
+# Parte 4 - Processos técnicos 
+## 4.1 - Requisitos
+- Identficar problemas ou oportunidades de negócio
+- Validação requisitos: Validar se o que foi documentado foi o que realmente o que o steakholder realmente quer.
+
+### 4.1.1 - Documento de requisitos do sistema
+definir os requisitos funcionais, não funcionais, restrições
+
+### 4.1.2 - Rastreabilidade de requisitos
+Rastreabilidade para stakeholders: Mapear os requistios às necessidades e expectatvas dos stakeholders
+dica: Tabela com steakholder e requisitos
+
+### 4.1.3 - Critérios de aceitação
+Cada requisito tem um critério de aceitação relacionado
+
+### 4.1.4 - Registro de stakeholders e necessidades elicitadas
+Simular todos os steakholders e as necessidades que eles solicitam
+- Técnica MoSCoW
+- Registro de stakeholders: Ex: cliente, paciente, secretária
+- Necessidade de cada steakholder
+- Critérios de aceitação para as necessidades
+
+## 4.2 - Arquitetura e Design
+### 4.2.1 - Documento de arquitetura do sistema & Decisões arquiteturais (ADRs)
+#### Visão geral
+
+Descrição formal da estrutura, componentes e interfaces do sistema
+Escrever uma visão geral da arquitetura do sistema
+Podem ser feito por esccrito: componentes tal tal tal
+Pode ser feito um diagrama de componetes (opcional, porém melhor)
+
+#### Componentes
+
+Especificação completa dos componentes, algoritmos e estruturas de dados
+
+#### Interfaces
+
+Definição formal das interfaces entre os componentes do sistema
+O que são interfaces: Um meio de comunicação entre dois componentes. Conceito de interface padronização de saídas e entradas entre os componentes(classes).
+
+#### Decisões arquiteturais (ADRs)
+
+Registro das alternativas consideradas e justificativa das decisões tomadas
+Justificatvas dos componentes
+
+### 4.2.2 - Diagramas de design (UML, C4, etc.)
+
+Detalhar os elementos arquiteturais em componentes implementáveis
+Especificar algoritmos, estruturas de dados e lógica interna
+Pelo menos um diagrama de classe do projeto
+
+### 4.2.3 - Justificativa das escolhas tecnológicas
+
+Registro das decisões de design e justificativas técnicas adotadas
+Escolheu uma tecnologia x, ex login: para fazer o login precisa de logar com uma conta GOV por exemplo, então é necessário a integração com o GOV, e seria assim justificado
+Atenção: Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao seu projeto real. Qualidade > quantidade.
