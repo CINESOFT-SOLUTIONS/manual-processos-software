@@ -16,7 +16,7 @@
 | 16/09/2026 | 1.1 | Elaboração dos itens da Parte 0. |
 | 24/09/2026 | 1.2 | Alinhamento das Partes 0, 1 e 2 ao PDW e à ISO/IEC/IEEE 12207. |
 | 24/09/2026 | 1.3 | Revisão técnica: correção de contradições, inclusão de terminologia, justificativas de aquisição e índice de aderência à norma. |
-| 08/10/2026 | 1.4 | Incremento na parte 3 até 3.1.4 |
+| 08/10/2026 | 1.4 | Incremento na parte 3 |
 | xxx | xx | xxx |
 
 **Sumário**
@@ -446,19 +446,91 @@ Cada incremento entrega, obrigatoriamente:
 Um incremento só é considerado concluído quando os critérios estiverem atendidos: requisitos do incremento implementados, verificação concluída, testes executados, defeitos críticos corrigidos, documentação atualizada e revisão de qualidade realizada. A aprovação interna da conclusão é do Gerente de Projeto, com o Analista de Qualidade e o Engenheiro de Testes como responsáveis pelas verificações (RACI, [seção 2.4](#matriz-raci)).
 
 ## 3.2 Gestão de Riscos
-  - 3.2.1 Planejamento e critérios (probabilidade × impacto)
-  - 3.2.2 Registro de riscos (ID, descrição, categoria, prob, impacto, criticidade, resposta, ações, responsável, status, revisão)
+### 3.2.1 Planejamento e Critérios
+
+  Riscos são classificados por probabilidade (Baixa, Média, Alta) e impacto (Baixo, Médio, Alto). A combinação define a criticidade, que orienta a prioridade de tratamento: riscos de criticidade alta exigem plano de mitigação e, quando aplicável, plano de contingência; riscos de criticidade média exigem monitoramento e plano de mitigação; riscos de criticidade baixa são monitorados.
+
+### 3.2.2 Registro de riscos
+
+Registro inicial de riscos (proposta sujeita a aprovação do grupo):
+
+| ID | Risco | Categoria | Prob. | Impacto | Mitigação | Responsável | Status |
+|---|---|---|---|---|---|---|---|
+| R-01 | Indisponibilidade do provedor de nuvem (AWS) | Técnico | Baixa | Alto | SLA contratado, monitoramento (seção 2.2), backup e plano de recuperação | DevOps | Em análise |
+| R-02 | Erro de integração com o gateway de pagamento (Stripe) | Técnico | Média | Alto | Integração incremental no incremento 3, testes de integração, homologação no ambiente do fornecedor | Arquiteto | Em análise |
+| R-03 | Vulnerabilidade de segurança com exposição de dados de clientes | Técnico | Média | Alto | HTTPS, hash de senhas, controle de acesso por perfil, revisão de segurança preventiva | Arquiteto | Em análise |
+| R-04 | Perda ou corrupção de dados | Técnico | Baixa | Alto | Backup diário, RTO de até 4 h e RPO de até 24 h (sujeitos a aprovação), testes de restauração | DevOps | Em análise |
+| R-05 | Desempenho abaixo das metas (2 s; 100 usuários simultâneos) | Técnico | Média | Médio | Testes de desempenho por incremento, revisão de consultas e indexes | Arquiteto | Em análise |
+| R-06 | Rotatividade ou indisponibilidade de membros da equipe | Organizacional | Média | Alto | Sobreposição de papéis registrada (seção 2.4), documentação e ADRs (seção 3.3), onboarding (seção 2.6) | Gerente de Projeto | Em análise |
+| R-07 | Atrasos por indefinição de cronograma e decisões em aberto | Organizacional | Alta | Médio | Fechamento das decisões em aberto do PDW (seção 47) como prioridade de governança | Gerente de Projeto | Em análise |
+| R-08 | Mudança de escopo sem controle | Organizacional | Média | Médio | Regra de expansão do PDW (seção 5.1) e processo de mudança (seção 3.5.3) | Gerente de Projeto | Em análise |
+| R-09 | Baixa adesão do mercado-alvo ao produto | Negócio | Média | Alto | Validação com clientes na homologação, indicadores de portfólio (seção 2.3) | Diretoria | Em análise |
+| R-10 | Custo operacional de nuvem maior que o previsto | Negócio | Média | Médio | Monitoramento de consumo, dimensionamento inicial modesto, revisão por incremento | DevOps | Em análise |
+| R-11 | Dependência de fornecedor (AWS, Stripe) | Negócio | Baixa | Médio | Critérios de portabilidade e avaliação de dependência na seleção (seção 1.1) | Gerente de Projeto | Em análise |
 
 ## 3.3 Gestão de Configuração
-  - 3.3.1 Itens de Configuração (CIs) e Baselines
-  - 3.3.2 Controle de versões (Git), branches, tags e releases (SemVer)
-  - 3.3.3 Fluxo de mudanças e auditorias de configuração
+
+A gestão de configuração (ISO/IEC/IEEE 12207 – 6.3.5) identifica e controla os itens de configuração, as mudanças e a integridade das linhas de base ao longo do projeto.
+
+### 3.3.1 Itens de Configuração (CIs) e Baselines
+
+São itens de configuração: código-fonte, requisitos, arquitetura e diagramas, ADRs, casos de teste e relatórios de teste, scripts de infraestrutura, documentação técnica e do usuário, configurações relevantes e releases.
+
+> [!WARNING]
+> Linhas de base (proposta, sujeita a aprovação):
+
+| Linha de base | Conteúdo | Momento |
+|---|---|---|
+| Requisitos | RF e RNF do incremento, com critérios de aceite | Ao conclusão da etapa de requisito de cada incremento |
+| Arquitetura | Diagramas e ADRs vigentes | Ao conclusão da etapa de design de cada incremento |
+| Release | Tag de versão com código, testes e documentação do incremento | Na liberação de cada incremento (M1–M5) |
+
+### 3.3.2 Controle de versões (Git), branches, tags e releases
+
+O controle de versão usa Git com repositório remoto no GitHub (seção 2.2), com as seguintes regras:
+
+- Branch `main` contém o código liberado; `develop` concentra o trabalho do incremento em andamento; branches de funcionalidade são criadas a partir de `develop` com identificação do requisito (ex.: `feature/RF-07-venda`).
+- Integrações ocorrem por pull request, com revisão de código obrigatória antes da mesclagem.
+- Cada incremento concluído é marcado por tag de versão conforme versionamento semântico: incrementos 1 a 4 correspondem a versões internas `0.x.y`; a primeira versão liberada ao cliente, ao final do incremento 5, é `1.0.0`.
+- Toda release possui notas de versão e registro de alterações.
+
+### 3.3.3 Fluxo de mudanças e auditorias de configuração
+
+Mudanças em itens de configuração seguem o processo definido: registrar solicitação, classificar, avaliar impacto, estimar esforço, avaliar riscos, aprovar ou rejeitar, planejar, implementar, testar, atualizar documentação e encerrar. Nenhum item de configuração é alterado sem solicitação registrada.
+
+Auditorias de configuração são executadas ao final de cada incremento, junto à auditoria de conformidade (seção 2.5), e verificam: identificação, versão e status de todos os itens de configuração; correspondência entre tags de release e linhas de base; e integridade dos ADRs em relação ao código implantado.
 
 ## 3.4 Gestão de Decisões Técnicas (ADRs)
-  - 3.4.1 Política de registro (quando registrar, template, localização)
-  - 3.4.2 Lista de ADRs (ADR-001, ..., com status)
+
+A gestão de decisões (ISO/IEC/IEEE 12207 – 6.3.3) garante que alternativas sejam identificadas, avaliadas e registradas antes da implementação. No CineDoom, adotam-se dois registros, conforme a natureza da decisão:
+
+- **ADRs (Architecture Decision Records)** – decisões técnicas e arquiteturais; autoridade: Arquiteto e equipe técnica.
+- **Registro de mudanças** – decisões de escopo, contrato e iterações do plano; autoridade: Gerente de Projeto e representante do cliente.
+
+### 3.4.1 Política de registro (quando registrar, template, localização)
+
+Toda decisão técnica relevante é registrada por ADR contendo, no mínimo: contexto, problema, alternativas avaliadas, decisão, consequências, data e responsável.
+
+São registradas como ADR as decisões que afetam arquitetura, stack tecnológica, modelo de dados, segurança, estratégia de implantação ou integração com serviços externos. Os ADRs são documentos controlados (seção 3.6), versionados no repositório Git junto ao código e aos diagramas (itens de configuração, seção 3.x.1). ADRs incorporados só são revogados por novo ADR que explicitamente os substitua.
+
+### 3.4.2 Lista de ADRs
+
+>[!WARNING]
+> Realizar validação
+
+| ADR | Decisão | Status |
+|---|---|---|
+| ADR-001 | Arquitetura de monólito modular | Decidida (PDW 10.1; registro formal pendente) |
+| ADR-002 | Frontend em React | Decidida (PDW 10.3; registro formal pendente) |
+| ADR-003 | Backend em Node.js | Decidida (PDW 10.4; registro formal pendente) |
+| ADR-004 | Banco de dados PostgreSQL | Decidida (PDW 10.5; registro formal pendente) |
+| ADR-005 | Infraestrutura na AWS | Decidida (PDW 11.1; registro formal pendente) |
+| ADR-006 | API REST versionada | Decidida (PDW 10.6–10.7; registro formal pendente) |
+| ADR-007 | Estratégia de autenticação e controle de sessão | A decidir no incremento 1 |
 
 ## 3.5 Medição e Avaliação/Controle do Projeto
+
+A avaliação e o controle (ISO/IEC/IEEE 12207 – 6.3.2) tornam o andamento do projeto transparente, permitem avaliar o desempenho em relação ao plano e gerenciar ações corretivas e preventivas.
 
 ### 3.5.1 Plano de Medição (o que medir, porquê, fórmula, fonte, responsável, frequência, meta)
 
