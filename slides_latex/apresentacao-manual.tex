@@ -1,0 +1,66 @@
+\documentclass[aspectratio=169,t,xcolor=table]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{tikz}
+
+\usetheme{Ufg}
+
+\graphicspath{{figs/diagrams/}{../assets/}{assets/}{figs/}}
+
+\setbeamertemplate{caption}[numbered]
+\setbeamersize{text margin left=0.05\textwidth, text margin right=0.05\textwidth}
+
+% Layout limpo para slides de conteudo
+\newcommand{\setLayoutClean}{%
+    \usebackgroundtemplate{}%
+    \setDefaultConfig%
+}
+
+% Transicoes de secao com azul institucional UFG
+\AtBeginSection[]{%
+    \setLayout{mainpoint}%
+    \setBGColor{UFGBlue}%
+    \begin{frame}[noframenumbering]{}%
+        \frametitle{\LARGE\insertsectionhead}%
+    \end{frame}%
+    \setLayoutClean%
+}
+
+\setPrimaryColor{UFGBlue}
+\setLogos{lib/logos/INF-compact-white.png}{lib/logos/INF-compact-white.png}
+
+\title[Manual de Processos --- CineDoom]{Manual de Processos de Software --- CineDoom}
+\subtitle{Conformidade com ABNT NBR ISO/IEC/IEEE 12207:2021}
+\author[Grupo]{%
+  Carlos Eduardo Freire da Silva \and Gabriel Henrique Lourenço Dias \and Kayque Vicente Silva\\
+  Luiz Pedro Pereira Mendes Saraiva \and Yury Nogueira de Oliveira Silva%
+}
+\institute[UFG/INF]{%
+  Instituto de Informática (INF) --- Universidade Federal de Goiás (UFG)\\
+  Bacharelado em Engenharia de Software%
+}
+\date{2026/2}
+
+\begin{document}
+
+\setLayout{title}
+\begin{frame}[noframenumbering]
+    \titlepage
+\end{frame}
+\setLayoutClean
+
+\section{Visão Geral}
+
+\begin{frame}{Contexto do Sistema CineDoom}
+    \begin{itemize}
+        \item \textbf{Produto:} Sistema de gestão de salas de cinema e bilheteria.
+        \item \textbf{Base Normativa:} ABNT NBR ISO/IEC/IEEE 12207:2021.
+        \item \textbf{Fonte da Verdade:} Project Definition Workbook (PDW).
+    \end{itemize}
+\end{frame}
+
+\end{document}

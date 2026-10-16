@@ -1,0 +1,147 @@
+\documentclass[12pt,a4paper]{article}
+
+% =========================================================================
+% FORMATAÇÃO ABNT (NBR 14724 / NBR 6024 / NBR 6027)
+% =========================================================================
+
+% --- Margens ABNT (3 cm superior e esquerda; 2 cm inferior e direita) ---
+\usepackage[
+  a4paper,
+  left=3cm,
+  top=3cm,
+  right=2cm,
+  bottom=2cm,
+  headheight=15pt,
+  headsep=1cm
+]{geometry}
+
+% --- Idioma, codificação e tipografia (Times New Roman - ABNT NBR 14724) ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype}
+\usepackage[htt]{hyphenat}
+
+% --- Espaçamento e parágrafo ABNT ---
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+
+% --- Tabelas e alinhamentos ---
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{etoolbox}
+
+% --- Figuras, quadros e imagens ---
+\usepackage{graphicx}
+\graphicspath{{../assets/}{assets/}}
+\usepackage{float}
+
+% --- Cabeçalhos e paginação ABNT ---
+\usepackage{fancyhdr}
+\pagestyle{empty}
+\fancyhf{}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% --- Formatação do Sumário (NBR 6027) ---
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecfont}{\bfseries}
+\renewcommand{\cftsecpagefont}{\bfseries}
+\setlength{\cftbeforesecskip}{0.4em}
+
+% --- Formatação dos títulos de seções (NBR 6024) ---
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\normalsize\bfseries\MakeUppercase}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{1em}{}
+\titleformat{\paragraph}{\normalfont\normalsize\itshape}{\theparagraph}{1em}{}
+
+\titlespacing*{\section}{0pt}{2ex plus 0.5ex minus 0.2ex}{1.5ex plus 0.5ex minus 0.2ex}
+\titlespacing*{\subsection}{0pt}{1.8ex plus 0.5ex minus 0.2ex}{1.2ex plus 0.5ex minus 0.2ex}
+\titlespacing*{\subsubsection}{0pt}{1.5ex plus 0.5ex minus 0.2ex}{1.0ex plus 0.5ex minus 0.2ex}
+
+% --- Hiperlinks ---
+\usepackage{xcolor}
+\definecolor{NavyBlue}{RGB}{0,40,120}
+\usepackage[colorlinks=true,linkcolor=NavyBlue,citecolor=NavyBlue,urlcolor=NavyBlue]{hyperref}
+
+\begin{document}
+
+% -------------------------------------------------------------------------
+% CAPA (NBR 14724)
+% -------------------------------------------------------------------------
+\begin{titlepage}
+  \centering
+  \MakeUppercase{\textbf{Universidade Federal de Goiás - UFG}}\\
+  \MakeUppercase{\textbf{Instituto de Informática - INF}}\\
+  \MakeUppercase{\textbf{Bacharelado em Engenharia de Software}}\\
+  \vspace{4.5cm}
+  
+  \textbf{Carlos Eduardo Freire da Silva}\\
+  \textbf{Gabriel Henrique Lourenço Dias}\\
+  \textbf{Kayque Vicente Silva}\\
+  \textbf{Luiz Pedro Pereira Mendes Saraiva}\\
+  \textbf{Yury Nogueira de Oliveira Silva}\\
+  \vspace{4.0cm}
+  
+  \MakeUppercase{\textbf{Manual de Processos de Software}}\\
+  \MakeUppercase{\textbf{Sistema CineDoom}}\\
+  \vspace{0.8cm}
+  \large Alinhado à Norma ABNT NBR ISO/IEC/IEEE 12207:2021\\
+  \vfill
+  
+  \textbf{Goiânia - GO}\\
+  \textbf{2026}
+\end{titlepage}
+
+% -------------------------------------------------------------------------
+% FOLHA DE ROSTO
+% -------------------------------------------------------------------------
+\begin{titlepage}
+  \centering
+  \textbf{Carlos Eduardo Freire da Silva, Gabriel Henrique Lourenço Dias,}\\
+  \textbf{Kayque Vicente Silva, Luiz Pedro Pereira Mendes Saraiva, Yury Nogueira de Oliveira Silva}\\
+  \vspace{4.5cm}
+  
+  \MakeUppercase{\textbf{Manual de Processos de Software}}\\
+  \MakeUppercase{\textbf{Sistema CineDoom}}\\
+  \vspace{2.5cm}
+  
+  \hfill
+  \begin{minipage}{0.52\textwidth}
+    \begin{singlespace}
+      \small
+      Manual de Processos de Software elaborado para a disciplina de Processos de Software do curso de Bacharelado em Engenharia de Software do Instituto de Informática da Universidade Federal de Goiás (UFG), em conformidade com o padrão ABNT NBR ISO/IEC/IEEE 12207:2021.
+    \end{singlespace}
+  \end{minipage}
+  \vfill
+  
+  \textbf{Goiânia - GO}\\
+  \textbf{2026}
+\end{titlepage}
+
+% -------------------------------------------------------------------------
+% SUMÁRIO
+% -------------------------------------------------------------------------
+\pagestyle{empty}
+\tableofcontents
+\newpage
+
+% -------------------------------------------------------------------------
+% CORPO DO DOCUMENTO
+% -------------------------------------------------------------------------
+\pagestyle{fancy}
+\setcounter{page}{4}
+
+\section{Apresentação do Software}
+O sistema \textbf{CineDoom} é uma solução integrada de gestão de salas de cinema e emissão de ingressos. O presente manual estabelece os processos de ciclo de vida adotados conforme a norma ABNT NBR ISO/IEC/IEEE 12207:2021.
+
+\end{document}
