@@ -2,9 +2,9 @@
 
 **Tipo de documento:** documento controlado. Qualquer alteração deve ser registrada no Histórico de Versões e, quando afetar decisões, no registro de alterações do workbook (seção 50).
 
-**Base normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`docs/abnt-iso-iec-12207-2021.pdf`](docs/abnt-iso-iec-12207-2021.pdf) e transcrição em [`docs/abnt-iso-iec-12207-2021.md`](docs/abnt-iso-iec-12207-2021.md)).
+**Base normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`docs/norma-iso/abnt-iso-iec-12207-2021.pdf`](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e transcrição em [`docs/norma-iso/abnt-iso-iec-12207-2021.md`](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
 
-**Fonte de decisões:** Project Definition Workbook (PDW, disponível em [`docs/project-definition-workbook.md`](docs/project-definition-workbook.md)). Este documento é o produto mais recente das decisões do grupo; em caso de conflito entre este manual e o PDW, prevalece o PDW, e a divergência deve ser explicitamente registrada.
+**Fonte de decisões:** Project Definition Workbook (PDW, disponível em [`docs/guia-projeto/project-definition-workbook.md`](docs/guia-projeto/project-definition-workbook.md)). Este documento é o produto mais recente das decisões do grupo; em caso de conflito entre este manual e o PDW, prevalece o PDW, e a divergência deve ser explicitamente registrada.
 
 ---
 

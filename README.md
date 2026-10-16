@@ -34,8 +34,8 @@
 Este repositório contém o **Manual de Processos de Software** e os artefatos de engenharia desenvolvidos para o sistema **CineDoom** (gestão de salas de cinema e bilheteria).
 
 O trabalho adota como premissas:
-1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](docs/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](docs/abnt-iso-iec-12207-2021.pdf)).
-2. **Fonte de Decisões:** [Project Definition Workbook (PDW)](docs/project-definition-workbook.md) — Fonte única da verdade das decisões de produto, arquitetura e negócio.
+1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](docs/norma-iso/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](docs/norma-iso/abnt-iso-iec-12207-2021.pdf)).
+2. **Fonte de Decisões:** [Project Definition Workbook (PDW)](docs/guia-projeto/project-definition-workbook.md) — Fonte única da verdade das decisões de produto, arquitetura e negócio.
 
 ---
 
@@ -45,20 +45,20 @@ O trabalho adota como premissas:
 manual-processos/
 ├── assets/                                      # Diagramas, fluxos BPMN e artefatos visuais
 │   └── README.md
-├── docs/                                        # Documentações de apoio, normas e especificações
+├── docs/                                        # Documentações de apoio e referências
 │   ├── README.md
-│   ├── abnt-iso-iec-12207-2021.pdf              # Cópia integral oficial da norma em PDF
-│   ├── abnt-iso-iec-12207-2021.md               # Transcrição da norma em Markdown para leitura rápida
-│   ├── project-definition-workbook.md           # Project Definition Workbook (PDW)
-│   ├── diretrizes-parte-04.md                   # Orientações de aula e tópicos para a Parte 4
-│   └── rascunho-parte-03.md                     # Rascunho preliminar da Parte 3 (com itens 3.5 a 3.7)
-├── prompts/                                     # Catálogo e templates de prompts utilizados com IA
+│   ├── guia-projeto/                            # Project Definition Workbook (PDW)
+│   ├── norma-iso/                               # Cópia em PDF e transcrição em Markdown da ISO 12207
+│   └── rascunhos-partes/                        # Rascunhos preliminares das partes do manual
+├── prompts/                                     # Catálogo de prompts organizado pelas 5 partes
 │   ├── README.md
-│   ├── templates/
-│   │   └── template-prompt.md                   # Template padrão para novos prompts
-│   └── validacoes/
-│       ├── validador-iso12207.md                # Validador de conformidade com a ISO 12207
-│       └── analise-ia-parte-03.md               # Auditoria da sugestão de IA da Parte 3
+│   ├── template-prompt.md                       # Template padrão de novos prompts
+│   ├── validador-iso12207.md                    # Validador de conformidade contra a ISO 12207
+│   ├── parte-00/                                # Prompts da Parte 0 (Apresentação do Software)
+│   ├── parte-01/                                # Prompts da Parte 1 (Processos de Acordo)
+│   ├── parte-02/                                # Prompts da Parte 2 (Processos Habilitadores)
+│   ├── parte-03/                                # Prompts da Parte 3 (Gerenciamento Técnico)
+│   └── parte-04/                                # Prompts e diretrizes da Parte 4 (Processos Técnicos)
 ├── scripts/                                     # Scripts utilitários e de automação
 │   └── compilar.sh                              # Compilação unificada com Tectonic
 ├── slides_latex/                                # Apresentação em slides (Beamer UFG/INF)
@@ -66,7 +66,7 @@ manual-processos/
 │   ├── beamerthemeUfg.sty
 │   └── lib/
 ├── trabalho_latex/                              # Relatório oficial ABNT em LaTeX
-│   └── manual-processos.tex
+│   └── manual-processos-software.tex
 ├── .gitignore
 ├── manual-processos-software.md                 # Manual principal consolidado
 └── README.md
@@ -77,11 +77,10 @@ manual-processos/
 ## 🧭 Guia de Navegação
 
 - 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado para leitura direta no GitHub.
-- 📋 **[docs/project-definition-workbook.md](docs/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
-- 📚 **[docs/abnt-iso-iec-12207-2021.md](docs/abnt-iso-iec-12207-2021.md):** Norma ABNT NBR ISO/IEC/IEEE 12207:2021 ([PDF](docs/abnt-iso-iec-12207-2021.pdf)).
-- 📝 **[docs/diretrizes-parte-04.md](docs/diretrizes-parte-04.md):** Diretrizes de aula e requisitos para a Parte 4.
-- 🤖 **[prompts/](prompts/):** Pasta com templates e validadores de IA.
-- 📑 **[trabalho_latex/manual-processos.tex](trabalho_latex/manual-processos.tex):** Código-fonte LaTeX formatado conforme as normas ABNT.
+- 🤖 **[prompts/](prompts/):** Catálogo de prompts divididos por partes (**0 a 4**), com template e validador.
+- 📋 **[docs/guia-projeto/project-definition-workbook.md](docs/guia-projeto/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
+- 📚 **[docs/norma-iso/](docs/norma-iso/):** Norma ABNT NBR ISO/IEC/IEEE 12207:2021 ([PDF](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e [Markdown](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
+- 📑 **[trabalho_latex/manual-processos-software.tex](trabalho_latex/manual-processos-software.tex):** Código-fonte LaTeX formatado conforme as normas ABNT.
 - 📽️ **[slides_latex/apresentacao-manual.tex](slides_latex/apresentacao-manual.tex):** Slides da apresentação no template Beamer UFG/INF.
 - 🖼️ **[assets/](assets/):** Diagramas de processos e artefatos gráficos.
 

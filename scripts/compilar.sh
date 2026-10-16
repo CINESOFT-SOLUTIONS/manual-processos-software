@@ -4,7 +4,12 @@ set -e
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 # Compila relatório ABNT em LaTeX se existir
-if [ -f "$ROOT_DIR/trabalho_latex/manual-processos.tex" ]; then
+if [ -f "$ROOT_DIR/trabalho_latex/manual-processos-software.tex" ]; then
+    cd "$ROOT_DIR/trabalho_latex"
+    echo "Compilando manual-processos-software.pdf com Tectonic..."
+    tectonic manual-processos-software.tex
+    echo "Sucesso! Manual em: trabalho_latex/manual-processos-software.pdf"
+elif [ -f "$ROOT_DIR/trabalho_latex/manual-processos.tex" ]; then
     cd "$ROOT_DIR/trabalho_latex"
     echo "Compilando manual-processos.pdf com Tectonic..."
     tectonic manual-processos.tex

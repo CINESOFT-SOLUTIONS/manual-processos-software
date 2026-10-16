@@ -1,4 +1,14 @@
-# Parte 04 - Processos Técnicos
+# Prompt & Diretrizes — Parte 4: Processos Técnicos
+
+## 1. Identificação
+- **Código:** `PR-P04_Processos_Tecnicos`
+- **Parte do Trabalho:** Parte 4 – Processos Técnicos (Technical Processes)
+- **Norma / Cláusula de Referência:** ISO/IEC/IEEE 12207:2021 — Cláusula 6.4 (Business Analysis, Stakeholder Requirements, System Requirements, Architecture Definition, Design Definition, System Analysis)
+- **Documento-base:** `docs/guia-projeto/project-definition-workbook.md` e diretrizes de aula
+
+---
+
+## 2. Diretrizes Teóricas e Instruções de Elaboração (Input)
 
 ## Processos de Análise do Negócio
 
