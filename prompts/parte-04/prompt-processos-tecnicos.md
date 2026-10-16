@@ -288,3 +288,12 @@ Pelo menos um diagrama de classe do projeto
 Registro das decisões de design e justificativas técnicas adotadas
 Escolheu uma tecnologia x, ex login: para fazer o login precisa de logar com uma conta GOV por exemplo, então é necessário a integração com o GOV, e seria assim justificado
 Atenção: Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao seu projeto real. Qualidade > quantidade.
+
+---
+
+## 3. Validação Obrigatória
+
+Ao gerar qualquer entrega ou seção da Parte 4, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`:
+1. Valide a conformidade com as cláusulas de Processos Técnicos (6.4) da ISO/IEC/IEEE 12207:2021 (6.4.1 a 6.4.5).
+2. Garanta que a rastreabilidade (Stakeholder -> Requisito -> Arquitetura -> Design) esteja documentada e consistente com o PDW (`docs/guia-projeto/project-definition-workbook.md`).
+3. Anexe ao final a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).

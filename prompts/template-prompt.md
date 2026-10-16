@@ -29,6 +29,12 @@ Estruture a resposta com as seguintes seções:
 3. Atividades e Tarefas detalhadas
 4. Entradas e Saídas do Processo
 5. Tabela de Responsabilidades (RACI)
+
+[VALIDAÇÃO OBRIGATÓRIA]
+Ao finalizar a proposta, execute uma autoavaliação rigorosa seguindo as diretrizes do validador em `prompts/validador-iso12207.md`:
+1. Valide a conformidade com a cláusula [X.X] da ISO/IEC/IEEE 12207:2021.
+2. Cheque a fidelidade às decisões registradas no PDW (`docs/guia-projeto/project-definition-workbook.md`).
+3. Gere ao final da resposta a tabela comparativa de conformidade (Processo, Cláusula, Cobertura e Ajustes).
 ```
 
 ---

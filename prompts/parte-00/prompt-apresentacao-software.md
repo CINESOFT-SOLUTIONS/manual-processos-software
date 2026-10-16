@@ -28,4 +28,10 @@ Elabore o texto da "Parte 0 – Apresentação do Software" para o Manual de Pro
 
 [FORMATO DE SAÍDA]
 Texto em Markdown técnico, pronto para compor o manual, com linguagem precisa, sem adjetivações vazias e alinhado às seções 1 a 8 do PDW.
+
+[VALIDAÇÃO OBRIGATÓRIA]
+Ao concluir o texto, utilize os critérios do validador em `prompts/validador-iso12207.md`:
+1. Valide a conformidade com as diretrizes de insumo para requisitos da ISO/IEC/IEEE 12207:2021 (6.4.2 e 6.4.3).
+2. Verifique se nenhuma premissa contradiz as seções 1 a 8 do PDW (`docs/guia-projeto/project-definition-workbook.md`).
+3. Anexe ao final uma breve tabela de validação indicando a cobertura dos tópicos exigidos e possíveis ajustes.
 ```

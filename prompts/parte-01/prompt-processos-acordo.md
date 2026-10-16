@@ -29,4 +29,10 @@ Elabore a especificação dos Processos de Acordo para o CineDoom:
 
 [FORMATO DE SAÍDA]
 Texto em Markdown técnico com tabelas comparativas para critérios de seleção e matriz de entregáveis.
+
+[VALIDAÇÃO OBRIGATÓRIA]
+Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`:
+1. Valide a conformidade com as cláusulas 6.1.1 (Aquisição) e 6.1.2 (Fornecimento) da ISO/IEC/IEEE 12207:2021.
+2. Cheque a consistência com os modelos de comercialização e infraestrutura do PDW (`docs/guia-projeto/project-definition-workbook.md`).
+3. Anexe ao final a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
 ```

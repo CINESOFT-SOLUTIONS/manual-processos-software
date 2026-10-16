@@ -72,6 +72,18 @@ manual-processos/
 └── README.md
 ```
 
+### 📂 O que faz cada pasta do repositório
+
+| Pasta / Arquivo | Descrição Objetiva |
+|---|---|
+| [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom. |
+| [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA separados por parte (0 a 4), template e validador de conformidade. |
+| [`docs/`](docs/) | **Base de Conhecimento:** Norma ISO 12207, caderno de decisões do projeto (PDW) e rascunhos. |
+| [`assets/`](assets/) | **Artefatos Visuais:** Diagramas de processos, modelos BPMN/PlantUML e figuras. |
+| [`trabalho_latex/`](trabalho_latex/) | **Relatório em LaTeX:** Versão formatada segundo as normas da ABNT (NBR 14724). |
+| [`slides_latex/`](slides_latex/) | **Apresentação:** Slides para defesa oral no tema oficial da UFG/INF (Beamer). |
+| [`scripts/`](scripts/) | **Automação:** Script `compilar.sh` para compilar os PDFs localmente. |
+
 ---
 
 ## 🧭 Guia de Navegação
