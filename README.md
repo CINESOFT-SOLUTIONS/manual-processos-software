@@ -43,7 +43,7 @@ O trabalho adota como premissas:
 
 ```text
 manual-processos/
-├── assets/                                      # Diagramas, fluxos BPMN e artefatos visuais
+├── assets/                                      # Diagramas, fluxos BPMN e artefatos visuais por parte (0 a 4)
 │   └── README.md
 ├── docs/                                        # Documentações de apoio, normas e validações
 │   ├── README.md
