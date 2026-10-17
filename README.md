@@ -56,7 +56,7 @@ manual-processos/
 ├── prompts/                                     # Catálogo de prompts organizado pelas 5 partes
 │   ├── README.md
 │   ├── template-prompt.md                       # Template padrão de novos prompts
-│   ├── validador-iso12207.md                    # Validador de conformidade contra a ISO 12207
+│   ├── auditor-de-qualidade.md                  # Auditor de qualidade e conformidade ISO 12207
 │   ├── parte-00/                                # Prompts da Parte 0 (Apresentação do Software)
 │   ├── parte-01/                                # Prompts da Parte 1 (Processos de Acordo)
 │   ├── parte-02/                                # Prompts da Parte 2 (Processos Habilitadores)
@@ -81,7 +81,7 @@ manual-processos/
 |---|---|
 | [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom. |
 | [`fluxo-trabalho.md`](fluxo-trabalho.md) | **Guia de Colaboração:** Passo a passo para criar prompts, validar e incorporar conteúdo. |
-| [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA separados por parte (0 a 4), template e validador de conformidade. |
+| [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA por parte (0 a 4), template e auditor de qualidade. |
 | [`docs/`](docs/) | **Base de Conhecimento:** Diretrizes pedagógicas, norma ISO 12207, caderno de decisões (PDW), validações e rascunhos. |
 | [`assets/`](assets/) | **Artefatos Visuais:** Diagramas de processos, modelos BPMN/PlantUML e figuras. |
 | [`trabalho_latex/`](trabalho_latex/) | **Relatório em LaTeX:** Versão formatada segundo as normas da ABNT (NBR 14724). |
@@ -95,7 +95,7 @@ manual-processos/
 - 🚀 **[fluxo-trabalho.md](fluxo-trabalho.md):** Guia de fluxo de trabalho para colaboração no repositório.
 - 📖 **[docs/instrucoes-disciplina.md](docs/instrucoes-disciplina.md):** Diretrizes, estrutura recomendada e avaliação da Profa. Dra. Juliana Zinader.
 - 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado para leitura direta no GitHub.
-- 🤖 **[prompts/](prompts/):** Catálogo de prompts divididos por partes (**0 a 4**), com template e validador.
+- 🤖 **[prompts/](prompts/):** Catálogo de prompts divididos por partes (**0 a 4**), com template e auditor de qualidade.
 - 📋 **[docs/constituicao/project-definition-workbook.md](docs/constituicao/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
 - 📚 **[docs/norma-iso/](docs/norma-iso/):** Norma ABNT NBR ISO/IEC/IEEE 12207:2021 ([PDF](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e [Markdown](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
 - 📑 **[trabalho_latex/manual-processos-software.tex](trabalho_latex/manual-processos-software.tex):** Código-fonte LaTeX formatado conforme as normas ABNT.

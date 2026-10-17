@@ -34,13 +34,14 @@ Estruture a resposta com as 7 seções obrigatórias definidas pela docente:
 6. Relacionamento com Outros Processos: Processos da ISO 12207 que fornecem entradas ou consomem as saídas deste processo.
 7. Decisões e Justificativas: Escolhas técnicas e organizacionais justificadas com base nas premissas e riscos do CineDoom.
 
-[VALIDAÇÃO OBRIGATÓRIA]
-Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`.
-Gere o relatório completo da validação e salve-o em `docs/validacoes/parte-XX/analise-validacao-parte-XX.md`:
+[AUDITORIA E VALIDAÇÃO OBRIGATÓRIA]
+Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o auditor em `prompts/auditor-de-qualidade.md`.
+Gere o laudo completo de auditoria e salve-o em `docs/validacoes/parte-XX/analise-validacao-parte-XX.md`:
 1. Valide a conformidade com a cláusula [X.X] da ISO/IEC/IEEE 12207:2021.
 2. Cheque a fidelidade às decisões registradas no PDW (`docs/constituicao/project-definition-workbook.md`).
 3. Confirme que todas as 7 seções obrigatórias foram contempladas e que não há cópia literal da norma.
-4. Apresente no relatório a tabela comparativa de conformidade (Processo, Cláusula, Cobertura e Ajustes aplicados).
+4. Avalie os critérios transversais (qualidade > quantidade, linguagem técnica e coerência intermódulos).
+5. Apresente no laudo a matriz de conformidade e o plano de ação prescritivo para o rascunho (`docs/rascunhos/parte-XX/rascunho-parte-XX.md`).
 ```
 
 ---

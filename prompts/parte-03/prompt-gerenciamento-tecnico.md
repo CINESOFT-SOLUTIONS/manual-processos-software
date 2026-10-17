@@ -34,10 +34,11 @@ Elabore os processos do grupo 6.3 (Technical Management Processes) para o projet
 Markdown detalhado, com tabelas para o plano de medição, matriz de riscos e lista de ADRs.
 
 [VALIDAÇÃO OBRIGATÓRIA]
-Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`.
-Gere o relatório completo e salve-o em `docs/validacoes/parte-03/analise-validacao-parte-03.md`:
+Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o auditor em `prompts/auditor-de-qualidade.md`.
+Gere o laudo de auditoria e salve-o em `docs/validacoes/parte-03/analise-validacao-parte-03.md`:
 1. Valide a conformidade com as 7 cláusulas do grupo 6.3 (Technical Management Processes: 6.3.1 a 6.3.7) da ISO/IEC/IEEE 12207:2021.
 2. Certifique-se de que nenhum processo obrigatório da norma foi omitido (atenção especial para 6.3.6 Gestão da Informação e separação entre 6.3.2 Controle e 6.3.7 Medição).
 3. Verifique o alinhamento com as seções 21 a 38 do PDW (`docs/constituicao/project-definition-workbook.md`).
-4. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
+4. Avalie os critérios transversais (qualidade > quantidade, linguagem técnica e coerência intermódulos).
+5. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
 ```

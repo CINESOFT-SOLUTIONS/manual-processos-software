@@ -33,9 +33,10 @@ Estruture a especificação da "Parte 2 – Processos Organizacionais Habilitado
 Markdown estruturado com seções numeradas, incluindo a matriz RACI em tabela e os critérios de qualidade do CineDoom.
 
 [VALIDAÇÃO OBRIGATÓRIA]
-Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`.
-Gere o relatório completo e salve-o em `docs/validacoes/parte-02/analise-validacao-parte-02.md`:
+Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o auditor em `prompts/auditor-de-qualidade.md`.
+Gere o laudo de auditoria e salve-o em `docs/validacoes/parte-02/analise-validacao-parte-02.md`:
 1. Valide a conformidade com as cláusulas do grupo 6.2 (Organizational Project-Enabling Processes) da ISO/IEC/IEEE 12207:2021.
 2. Certifique-se de que a matriz RACI reflete com exatidão a alocação de responsabilidades e as ferramentas acordadas no PDW (`docs/constituicao/project-definition-workbook.md`).
-3. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
+3. Avalie os critérios transversais (qualidade > quantidade, linguagem técnica e coerência intermódulos).
+4. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
 ```

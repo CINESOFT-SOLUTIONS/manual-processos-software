@@ -40,16 +40,16 @@ Para cada parte do trabalho (`parte-00` a `parte-04`), siga este ciclo:
   3. **Todas as diretrizes e instruções dadas pela professora nos slides da aula.**
   4. A instrução final de validação obrigatória.
 
-### Passo 2: Executar com a IA e Rodar o Validador
+### Passo 2: Executar com a IA e Rodar o Auditor de Qualidade
 - Envie o prompt para o modelo de IA.
-- Ao obter a resposta, peça a autoavaliação baseada no [`prompts/validador-iso12207.md`](prompts/validador-iso12207.md).
-- **Salve o relatório de auditoria gerado** em:
+- Ao obter a resposta, peça a auditoria crítica e rigorosa baseada no [`prompts/auditor-de-qualidade.md`](prompts/auditor-de-qualidade.md).
+- **Salve o laudo de auditoria gerado** em:
   `docs/validacoes/parte-XX/analise-validacao-parte-XX.md`
 
 ### Passo 3: Rascunhar e Ajustar o Texto
 - Salve o texto preliminar proposto pela IA em:
   `docs/rascunhos/parte-XX/rascunho-parte-XX.md`
-- O grupo revisa em conjunto, elimina eventuais alucinações da IA e alinha com a realidade do CineDoom.
+- O grupo revisa em conjunto com base no laudo de auditoria, elimina prolixidades ("encher linguiça"), resolve eventuais alucinações da IA e alinha com a realidade do CineDoom.
 
 ### Passo 4: Guardar Diagramas e Evidências Visuais
 - Se a professora pediu diagramas nos slides (BPMN, PlantUML, classes UML ou fluxos):
@@ -68,7 +68,7 @@ Para cada parte do trabalho (`parte-00` a `parte-04`), siga este ciclo:
 | O que você tem na mão? | Onde deve salvar? | Exemplo de Arquivo |
 |---|---|---|
 | **Instrução / Prompt para a IA** | `prompts/parte-XX/` | `prompt-processos-acordo.md` |
-| **Relatório de Conformidade da IA** | `docs/validacoes/parte-XX/` | `analise-validacao-parte-01.md` |
+| **Laudo de Auditoria da IA** | `docs/validacoes/parte-XX/` | `analise-validacao-parte-01.md` |
 | **Texto Preliminar em Revisão** | `docs/rascunhos/parte-XX/` | `rascunho-parte-01.md` |
 | **Diagramas / Modelos Visuais** | `assets/parte-XX/` | `fluxo-aquisicao.png` |
 | **Texto Final Aprovado** | Raiz (`manual-processos-software.md`) | Integrado na seção oficial |
@@ -78,6 +78,8 @@ Para cada parte do trabalho (`parte-00` a `parte-04`), siga este ciclo:
 ## ⚠️ Regras Inegociáveis
 
 1. **Classroom Primeiro:** Nunca monte um prompt apenas "pelo que acha que é". Verifique sempre as instruções e slides da **Profa. Dra. Juliana Zinader**.
-2. **Nunca jogue texto direto no manual:** Sempre passe pelo ciclo *Classroom ➔ Prompt ➔ Validação ➔ Rascunho ➔ Manual*.
-3. **Conflito de Informação:** Se a norma sugerir algo genérico e o PDW definir algo específico para o CineDoom, **prevalece o PDW**.
-4. **Commit Limpo:** Faça commits objetivos citando a parte trabalhada (ex: `docs(parte-02): adiciona rascunho dos processos habilitadores`).
+2. **Qualidade > Quantidade (Critério Transversal):** Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao CineDoom. Nada de "encher linguiça" ou marketing.
+3. **Coerência Intermódulos:** Todos os módulos devem conversar entre si e respeitar o contexto fundacional da Parte 0 e o PDW.
+4. **Nunca jogue texto direto no manual:** Sempre passe pelo ciclo *Classroom ➔ Prompt ➔ Auditoria ➔ Rascunho ➔ Manual*.
+5. **Conflito de Informação:** Se a norma sugerir algo genérico e o PDW definir algo específico para o CineDoom, **prevalece o PDW**.
+6. **Commit Limpo:** Faça commits objetivos citando a parte trabalhada (ex: `docs(parte-02): adiciona rascunho dos processos habilitadores`).
