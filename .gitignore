@@ -25,3 +25,7 @@ ehthumbs.db
 *.nav
 *.snm
 *.vrb
+
+# PDFs compilados
+trabalho_latex/*.pdf
+slides_latex/*.pdf

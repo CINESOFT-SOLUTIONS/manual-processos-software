@@ -1,25 +1,54 @@
-# Manual de Processos de Software – CineDoom
+# Manual de Processos de Software
 
-**Tipo de documento:** documento controlado. Qualquer alteração deve ser registrada no Histórico de Versões e, quando afetar decisões, no registro de alterações do workbook (seção 50).
-
-**Base normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`docs/norma-iso/abnt-iso-iec-12207-2021.pdf`](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e transcrição em [`docs/norma-iso/abnt-iso-iec-12207-2021.md`](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
-
-**Fonte de decisões:** Project Definition Workbook (PDW, disponível em [`docs/constituicao/project-definition-workbook.md`](docs/constituicao/project-definition-workbook.md)). Este documento é o produto mais recente das decisões do grupo; em caso de conflito entre este manual e o PDW, prevalece o PDW, e a divergência deve ser explicitamente registrada.
+### Estudo de Caso: Sistema CineDoom (Plataforma de Gestão Operacional de Cinemas)
 
 ---
 
-**Histórico de Versões**
+**Equipe:** CineSoft Solutions  
+
+**Membros da Equipe:**
+- Carlos Eduardo Freire da Silva
+- Gabriel Henrique Lourenço Dias
+- Kayque Vicente Silva
+- Yury Nogueira de Oliveira Silva
+
+**Identificação Acadêmica:**
+- **Instituição:** Universidade Federal de Goiás (UFG) — Instituto de Informática (INF)
+- **Curso:** Bacharelado em Engenharia de Software
+- **Disciplina:** Processos de Engenharia de Software
+- **Docente:** Profa. Dra. Juliana Pereira de Souza Zinader
+- **Período Letivo:** 2026/2
+
+---
+
+<div style="page-break-after: always;"></div>
+
+# Histórico de Versões do Documento
+
+> **Documento Controlado:** Qualquer alteração neste manual deve ser formalmente registrada nesta tabela e, quando impactar definições de negócio, arquitetura ou escopo, refletida no registro de decisões do *Project Definition Workbook* (PDW, seção 50).
 
 | Data | Versão | Alteração Realizada |
-| :---: | :---: | :---: |
+| :---: | :---: | :--- |
 | 10/09/2026 | 1.0 | Criação do documento e elaboração da capa. |
-| 16/09/2026 | 1.1 | Elaboração dos itens da Parte 0. |
-| 24/09/2026 | 1.2 | Alinhamento das Partes 0, 1 e 2 ao PDW e à ISO/IEC/IEEE 12207. |
-| 24/09/2026 | 1.3 | Revisão técnica: correção de contradições, inclusão de terminologia, justificativas de aquisição e índice de aderência à norma. |
-| 08/10/2026 | 1.4 | Incremento na parte 3 |
-| xxx | xx | xxx |
+| 16/09/2026 | 1.1 | Elaboração dos itens da Parte 0 (Apresentação do Software). |
+| 24/09/2026 | 1.2 | Alinhamento das Partes 0, 1 e 2 ao PDW e à norma ABNT NBR ISO/IEC/IEEE 12207:2021. |
+| 24/09/2026 | 1.3 | Revisão técnica: correção de contradições, terminologia, justificativas de aquisição e índice de aderência. |
+| 08/10/2026 | 1.4 | Incremento e estruturação dos processos da Parte 3 (Gerenciamento Técnico). |
+| 17/10/2026 | 1.5 | Reestruturação da capa e padronização do histórico de versões conforme diretrizes docentes. |
 
-**Sumário**
+---
+
+<div style="page-break-after: always;"></div>
+
+## Documentos de Referência e Controle
+
+- **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`docs/norma-iso/abnt-iso-iec-12207-2021.pdf`](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e transcrição em [`docs/norma-iso/abnt-iso-iec-12207-2021.md`](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
+- **Fonte de Decisões:** Project Definition Workbook (PDW, disponível em [`docs/constituicao/project-definition-workbook.md`](docs/constituicao/project-definition-workbook.md)). Este documento é a fonte única da verdade para o estudo de caso; em caso de conflito, prevalece o PDW.
+- **Diretrizes Pedagógicas:** [`docs/instrucoes-disciplina.md`](docs/instrucoes-disciplina.md) — Regras e estrutura exigida pela Profa. Dra. Juliana Zinader.
+
+---
+
+## Sumário
 
 - Parte 0 – Apresentação do Software
   - 0.1. Identificação e Descrição
