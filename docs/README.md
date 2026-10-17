@@ -1,12 +1,12 @@
 # 📚 Documentos de Apoio e Referências (docs)
 
-Esta pasta centraliza os materiais de apoio, normas e auditorias da disciplina de **Processos de Engenharia de Software**.
+Esta pasta centraliza os materiais de apoio, normas, validações e rascunhos da disciplina de **Processos de Engenharia de Software**.
 
 ---
 
 ## 🗂️ O que contém esta pasta
 
-- **[`guia-projeto/`](guia-projeto/):** Caderno de Decisões de Projeto (*Project Definition Workbook - PDW*). É a fonte oficial das regras de negócio, escopo e tecnologias do CineDoom.
+- **[`constituicao/`](constituicao/):** Caderno de Decisões de Projeto (*Project Definition Workbook - PDW*). É a fonte oficial das regras de negócio, escopo e tecnologias do CineDoom.
 - **[`norma-iso/`](norma-iso/):** Norma ABNT NBR ISO/IEC/IEEE 12207:2021. Disponível em PDF (cópia oficial) e em Markdown (para consultas rápidas e contexto de IA).
-- **[`validacoes/`](validacoes/):** Relatórios de análise do validador da ISO 12207 gerados por IA, organizados por subpastas (`parte-00/` a `parte-04/`).
-- **[`rascunhos-partes/`](rascunhos-partes/):** Rascunhos preliminares criados durante a pré-avaliação antes da versão final ir para o manual.
+- **[`validacoes/`](validacoes/):** Relatórios de auditoria e validação da ISO 12207 gerados por IA, divididos por partes (`parte-00/` a `parte-04/`).
+- **[`rascunhos/`](rascunhos/):** Rascunhos preliminares de trabalho antes da incorporação ao manual oficial, divididos por partes (`parte-00/` a `parte-04/`).

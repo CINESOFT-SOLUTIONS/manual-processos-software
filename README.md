@@ -35,7 +35,7 @@ Este repositório contém o **Manual de Processos de Software** e os artefatos d
 
 O trabalho adota como premissas:
 1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](docs/norma-iso/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](docs/norma-iso/abnt-iso-iec-12207-2021.pdf)).
-2. **Fonte de Decisões:** [Project Definition Workbook (PDW)](docs/guia-projeto/project-definition-workbook.md) — Fonte única da verdade das decisões de produto, arquitetura e negócio.
+2. **Fonte de Decisões:** [Project Definition Workbook (PDW)](docs/constituicao/project-definition-workbook.md) — Fonte única da verdade das decisões de produto, arquitetura e negócio.
 
 ---
 
@@ -47,10 +47,10 @@ manual-processos/
 │   └── README.md
 ├── docs/                                        # Documentações de apoio, normas e validações
 │   ├── README.md
-│   ├── guia-projeto/                            # Project Definition Workbook (PDW)
+│   ├── constituicao/                            # Project Definition Workbook (PDW)
 │   ├── norma-iso/                               # Cópia em PDF e transcrição em Markdown da ISO 12207
 │   ├── validacoes/                              # Relatórios de auditoria e validação por parte (0 a 4)
-│   └── rascunhos-partes/                        # Rascunhos preliminares das partes do manual
+│   └── rascunhos/                               # Rascunhos preliminares de trabalho por parte (0 a 4)
 ├── prompts/                                     # Catálogo de prompts organizado pelas 5 partes
 │   ├── README.md
 │   ├── template-prompt.md                       # Template padrão de novos prompts
@@ -79,7 +79,7 @@ manual-processos/
 |---|---|
 | [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom. |
 | [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA separados por parte (0 a 4), template e validador de conformidade. |
-| [`docs/`](docs/) | **Base de Conhecimento:** Norma ISO 12207, caderno de decisões do projeto (PDW) e rascunhos. |
+| [`docs/`](docs/) | **Base de Conhecimento:** Norma ISO 12207, caderno de decisões do projeto (PDW), validações e rascunhos. |
 | [`assets/`](assets/) | **Artefatos Visuais:** Diagramas de processos, modelos BPMN/PlantUML e figuras. |
 | [`trabalho_latex/`](trabalho_latex/) | **Relatório em LaTeX:** Versão formatada segundo as normas da ABNT (NBR 14724). |
 | [`slides_latex/`](slides_latex/) | **Apresentação:** Slides para defesa oral no tema oficial da UFG/INF (Beamer). |
@@ -91,7 +91,7 @@ manual-processos/
 
 - 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado para leitura direta no GitHub.
 - 🤖 **[prompts/](prompts/):** Catálogo de prompts divididos por partes (**0 a 4**), com template e validador.
-- 📋 **[docs/guia-projeto/project-definition-workbook.md](docs/guia-projeto/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
+- 📋 **[docs/constituicao/project-definition-workbook.md](docs/constituicao/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
 - 📚 **[docs/norma-iso/](docs/norma-iso/):** Norma ABNT NBR ISO/IEC/IEEE 12207:2021 ([PDF](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e [Markdown](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
 - 📑 **[trabalho_latex/manual-processos-software.tex](trabalho_latex/manual-processos-software.tex):** Código-fonte LaTeX formatado conforme as normas ABNT.
 - 📽️ **[slides_latex/apresentacao-manual.tex](slides_latex/apresentacao-manual.tex):** Slides da apresentação no template Beamer UFG/INF.
