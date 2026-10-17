@@ -36,6 +36,7 @@ Este repositório contém o **Manual de Processos de Software** e os artefatos d
 O trabalho adota como premissas:
 1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](docs/norma-iso/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](docs/norma-iso/abnt-iso-iec-12207-2021.pdf)).
 2. **Fonte de Decisões:** [Project Definition Workbook (PDW)](docs/constituicao/project-definition-workbook.md) — Fonte única da verdade das decisões de produto, arquitetura e negócio.
+3. **Diretrizes Pedagógicas:** [Instruções da Disciplina](docs/instrucoes-disciplina.md) — Requisitos oficiais, 7 seções por processo e critérios de avaliação da Profa. Dra. Juliana Zinader.
 
 ---
 
@@ -47,6 +48,7 @@ manual-processos/
 │   └── README.md
 ├── docs/                                        # Documentações de apoio, normas e validações
 │   ├── README.md
+│   ├── instrucoes-disciplina.md                 # Diretrizes pedagógicas oficiais da disciplina
 │   ├── constituicao/                            # Project Definition Workbook (PDW)
 │   ├── norma-iso/                               # Cópia em PDF e transcrição em Markdown da ISO 12207
 │   ├── validacoes/                              # Relatórios de auditoria e validação por parte (0 a 4)
@@ -80,7 +82,7 @@ manual-processos/
 | [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom. |
 | [`fluxo-trabalho.md`](fluxo-trabalho.md) | **Guia de Colaboração:** Passo a passo para criar prompts, validar e incorporar conteúdo. |
 | [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA separados por parte (0 a 4), template e validador de conformidade. |
-| [`docs/`](docs/) | **Base de Conhecimento:** Norma ISO 12207, caderno de decisões do projeto (PDW), validações e rascunhos. |
+| [`docs/`](docs/) | **Base de Conhecimento:** Diretrizes pedagógicas, norma ISO 12207, caderno de decisões (PDW), validações e rascunhos. |
 | [`assets/`](assets/) | **Artefatos Visuais:** Diagramas de processos, modelos BPMN/PlantUML e figuras. |
 | [`trabalho_latex/`](trabalho_latex/) | **Relatório em LaTeX:** Versão formatada segundo as normas da ABNT (NBR 14724). |
 | [`slides_latex/`](slides_latex/) | **Apresentação:** Slides para defesa oral no tema oficial da UFG/INF (Beamer). |
@@ -91,6 +93,7 @@ manual-processos/
 ## 🧭 Guia de Navegação
 
 - 🚀 **[fluxo-trabalho.md](fluxo-trabalho.md):** Guia de fluxo de trabalho para colaboração no repositório.
+- 📖 **[docs/instrucoes-disciplina.md](docs/instrucoes-disciplina.md):** Diretrizes, estrutura recomendada e avaliação da Profa. Dra. Juliana Zinader.
 - 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado para leitura direta no GitHub.
 - 🤖 **[prompts/](prompts/):** Catálogo de prompts divididos por partes (**0 a 4**), com template e validador.
 - 📋 **[docs/constituicao/project-definition-workbook.md](docs/constituicao/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).

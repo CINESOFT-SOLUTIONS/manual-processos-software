@@ -9,7 +9,8 @@ Este guia rápido explica como qualquer membro da equipe deve trabalhar no repos
 Antes de escrever qualquer prompt, lembre-se:
 
 1. **Instruções e Slides da Docente (Profa. Dra. Juliana Pereira de Souza Zinader):**  
-   ⚠️ **OBRIGATÓRIO:** Antes de iniciar qualquer parte, vá ao **Google Classroom** da disciplina. Baixe e analise com atenção os **slides da aula correspondente** e todas as orientações publicadas pela professora. As exigências de aula definem o que deve ser cobrado no prompt.
+   Consulte as diretrizes consolidadas em [`docs/instrucoes-disciplina.md`](docs/instrucoes-disciplina.md).  
+   ⚠️ **OBRIGATÓRIO:** Antes de iniciar qualquer parte, vá também ao **Google Classroom** da disciplina. Baixe e analise com atenção os **slides da aula correspondente** e todas as orientações publicadas pela professora. As exigências de aula definem o que deve ser cobrado no prompt.
 2. **Constituição do Projeto ([`docs/constituicao/project-definition-workbook.md`](docs/constituicao/project-definition-workbook.md)):**  
    Manda nas regras de negócio, tecnologias e escopo do CineDoom. A IA nunca pode inventar algo fora do PDW.
 3. **Norma ISO/IEC/IEEE 12207:2021 ([`docs/norma-iso/`](docs/norma-iso/)):**  

@@ -11,15 +11,17 @@
 ## 2. Prompt Estruturado (Input)
 
 ```markdown
-Atue como Auditor e Especialista em Qualidade de Software segundo a ABNT NBR ISO/IEC/IEEE 12207:2021.
+Atue como Auditor e Especialista em Qualidade de Software segundo a ABNT NBR ISO/IEC/IEEE 12207:2021 e avaliador acadêmico da disciplina de Processos de Engenharia de Software da UFG (Profa. Dra. Juliana Zinader).
 
 Analise o texto proposto para o processo [Nome do Processo / Grupo de Processos] para o sistema CineDoom e valide:
-1. Conformidade com a cláusula [Número da Cláusula] da ISO 12207:2021.
-2. Alinhamento com as premissas estabelecidas no Project Definition Workbook (PDW).
-3. Verifique se foram cobertos todos os resultados esperados (process outcomes) e atividades mínimas exigidas pela norma.
+1. Conformidade com a cláusula [Número da Cláusula] da ISO/IEC/IEEE 12207:2021 (resultados esperados / process outcomes e atividades mínimas).
+2. Alinhamento com as premissas estabelecidas no Project Definition Workbook (PDW - `docs/constituicao/project-definition-workbook.md`).
+3. Conformidade com as Diretrizes da Disciplina (`docs/instrucoes-disciplina.md`):
+   - Presença das 7 seções recomendadas (Identificação, Aplicação ao Contexto, Papéis/RACI, Artefatos, Critérios de Avaliação, Relacionamentos, Decisões e Justificativas).
+   - Ausência de reprodução literal da norma (o texto deve interpretar, contextualizar e aplicar os conceitos ao CineDoom, sem cópia literal).
 4. Gere uma tabela comparativa com as colunas:
-   - Processo da norma
-   - Cláusula da norma
-   - Cobertura no texto proposto
-   - Avaliação / Ajustes necessários
+   - Processo / Cláusula da ISO
+   - Requisito da Disciplina / PDW
+   - Cobertura no Texto Proposto
+   - Avaliação e Ajustes Necessários
 ```
