@@ -4,7 +4,7 @@
 - **Código:** `PR-P01_Processos_Acordo`
 - **Parte do Trabalho:** Parte 1 – Processos de Acordo (Agreement Processes)
 - **Norma / Cláusula de Referência:** ISO/IEC/IEEE 12207:2021 — Cláusulas 6.1.1 (Acquisition Process) e 6.1.2 (Supply Process)
-- **Documento-base:** `docs/guia-projeto/project-definition-workbook.md` (Seções 4, 11 e 12)
+- **Documento-base:** `docs/constituicao/project-definition-workbook.md` (Seções 4, 11 e 12)
 
 ---
 
@@ -34,6 +34,6 @@ Texto em Markdown técnico com tabelas comparativas para critérios de seleção
 Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`.
 Gere o relatório completo e salve-o em `docs/validacoes/parte-01/analise-validacao-parte-01.md`:
 1. Valide a conformidade com as cláusulas 6.1.1 (Aquisição) e 6.1.2 (Fornecimento) da ISO/IEC/IEEE 12207:2021.
-2. Cheque a consistência com os modelos de comercialização e infraestrutura do PDW (`docs/guia-projeto/project-definition-workbook.md`).
+2. Cheque a consistência com os modelos de comercialização e infraestrutura do PDW (`docs/constituicao/project-definition-workbook.md`).
 3. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
 ```

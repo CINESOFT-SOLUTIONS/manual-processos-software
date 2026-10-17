@@ -4,7 +4,7 @@
 - **Código:** `PR-P04_Processos_Tecnicos`
 - **Parte do Trabalho:** Parte 4 – Processos Técnicos (Technical Processes)
 - **Norma / Cláusula de Referência:** ISO/IEC/IEEE 12207:2021 — Cláusula 6.4 (Business Analysis, Stakeholder Requirements, System Requirements, Architecture Definition, Design Definition, System Analysis)
-- **Documento-base:** `docs/guia-projeto/project-definition-workbook.md` e diretrizes de aula
+- **Documento-base:** `docs/constituicao/project-definition-workbook.md` e diretrizes de aula
 
 ---
 
@@ -296,5 +296,5 @@ Atenção: Os artefatos não precisam ser extensos — precisam ser consistentes
 Ao gerar qualquer entrega ou seção da Parte 4, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`.
 Gere o relatório da análise e salve-o em `docs/validacoes/parte-04/analise-validacao-parte-04.md`:
 1. Valide a conformidade com as cláusulas de Processos Técnicos (6.4) da ISO/IEC/IEEE 12207:2021 (6.4.1 a 6.4.5).
-2. Garanta que a rastreabilidade (Stakeholder -> Requisito -> Arquitetura -> Design) esteja documentada e consistente com o PDW (`docs/guia-projeto/project-definition-workbook.md`).
+2. Garanta que a rastreabilidade (Stakeholder -> Requisito -> Arquitetura -> Design) esteja documentada e consistente com o PDW (`docs/constituicao/project-definition-workbook.md`).
 3. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).

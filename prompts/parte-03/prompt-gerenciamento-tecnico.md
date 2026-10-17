@@ -4,7 +4,7 @@
 - **Código:** `PR-P03_Gerenciamento_Tecnico`
 - **Parte do Trabalho:** Parte 3 – Processos de Gerenciamento Técnico
 - **Norma / Cláusula de Referência:** ISO/IEC/IEEE 12207:2021 — Cláusulas 6.3.1 a 6.3.7
-- **Documento-base:** `docs/guia-projeto/project-definition-workbook.md` (Seções 21 a 38) e `docs/rascunhos-partes/rascunho-parte-03.md`
+- **Documento-base:** `docs/constituicao/project-definition-workbook.md` (Seções 21 a 38) e `docs/rascunhos-partes/rascunho-parte-03.md`
 
 ---
 
@@ -38,6 +38,6 @@ Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o valid
 Gere o relatório completo e salve-o em `docs/validacoes/parte-03/analise-validacao-parte-03.md`:
 1. Valide a conformidade com as 7 cláusulas do grupo 6.3 (Technical Management Processes: 6.3.1 a 6.3.7) da ISO/IEC/IEEE 12207:2021.
 2. Certifique-se de que nenhum processo obrigatório da norma foi omitido (atenção especial para 6.3.6 Gestão da Informação e separação entre 6.3.2 Controle e 6.3.7 Medição).
-3. Verifique o alinhamento com as seções 21 a 38 do PDW (`docs/guia-projeto/project-definition-workbook.md`).
+3. Verifique o alinhamento com as seções 21 a 38 do PDW (`docs/constituicao/project-definition-workbook.md`).
 4. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
 ```

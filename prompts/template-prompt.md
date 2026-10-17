@@ -34,7 +34,7 @@ Estruture a resposta com as seguintes seções:
 Ao finalizar a proposta, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`.
 Gere o relatório completo da validação e salve-o em `docs/validacoes/parte-XX/analise-validacao-parte-XX.md`:
 1. Valide a conformidade com a cláusula [X.X] da ISO/IEC/IEEE 12207:2021.
-2. Cheque a fidelidade às decisões registradas no PDW (`docs/guia-projeto/project-definition-workbook.md`).
+2. Cheque a fidelidade às decisões registradas no PDW (`docs/constituicao/project-definition-workbook.md`).
 3. Apresente no relatório a tabela comparativa de conformidade (Processo, Cláusula, Cobertura e Ajustes aplicados).
 ```
 
