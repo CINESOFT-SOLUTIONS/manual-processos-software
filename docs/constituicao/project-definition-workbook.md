@@ -1936,7 +1936,7 @@ A configuração recomendada para o estudo de caso é:
 | Ciclo de vida | Incremental |
 | Usuários | Administrador, gerente e atendente |
 | Cliente final | Fora do sistema administrativo na primeira versão |
-| Pagamentos | Stripe |
+| Pagamentos | Fora do escopo inicial |
 | Mobile | Fora do escopo inicial |
 | Streaming | Fora do escopo |
 | IA | Fora do escopo inicial |
