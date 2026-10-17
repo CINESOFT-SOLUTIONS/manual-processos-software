@@ -20,7 +20,6 @@
         • Carlos Eduardo Freire da Silva<br>
         • Gabriel Henrique Lourenço Dias<br>
         • Kayque Vicente Silva<br>
-        • Luiz Pedro Pereira Mendes Saraiva<br>
         • Yury Nogueira de Oliveira Silva
       </td>
     </tr>
