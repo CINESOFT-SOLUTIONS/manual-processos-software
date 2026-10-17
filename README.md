@@ -45,10 +45,11 @@ O trabalho adota como premissas:
 manual-processos/
 ├── assets/                                      # Diagramas, fluxos BPMN e artefatos visuais
 │   └── README.md
-├── docs/                                        # Documentações de apoio e referências
+├── docs/                                        # Documentações de apoio, normas e validações
 │   ├── README.md
 │   ├── guia-projeto/                            # Project Definition Workbook (PDW)
 │   ├── norma-iso/                               # Cópia em PDF e transcrição em Markdown da ISO 12207
+│   ├── validacoes/                              # Relatórios de auditoria e validação por parte (0 a 4)
 │   └── rascunhos-partes/                        # Rascunhos preliminares das partes do manual
 ├── prompts/                                     # Catálogo de prompts organizado pelas 5 partes
 │   ├── README.md
@@ -58,7 +59,7 @@ manual-processos/
 │   ├── parte-01/                                # Prompts da Parte 1 (Processos de Acordo)
 │   ├── parte-02/                                # Prompts da Parte 2 (Processos Habilitadores)
 │   ├── parte-03/                                # Prompts da Parte 3 (Gerenciamento Técnico)
-│   └── parte-04/                                # Prompts e diretrizes da Parte 4 (Processos Técnicos)
+│   └── parte-04/                                # Prompts da Parte 4 (Processos Técnicos)
 ├── scripts/                                     # Scripts utilitários e de automação
 │   └── compilar.sh                              # Compilação unificada com Tectonic
 ├── slides_latex/                                # Apresentação em slides (Beamer UFG/INF)

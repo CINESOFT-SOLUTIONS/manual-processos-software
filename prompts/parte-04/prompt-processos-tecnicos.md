@@ -293,7 +293,8 @@ Atenção: Os artefatos não precisam ser extensos — precisam ser consistentes
 
 ## 3. Validação Obrigatória
 
-Ao gerar qualquer entrega ou seção da Parte 4, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`:
+Ao gerar qualquer entrega ou seção da Parte 4, execute uma autoavaliação rigorosa utilizando o validador em `prompts/validador-iso12207.md`.
+Gere o relatório da análise e salve-o em `docs/validacoes/parte-04/analise-validacao-parte-04.md`:
 1. Valide a conformidade com as cláusulas de Processos Técnicos (6.4) da ISO/IEC/IEEE 12207:2021 (6.4.1 a 6.4.5).
 2. Garanta que a rastreabilidade (Stakeholder -> Requisito -> Arquitetura -> Design) esteja documentada e consistente com o PDW (`docs/guia-projeto/project-definition-workbook.md`).
-3. Anexe ao final a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
+3. Anexe no relatório a tabela comparativa de conformidade do processo (Processo, Cláusula, Cobertura e Ajustes).
