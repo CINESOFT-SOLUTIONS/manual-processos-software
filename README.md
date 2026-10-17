@@ -14,6 +14,7 @@
         <strong>Unidade:</strong> Instituto de Informática (INF)<br>
         <strong>Curso:</strong> Bacharelado em Engenharia de Software<br>
         <strong>Disciplina:</strong> Processos de Engenharia de Software<br>
+        <strong>Docente:</strong> Profa. Dra. Juliana Pereira de Souza Zinader<br>
         <strong>Período Letivo:</strong> 2026/2
       </td>
       <td valign="top">

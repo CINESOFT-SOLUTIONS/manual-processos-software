@@ -4,11 +4,16 @@ Este guia rápido explica como qualquer membro da equipe deve trabalhar no repos
 
 ---
 
-## 🏛️ Os Dois Pilares (Fontes da Verdade)
+## 🏛️ Os Três Pilares (Fontes da Verdade e Diretrizes)
 
 Antes de escrever qualquer prompt, lembre-se:
-1. **Constituição do Projeto ([`docs/constituicao/project-definition-workbook.md`](docs/constituicao/project-definition-workbook.md)):** Manda nas regras de negócio, tecnologias e escopo do CineDoom. A IA nunca pode inventar algo fora do PDW.
-2. **Norma ISO/IEC/IEEE 12207:2021 ([`docs/norma-iso/`](docs/norma-iso/)):** Manda na estrutura dos processos, nomenclaturas, cláusulas e entregáveis exigidos.
+
+1. **Instruções e Slides da Docente (Profa. Dra. Juliana Pereira de Souza Zinader):**  
+   ⚠️ **OBRIGATÓRIO:** Antes de iniciar qualquer parte, vá ao **Google Classroom** da disciplina. Baixe e analise com atenção os **slides da aula correspondente** e todas as orientações publicadas pela professora. As exigências de aula definem o que deve ser cobrado no prompt.
+2. **Constituição do Projeto ([`docs/constituicao/project-definition-workbook.md`](docs/constituicao/project-definition-workbook.md)):**  
+   Manda nas regras de negócio, tecnologias e escopo do CineDoom. A IA nunca pode inventar algo fora do PDW.
+3. **Norma ISO/IEC/IEEE 12207:2021 ([`docs/norma-iso/`](docs/norma-iso/)):**  
+   Manda na estrutura formal dos processos, nomenclaturas, cláusulas e entregáveis exigidos.
 
 ---
 
@@ -17,13 +22,22 @@ Antes de escrever qualquer prompt, lembre-se:
 Para cada parte do trabalho (`parte-00` a `parte-04`), siga este ciclo:
 
 ```text
-[1. Prompt] ──> [2. Execução + Validação] ──> [3. Rascunho] ──> [4. Imagens] ──> [5. Manual Oficial]
+[0. Classroom & Slides] ──> [1. Prompt] ──> [2. Execução + Validação] ──> [3. Rascunho] ──> [4. Imagens] ──> [5. Manual Oficial]
 ```
+
+### Passo 0: Consultar o Google Classroom e os Slides da Aula
+- Acesse o Google Classroom da disciplina ministrada pela **Profa. Dra. Juliana Pereira de Souza Zinader**.
+- Abra a aula da parte que você vai produzir e examine os **slides apresentados em sala**.
+- Extraia os requisitos didáticos exigidos pela professora (exemplos: tabelas específicas, seções obrigatórias, priorização MoSCoW, artefatos esperados, nível de detalhamento).
 
 ### Passo 1: Elaborar ou Ajustar o Prompt
 - Acesse a pasta correspondente: `prompts/parte-XX/`.
 - Caso seja um prompt novo, copie a estrutura de [`prompts/template-prompt.md`](prompts/template-prompt.md).
-- Certifique-se de que o prompt contenha o contexto do CineDoom, as cláusulas da norma e a instrução final de validação.
+- Incorpore no prompt:
+  1. O contexto do CineDoom e link para o PDW.
+  2. As cláusulas da ISO 12207 aplicáveis.
+  3. **Todas as diretrizes e instruções dadas pela professora nos slides da aula.**
+  4. A instrução final de validação obrigatória.
 
 ### Passo 2: Executar com a IA e Rodar o Validador
 - Envie o prompt para o modelo de IA.
@@ -34,10 +48,10 @@ Para cada parte do trabalho (`parte-00` a `parte-04`), siga este ciclo:
 ### Passo 3: Rascunhar e Ajustar o Texto
 - Salve o texto preliminar proposto pela IA em:
   `docs/rascunhos/parte-XX/rascunho-parte-XX.md`
-- O grupo revisa, corta alucinações e ajusta a redação.
+- O grupo revisa em conjunto, elimina eventuais alucinações da IA e alinha com a realidade do CineDoom.
 
 ### Passo 4: Guardar Diagramas e Evidências Visuais
-- Se a parte exigir diagramas (BPMN, PlantUML, classes UML ou telas):
+- Se a professora pediu diagramas nos slides (BPMN, PlantUML, classes UML ou fluxos):
   - Salve os arquivos fonte (`.puml`, `.bpmn`) e as exportações (`.png`, `.svg`, `.pdf`) em:
     `assets/parte-XX/`
 
@@ -62,6 +76,7 @@ Para cada parte do trabalho (`parte-00` a `parte-04`), siga este ciclo:
 
 ## ⚠️ Regras Inegociáveis
 
-1. **Nunca jogue texto direto no manual:** Sempre passe pelo ciclo *Prompt ➔ Validação ➔ Rascunho ➔ Manual*.
-2. **Conflito de Informação:** Se a norma sugerir algo genérico e o PDW definir algo específico para o CineDoom, **prevalece o PDW**.
-3. **Commit Limpo:** Faça commits objetivos citando a parte trabalhada (ex: `docs(parte-02): adiciona rascunho dos processos habilitadores`).
+1. **Classroom Primeiro:** Nunca monte um prompt apenas "pelo que acha que é". Verifique sempre as instruções e slides da **Profa. Dra. Juliana Zinader**.
+2. **Nunca jogue texto direto no manual:** Sempre passe pelo ciclo *Classroom ➔ Prompt ➔ Validação ➔ Rascunho ➔ Manual*.
+3. **Conflito de Informação:** Se a norma sugerir algo genérico e o PDW definir algo específico para o CineDoom, **prevalece o PDW**.
+4. **Commit Limpo:** Faça commits objetivos citando a parte trabalhada (ex: `docs(parte-02): adiciona rascunho dos processos habilitadores`).
