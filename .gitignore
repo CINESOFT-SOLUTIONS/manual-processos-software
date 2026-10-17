@@ -29,3 +29,6 @@ ehthumbs.db
 # PDFs compilados
 trabalho_latex/*.pdf
 slides_latex/*.pdf
+
+# Binários locais de scripts
+scripts/bin/
