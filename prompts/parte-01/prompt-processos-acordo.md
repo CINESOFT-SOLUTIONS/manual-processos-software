@@ -45,10 +45,25 @@ Elabore a especificação dos Processos de Acordo para o CineDoom:
    Regras obrigatórias: não escreva "conforme o PDW", "seção X do PDW" ou equivalente — referencie no máximo a cláusula da ISO. Registre decisões não claramente definidas no documento-base como bloco: `> [PREMISSA] <decisão adotada> — <motivo/a validar>`.
 
 2. PROCESSO DE FORNECIMENTO (ISO 12207 – 6.1.2):
-   - Modelo de fornecimento (SaaS para redes exibidoras de cinema).
-   - Preparação do fornecimento e catálogo de entregáveis por release.
-   - Critérios de aceite e homologação pelo cliente.
-   - Suporte pós-entrega, operação assistida e canais de SLA.
+   Descreva o Processo de Fornecimento com clareza, sem reproduzir a norma. Não há necessidade de manter obrigatoriamente os rótulos 7.1–7.7. Garanta, contudo, a cobertura dos seguintes elementos: propósito e justificativa, aplicação ao sistema (entradas, atividades, participantes, saídas), papéis e responsabilidades, artefatos, critérios de avaliação do processo, relacionamento com outros processos e decisões e justificativas.
+
+   Mantenha o enfoque no recorte exigido pela disciplina: como o software é entregue ao cliente, contrato, critérios de aceite e suporte, além da identificação dos fornecedores e parceiros relevantes.
+
+   Desenvolva o processo observando:
+
+   - **Propósito e enquadramento:** descreva brevemente o propósito do processo e sua justificativa, no contexto do CineDoom.
+   - **Modelo de fornecimento:** SaaS com assinatura mensal por estabelecimento, voltado a cinemas de pequeno e médio porte. Especifique a divisão de responsabilidades: CineSoft (implanta, opera a infraestrutura, monitora, mantém e presta suporte) e cliente (opera o sistema no dia a dia). Mencione "operação assistida" quando pertinente.
+   - **Atividades (ISO 6.1.2):** cubra, no nível do processo, as atividades relevantes: (a) preparação do fornecimento, (c) estabelecimento e manutenção do acordo, (d) execução do acordo e (e) entrega e prestação de suporte. Para a atividade (b) "Responder a uma solicitação de fornecimento de produtos ou serviços", registre explicitamente que **não se aplica**, pois trata-se de um produto pronto (não sob encomenda).
+   - **Contrato:** indique o que deve constar no contrato (escopo, preço, prazo, critérios de aceite, responsabilidades das partes, suporte, níveis de serviço, tratamento de mudanças, encerramento do serviço e tratamento dos dados do cliente).
+   - **Preparação do fornecimento e catálogo de entregáveis por release:** detalhe o que compõe a entrega de cada release (aplicação, ambiente configurado, documentação, manual do usuário, manual técnico, relatório de testes, registro de versão e orientação inicial). Inclua, quando aplicável, versionamento, notas de versão, registro de alterações e aprovação antes da produção.
+   - **Critérios de aceite e homologação:** defina critérios concretos (validação dos requisitos, homologação, ausência de defeitos críticos e aprovação formal do representante do cliente). Não confunda esses critérios com os "critérios de avaliação do processo".
+   - **Suporte pós-entrega:** descreva manutenção corretiva, adaptativa, evolutiva e preventiva. Especifique canais de atendimento (sistema de chamados, ao menos) e os elementos de SLA (severidade, tempo de primeira resposta, tempo de solução, horário de atendimento e escalonamento). Caso qualquer valor de SLA não esteja definido no documento-base, registre `[PREMISSA]` com o motivo.
+   - **Fornecedores e parceiros relevantes:** identifique, de forma objetiva, os fornecedores e parceiros que sustentam a entrega do SaaS (aqueles que mantêm o fornecimento em funcionamento). Remeta à seção 1 (Processo de Aquisição) sempre que possível, sem duplicar integralmente a tabela — foque apenas no que é crítico para o fornecimento.
+   - **Relacionamento com outros processos:** estabeleça claramente as relações: entrada proveniente da Aquisição; saídas e interações com Operação, Manutenção, Suporte e Configuração/Releases. Mencione, ainda, o relacionamento com Encerramento do Produto e Portabilidade.
+   - **Critérios de avaliação do processo:** indique, de forma breve, como verificar se o Processo de Fornecimento atingiu seus resultados esperados (ex.: aceite formal emitido, obrigações contratuais básicas cumpridas).
+   - **Decisões e justificativas:** registre decisões adotadas e eventuais premissas em bloco `[PREMISSA]` (ex.: RTO 4h, RPO 24h, disponibilidade 95% — caso mantidos como premissas). Não inclua gateway de pagamento (fora do escopo da primeira versão). Declare, também, a situação de APIs externas e de bibliotecas/dependências pagas (incluindo licenciamento), caso aplicável.
+
+   Regras obrigatórias: não escreva "conforme o PDW", "seção X do PDW" ou equivalente — referencie no máximo a cláusula da ISO. Não reproduza literalmente o texto da norma. Utilize o documento-base apenas como contexto interno.
 
 [FORMATO DE SAÍDA]
 Texto em Markdown formatado, com tabelas quando aplicável (critérios de seleção e matriz de entregáveis), salvo em `docs/rascunhos/parte-01/rascunho-parte-01.md`.
