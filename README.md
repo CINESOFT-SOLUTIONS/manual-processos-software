@@ -78,6 +78,7 @@ manual-processos/
 | Pasta / Arquivo | Descrição Objetiva |
 |---|---|
 | [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom. |
+| [`fluxo-trabalho.md`](fluxo-trabalho.md) | **Guia de Colaboração:** Passo a passo para criar prompts, validar e incorporar conteúdo. |
 | [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA separados por parte (0 a 4), template e validador de conformidade. |
 | [`docs/`](docs/) | **Base de Conhecimento:** Norma ISO 12207, caderno de decisões do projeto (PDW), validações e rascunhos. |
 | [`assets/`](assets/) | **Artefatos Visuais:** Diagramas de processos, modelos BPMN/PlantUML e figuras. |
@@ -89,6 +90,7 @@ manual-processos/
 
 ## 🧭 Guia de Navegação
 
+- 🚀 **[fluxo-trabalho.md](fluxo-trabalho.md):** Guia de fluxo de trabalho para colaboração no repositório.
 - 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado para leitura direta no GitHub.
 - 🤖 **[prompts/](prompts/):** Catálogo de prompts divididos por partes (**0 a 4**), com template e validador.
 - 📋 **[docs/constituicao/project-definition-workbook.md](docs/constituicao/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
