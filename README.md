@@ -103,12 +103,34 @@ manual-processos/
 - 📽️ **[slides_latex/apresentacao-manual.tex](slides_latex/apresentacao-manual.tex):** Slides da apresentação no template Beamer UFG/INF.
 - 🖼️ **[assets/](assets/):** Diagramas de processos e artefatos gráficos.
 
+## 🛠️ Como Clonar e Trabalhar na Organização (Guia da Equipe)
+
+Para manter a organização padronizada entre todos os membros do grupo (**Carlos, Gabriel, Kayque e Yury**), recomendamos criar uma pasta raiz e clonar os dois repositórios:
+
+```bash
+# 1. Cria a pasta do projeto e entra nela
+mkdir cinedoom && cd cinedoom
+
+# 2. Clona o repositório de documentação e processos
+git clone https://github.com/CINESOFT-SOLUTIONS/manual-processos-software.git
+
+# 3. Clona o repositório da aplicação real
+git clone https://github.com/CINESOFT-SOLUTIONS/cinedoom-app.git
+```
+
+### 💻 Abrindo ambos no VS Code:
+Dentro da pasta `cinedoom/`, você pode abrir os dois projetos juntos na mesma janela do VS Code:
+```bash
+code cinedoom-app manual-processos-software
+```
+
 ---
 
-## 🛠️ Como Compilar os Documentos
+## 📄 Como Compilar os Documentos Localmente
 
 Para compilar o manual em LaTeX e os slides da apresentação com o [Tectonic](https://tectonic-typesetting.github.io/):
 
 ```bash
 ./scripts/compilar.sh
 ```
+
