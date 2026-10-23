@@ -30,11 +30,12 @@
 | Data | Versão | Alteração Realizada |
 | :---: | :---: | :--- |
 | 10/09/2026 | 1.0 | Criação do documento e elaboração da capa. |
-| 16/09/2026 | 1.1 | Elaboração dos itens da Parte 0 (Apresentação do Software). |
-| 24/09/2026 | 1.2 | Alinhamento das Partes 0, 1 e 2 ao PDW e à norma ABNT NBR ISO/IEC/IEEE 12207:2021. |
+| 16/09/2026 | 1.1 | Elaboração dos itens do Capítulo 1 (Apresentação do Software). |
+| 24/09/2026 | 1.2 | Alinhamento dos Capítulos 1, 2 e 3 ao PDW e à norma ABNT NBR ISO/IEC/IEEE 12207:2021. |
 | 24/09/2026 | 1.3 | Revisão técnica: correção de contradições, terminologia, justificativas de aquisição e índice de aderência. |
-| 08/10/2026 | 1.4 | Incremento e estruturação dos processos da Parte 3 (Gerenciamento Técnico). |
+| 08/10/2026 | 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento Técnico). |
 | 17/10/2026 | 1.5 | Reestruturação da capa e padronização do histórico de versões conforme diretrizes docentes. |
+| 22/10/2026 | 1.6 | Padronização formal da estrutura em Capítulos 1 a 5 e incorporação das diretrizes de `docs/estrutura-minima-manual.md`. |
 
 ---
 
@@ -44,523 +45,465 @@
 
 - **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`docs/norma-iso/abnt-iso-iec-12207-2021.pdf`](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e transcrição em [`docs/norma-iso/abnt-iso-iec-12207-2021.md`](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
 - **Fonte de Decisões:** Project Definition Workbook (PDW, disponível em [`docs/constituicao/project-definition-workbook.md`](docs/constituicao/project-definition-workbook.md)). Este documento é a fonte única da verdade para o estudo de caso; em caso de conflito, prevalece o PDW.
-- **Diretrizes Pedagógicas:** [`docs/instrucoes-disciplina.md`](docs/instrucoes-disciplina.md) — Regras e estrutura exigida pela Profa. Dra. Juliana Zinader.
+- **Diretrizes Pedagógicas:** [`docs/instrucoes-disciplina.md`](docs/instrucoes-disciplina.md) e [`docs/estrutura-minima-manual.md`](docs/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
 
 ---
 
 ## Sumário
 
-- Parte 0 – Apresentação do Software
-  - 0.1. Identificação e Descrição
-  - 0.2. Público-Alvo e Contexto de Uso
-  - 0.3. Escopo e Funcionalidades
-  - 0.4. Restrições e Premissas
-- Parte 1 – Processos de Acordo
-  - 1.1. Processo de Aquisição
-  - 1.2. Processo de Fornecimento
-- Parte 2 – Processos Organizacionais Habilitadores
-  - 2.1. Gestão do Modelo de Ciclo de Vida
-  - 2.2. Gestão da Infraestrutura
-  - 2.3. Gestão de Portfólio e Viabilidade
-  - 2.4. Gestão de Recursos Humanos
-  - 2.5. Gestão da Qualidade
-  - 2.6. Gestão do Conhecimento
-- Considerações Finais e Decisões em Aberto
+- [Capítulo 1 – Apresentação do software](#capítulo-1--apresentação-do-software)
+  - [1.1 Nome e descrição do software](#11-nome-e-descrição-do-software)
+  - [1.2 Qual é o software? O que ele faz? Qual problema resolve?](#12-qual-é-o-software-o-que-ele-faz-qual-problema-resolve)
+  - [1.3 Público-alvo e contexto de uso](#13-público-alvo-e-contexto-de-uso)
+  - [1.4 Quem vai usar? Em que situação? Qual o ambiente de operação esperado?](#14-quem-vai-usar-em-que-situação-qual-o-ambiente-de-operação-esperado)
+  - [1.5 Escopo e principais funcionalidades](#15-escopo-e-principais-funcionalidades)
+  - [1.6 Restrições e premissas](#16-restrições-e-premissas)
+- [Capítulo 2 – Processos de Acordo](#capítulo-2--processos-de-acordo)
+  - [2.1 Descrição do processo de aquisição](#21-descrição-do-processo-de-aquisição)
+  - [2.2 Descrição do processo de fornecimento](#22-descrição-do-processo-de-fornecimento)
+  - [2.3 Identificação dos fornecedores e parceiros relevantes](#23-identificação-dos-fornecedores-e-parceiros-relevantes)
+- [Capítulo 3 – Processos Organizacionais Habilitadores](#capítulo-3--processos-organizacionais-habilitadores)
+  - [3.1 Modelo de ciclo de vida adotado e justificado](#31-modelo-de-ciclo-de-vida-adotado-e-justificado)
+  - [3.2 Inventário de infraestrutura e ferramentas necessárias](#32-inventário-de-infraestrutura-e-ferramentas-necessárias)
+  - [3.3 Justificativa estratégica e viabilidade do projeto](#33-justificativa-estratégica-e-viabilidade-do-projeto)
+  - [3.4 Papéis, competências e plano de capacitação (RACI)](#34-papéis-competências-e-plano-de-capacitação-raci)
+  - [3.5 Plano de qualidade com critérios e métricas](#35-plano-de-qualidade-com-critérios-e-métricas)
+  - [3.6 Estratégia de gestão do conhecimento](#36-estratégia-de-gestão-do-conhecimento)
+- [Capítulo 4 – Processos de Gerenciamento Técnico](#capítulo-4--processos-de-gerenciamento-técnico)
+  - [4.1 Plano de projeto: escopo, cronograma, recursos e entregas](#41-plano-de-projeto-escopo-cronograma-recursos-e-entregas)
+  - [4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas](#42-plano-de-gestão-de-riscos-identificação-probabilidade-impacto-e-respostas)
+  - [4.3 Plano de gestão de configuração: controle de versões, branches e releases](#43-plano-de-gestão-de-configuração-controle-de-versões-branches-e-releases)
+  - [4.4 Registro de decisões técnicas relevantes (ADRs)](#44-registro-de-decisões-técnicas-relevantes-adrs)
+  - [4.5 Métricas de acompanhamento do projeto](#45-métricas-de-acompanhamento-do-projeto)
+- [Capítulo 5 – Processos Técnicos](#capítulo-5--processos-técnicos)
+  - [5.1 Requisitos](#51-requisitos)
+  - [5.2 Arquitetura e Design](#52-arquitetura-e-design)
+  - [5.3 Implementação e Integração](#53-implementação-e-integração)
+  - [5.4 Verificação, Validação e Transição](#54-verificação-validação-e-transição)
+  - [5.5 Operação, Manutenção e Descontinuação](#55-operação-manutenção-e-descontinuação)
 
 ---
 
-## Índice de aderência à ISO/IEC/IEEE 12207
+## Índice de aderência à ISO/IEC/IEEE 12207:2021
 
-Este item relaciona cada parte do manual ao processo da norma, permitindo acompanhar a evolução do documento ao longo do semestre e dar origem a novas partes sem contradição.
+Este índice relaciona cada capítulo do manual ao processo normativo correspondente da ABNT NBR ISO/IEC/IEEE 12207:2021:
 
-| Parte do manual | Processo da ISO/IEC/IEEE 12207 | Referência |
+| Capítulo do manual | Processo da ISO/IEC/IEEE 12207:2021 | Cláusula |
 |---|---|---|
-| Parte 0 | Insumo para definição de requisitos e stakeholders | 6.4.2 e 6.4.3 (futuras) |
-| Parte 1.1 | Acquisition (Aquisição) | 6.1.1 |
-| Parte 1.2 | Supply (Fornecimento) | 6.1.2 |
-| Parte 2.1 | Life cycle model management | 6.2.1 |
-| Parte 2.2 | Infrastructure management | 6.2.2 |
-| Parte 2.3 | Portfolio management | 6.2.3 |
-| Parte 2.4 | Human resource management | 6.2.4 |
-| Parte 2.5 | Quality management | 6.2.5 |
-| Parte 2.6 | Knowledge management | 6.2.6 |
-| Partes 3+ (planejadas) | Technical management, Technical processes, Software implementation | 6.3, 6.4 e 7 |
+| **Capítulo 1** | Insumo de Negócio e Elicitação de Stakeholders | 6.4.1 e 6.4.2 |
+| **Capítulo 2.1** | Acquisition Process (Processo de Aquisição) | 6.1.1 |
+| **Capítulo 2.2** | Supply Process (Processo de Fornecimento) | 6.1.2 |
+| **Capítulo 2.3** | Supplier and Partner Management | 6.1.1 e 6.1.2 |
+| **Capítulo 3.1** | Life Cycle Model Management (Gestão do Modelo de Ciclo de Vida) | 6.2.1 |
+| **Capítulo 3.2** | Infrastructure Management (Gestão de Infraestrutura) | 6.2.2 |
+| **Capítulo 3.3** | Portfolio Management (Gestão de Portfólio e Viabilidade) | 6.2.3 |
+| **Capítulo 3.4** | Human Resource Management (Gestão de Recursos Humanos e RACI) | 6.2.4 |
+| **Capítulo 3.5** | Quality Management (Gestão da Qualidade) | 6.2.5 |
+| **Capítulo 3.6** | Knowledge Management (Gestão do Conhecimento) | 6.2.6 |
+| **Capítulo 4.1** | Project Planning Process (Planejamento do Projeto) | 6.3.1 |
+| **Capítulo 4.2** | Risk Management Process (Gestão de Riscos) | 6.3.4 |
+| **Capítulo 4.3** | Configuration Management Process (Gestão de Configuração) | 6.3.5 |
+| **Capítulo 4.4** | Decision Management Process (Gestão de Decisões / ADRs) | 6.3.3 |
+| **Capítulo 4.5** | Project Assessment and Control Process (Medição e Avaliação) | 6.3.2 |
+| **Capítulo 5.1** | Stakeholder & System Requirements Definition (Requisitos) | 6.4.2 e 6.4.3 |
+| **Capítulo 5.2** | Architecture Definition & Design Definition (Arquitetura e Design) | 6.4.4 e 6.4.5 |
+| **Capítulo 5.3** | Implementation & Integration Processes (Implementação e Integração) | 7.1 e 6.4.8 |
+| **Capítulo 5.4** | Verification, Validation and Transition (V&V e Transição) | 6.4.9, 6.4.11 e 6.4.10 |
+| **Capítulo 5.5** | Operation, Maintenance and Disposal (Operação, Manutenção e Descontinuação) | 6.4.12, 6.4.13 e 6.4.14 |
+
+---
 
 ## Terminologia adotada
 
-Para garantir consistência interna (regra de terminologia do PDW, seção 46.3), este manual adota os seguintes termos, que devem ser usados de forma idêntica em todas as partes:
+Para garantir consistência interna (regra de terminologia do PDW, seção 46.3), este manual adota os seguintes termos padronizados:
 
 | Termo | Significado |
 |---|---|
-| Cliente | Organização proprietária de um cinema que contrata o CineDoom (adquirente). |
-| Usuário | Funcionário autorizado do cliente que opera o sistema (perfis Administrador, Gerente e Atendente). |
-| Espectador | Consumidor final que compra ingresso no cinema. Não acessa o sistema na primeira versão. |
-| CineSoft Solutions | Organização fictícia desenvolvedora do CineDoom. |
-| Produto | CineDoom: plataforma web SaaS. |
-| Fornecedor | Organização que presta infraestrutura ou serviços à CineSoft (ex.: provedor de nuvem, gateway de pagamento). |
+| **Cliente** | Organização proprietária ou administradora de cinema que contrata o CineDoom (adquirente). |
+| **Usuário** | Funcionário autorizado do cliente que opera o sistema (perfis Administrador, Gerente e Atendente). |
+| **Espectador** | Consumidor final que adquire ingresso na bilheteria. Não opera diretamente o sistema na primeira versão. |
+| **CineSoft Solutions** | Organização responsável pelo desenvolvimento, implantação e suporte do CineDoom. |
+| **Produto** | Plataforma web CineDoom fornecida no modelo SaaS. |
+| **Fornecedor** | Provedor que presta infraestrutura ou serviços especializados à CineSoft (ex.: Vercel, Neon, Stripe). |
 
 ---
 
-# Parte 0 – Apresentação do Software
+# Capítulo 1 – Apresentação do software
 
-## 0.1. Identificação e Descrição
+## 1.1 Nome e descrição do software
 
 **Nome do software:** CineDoom.
 
-O CineDoom é um produto de software comercial, na forma de plataforma web de **gerenciamento operacional para cinemas de pequeno e médio porte**. É um sistema administrativo de retaguarda (back-office) fornecido em modelo SaaS: o cliente não instala software, acessando o sistema por navegador web em instância própria na nuvem.
+O CineDoom é uma plataforma web comercial de gerenciamento operacional e bilheteria voltada para **cinemas de pequeno e médio porte**. Trata-se de um sistema administrativo de retaguarda (*back-office*) concebido para fornecimento no modelo **SaaS (Software as a Service)**, no qual o cliente acessa o sistema por meio de navegadores web modernos, sem necessidade de instalação local em seus computadores.
 
-O problema que motiva o produto é a dispersão das informações operacionais de um cinema — filmes, salas, sessões, disponibilidade de assentos, venda de ingressos e clientes — em controles manuais ou sistemas isolados. Essa situação dificulta o acompanhamento da ocupação das salas, provoca retrabalho no controle de assentos e limita a geração de informação para a tomada de decisão.
+O sistema é desenvolvido pela organização **CineSoft Solutions** e atua como estudo de caso estruturante para a aplicação formal dos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
 
-O CineDoom resolve esse problema ao concentrar essas informações em um único ambiente, com regras de negócio que impedem vendas conflitantes, registro de responsável pelas operações e relatórios de ocupação e vendas. Com isso, o produto entrega três benefícios centrais: centralização das informações, rastreabilidade das operações e apoio à decisão gerencial.
+## 1.2 Qual é o software? O que ele faz? Qual problema resolve?
 
-O sistema é desenvolvido e mantido pela organização fictícia **CineSoft Solutions** e é tratado neste manual como um produto real, servindo de estudo de caso para aplicação dos processos da ISO/IEC/IEEE 12207.
+### O que ele faz?
+O CineDoom centraliza as operações diárias de um cinema em uma interface web única e intuitiva:
+- Mantém o catálogo de filmes em cartaz e suas especificações técnicas.
+- Controla a infraestrutura de salas e seus respectivos mapas de assentos.
+- Agenda e publica sessões cinematográficas com validação automática de conflitos de horários.
+- Opera a venda e o cancelamento de ingressos na bilheteria com reserva visual de assentos e proteção atômica contra venda dupla (*double-booking*).
+- Apresenta indicadores em tempo real sobre a taxa de ocupação das salas e o faturamento operacional.
 
-O posicionamento do CineDoom é de produto B2B (venda para organizações, e não para o espectador final), com escopo inicial de uma única versão web. Essa posição orienta as decisões de arquitetura (monólito modular, API REST, PostgreSQL) e define limites para requisitos e testes nas partes seguintes do manual.
+### Qual problema resolve?
+O setor de cinemas de pequeno e médio porte frequentemente gerencia suas operações com controles manuais (planilhas descentralizadas, bilhetes de papel) ou softwares legados e desconectados. Esse cenário acarreta:
+1. **Conflito de assentos:** Risco de venda dupla da mesma cadeira em horários de pico.
+2. **Descentralização da informação:** Dificuldade em cruzar disponibilidade de salas com a programação de lançamentos.
+3. **Ausência de rastreabilidade:** Falta de registro auditável sobre quem realizou cada cancelamento ou venda.
+4. **Decisão sem dados:** Incapacidade de mensurar a taxa de ocupação das salas para planejamento de grade.
 
-## 0.2. Público-Alvo e Contexto de Uso
+O CineDoom elimina esses gargalos ao prover um ambiente único, transacional e rastreável, com regras de negócio rígidas e feedback operacional instantâneo.
 
-O público-alvo é o **cliente**: organizações que operam cinemas de pequeno e médio porte no mercado nacional (Brasil). A primeira versão do produto é dimensionada para atender um estabelecimento por assinatura; múltiplas organizações compartilhando a mesma instância não fazem parte do escopo inicial.
+## 1.3 Público-alvo e contexto de uso
 
-Os usuários do sistema são funcionários autorizados do cliente, nos perfis definidos no PDW (seção 6):
+O público-alvo prioritário é composto por **cinemas independentes e redes de pequeno e médio porte** atuantes no mercado nacional. A solução é B2B (*Business-to-Business*), atendendo estabelecimentos que demandam controle operacional informatizado com baixo custo inicial de implantação.
 
-- **Administrador** – configura o ambiente, gerencia usuários e permissões e consulta a auditoria.
-- **Gerente** – gerencia filmes, salas e sessões e consulta relatórios e operações.
-- **Atendente** – consulta sessões, realiza vendas e cancelamentos autorizados na bilheteria.
+O contexto de uso abrange:
+- **Ambiente de bilheteria:** Atendimento presencial rápido ao espectador, exigindo tempos de resposta inferiores a 2 segundos para seleção de assentos e conclusão da venda.
+- **Ambiente administrativo:** Planejamento semanal de grades de exibição, cadastro de filmes e acompanhamento de relatórios de desempenho operacional por parte da gerência.
 
-O espectador (cliente final do cinema) não terá acesso direto ao sistema administrativo na primeira versão; eventuais funcionalidades para o público, como venda online, não fazem parte do escopo inicial.
+## 1.4 Quem vai usar? Em que situação? Qual o ambiente de operação esperado?
 
-O contexto de uso é corporativo: o sistema é operado em navegadores web modernos, com interface responsiva para desktop, durante o horário de funcionamento do cinema e com conexão estável com a internet. Os usuários devem possuir conhecimentos básicos de informática e receber treinamento inicial fornecido pela CineSoft.
+### Perfis de Usuários
+- **Atendente:** Opera a tela de bilheteria durante o atendimento presencial. Consulta sessões, seleciona assentos no mapa visual, emite ingressos e executa cancelamentos mediante confirmação.
+- **Gerente:** Configura salas, cadastra e inativa filmes, cria e cancela sessões de exibição e analisa a ocupação das salas.
+- **Administrador:** Gerencia os perfis de acesso, parametriza regras globais do sistema e audita logs operacionais.
 
-## 0.3. Escopo e Funcionalidades
+### Ambiente de Operação Esperado
+- **Hardware:** Computadores desktop ou notebooks convencionais operados pelos funcionários do cinema.
+- **Software:** Navegadores web modernos com suporte a padrões ECMAScript atuais (Google Chrome, Mozilla Firefox, Microsoft Edge, Safari).
+- **Conectividade:** Conexão contínua com a internet (mínimo de 5 Mbps estável para troca de payloads JSON via HTTPS).
+- **Espectador final:** Não possui acesso direto ao sistema administrativo nesta versão; o atendimento ocorre integralmente mediado pelo atendente na bilheteria.
 
-O escopo cobre as operações administrativas de um cinema, organizadas em módulos que serão desdobrados em requisitos, arquitetura e testes nas partes seguintes deste manual:
+## 1.5 Escopo e principais funcionalidades
 
-- **Filmes** – cadastro e gerenciamento de filmes (gênero, duração, classificação indicativa, sinopse, data de lançamento, trailer e capa). Requisitos: RF-03.
-- **Salas** – cadastro e configuração de salas, incluindo identificação, capacidade, configuração de assentos e recursos especiais. Requisitos: RF-04.
-- **Sessões** – programação de sessões associadas a filme e sala, com validação de conflitos de horário, consulta de disponibilidade e cancelamento. Requisitos: RF-05 e RF-06.
-- **Ingressos** – venda e cancelamento de ingressos, com associação a sessão e assento, registro do usuário responsável, reserva por 20 minutos, reembolso automático e pagamento integrado por gateway externo (Stripe). Requisitos: RF-07 e RF-08.
-- **Clientes** – cadastro de clientes (espectadores) e registro de interesse em lançamentos futuros. Requisitos: RF-09 e RF-10.
-- **Relatórios** – relatórios operacionais de ocupação, ingressos vendidos, sessões realizadas, filmes exibidos e indicadores básicos. Requisito: RF-11.
-- **Usuários e controle de acesso** – autenticação, gerenciamento de usuários, perfis e permissões. Requisitos: RF-01 e RF-02.
-- **Auditoria** – registro e consulta das operações relevantes, com identificação do usuário responsável. Requisito: RF-12.
+### Escopo Central e Funcionalidades Incluídas
+O escopo cobre as atividades centrais da cadeia de exibição cinematográfica:
+1. **Módulo de Filmes:** Cadastro de título, sinopse, duração, classificação indicativa e pôster.
+2. **Módulo de Salas e Assentos:** Cadastro de salas com capacidade configurável e mapeamento bidimensional de assentos (ex.: fileiras A–E, assentos 1–6).
+3. **Módulo de Sessões:** Associação de Filme + Sala + Horário de início + Preço base do ingresso.
+4. **Módulo de Bilheteria (Venda e Cancelamento):** Mapa interativo de assentos (livre, selecionado, vendido), reserva atômica contra venda simultânea e cancelamento com liberação imediata.
+5. **Módulo de Ocupação:** Painel visual com percentual de lotação da sala por sessão.
 
-### Requisitos Funcionais Principais
+### Requisitos Funcionais do Sistema (RF-01 a RF-12)
 
-Os requisitos funcionais são identificados por código único, conforme o PDW (seção 9.1):
+| Código | Nome do Requisito | Escopo no Ciclo de Vida |
+|---|---|---|
+| **RF-01** | Autenticar usuário | MVP (Simplificado via seleção de perfil de balcão) |
+| **RF-02** | Gerenciar usuários e acessos | Backlog Futuro (Carga inicial via migração) |
+| **RF-03** | Cadastrar e gerenciar filmes | MVP (Must Have) |
+| **RF-04** | Cadastrar e gerenciar salas | MVP (Must Have) |
+| **RF-05** | Agendar e gerenciar sessões | MVP (Must Have) |
+| **RF-06** | Consultar disponibilidade de assentos | MVP (Must Have / Core da Demonstração) |
+| **RF-07** | Registrar venda de ingresso | MVP (Must Have / Trava Transacional Atômica) |
+| **RF-08** | Cancelar ingresso e liberar assento | MVP (Must Have) |
+| **RF-09** | Gerenciar cadastro de clientes | Backlog Futuro (Release 1.1) |
+| **RF-10** | Registrar interesse em lançamentos | Fora do Escopo Inicial |
+| **RF-11** | Gerar relatórios e métricas de ocupação | MVP (Parcial: Painel de Ocupação da Sessão) |
+| **RF-12** | Registrar trilha de auditoria | MVP (Log de operações de venda/cancelamento) |
 
-- RF-01 – Autenticar usuário.
-- RF-02 – Gerenciar usuários.
-- RF-03 – Cadastrar filme.
-- RF-04 – Gerenciar salas.
-- RF-05 – Gerenciar sessões.
-- RF-06 – Consultar disponibilidade.
-- RF-07 – Registrar venda.
-- RF-08 – Cancelar ingresso.
-- RF-09 – Gerenciar clientes.
-- RF-10 – Registrar interesse.
-- RF-11 – Gerar relatórios.
-- RF-12 – Registrar auditoria.
-
-Nas partes seguintes, cada requisito receberá origem, stakeholder relacionado, prioridade, descrição, pré-condições, pós-condições, critérios de aceite, casos de teste e status, compondo a cadeia de rastreabilidade definida no PDW (seção 38): Necessidade → Stakeholder → Requisito → Arquitetura → Implementação → Teste → Aceite → Release.
-
-## 0.4. Restrições e Premissas
+## 1.6 Restrições e premissas
 
 ### Restrições
-
-Estão fora do escopo da primeira versão:
-
-- Plataformas de streaming, produção e distribuição de filmes.
-- Aplicativos móveis e venda online para o espectador.
-- Programa de fidelidade, publicidade e gestão de estoque de alimentos.
-- Gestão de folha de pagamento e contabilidade.
-- Integração com sistemas governamentais.
-- Inteligência artificial.
-- Operação offline.
-- Múltiplas organizações na mesma instância.
-- Processamento financeiro próprio: a CineSoft não manipula diretamente meios de pagamento nem detém certificação financeira; o processamento é delegado ao gateway Stripe, e o sistema registra apenas transações autorizadas pelo gateway.
+- **Processamento Financeiro Próprio:** A CineSoft não armazena dados de cartão nem executa liquidação bancária própria (vendas balcão registradas em dinheiro/PIX/cartão simulado).
+- **Operação Exclusivamente Online:** O sistema requer conexão ativa; não há modo de contingência offline na primeira versão.
+- **Multitenancy Isolado:** A primeira versão atende uma empresa/instância por implantação.
+- **Sem Aplicativo Mobile Nativo:** Acesso via navegador web desktop responsivo.
+- **Funcionalidades Descartadas:** Streaming de vídeo, vendas online voltadas ao consumidor final, programas de fidelidade, controle de estoque de bomboniere e contabilidade fiscal.
 
 ### Premissas
-
-A primeira versão assume que:
-
-- Os usuários receberam treinamento e possuem conhecimentos básicos de informática.
-- Existe conexão estável com a internet nos locais de operação.
-- Os dados de filmes, salas, sessões, clientes e ingressos são cadastrados e mantidos por usuários autorizados e atualizados.
-- O acesso ao sistema é restrito a usuários autenticados e autorizados.
-- As metas iniciais de desempenho (resposta em até 2 s em condições normais), capacidade (até 100 usuários simultâneos por cliente) e disponibilidade (95%) são premissas de dimensionamento que serão confirmadas nos requisitos não funcionais.
-- O cliente possui infraestrutura mínima (computadores com navegador moderno) para operação do sistema.
+- A equipe do cliente possui competência básica em navegação web e receberá treinamento operacional.
+- As salas possuem configuração física de assentos fixa e pré-determinada.
+- O tempo máximo de resposta para operações comuns em condições de pico não deve ultrapassar 2 segundos.
+- As regras de negócio de venda de assentos são validadas de forma estrita no servidor e no banco de dados relacional.
 
 ---
 
-# Parte 1 – Processos de Acordo
+# Capítulo 2 – Processos de Acordo
 
-## 1.1. Processo de Aquisição
+## 2.1 Descrição do processo de aquisição
 
-### Objetivo e fronteira
+O processo de aquisição (ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) define as diretrizes para seleção, contratação e acompanhamento de produtos e serviços externos necessários à entrega do CineDoom.
 
-O processo de aquisição (ISO/IEC/IEEE 12207 – 6.1.1) identifica, avalia e contrata produtos e serviços externos necessários ao desenvolvimento, implantação, operação e manutenção do CineDoom.
+### Fronteira e Justificativa de Aquisição
+A CineSoft desenvolve internamente o núcleo de valor do negócio (lógica de bilheteria, regras de ocupação e frontend). Serviços de infraestrutura, plataforma e bibliotecas especializadas são contratados externamente para reduzir o tempo de colocação no mercado (*time-to-market*), evitar custos de imobilização em servidores físicos e garantir alta disponibilidade.
 
-A CineSoft desenvolve internamente o núcleo de valor do produto — a aplicação CineDoom (API, regras de negócio e interface web). São adquiridos externamente apenas serviços de infraestrutura e componentes que não fazem parte da competência central da organização ou cujo desenvolvimento interno não se justifica técnica ou economicamente. Cada aquisição requer justificativa documentada, análise de impacto sobre o ciclo de vida e aprovação gerencial.
+### Etapas do Processo de Aquisição
+1. **Identificação da Necessidade:** Justificativa técnica e análise de viabilidade econômica (comprar vs. construir).
+2. **Seleção de Alternativas:** Levantamento de provedores de mercado aderentes à stack tecnológica.
+3. **Avaliação por Critérios:** Custo, disponibilidade (SLA ≥ 99.9%), conformidade com a LGPD, documentação e facilidade de integração.
+4. **Aprovação e Contratação:** Homologação pelo Arquiteto de Software e Gerente de Projeto.
+5. **Monitoramento Contínuo:** Avaliação de métricas de uptime, tempo de resposta e conformidade contratual.
 
-### Itens passíveis de aquisição e justificativa
+## 2.2 Descrição do processo de fornecimento
 
-| Item | Fornecedor pretendido | Justificativa |
-|---|---|---|
-| Computação em nuvem | AWS | Evita investimento de capital em infraestrutura própria, permite elasticidade e reduz responsabilidade de administração física de servidores. |
-| Banco de dados gerenciado (PostgreSQL) | AWS RDS (ou equivalente) | Elimina a necessidade de um DBA dedicado em equipe enxuta; fornece backup, replicação e atualizações gerenciadas. |
-| Monitoramento | AWS CloudWatch (ou SaaS equivalente) | Observabilidade para sustentar as metas de disponibilidade e operação (seções 2.2 e 2.5). |
-| Backup e recuperação | AWS S3 + snapshots | Apoia os objetivos de recuperação (RTO/RPO) definidos no PDW (seção 29). |
-| Gateway de pagamento | Stripe | Processamento de pagamentos exige conformidade (PCI-DSS) e operação financeira fora da competência da CineSoft; a integração reduz risco e acelera a entrega. |
-| E-mail transacional | Amazon SES ou similar | Cobertura condicionada à decisão sobre notificações automáticas (decisão em aberto, seção 47 do PDW). |
-| Consultoria especializada | A definir | Apenas se houver lacuna de competência identificada em área específica (ex.: segurança). |
+O processo de fornecimento (ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.2) formaliza como a CineSoft entrega a solução CineDoom ao cliente adquirente.
 
-### Critérios de seleção
+### Modelo de Fornecimento
+O software é fornecido no modelo **SaaS**, mediante contrato de assinatura periódica, englobando licenciamento de uso, infraestrutura em nuvem, atualizações corretivas e suporte técnico.
 
-Os fornecedores serão avaliados com base nos critérios aprovados no PDW (seção 12.2), com o seguinte entendimento:
+### Entregáveis Contratuais
+- **Ambiente Operacional Hospedado:** Instância em nuvem implantada e validada em produção.
+- **Carga de Dados Inicial:** Banco de dados populado com as salas, capacidade e grade inicial de filmes do cliente.
+- **Documentação de Uso:** Manual do Usuário e Guia de Procedimentos Operacionais de Bilheteria.
+- **Capacitação:** Sessão de treinamento para atendentes e gerentes.
 
-- **Custo** – custo total de contratação e operação.
-- **Segurança** – conformidade com padrões de segurança e LGPD quando aplicável.
-- **Disponibilidade** – compromisso de disponibilidade do serviço (SLA).
-- **Escalabilidade** – capacidade de crescer com a demanda.
-- **Compatibilidade** – aderência à tecnologia do produto (Node.js, PostgreSQL, REST).
-- **Suporte** – qualidade e rapidez do atendimento técnico.
-- **Condições contratuais** – clareza e previsibilidade do contrato.
-- **Portabilidade** – facilidade de substituição ou migração.
-- **Dependência do fornecedor** – risco de aprisionamento tecnológico.
+### Critérios de Aceite Formal
+1. Execução bem-sucedida da bateria de testes de aceitação em ambiente de homologação.
+2. Inexistência de defeitos com severidade Crítica ou Alta.
+3. Demonstração de estabilidade na venda simultânea de ingressos sem ocorrência de venda dupla.
+4. Assinatura do Termo de Aceite Formal pelo representante legal do cliente.
 
-### Etapas do processo
+### Suporte Pós-Entrega
+A CineSoft disponibiliza manutenção:
+- **Corretiva:** Tratamento de falhas com SLA conforme severidade (Crítica: até 4h; Normal: até 24h).
+- **Adaptativa:** Atualização de bibliotecas e adequações a novos navegadores.
+- **Evolutiva:** Novas funcionalidades geridas via fila de backlog e aprovadas via processo formal de mudança.
+- **Preventiva:** Revisões periódicas de integridade do banco e métricas de desempenho.
 
-1. Identificação da necessidade e justificativa.
-2. Levantamento de alternativas e fornecedores qualificados.
-3. Avaliação técnica (critérios acima).
-4. Avaliação financeira e de orçamento.
-5. Aprovação gerencial.
-6. Contratação (contrato formal).
-7. Monitoramento e avaliação do fornecedor.
+## 2.3 Identificação dos fornecedores e parceiros relevantes
 
-### Avaliação e gestão de fornecedores
-
-O desempenho de cada fornecedor será monitorado por meio de SLA quando aplicável, registro de desempenho (indicadores de disponibilidade, tempo de resposta e cumprimento de prazos), revisão periódica e tratamento formal de incidentes. Fornecedores que descumprirem o acordo serão alvo de ação corretiva e, em caso de reincidência, de plano de substituição. O resultado dessas avaliações deve compor a gestão de informação do projeto (seção 2.6 e futura parte de gestão da informação).
-
-## 1.2. Processo de Fornecimento
-
-### Modelo de fornecimento
-
-O processo de fornecimento (ISO/IEC/IEEE 12207 – 6.1.2) define como o CineDoom é disponibilizado ao cliente. O produto é fornecido como **SaaS**, com assinatura mensal por estabelecimento, instância própria hospedada na nuvem da CineSoft, e com as seguintes responsabilidades:
-
-- **CineSoft:** implanta, opera a infraestrutura, monitora, mantém e presta suporte.
-- **Cliente:** opera o sistema no dia a dia (cadastro de filmes, programação de sessões, vendas na bilheteria) e mantém a qualidade dos dados.
-
-O fornecimento é formalizado por contrato que define escopo, preço, prazo, critérios de aceite, responsabilidades das partes, níveis de serviço, condições de suporte, tratamento de mudanças, encerramento do serviço e tratamento dos dados do cliente (LGPD).
-
-### Preparação do fornecimento
-
-Antes de cada contratação, a CineSoft elabora proposta contendo plano de implantação (etapas de desenvolvimento e implantação), responsabilidades, prazos, estimativa de custo e identificação do representante do cliente autorizado a aprovar o aceite.
-
-### Entregáveis
-
-A entrega da primeira versão ao cliente contempla:
-
-- Ambiente de produção configurado e aplicação implantada.
-- Banco de dados inicializado e configurado com os dados do estabelecimento (salas, características).
-- Código-fonte versionado e registrado (entrega da versão) e relatório de testes.
-- Manual do usuário e manual técnico.
-- Documento de implantação (configurações, versão, acessos).
-- Orientação inicial e treinamento dos usuários do cliente.
-
-### Critérios de aceite
-
-O aceite da primeira versão ocorre mediante:
-
-- Validação das funcionalidades previstas e verificação dos requisitos do escopo contratado.
-- Execução da homologação no ambiente do cliente.
-- Ausência de defeitos críticos.
-- Aprovação formal do representante do cliente.
-
-O aceite é condição para início da operação acompanhada e para a contagem da assinatura.
-
-### Suporte pós-entrega
-
-Após a entrega, a CineSoft mantém os seguintes tipos de manutenção:
-
-- **Corretiva** – correção de defeitos identificados em operação, priorizada por severidade, com teste de regressão e registro da solução.
-- **Adaptativa** – adequação a mudanças externas que impactem o funcionamento (atualizações de dependências, mudanças de ambiente ou de requisitos externos).
-- **Evolutiva** – novas funcionalidades solicitadas pelo cliente, mediante solicitação formal, análise de impacto e aprovação.
-- **Preventiva** – ações proativas de atualização de dependências, refatoração e revisões de segurança e desempenho.
-
-Todos os atendimentos são registrados em sistema de gestão de chamados, com severidade, prioridade e prazos (SLA) definidos na parte de operação deste manual. A responsabilidade pela execução da manutenção é da CineSoft; a responsabilidade pela autorização de mudanças e pela aceitação das correções é do cliente.
+| Fornecedor / Parceiro | Categoria | Serviço Prestado | Justificativa Técnica / Critério |
+|---|---|---|---|
+| **Vercel Inc.** | Plataforma como Serviço (PaaS) | Hospedagem do frontend, rotas serverless, CDN e deploy contínuo | Deploy atômico por commit, HTTPS nativo e alta performance de borda. |
+| **Neon Technologies** | Banco de Dados como Serviço (DBaaS) | PostgreSQL Serverless gerenciado | Autoscaling, compatibilidade total com o Prisma ORM, backups e tier inicial gratuito. |
+| **GitHub Inc.** | Ferramentas de Engenharia | Controle de versão, GitHub Actions (CI/CD) e GitHub Issues | Padronização de governança, rastreabilidade de código e automação de testes. |
+| **Stripe Inc.** *(Previsto para release futura)* | Gateway de Pagamento | Processamento de transações com cartões e certificação PCI-DSS | Delegação de responsabilidade e segurança no tráfego de dados bancários. |
 
 ---
 
-# Parte 2 – Processos Organizacionais Habilitadores
+# Capítulo 3 – Processos Organizacionais Habilitadores
 
-## 2.1. Gestão do Modelo de Ciclo de Vida
+## 3.1 Modelo de ciclo de vida adotado e justificado
 
-O CineDoom adota o modelo de ciclo de vida **incremental** (ISO/IEC/IEEE 12207 – 6.2.1), conforme decidido no PDW (seção 14.1). A escolha se justifica por três razões: o sistema é decomposto em módulos relativamente independentes; cada incremento entrega funcionalidade executável e potencialmente utilizável; e a validação frequente reduz o risco de divergência entre o produto e as necessidades do cliente, inclusive em um contexto de equipe enxuta e semestre letivo.
+O CineDoom adota o modelo de ciclo de vida **Incremental** (ISO/IEC/IEEE 12207:2021 – Cláusula 6.2.1), complementado por práticas ágeis de integração contínua.
 
-O modelo é operado por incrementos, em que cada incremental percorre as etapas de requisito, design, implementação, teste e release, sempre produzindo funcionalidade pronta para uso. Ao final de cada incremento, são executadas atividades de verificação, validação e auditoria de conformidade com este manual.
+### Justificativa da Escolha
+1. **Decomposição Modular:** O domínio de cinema permite isolar módulos estáveis (filmes, salas) de módulos de maior complexidade transacional (sessões, assentos, venda).
+2. **Entregas de Valor Frequentes:** Cada incremento produz uma release executável e testada, reduzindo riscos de desalinhamento com o cliente.
+3. **Adaptação ao Prazo Acadêmico:** O modelo incremental viabilizou o corte formal de escopo para viabilizar um MVP demonstrável sem comprometer o planejamento dos demais processos.
 
-### Incrementos
+### Ciclo dos Incrementos
+Cada incremento percorre cinco etapas obrigatórias: **Requisito → Design/Arquitetura → Implementação → Teste → Release**.
 
-- **Incremento 1** – Autenticação, usuários, filmes e salas.
-- **Incremento 2** – Sessões, assentos e disponibilidade.
-- **Incremento 3** – Venda, cancelamento e auditoria.
-- **Incremento 4** – Clientes e interesses.
-- **Incremento 5** – Relatórios, refinamentos e preparação para produção.
+## 3.2 Inventário de infraestrutura e ferramentas necessárias
 
-### Critério de conclusão de incremento
+A gestão da infraestrutura (Cláusula 6.2.2) assegura os recursos para o ciclo de vida do software:
 
-Um incremento é considerado concluído somente quando todos os critérios do PDW (seção 14.3) forem atendidos: requisitos do incremento implementados, verificação concluída, testes executados, defeitos críticos corrigidos, documentação atualizada e revisão de qualidade realizada.
+| Categoria | Recurso / Ferramenta | Finalidade | Responsável |
+|---|---|---|---|
+| **Ambiente de Desenvolvimento** | VS Code, Node.js v20, npm, Git | Edição de código e execução de servidores locais | Desenvolvedores |
+| **Controle de Versão & CI** | GitHub, GitHub Actions, Git | Versionamento, rastreamento de branches e esteira automatizada | DevOps |
+| **Persistência de Dados** | PostgreSQL gerenciado (Neon), Prisma ORM | Modelagem de dados, migrações e persistência relacional | Arquiteto / DBA |
+| **Hospedagem & Deploy** | Vercel (Produção e Preview) | Disponibilização do software web em ambiente global | DevOps |
+| **Documentação & Compilação** | Tectonic, LaTeX, Beamer, Markdown | Geração de relatórios ABNT e slides de defesa | Equipe |
+| **Testes Automatizados** | Vitest | Execução de testes unitários e de integração de regras de negócio | Engenheiro de Testes |
 
-A governança do ciclo de vida é responsabilidade do Gerente de Projeto, que mantém o modelo atualizado e registra ajustes motivados por mudanças de escopo ou de contexto.
+## 3.3 Justificativa estratégica e viabilidade do projeto
 
-## 2.2. Gestão da Infraestrutura
+A gestão de portfólio (Cláusula 6.2.3) comprova a viabilidade do produto:
+- **Viabilidade Técnica:** A stack adotada (Next.js, Prisma, PostgreSQL) possui maturidade elevada, ampla documentação e domínio prévio por parte da equipe.
+- **Viabilidade Organizacional:** A equipe de 4 integrantes possui papéis claros e processos bem definidos, permitindo desenvolver em paralelo o software executável e a documentação normativa.
+- **Viabilidade de Negócio:** Cinemas de pequeno e médio porte representam um nicho desassistido por grandes ERPs de alto custo, validando a proposição de valor do CineDoom como SaaS leve.
 
-A gestão da infraestrutura (ISO/IEC/IEEE 12207 – 6.2.2) garante recursos tecnológicos adequados aos ambientes de desenvolvimento, testes, homologação e produção.
+## 3.4 Papéis, competências e plano de capacitação (RACI)
 
-### Ambientes
+### Distribuição de Papéis
+- **Gerente de Projeto (GP):** Governança do cronograma, comunicação e controle de riscos.
+- **Analista de Requisitos (AR):** Elicitação de necessidades, especificação de RFs e rastreabilidade.
+- **Arquiteto de Software (AS):** Definição da stack, ADRs e integridade técnica dos componentes.
+- **Desenvolvedores Frontend e Backend (DEV):** Codificação da interface web e das rotas de API.
+- **Engenheiro de Testes (TEST):** Planejamento e codificação dos testes no Vitest.
+- **DevOps (OPS):** Manutenção dos pipelines de CI, branches e ambiente na Vercel.
+- **Analista de Qualidade (QA):** Auditoria de processos, métricas e conformidade com a ISO 12207.
 
-- **Desenvolvimento** – máquinas da equipe (VS Code, Git/GitHub), com a aplicação rodando localmente e acesso a dados de desenvolvimento.
-- **Testes** – ambiente isolado para execução de testes funcionais, de integração e de regressão.
-- **Homologação** – ambiente pré-produção para validação com clientes, controlado e com dados de teste.
-- **Produção** – ambiente na nuvem (AWS) com mecanismos de backup, monitoramento, segurança e recuperação de falhas, suportando as metas de disponibilidade do produto.
+### Matriz RACI Consolidada
 
-### Ferramentas
+| Atividade do Ciclo de Vida | GP | AR | AS | DEV | TEST | OPS | QA |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Planejamento e Cronograma | **A/R** | C | C | I | I | C | C |
+| Elicitação e Especificação de Requisitos | A | **R** | C | I | C | I | C |
+| Decisões de Arquitetura (ADRs) | C | C | **A/R** | C | C | C | I |
+| Implementação do Código-Fonte | I | I | A | **R** | C | C | I |
+| Execução de Testes Automatizados | I | C | C | C | **A/R** | I | C |
+| Implantação e Deploy na Vercel | A | I | C | C | C | **R** | C |
+| Auditoria de Qualidade e Processos | A | C | C | C | C | C | **R** |
+| Aceite Formal de Releases | **A** | C | C | I | R | I | C |
 
-Git e GitHub para versionamento e revisão, GitHub Projects para gestão de tarefas, Visual Studio Code como IDE, ferramenta de modelagem UML para diagramas de arquitetura, GitHub Actions para integração e entrega contínuas, e os serviços AWS contratados (seção 1.1) em produção.
+*Legenda:* **R** = Responsável pela execução; **A** = Aprovador final; **C** = Consultado; **I** = Informado.
 
-### Separação de dados e segurança
+### Plano de Capacitação
+A equipe executou nivelamento técnico em: Gitflow colaborativo, convenções de commits, modelagem relacional com Prisma ORM, elaboração de testes automatizados com Vitest e compilação de artefatos LaTeX via Tectonic.
 
-Dados de teste são mantidos separados dos dados de produção; dados reais não são utilizados em ambientes não produtivos. O acesso aos ambientes é controlado por perfil e por menor privilégio, sob responsabilidade do DevOps.
+## 3.5 Plano de qualidade com critérios e métricas
 
-### Inventário
+A gestão da qualidade (Cláusula 6.2.5) define critérios objetivos para assegurar a excelência dos entregáveis:
+1. **Rastreabilidade Bidirecional:** 100% dos requisitos funcionais do MVP devem estar mapeados a testes e commits.
+2. **Qualidade de Código:** Validação obrigatória por linter sem erros nos Pull Requests.
+3. **Taxa de Sucesso em Testes:** 100% de aprovação na suíte de testes do Vitest para que o PR possa ser mesclado em `main`.
+4. **Resiliência a Falhas de Concorrência:** Zero ocorrências de venda dupla em testes de estresse de compra concorrente.
 
-A CineSoft mantém inventário atualizado de hardware, softwares, licenças, ambientes, ferramentas e serviços contratados, compondo a gestão de configuração nas partes seguintes do manual.
+## 3.6 Estratégia de gestão do conhecimento
 
-## 2.3. Gestão de Portfólio e Viabilidade
-
-O CineDoom é tratado como produto estratégico e comercial do portfólio da CineSoft (ISO/IEC/IEEE 12207 – 6.2.3). A seleção do projeto considerou a viabilidade técnica (aderência às competências atuais da equipe), organizacional (capacidade de entrega incremental) e de negócio (existência de um segmento de pequenos e médios cinemas sem solução integrada).
-
-A viabilidade é reavaliada periodicamente por meio de indicadores de desempenho do produto (faturamento, adesão, custo operacional), oportunidades de melhoria e expansão funcional. Decisões de continuar, expandir ou encerrar o investimento são tomadas segundo a política de decisão do PDW (seção 43), com participação da diretoria e do gerente de projeto.
-
-## 2.4. Gestão de Recursos Humanos
-
-A gestão de recursos humanos (ISO/IEC/IEEE 12207 – 6.2.4) garante que os profissionais possuam as competências necessárias às suas responsabilidades. Os papéis abaixo podem ser exercidos de forma acumulada por um mesmo profissional em função do dimensionamento da equipe; essa condição é registrada explicitamente para evitar que o manual presuma uma organização fictícia maior do que a realidade do estudo de caso.
-
-### Papéis e responsabilidades
-
-- **Gerente de Projeto** – planejamento, acompanhamento, coordenação da equipe e comunicação com stakeholders.
-- **Analista de Requisitos** – elicitação, análise, documentação e gerenciamento dos requisitos.
-- **Arquiteto de Software** – decisões arquiteturais e definição da estrutura técnica do produto.
-- **Desenvolvedor Frontend** – implementação da interface web (React).
-- **Desenvolvedor Backend** – implementação da API, regras de negócio e integração com o banco (Node.js, PostgreSQL).
-- **Engenheiro de Testes** – elaboração, execução e acompanhamento dos testes.
-- **DevOps** – infraestrutura, CI/CD, monitoramento e backup.
-- **Analista de Qualidade** – critérios, métricas e metas de qualidade.
-- **Suporte** – atendimento a chamados e suporte pós-entrega.
-
-### Matriz RACI
-
-A matriz RACI (responsável, aprovador, consultado, informado) é a aprovada no PDW (seção 17.1), aplicada às principais atividades do ciclo de vida:
-
-| Atividade | GP | AR | AS | DEV | TEST | OPS | QA |
-|-----------|----|----|----|-----|------|-----|----|
-| Planejamento | A/R | C | C | I | I | C | C |
-| Requisitos | A | R | C | I | C | I | C |
-| Arquitetura | C | C | R/A | C | C | C | I |
-| Implementação | I | I | A | R | C | C | I |
-| Testes | I | C | C | C | R/A | I | C |
-| Implantação | A | I | C | C | C | R | C |
-| Qualidade | A | C | C | C | C | C | R |
-| Aceite | A | C | C | I | R | I | C |
-
-Legenda: R = Responsável, A = Aprovador, C = Consulta, I = Informado.
-
-### Capacitação
-
-A organização promove capacitação em Engenharia de Requisitos, Testes de Software, UML, Git e GitHub, Segurança de Aplicações, Qualidade de Software, Padrões Arquiteturais, Ferramentas do Projeto e ISO/IEC/IEEE 12207. O processo de capacitação inclui identificação de lacunas de competência, planejamento, execução, registro de participação e avaliação de necessidades de reciclagem (PDW, seção 18).
-
-## 2.5. Gestão da Qualidade
-
-A gestão da qualidade (ISO/IEC/IEEE 12207 – 6.2.5) assegura que produtos e processos estejam em conformidade com os padrões da organização. A qualidade é responsabilidade compartilhada e incorporada ao desenvolvimento, não sendo avaliada apenas ao final do projeto.
-
-### Critérios de qualidade
-
-O produto deve apresentar conformidade com requisitos, confiabilidade, segurança, usabilidade, manutenibilidade e desempenho (PDW, seção 19.2).
-
-### Métricas e metas
-
-As métricas definidas no PDW (seção 19.3) serão coletadas e analisadas pelo Analista de Qualidade, com reporte ao Gerente de Projeto. As metas aprovadas são: 100% dos requisitos com rastreabilidade; cobertura mínima de 80% de testes nos componentes críticos; zero defeitos críticos no aceite; e 100% dos requisitos críticos validados.
-
-### Mecanismos de acompanhamento
-
-A qualidade é monitorada no encerramento de cada incremento, por meio de auditoria que verifica a aderência aos processos deste manual, identifica não conformidades e propõe ações corretivas. A tratativa de não conformidades e o acompanhamento de ações corretivas são registrados para compor a gestão da informação. A definição da fórmula, fonte, responsável e frequência de cada métrica será detalhada na parte de medição deste manual (seção 36 do PDW).
-
-## 2.6. Gestão do Conhecimento
-
-A gestão do conhecimento (ISO/IEC/IEEE 12207 – 6.2.6) preserva o conhecimento gerado ao longo do ciclo de vida do produto e o disponibiliza para a equipe, inclusive para novos integrantes.
-
-### Fontes e artefatos
-
-São fontes oficiais de conhecimento os requisitos, diagramas UML, decisões arquiteturais (ADRs), casos de teste, planos de projeto, atas de reunião, registros de riscos, registros de mudanças e lições aprendidas. Todos os artefatos são versionados no repositório Git ou armazenados nas ferramentas de colaboração adotadas (GitHub, Wiki do Projeto, Google Drive Corporativo, sistema de gestão de chamados).
-
-### Preservação e compartilhamento
-
-Todo artefato possui identificação, versão, responsável e histórico de alterações. As decisões relevantes são registradas com sua justificativa (ADRs), garantindo rastreabilidade e apoio à manutenção futura. O conhecimento é transferido por meio de onboarding de novos membros, revisões técnicas e reuniões de compartilhamento de lições aprendidas ao final de cada incremento.
+A gestão do conhecimento (Cláusula 6.2.6) assegura que ativos intelectuais sejam preservados e reutilizados:
+- **Fonte Única da Verdade:** O PDW (`docs/constituicao/project-definition-workbook.md`) centraliza todas as decisões do produto.
+- **Versionamento Centralizado:** Todos os artefatos de processo, templates de prompt e códigos residem no repositório GitHub.
+- **Decisões Documentadas:** Mudanças estruturais exigem o registro de ADRs com contexto, opções e consequências.
+- **Lições Aprendidas:** Registradas ao final de cada incremento para aperfeiçoar os processos subsequentes.
 
 ---
 
-# Considerações Finais e Decisões em Aberto
+# Capítulo 4 – Processos de Gerenciamento Técnico
 
-As Partes 0, 1 e 2 estabelecem a base de contexto, contratual e organizacional do CineDoom, em conformidade com a ABNT NBR ISO/IEC/IEEE 12207 e com as decisões do PDW. As próximas partes do manual (requisitos, arquitetura, implementação, verificação, validação, implantação, operação, manutenção e gerência técnica) devem derivar destas decisões, respeitando a cadeia de rastreabilidade definida no PDW.
+## 4.1 Plano de projeto: escopo, cronograma, recursos e entregas
 
-Para que a continuação do manual ocorra sem contradições, as seguintes decisões ainda precisam ser fechadas (PDW, seções 47 e 48):
+O planejamento do projeto (ISO/IEC/IEEE 12207:2021 – Cláusula 6.3.1) organiza a execução e o cronograma do CineDoom:
 
-1. **Congelamento do PDW**: preencher o checklist de congelamento (seção 48) e aprovar oficialmente a base do produto.
-2. **Pagamentos**: confirmar formalmente o escopo do Stripe, inclusive o item contraditório da seção 5.2 do PDW (gateway listado como fora do escopo versus decisões 7.4 e 49 que o incluem).
-3. **Notificações**: decidir se a primeira versão envia e-mails/notificações automáticas (impacta a aquisição de serviço de e-mail).
-4. **Cronograma**: definir datas de início/término, marcos e duração dos incrementos (seção 15 do PDW).
-5. **Detalhamento dos requisitos**: descrever cada RF e RNF com origem, prioridade, critérios de aceite e casos de teste.
-6. **Operação**: definir SLA de suporte, severidade, escalonamento e horários de atendimento (seção 31 do PDW).
-7. **RTO/RPO e continuidade**: aprovar os valores propostos e definir plano de recuperação e testes periódicos.
-8. **Medição**: definir fórmula, fonte, responsável e frequência de cada métrica de qualidade.
+### Escopo por Incremento e Releases
 
-# Parte 3 – Processos de Gerenciamento Técnico
-## 3.1 Planejamento do Projeto
-### 3.1.1 Escopo
+| Incremento | Escopo Funcional | Requisitos Vinculados | Status |
+|---|---|---|---|
+| **Inc. 1 (Fundação)** | Filmes, Salas e Assentos | RF-03, RF-04 | Concluído no planejamento |
+| **Inc. 2 (Operação)** | Sessões e Mapa de Assentos | RF-05, RF-06 | Em andamento |
+| **Inc. 3 (Transação)** | Venda atômica, Cancelamento e Auditoria | RF-07, RF-08, RF-12 | Prioridade MVP |
+| **Inc. 4 (Clientes)** | Cadastro de Clientes e Interesses | RF-09, RF-10 | Backlog Release 1.1 |
+| **Inc. 5 (Fechamento)** | Indicadores de Ocupação e Release Demo | RF-11 | Prioridade MVP |
 
-O escopo é decomposto por incremento, conforme o modelo de ciclo de vida incremental (seção 2.1 e PDW, seção 14.2):
+### Cronograma de Execução (Foco na Entrega de 12/11/2026)
+- **22/10 a 24/10:** Congelamento do escopo do MVP, modelagem do Prisma e configuração do CI no GitHub Actions.
+- **25/10 a 31/10:** Implementação das rotas de filmes, salas, sessões e do mapa de assentos interativo.
+- **01/11 a 04/11:** Implementação da trava transacional de venda, testes no Vitest e cancelamento.
+- **05/11 a 08/11:** Integração total na Vercel com banco Neon, consolidação dos Capítulos 4 e 5 do Manual.
+- **09/11 a 11/11:** Ensaios da apresentação oral com slides Beamer e congelamento da release `v1.0.0-mvp`.
+- **12/11/2026:** Apresentação final perante a banca avaliadora.
 
-| Incremento | Escopo funcional | Requisitos |
-|---|---|---|
-| 1 | Autenticação, usuários, filmes e salas | RF-01, RF-02, RF-03, RF-04 |
-| 2 | Sessões, assentos e disponibilidade | RF-05, RF-06 |
-| 3 | Venda, cancelamento e auditoria | RF-07, RF-08, RF-12 |
-| 4 | Clientes e registros de interesse | RF-09, RF-10 |
-| 5 | Relatórios, refinamentos e preparação para produção | RF-11 |
+## 4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas
 
-### 3.1.2 Cronograma
+A gestão de riscos (Cláusula 6.3.4) monitora incertezas que possam comprometer o cronograma ou a qualidade do sistema:
 
-Todo incremento percorre as cinco etapas do modelo incremental (seção 2.1), produzindo funcionalidade executável ao término:
+| ID | Risco Identificado | Categoria | Prob. | Impacto | Estratégia de Mitigação | Responsável |
+|---|---|---|:---:|:---:|---|---|
+| **R-01** | Indisponibilidade de banco na nuvem | Técnico | Baixa | Alto | Uso de provedor com SLA comprovado (Neon) e script local de fallback com SQLite | DevOps |
+| **R-02** | Conflito de venda concorrente de assentos | Técnico | Média | Alto | Restrição única `@@unique([sessionId, seatId])` no banco e transações atômicas | Arquiteto |
+| **R-03** | Estouro de prazo para a apresentação | Organizacional | Média | Alto | Corte formal de escopo (foco estrito no MVP de bilheteria e ocupação) | Gerente de Projeto |
+| **R-04** | Falha de rede durante a demonstração | Operacional | Média | Alto | Gravação prévia de vídeo de contingência com o fluxo ponta a ponta | Analista de QA |
+| **R-05** | Inconsistência entre código e manual | Metodológico | Média | Médio | Matriz de rastreabilidade contínua ligando RFs a commits e testes | Analista de Requisitos |
 
-| Etapa | Resultado esperado |
-|---|---|
-| Requisito | Requisitos do incremento detalhados e com critérios de aceite (seção 0.3) |
-| Design | Decisões de arquitetura e design do incremento, com ADRs quando aplicável (seção 3.3) |
-| Implementação | Código implementado, revisado e integrado (seção 2.2) |
-| Teste | Testes executados, defeitos registrados e críticos corrigidos (seção 3.1.4) |
-| Release | Versão do incremento liberada e identificada por tag (seção 3.5.2) |
+## 4.3 Plano de gestão de configuração: controle de versões, branches e releases
 
-### 3.1.3 Recursos
+A gestão de configuração (Cláusula 6.3.5) assegura o controle formal dos artefatos:
 
-| Categoria | Composição | Referência |
-|---|---|---|
-| Humanos | Papéis do Gerente de Projeto, Analista de Requisitos, Arquiteto, Desenvolvedores Frontend e Backend, Engenheiro de Testes, DevOps, Analista de Qualidade e Suporte, com atribuições conforme a matriz RACI | [Seção 2.4](#24-gestão-de-recursos-humanos); PDW 16 e 17 |
-| Infraestrutura | Ambientes de desenvolvimento, testes, homologação e produção | [Seção 2.2](#22-gestão-da-infraestrutura) |
-| Ferramentas | Git/GitHub, GitHub Projects, Visual Studio Code, ferramenta de modelagem UML, GitHub Actions | [Seção 2.2](#22-gestão-da-infraestrutura) |
-| Serviços contratados | Computação e banco de dados na AWS, monitoramento, backup e gateway de pagamento (Stripe), conforme justificativas de aquisição | [Seção 1.1](#11-processo-de-aquisição) |
-| Restrições | Prazo do semestre, equipe enxuta com sobreposição de papéis, orçamento controlado | [Seção 2.4](#24-gestão-de-recursos-humanos); PDW 15.3 |
+### Itens de Configuração (CIs)
+São itens de configuração controlados: código-fonte da aplicação, arquivos de migração do banco de dados, arquivos de teste, documentação Markdown do manual, código-fonte LaTeX dos relatórios e slides, e diagramas visuais.
 
-### 3.1.4 Entregas por incremento e critérios de aceite
+### Estratégia de Branches
+- `main`: Código estável em produção, espelhado automaticamente na Vercel.
+- `develop`: Branch de integração de novas funcionalidades concluídas.
+- `feat/RF-XX-...`: Branches de trabalho individuais criadas a partir de `develop`.
 
-Cada incremento entrega, obrigatoriamente:
+### Releases e Tags
+Toda release demonstrável recebe tag semântica: `v1.0.0-mvp`. O changelog é gerado no GitHub mapeando cada requisito atendido aos seus respectivos Pull Requests.
 
-- Funcionalidade executável e liberada (release identificada por tag de versão, [seção 3.5.2](#352-acompanhamento-por-incremento-pontos-de-controle-relatórios-de-status-ações-corretivaspreventivas)).
-- Requisitos e artefatos de arquitetura atualizados e rastreados, mencionada na [seção 0.3](#03-escopo-e-funcionalidades).
-- Relatório de testes do incremento, com registro de defeitos.
-- Documentação técnica atualizada.
-- Registro de configuração atualizado ([seção 3.5](#35-medição-e-avaliaçãocontrole-do-projeto)).
-- Registro de lições aprendidas ([seção 2.6](#26-gestão-do-conhecimento)).
+## 4.4 Registro de decisões técnicas relevantes (ADRs)
 
-Um incremento só é considerado concluído quando os critérios estiverem atendidos: requisitos do incremento implementados, verificação concluída, testes executados, defeitos críticos corrigidos, documentação atualizada e revisão de qualidade realizada. A aprovação interna da conclusão é do Gerente de Projeto, com o Analista de Qualidade e o Engenheiro de Testes como responsáveis pelas verificações (RACI, [seção 2.4](#matriz-raci)).
+A gestão de decisões (Cláusula 6.3.3) registra escolhas técnicas e suas justificativas:
 
-## 3.2 Gestão de Riscos
-### 3.2.1 Planejamento e Critérios
+| Código | Decisão Técnica | Justificativa | Status |
+|---|---|---|---|
+| **ADR-001** | Arquitetura Monólito Modular | Reduz sobrecarga operacional em comparação a microsserviços | Aprovada |
+| **ADR-002** | Frontend em React (Next.js) | Facilidade de desenvolvimento de interfaces ricas e reativas | Aprovada |
+| **ADR-003** | Backend em Node.js / TypeScript | Unificação de linguagem entre cliente e servidor com tipagem estática | Aprovada |
+| **ADR-004** | Banco Relacional PostgreSQL | Garantia de propriedades ACID fundamentais para a venda de ingressos | Aprovada |
+| **ADR-005** | Hospedagem na Vercel com Neon DB | Zero custo operacional inicial e deploy automático via GitHub Actions | Aprovada |
+| **ADR-006** | API RESTful padronizada | Simplicidade na comunicação JSON via HTTP | Aprovada |
 
-  Riscos são classificados por probabilidade (Baixa, Média, Alta) e impacto (Baixo, Médio, Alto). A combinação define a criticidade, que orienta a prioridade de tratamento: riscos de criticidade alta exigem plano de mitigação e, quando aplicável, plano de contingência; riscos de criticidade média exigem monitoramento e plano de mitigação; riscos de criticidade baixa são monitorados.
+## 4.5 Métricas de acompanhamento do projeto
 
-### 3.2.2 Registro de riscos
+A medição e controle (Cláusula 6.3.2) subsidiam o acompanhamento do avanço do projeto:
+- **Velocidade de Entrega:** Percentual de requisitos funcionais com status *Done*.
+- **Cobertura de Testes de Regra Crítica:** 100% de cobertura nos métodos do serviço de venda e cancelamento de ingressos.
+- **Densidade de Defeitos:** Número de bugs abertos versus resolvidos no GitHub Issues antes da release.
 
-Registro inicial de riscos (proposta sujeita a aprovação do grupo):
+---
 
-| ID | Risco | Categoria | Prob. | Impacto | Mitigação | Responsável | Status |
-|---|---|---|---|---|---|---|---|
-| R-01 | Indisponibilidade do provedor de nuvem (AWS) | Técnico | Baixa | Alto | SLA contratado, monitoramento (seção 2.2), backup e plano de recuperação | DevOps | Em análise |
-| R-02 | Erro de integração com o gateway de pagamento (Stripe) | Técnico | Média | Alto | Integração incremental no incremento 3, testes de integração, homologação no ambiente do fornecedor | Arquiteto | Em análise |
-| R-03 | Vulnerabilidade de segurança com exposição de dados de clientes | Técnico | Média | Alto | HTTPS, hash de senhas, controle de acesso por perfil, revisão de segurança preventiva | Arquiteto | Em análise |
-| R-04 | Perda ou corrupção de dados | Técnico | Baixa | Alto | Backup diário, RTO de até 4 h e RPO de até 24 h (sujeitos a aprovação), testes de restauração | DevOps | Em análise |
-| R-05 | Desempenho abaixo das metas (2 s; 100 usuários simultâneos) | Técnico | Média | Médio | Testes de desempenho por incremento, revisão de consultas e indexes | Arquiteto | Em análise |
-| R-06 | Rotatividade ou indisponibilidade de membros da equipe | Organizacional | Média | Alto | Sobreposição de papéis registrada (seção 2.4), documentação e ADRs (seção 3.3), onboarding (seção 2.6) | Gerente de Projeto | Em análise |
-| R-07 | Atrasos por indefinição de cronograma e decisões em aberto | Organizacional | Alta | Médio | Fechamento das decisões em aberto do PDW (seção 47) como prioridade de governança | Gerente de Projeto | Em análise |
-| R-08 | Mudança de escopo sem controle | Organizacional | Média | Médio | Regra de expansão do PDW (seção 5.1) e processo de mudança (seção 3.5.3) | Gerente de Projeto | Em análise |
-| R-09 | Baixa adesão do mercado-alvo ao produto | Negócio | Média | Alto | Validação com clientes na homologação, indicadores de portfólio (seção 2.3) | Diretoria | Em análise |
-| R-10 | Custo operacional de nuvem maior que o previsto | Negócio | Média | Médio | Monitoramento de consumo, dimensionamento inicial modesto, revisão por incremento | DevOps | Em análise |
-| R-11 | Dependência de fornecedor (AWS, Stripe) | Negócio | Baixa | Médio | Critérios de portabilidade e avaliação de dependência na seleção (seção 1.1) | Gerente de Projeto | Em análise |
+# Capítulo 5 – Processos Técnicos
 
-## 3.3 Gestão de Configuração
+## 5.1 Requisitos
 
-A gestão de configuração (ISO/IEC/IEEE 12207 – 6.3.5) identifica e controla os itens de configuração, as mudanças e a integridade das linhas de base ao longo do projeto.
+### 5.1.1 Documento de requisitos do sistema
+Os requisitos são classificados formalmente em funcionais (RF-01 a RF-12) e não funcionais (RNF-01 a RNF-05), com identificador único, descrição concisa e priorização pelo método MoSCoW:
+- **RNF-01 (Desempenho):** O mapa de assentos e as ações de bilheteria devem responder em menos de 2 segundos.
+- **RNF-02 (Confiabilidade):** O sistema deve impedir que duas requisições comprem o mesmo assento na mesma sessão.
+- **RNF-03 (Segurança):** Todas as comunicações devem trafegar via protocolo seguro HTTPS.
+- **RNF-04 (Usabilidade):** Interface acessível com representação cromática clara de status de assento.
 
-### 3.3.1 Itens de Configuração (CIs) e Baselines
+### 5.1.2 Rastreabilidade de requisitos
+Cada requisito é rastreado por meio da cadeia:
+$$\text{Necessidade do Negócio} \longrightarrow \text{RF} \longrightarrow \text{ADR} \longrightarrow \text{Commit/PR} \longrightarrow \text{Teste Automatizado} \longrightarrow \text{Release}$$
 
-São itens de configuração: código-fonte, requisitos, arquitetura e diagramas, ADRs, casos de teste e relatórios de teste, scripts de infraestrutura, documentação técnica e do usuário, configurações relevantes e releases.
+### 5.1.3 Critérios de aceitação
+Os critérios de aceitação para o fluxo principal exigem: seleção livre de assento no mapa, confirmação da compra com transação gravada no banco, emissão do código identificador do ingresso e bloqueio imediato do assento para novos clientes.
 
-> [!WARNING]
-> Linhas de base (proposta, sujeita a aprovação):
+### 5.1.4 Registro de stakeholders e necessidades elicitadas
+Mapeamento formal dos interesses de proprietários de cinemas, gerentes operacionais e atendentes de bilheteria, com registro de prioridades no PDW.
 
-| Linha de base | Conteúdo | Momento |
-|---|---|---|
-| Requisitos | RF e RNF do incremento, com critérios de aceite | Ao conclusão da etapa de requisito de cada incremento |
-| Arquitetura | Diagramas e ADRs vigentes | Ao conclusão da etapa de design de cada incremento |
-| Release | Tag de versão com código, testes e documentação do incremento | Na liberação de cada incremento (M1–M5) |
+## 5.2 Arquitetura e Design
 
-### 3.3.2 Controle de versões (Git), branches, tags e releases
+### 5.2.1 Documento de arquitetura do sistema
+Arquitetura em camadas no modelo Monólito Modular:
+1. **Camada de Apresentação:** Componentes React com renderização client-side reativa para o mapa de assentos.
+2. **Camada de Controle e API:** Rotas Next.js Serverless processando payloads REST.
+3. **Camada de Domínio / Serviços:** Regras de negócio encapsuladas para cálculo de assentos e integridade de transação.
+4. **Camada de Acesso a Dados:** Prisma Client mapeando consultas no PostgreSQL Neon.
 
-O controle de versão usa Git com repositório remoto no GitHub (seção 2.2), com as seguintes regras:
+### 5.2.2 Diagramas de design
+- **Diagrama de Contêineres (Modelo C4):** Ilustra a interação entre navegador do cliente, aplicação Next.js na Vercel e o banco Neon PostgreSQL.
+- **Diagrama de Atividades (UML / BPMN):** Mapeia o fluxo da transação de venda de ingressos, desde a seleção da cadeira até a confirmação atômica ou reversão por conflito.
 
-- Branch `main` contém o código liberado; `develop` concentra o trabalho do incremento em andamento; branches de funcionalidade são criadas a partir de `develop` com identificação do requisito (ex.: `feature/RF-07-venda`).
-- Integrações ocorrem por pull request, com revisão de código obrigatória antes da mesclagem.
-- Cada incremento concluído é marcado por tag de versão conforme versionamento semântico: incrementos 1 a 4 correspondem a versões internas `0.x.y`; a primeira versão liberada ao cliente, ao final do incremento 5, é `1.0.0`.
-- Toda release possui notas de versão e registro de alterações.
+### 5.2.3 Justificativa das escolhas tecnológicas
+O ecossistema Next.js com Prisma e Neon oferece a maior velocidade de entrega para uma equipe enxuta, permitindo tipagem ponta a ponta em TypeScript e validação de banco com ORM moderno.
 
-### 3.3.3 Fluxo de mudanças e auditorias de configuração
+## 5.3 Implementação e Integração
 
-Mudanças em itens de configuração seguem o processo definido: registrar solicitação, classificar, avaliar impacto, estimar esforço, avaliar riscos, aprovar ou rejeitar, planejar, implementar, testar, atualizar documentação e encerrar. Nenhum item de configuração é alterado sem solicitação registrada.
+### 5.3.1 Padrões de codificação adotados
+Adoção do guia padrão de TypeScript com ESLint e Prettier configurados para manter consistência semântica e estilística.
 
-Auditorias de configuração são executadas ao final de cada incremento, junto à auditoria de conformidade (seção 2.5), e verificam: identificação, versão e status de todos os itens de configuração; correspondência entre tags de release e linhas de base; e integridade dos ADRs em relação ao código implantado.
+### 5.3.2 Plano de integração entre componentes
+A integração entre o mapa de assentos e o backend de bilheteria ocorre via requisições assíncronas com tratamento explícito de estados de erro HTTP (ex.: 409 Conflict em caso de assento ocupado).
 
-## 3.4 Gestão de Decisões Técnicas (ADRs)
+### 5.3.3 Registro de testes unitários e de integração
+Suíte de testes desenvolvida no framework **Vitest**:
+- Testes unitários para cálculos de capacidade de salas e ocupação percentual.
+- Testes de integração simulando requisições paralelas para compra do mesmo assento na mesma sessão, comprovando que o banco rejeita a segunda compra.
 
-A gestão de decisões (ISO/IEC/IEEE 12207 – 6.3.3) garante que alternativas sejam identificadas, avaliadas e registradas antes da implementação. No CineDoom, adotam-se dois registros, conforme a natureza da decisão:
+### 5.3.4 Rastreabilidade entre código e requisitos
+Os arquivos e funções de teste contêm em suas assinaturas a referência explícita ao requisito (ex.: `describe('RF-07: Registro de Venda de Ingresso')`).
 
-- **ADRs (Architecture Decision Records)** – decisões técnicas e arquiteturais; autoridade: Arquiteto e equipe técnica.
-- **Registro de mudanças** – decisões de escopo, contrato e iterações do plano; autoridade: Gerente de Projeto e representante do cliente.
+## 5.4 Verificação, Validação e Transição
 
-### 3.4.1 Política de registro (quando registrar, template, localização)
+### 5.4.1 Plano de verificação e validação
+- **Verificação:** Executada a cada PR pela esteira de CI do GitHub Actions (compilação de código, lint e testes automatizados).
+- **Validação:** Homologação com dados realistas de cinema para garantir que o fluxo atende ao contexto operacional da bilheteria.
 
-Toda decisão técnica relevante é registrada por ADR contendo, no mínimo: contexto, problema, alternativas avaliadas, decisão, consequências, data e responsável.
+### 5.4.2 Critérios de aceitação por stakeholder
+Critérios definidos para o Perfil Gerente (capacidade de agendar sessões) e Perfil Atendente (agilidade no fechamento de pedidos de ingressos).
 
-São registradas como ADR as decisões que afetam arquitetura, stack tecnológica, modelo de dados, segurança, estratégia de implantação ou integração com serviços externos. Os ADRs são documentos controlados (seção 3.6), versionados no repositório Git junto ao código e aos diagramas (itens de configuração, seção 3.x.1). ADRs incorporados só são revogados por novo ADR que explicitamente os substitua.
+### 5.4.3 Relatório de testes de aceitação
+Registro documentado evidenciando o comportamento esperado e obtido em cada cenário de teste funcional.
 
-### 3.4.2 Lista de ADRs
+### 5.4.4 Plano de transição/implantação do sistema
+A transição para o ambiente de produção na Vercel ocorre automaticamente a cada merge aprovado na branch `main`. Procedimentos de migração executados via `npx prisma migrate deploy`.
 
->[!WARNING]
-> Realizar validação
+## 5.5 Operação, Manutenção e Descontinuação
 
-| ADR | Decisão | Status |
-|---|---|---|
-| ADR-001 | Arquitetura de monólito modular | Decidida (PDW 10.1; registro formal pendente) |
-| ADR-002 | Frontend em React | Decidida (PDW 10.3; registro formal pendente) |
-| ADR-003 | Backend em Node.js | Decidida (PDW 10.4; registro formal pendente) |
-| ADR-004 | Banco de dados PostgreSQL | Decidida (PDW 10.5; registro formal pendente) |
-| ADR-005 | Infraestrutura na AWS | Decidida (PDW 11.1; registro formal pendente) |
-| ADR-006 | API REST versionada | Decidida (PDW 10.6–10.7; registro formal pendente) |
-| ADR-007 | Estratégia de autenticação e controle de sessão | A decidir no incremento 1 |
+### 5.5.1 Procedimentos de operação e monitoramento
+Monitoramento de logs de execução e latência via painel analítico da Vercel e console de métricas do banco Neon.
 
-## 3.5 Medição e Avaliação/Controle do Projeto
+### 5.5.2 Plano de manutenção (corretiva, preventiva, adaptativa)
+Fluxo documentado para abertura de issues de defeito, priorização de correção e publicação de hotfixes com testes de regressão.
 
-A avaliação e o controle (ISO/IEC/IEEE 12207 – 6.3.2) tornam o andamento do projeto transparente, permitem avaliar o desempenho em relação ao plano e gerenciar ações corretivas e preventivas.
-
-### 3.5.1 Plano de Medição (o que medir, porquê, fórmula, fonte, responsável, frequência, meta)
-
-### 3.5.2 Acompanhamento por incremento (pontos de controle, relatórios de status, ações corretivas/preventivas)
+### 5.5.3 Estratégia de descontinuação e migração de dados
+Diretrizes para expurgo seguro de dados, geração de dumps relacionais para o cliente e encerramento de instâncias conforme exigido pela LGPD e pelos processos de encerramento da ISO 12207.

@@ -79,10 +79,10 @@ manual-processos/
 
 | Pasta / Arquivo | Descrição Objetiva |
 |---|---|
-| [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom. |
+| [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom estruturado nos **Capítulos 1 a 5**. |
 | [`fluxo-trabalho.md`](fluxo-trabalho.md) | **Guia de Colaboração:** Passo a passo para criar prompts, validar e incorporar conteúdo. |
-| [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA por parte (0 a 4), template e auditor de qualidade. |
-| [`docs/`](docs/) | **Base de Conhecimento:** Diretrizes pedagógicas, norma ISO 12207, caderno de decisões (PDW), validações e rascunhos. |
+| [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA por capítulo/bloco temático, template e auditor de qualidade. |
+| [`docs/`](docs/) | **Base de Conhecimento:** Estrutura mínima docente (`estrutura-minima-manual.md`), norma ISO 12207, caderno de decisões (PDW), validações e rascunhos. |
 | [`assets/`](assets/) | **Artefatos Visuais:** Diagramas de processos, modelos BPMN/PlantUML e figuras. |
 | [`trabalho_latex/`](trabalho_latex/) | **Relatório em LaTeX:** Versão formatada segundo as normas da ABNT (NBR 14724). |
 | [`slides_latex/`](slides_latex/) | **Apresentação:** Slides para defesa oral no tema oficial da UFG/INF (Beamer). |
@@ -93,9 +93,10 @@ manual-processos/
 ## 🧭 Guia de Navegação
 
 - 🚀 **[fluxo-trabalho.md](fluxo-trabalho.md):** Guia de fluxo de trabalho para colaboração no repositório.
-- 📖 **[docs/instrucoes-disciplina.md](docs/instrucoes-disciplina.md):** Diretrizes, estrutura recomendada e avaliação da Profa. Dra. Juliana Zinader.
-- 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado para leitura direta no GitHub.
-- 🤖 **[prompts/](prompts/):** Catálogo de prompts divididos por partes (**0 a 4**), com template e auditor de qualidade.
+- 📐 **[docs/estrutura-minima-manual.md](docs/estrutura-minima-manual.md):** Estrutura temática oficial em 5 capítulos exigida pela Profa. Dra. Juliana Zinader.
+- 📖 **[docs/instrucoes-disciplina.md](docs/instrucoes-disciplina.md):** Diretrizes, critérios e avaliação da disciplina.
+- 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado em Capítulos 1 a 5 para leitura direta no GitHub.
+- 🤖 **[prompts/](prompts/):** Catálogo de prompts de apoio com template e auditor de qualidade.
 - 📋 **[docs/constituicao/project-definition-workbook.md](docs/constituicao/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
 - 📚 **[docs/norma-iso/](docs/norma-iso/):** Norma ABNT NBR ISO/IEC/IEEE 12207:2021 ([PDF](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e [Markdown](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
 - 📑 **[trabalho_latex/manual-processos-software.tex](trabalho_latex/manual-processos-software.tex):** Código-fonte LaTeX formatado conforme as normas ABNT.

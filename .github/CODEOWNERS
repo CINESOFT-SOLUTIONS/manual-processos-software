@@ -1,0 +1,20 @@
+# -----------------------------------------------------------------------------
+# CODEOWNERS — CineSoft Solutions (CineDoom)
+# Governança de aprovações conforme a Matriz RACI do Capítulo 3 do Manual
+# -----------------------------------------------------------------------------
+
+# Regra geral: Toda alteração requer revisão de membros da equipe
+* @gabrlou @carlosfreire @kayquevicente @yurynogueira
+
+# Documentos formais de governança e decisões constitucionais (PDW)
+docs/constituicao/ @gabrlou
+docs/norma-iso/ @gabrlou
+
+# Manual oficial e relatórios acadêmicos
+manual-processos-software.md @gabrlou @carlosfreire @kayquevicente @yurynogueira
+trabalho_latex/ @gabrlou @yurynogueira
+slides_latex/ @gabrlou @kayquevicente
+
+# Automações de compilação e CI
+scripts/ @gabrlou
+.github/workflows/ @gabrlou

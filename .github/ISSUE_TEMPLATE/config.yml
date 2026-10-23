@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Guia de Fluxo de Trabalho e Colaboração
+    url: https://github.com/cinesoft-solutions/manual-processos/blob/main/fluxo-trabalho.md
+    about: Consulte as regras de colaboração, prompts e ciclo de validação antes de abrir uma issue.
+  - name: 📐 Estrutura Mínima Exigida pela Docente
+    url: https://github.com/cinesoft-solutions/manual-processos/blob/main/docs/estrutura-minima-manual.md
+    about: Verifique o checklist de seções obrigatórias para os Capítulos 1 a 5.
