@@ -3,8 +3,8 @@
 <table width="100%">
   <thead>
     <tr>
-      <th width="50%" align="left">🎓 Identificação Acadêmica</th>
-      <th width="50%" align="left">👥 Integrantes do Grupo</th>
+      <th width="50%" align="left">Identificação Acadêmica</th>
+      <th width="50%" align="left">Integrantes da Equipe</th>
     </tr>
   </thead>
   <tbody>
@@ -29,108 +29,121 @@
 
 ---
 
-## 📌 Visão Geral
+## Visão Geral do Projeto
 
-Este repositório contém o **Manual de Processos de Software** e os artefatos de engenharia desenvolvidos para o sistema **CineDoom** (gestão de salas de cinema e bilheteria).
+Este repositório contém o **Manual de Processos de Software** e o pacote de governança e engenharia desenvolvido para o sistema **CineDoom** (plataforma de bilheteria presencial, gestão de catálogo e controle de ocupação de salas de cinema), estruturado em estrita conformidade com a norma **ABNT NBR ISO/IEC/IEEE 12207:2021**.
 
-O trabalho adota como premissas:
-1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](docs/norma-iso/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](docs/norma-iso/abnt-iso-iec-12207-2021.pdf)).
-2. **Fonte de Decisões:** [Project Definition Workbook (PDW)](docs/constituicao/project-definition-workbook.md) — Fonte única da verdade das decisões de produto, arquitetura e negócio.
-3. **Diretrizes Pedagógicas:** [Instruções da Disciplina](docs/instrucoes-disciplina.md) — Requisitos oficiais, 7 seções por processo e critérios de avaliação da Profa. Dra. Juliana Zinader.
+### Fontes Normativas e Diretrizes
+1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](references/iso-12207/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](references/iso-12207/abnt-iso-iec-12207-2021.pdf)).
+2. **Fonte da Verdade de Negócio:** [Project Definition Workbook (PDW)](references/pdw/project-definition-workbook.md) — Constituição com todas as regras, modelos e restrições do CineDoom.
+3. **Diretrizes Pedagógicas:** [Instruções da Disciplina](references/guidelines/instrucoes-disciplina.md) e [Estrutura Mínima](references/guidelines/estrutura-minima-manual.md) estabelecidas pela Profa. Dra. Juliana Zinader.
 
 ---
 
-## 🗂️ Estrutura do Repositório
+## Arquitetura do Repositório (Docs-as-Code)
+
+O repositório adota o modelo **Docs-as-Code**, separando a escrita modular de conteúdo, o repositório de especificações técnicas, os templates de editoração tipográfica (LaTeX e Beamer) e as referências canônicas:
 
 ```text
 manual-processos/
-├── assets/                                      # Diagramas, fluxos BPMN e artefatos visuais por parte (0 a 4)
-│   └── README.md
-├── docs/                                        # Documentações de apoio, normas e validações
-│   ├── README.md
-│   ├── instrucoes-disciplina.md                 # Diretrizes pedagógicas oficiais da disciplina
-│   ├── constituicao/                            # Project Definition Workbook (PDW)
-│   ├── norma-iso/                               # Cópia em PDF e transcrição em Markdown da ISO 12207
-│   ├── validacoes/                              # Relatórios de auditoria e validação por parte (0 a 4)
-│   └── rascunhos/                               # Rascunhos preliminares de trabalho por parte (0 a 4)
-├── prompts/                                     # Catálogo de prompts organizado pelas 5 partes
-│   ├── README.md
-│   ├── template-prompt.md                       # Template padrão de novos prompts
-│   ├── auditor-de-qualidade.md                  # Auditor de qualidade e conformidade ISO 12207
-│   ├── parte-00/                                # Prompts da Parte 0 (Apresentação do Software)
-│   ├── parte-01/                                # Prompts da Parte 1 (Processos de Acordo)
-│   ├── parte-02/                                # Prompts da Parte 2 (Processos Habilitadores)
-│   ├── parte-03/                                # Prompts da Parte 3 (Gerenciamento Técnico)
-│   └── parte-04/                                # Prompts da Parte 4 (Processos Técnicos)
-├── scripts/                                     # Scripts utilitários e de automação
-│   └── compilar.sh                              # Compilação unificada com Tectonic
-├── slides_latex/                                # Apresentação em slides (Beamer UFG/INF)
-│   ├── apresentacao-manual.tex
-│   ├── beamerthemeUfg.sty
-│   └── lib/
-├── trabalho_latex/                              # Relatório oficial ABNT em LaTeX
-│   └── manual-processos-software.tex
-├── .gitignore
-├── manual-processos-software.md                 # Manual principal consolidado
+├── content/                           # Capítulos modulares do manual (Fonte Canônica)
+│   ├── 00-identificacao.md            # Folha de rosto e histórico de revisões
+│   ├── 01-apresentacao-software.md    # Cap. 1: Identificação, problema, escopo e restrições
+│   ├── 02-processos-acordo.md         # Cap. 2: Aquisição, fornecimento e parceiros
+│   ├── 03-processos-organizacionais.md# Cap. 3: Ciclo de vida, infraestrutura, viabilidade, RACI e qualidade
+│   ├── 04-gerenciamento-tecnico.md    # Cap. 4: Plano de projeto, riscos, configuração e métricas
+│   └── 05-processos-tecnicos.md       # Cap. 5: Requisitos (AC-1..8), C4, Prisma, STRIDE, DPIA e testes
+│
+├── specs/                             # Especificações Formais de Engenharia e Governança
+│   ├── adrs/                          # 11 Architecture Decision Records (ADR-001 a ADR-011)
+│   ├── architecture/                  # Diagramas C4, especificações de componentes e wireframes UX/UI
+│   ├── data-model/                    # Prisma Schema e dicionário relacional de dados
+│   ├── security-compliance/           # Modelagem de Ameaças STRIDE e Avaliação de Impacto LGPD (DPIA)
+│   ├── quality/                       # Matriz de rastreabilidade e suíte de concorrência ACID (50 threads)
+│   ├── planning/                      # Plano de tarefas do TechLead (20 tarefas) e DevOps CI/CD
+│   ├── cinedoom-spec.md               # Especificação funcional formal (PM)
+│   └── cinedoom-spec.json             # Metadados estruturados
+│
+├── latex/                             # Publicação Tipográfica (Relatório ABNT e Apresentação)
+│   ├── report/                        # Relatório do Manual formatado na ABNT NBR 14724
+│   │   ├── manual-processos-software.tex
+│   │   └── manual-processos-software.pdf
+│   └── presentation/                  # Apresentação de slides Beamer (Identidade UFG/INF)
+│       ├── apresentacao-manual.tex
+│       ├── beamerthemeUfg.sty
+│       └── lib/                       # Logos e layouts
+│
+├── references/                        # Referências Normativas e Diretrizes
+│   ├── iso-12207/                     # Norma ABNT NBR ISO/IEC/IEEE 12207:2021
+│   ├── pdw/                           # Project Definition Workbook (Constituição)
+│   └── guidelines/                    # Instruções e estrutura mínima docente
+│
+├── assets/                            # Ativos Visuais e Diagramas
+│   ├── diagrams/                      # Diagramas arquiteturais e fluxos BPMN
+│   └── logos/                         # Identidades visuais oficiais (UFG, INF, CineSoft)
+│
+├── scripts/                           # Automação de Build e Compilação
+│   ├── montar-manual.sh               # Concatena content/ em manual-processos-software.md
+│   └── compilar.sh                    # Pipeline completo de build (Markdown + LaTeX + Beamer)
+│
+├── manual-processos-software.md       # Documento consolidado contínuo para leitura web
 └── README.md
 ```
 
-### 📂 O que faz cada pasta do repositório
+---
 
-| Pasta / Arquivo | Descrição Objetiva |
-|---|---|
-| [`manual-processos-software.md`](manual-processos-software.md) | **Documento Principal:** Texto consolidado de todo o manual de processos do CineDoom estruturado nos **Capítulos 1 a 5**. |
-| [`fluxo-trabalho.md`](fluxo-trabalho.md) | **Guia de Colaboração:** Passo a passo para criar prompts, validar e incorporar conteúdo. |
-| [`prompts/`](prompts/) | **Engenharia de Prompts:** Prompts de IA por capítulo/bloco temático, template e auditor de qualidade. |
-| [`docs/`](docs/) | **Base de Conhecimento:** Estrutura mínima docente (`estrutura-minima-manual.md`), norma ISO 12207, caderno de decisões (PDW), validações e rascunhos. |
-| [`assets/`](assets/) | **Artefatos Visuais:** Diagramas de processos, modelos BPMN/PlantUML e figuras. |
-| [`trabalho_latex/`](trabalho_latex/) | **Relatório em LaTeX:** Versão formatada segundo as normas da ABNT (NBR 14724). |
-| [`slides_latex/`](slides_latex/) | **Apresentação:** Slides para defesa oral no tema oficial da UFG/INF (Beamer). |
-| [`scripts/`](scripts/) | **Automação:** Script `compilar.sh` para compilar os PDFs localmente. |
+## Guia de Navegação do Repositório
+
+* **[manual-processos-software.md](manual-processos-software.md):** Manual unificado em arquivo único para leitura direta no GitHub.
+* **[content/](content/):** Módulos individuais dos capítulos para edição isolada e revisões via Pull Request.
+* **[specs/](specs/):** Especificações de engenharia detalhadas (ADRs, C4, Prisma, STRIDE, DPIA, QA).
+* **[specs/adrs/](specs/adrs/):** Catálogo formal de Architecture Decision Records (ADR-001 a ADR-011).
+* **[latex/report/](latex/report/):** Código-fonte e PDF do manual conforme a ABNT NBR 14724.
+* **[latex/presentation/](latex/presentation/):** Código-fonte e PDF dos slides Beamer para apresentação perante a banca.
+* **[references/](references/):** Documentos de apoio, norma ISO 12207, PDW e diretrizes da disciplina.
 
 ---
 
-## 🧭 Guia de Navegação
+## Ambiente e Organização de Repositórios
 
-- 🚀 **[fluxo-trabalho.md](fluxo-trabalho.md):** Guia de fluxo de trabalho para colaboração no repositório.
-- 📐 **[docs/estrutura-minima-manual.md](docs/estrutura-minima-manual.md):** Estrutura temática oficial em 5 capítulos exigida pela Profa. Dra. Juliana Zinader.
-- 📖 **[docs/instrucoes-disciplina.md](docs/instrucoes-disciplina.md):** Diretrizes, critérios e avaliação da disciplina.
-- 📄 **[manual-processos-software.md](manual-processos-software.md):** Manual consolidado em Capítulos 1 a 5 para leitura direta no GitHub.
-- 🤖 **[prompts/](prompts/):** Catálogo de prompts de apoio com template e auditor de qualidade.
-- 📋 **[docs/constituicao/project-definition-workbook.md](docs/constituicao/project-definition-workbook.md):** Caderno de premissas e decisões do CineDoom (PDW).
-- 📚 **[docs/norma-iso/](docs/norma-iso/):** Norma ABNT NBR ISO/IEC/IEEE 12207:2021 ([PDF](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e [Markdown](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
-- 📑 **[trabalho_latex/manual-processos-software.tex](trabalho_latex/manual-processos-software.tex):** Código-fonte LaTeX formatado conforme as normas ABNT.
-- 📽️ **[slides_latex/apresentacao-manual.tex](slides_latex/apresentacao-manual.tex):** Slides da apresentação no template Beamer UFG/INF.
-- 🖼️ **[assets/](assets/):** Diagramas de processos e artefatos gráficos.
+A solução CineDoom divide-se em dois repositórios na organização GitHub:
+1. `manual-processos`: Processos de software, documentação ABNT, slides e governança ISO 12207.
+2. `cinedoom-app`: Implementação real do software (Next.js 14, Prisma ORM, PostgreSQL Neon).
 
-## 🛠️ Como Clonar e Trabalhar na Organização (Guia da Equipe)
-
-Para manter a organização padronizada entre todos os membros do grupo (**Carlos, Gabriel, Kayque e Yury**), recomendamos criar uma pasta raiz e clonar os dois repositórios:
-
+### Clonando ambos os projetos localmente:
 ```bash
-# 1. Cria a pasta do projeto e entra nela
+# 1. Cria a pasta raiz do projeto
 mkdir cinedoom && cd cinedoom
 
 # 2. Clona o repositório de documentação e processos
-git clone https://github.com/CINESOFT-SOLUTIONS/manual-processos-software.git
+git clone https://github.com/CINESOFT-SOLUTIONS/manual-processos.git
 
 # 3. Clona o repositório da aplicação real
 git clone https://github.com/CINESOFT-SOLUTIONS/cinedoom-app.git
 ```
 
-### 💻 Abrindo ambos no VS Code:
-Dentro da pasta `cinedoom/`, você pode abrir os dois projetos juntos na mesma janela do VS Code:
+### Abertura unificada no VS Code:
 ```bash
-code cinedoom-app manual-processos-software
+code cinedoom-app manual-processos
 ```
 
 ---
 
-## 📄 Como Compilar os Documentos Localmente
+## Compilação e Build de Documentos
 
-Para compilar o manual em LaTeX e os slides da apresentação com o [Tectonic](https://tectonic-typesetting.github.io/):
+O projeto utiliza um pipeline automatizado que integra a concatenação modular do Markdown e a compilação tipográfica via motor **Tectonic**:
 
+### Compilação completa (Markdown + Relatório ABNT + Slides Beamer):
 ```bash
 ./scripts/compilar.sh
 ```
 
+### Atualização apenas do Markdown consolidado:
+```bash
+./scripts/montar-manual.sh
+```
+
+### Artefatos de saída gerados:
+* `manual-processos-software.md` — Documento Markdown consolidado na raiz.
+* `latex/report/manual-processos-software.pdf` — Relatório diagramado conforme ABNT NBR 14724 / 6024.
+* `latex/presentation/apresentacao-manual.pdf` — Slides oficiais de defesa perante a banca no tema UFG/INF.

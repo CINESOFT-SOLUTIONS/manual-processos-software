@@ -27,6 +27,8 @@ ehthumbs.db
 *.vrb
 
 # PDFs compilados
+latex/report/*.pdf
+latex/presentation/*.pdf
 trabalho_latex/*.pdf
 slides_latex/*.pdf
 

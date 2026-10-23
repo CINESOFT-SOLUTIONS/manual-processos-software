@@ -31,19 +31,19 @@ jobs:
           chmod +x ./scripts/compilar.sh
           ./scripts/compilar.sh
 
-      - name: Verificar se os PDFs foram gerados
+      - name: Validar geração dos artefatos
         run: |
-          test -f trabalho_latex/manual-processos-software.pdf || (echo "❌ Erro: manual-processos-software.pdf não foi gerado!" && exit 1)
-          test -f slides_latex/apresentacao-manual.pdf || (echo "❌ Erro: apresentacao-manual.pdf não foi gerado!" && exit 1)
-          echo "✅ Todos os PDFs foram gerados com sucesso!"
+          test -f latex/report/manual-processos-software.pdf || (echo "[error] manual-processos-software.pdf was not generated." && exit 1)
+          test -f latex/presentation/apresentacao-manual.pdf || (echo "[error] apresentacao-manual.pdf was not generated." && exit 1)
+          echo "[ci:ok] All document artifacts verified successfully."
 
       - name: Upload dos PDFs como Artefatos da Execução
         uses: actions/upload-artifact@v4
         with:
           name: cinedoom-documentos-pdf
           path: |
-            trabalho_latex/manual-processos-software.pdf
-            slides_latex/apresentacao-manual.pdf
+            latex/report/manual-processos-software.pdf
+            latex/presentation/apresentacao-manual.pdf
           retention-days: 30
 
       - name: Publicar Release no GitHub (Apenas em Tags)
@@ -51,8 +51,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            trabalho_latex/manual-processos-software.pdf
-            slides_latex/apresentacao-manual.pdf
+            latex/report/manual-processos-software.pdf
+            latex/presentation/apresentacao-manual.pdf
           generate_release_notes: true
           draft: false
           prerelease: false

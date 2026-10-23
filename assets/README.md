@@ -1,21 +1,22 @@
-# 🖼️ Artefatos Visuais e Diagramas (assets)
+# Ativos Visuais e Diagramas (assets)
 
-Esta pasta destina-se ao armazenamento de diagramas, fluxogramas, esquemas arquiteturais e modelos de processo (BPMN, PlantUML, SVG, PNG e PDF) utilizados no Manual de Processos de Software, organizados por partes (**00 a 04**).
-
----
-
-## 🗂️ Estrutura por Partes
-
-- **[`parte-00/`](parte-00/):** Visão geral, mapa de contexto do CineDoom e limites do sistema.
-- **[`parte-01/`](parte-01/):** Fluxos de processos de acordo (Aquisição e Fornecimento — ISO 6.1).
-- **[`parte-02/`](parte-02/):** Modelos de ciclo de vida, infraestrutura e mapas organizacionais (ISO 6.2).
-- **[`parte-03/`](parte-03/):** Diagramas de fluxo de controle de mudanças, fluxo Git e governança técnica (ISO 6.3).
-- **[`parte-04/`](parte-04/):** Modelos de requisitos, arquitetura (C4/componentes) e design (diagramas de classes UML) (ISO 6.4).
+Esta pasta centraliza os diagramas, modelos visuais de processo e logomarcas oficiais utilizados no Manual de Processos de Software, na apresentação de slides e na documentação técnica.
 
 ---
 
-## 📌 Padrão de Arquivos
+## Estrutura de Diretórios
 
-- **Fontes PlantUML / BPMN:** arquivos `.puml` ou `.bpmn`.
-- **Exportações Vetoriais:** arquivos `.svg` e `.pdf` (para inclusão no LaTeX e no Markdown).
-- **Imagens Gerais:** `.png` em alta resolução.
+* **`diagrams/`:** Diagramas arquiteturais (C4 Model: Contexto, Contêineres, Componentes), fluxos de processo (BPMN), diagramas de sequência de venda atômica e modelos de entidade-relacionamento.
+* **`logos/`:** Logomarcas e identidades visuais institucionais em alta resolução (vetores e PNGs com fundo transparente):
+  * Universidade Federal de Goiás (UFG)
+  * Instituto de Informática (INF/UFG)
+  * Engenharia de Software (ES/INF)
+  * CineSoft Solutions e CineDoom
+
+---
+
+## Padrão de Arquivos e Resolução
+
+* **Exportações Vetoriais:** Arquivos `.svg` e `.pdf` (obrigatórios para inclusão em documentos LaTeX sem perda de nitidez).
+* **Imagens Raster:** Arquivos `.png` em resolução mínima de 300 DPI com canal alfa (transparência).
+* **Código-Fonte de Diagramas:** Textos fonte em PlantUML (`.puml`) ou Mermaid (`.mmd`) devem residir junto aos diagramas ou diretamente incorporados nos documentos Markdown.

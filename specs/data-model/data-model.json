@@ -1,0 +1,179 @@
+{
+  "summary": "Modelo de dados para plataforma B2B SaaS CineDoom: 10 entidades cobrindo multi-tenancy (Tenant), autenticação RBAC (User), catálogo cinematográfico (Film), salas e assentos (Room/Seat), sessões com mapa de status (Session/SessionSeat para SELECT FOR UPDATE anti-double-booking), venda de ingressos (Ticket), compradores com PII/LGPD cifrada (Buyer) e auditoria imutável de cancelamentos (CancellationAudit). Isolamento por tenant_id em shared schema PostgreSQL Neon Serverless.",
+  "entities": [
+    "E-1: Tenant (UUID-PK): id:uuid:!, name:string:!, slug:string:!:idx, active:boolean:!, created_at:timestamp:!",
+    "E-2: User (UUID-PK): id:uuid:!, tenant_id:uuid:!:idx, email:string:!:idx:pii, name:string:!:pii, password_hash:string:!, role:string:!:idx, active:boolean:!, created_at:timestamp:!",
+    "E-3: Film (UUID-PK): id:uuid:!, tenant_id:uuid:!:idx, title:string:!, director:string:?, duration_minutes:int:!, rating:string:?, synopsis:text:?, poster_url:string:?, created_at:timestamp:!, updated_at:timestamp:!",
+    "E-4: Room (UUID-PK): id:uuid:!, tenant_id:uuid:!:idx, name:string:!, capacity:int:!, layout_metadata:jsonb:?, created_at:timestamp:!, updated_at:timestamp:!",
+    "E-5: Seat (UUID-PK): id:uuid:!, room_id:uuid:!:idx, tenant_id:uuid:!:idx, row_label:string:!, column_number:int:!, seat_code:string:!, status:string:!, created_at:timestamp:!",
+    "E-6: Session (UUID-PK): id:uuid:!, tenant_id:uuid:!:idx, film_id:uuid:!:idx, room_id:uuid:!:idx, starts_at:timestamp:!:idx, price:numeric:!, status:string:!:idx, created_at:timestamp:!, updated_at:timestamp:!",
+    "E-7: SessionSeat (UUID-PK): id:uuid:!, session_id:uuid:!:idx, seat_id:uuid:!:idx, tenant_id:uuid:!:idx, status:string:!:idx, updated_at:timestamp:!",
+    "E-8: Buyer (UUID-PK): id:uuid:!, tenant_id:uuid:!:idx, name:string:!:pii, email:string:!:idx:pii, cpf_hash:string:!:idx, cpf_encrypted:text:!:pii, lgpd_consent_at:timestamp:!, created_at:timestamp:!",
+    "E-9: Ticket (UUID-PK): id:uuid:!, tenant_id:uuid:!:idx, session_id:uuid:!:idx, seat_id:uuid:!:idx, buyer_id:uuid:!:idx, sold_by_user_id:uuid:!:idx, status:string:!:idx, price:numeric:!, sold_at:timestamp:!, created_at:timestamp:!",
+    "E-10: CancellationAudit (UUID-PK): id:uuid:!, tenant_id:uuid:!:idx, ticket_id:uuid:!:idx, cancelled_by_user_id:uuid:!:idx, reason:text:!, cancelled_at:timestamp:!"
+  ],
+  "relationships": [
+    "R-1: Tenant oneToMany User (tenant_id, CASCADE)",
+    "R-2: Tenant oneToMany Film (tenant_id, CASCADE)",
+    "R-3: Tenant oneToMany Room (tenant_id, CASCADE)",
+    "R-4: Tenant oneToMany Session (tenant_id, CASCADE)",
+    "R-5: Room oneToMany Seat (room_id, CASCADE)",
+    "R-6: Film oneToMany Session (film_id, RESTRICT)",
+    "R-7: Room oneToMany Session (room_id, RESTRICT)",
+    "R-8: Session oneToMany SessionSeat (session_id, CASCADE)",
+    "R-9: Seat oneToMany SessionSeat (seat_id, RESTRICT)",
+    "R-10: Session oneToMany Ticket (session_id, RESTRICT)",
+    "R-11: Buyer oneToMany Ticket (buyer_id, RESTRICT)",
+    "R-12: User oneToMany Ticket (sold_by_user_id, RESTRICT)",
+    "R-13: Ticket oneToOne CancellationAudit (ticket_id, RESTRICT)",
+    "R-14: User oneToMany CancellationAudit (cancelled_by_user_id, RESTRICT)"
+  ],
+  "ddl": "-- ============================================================\n-- CineDoom SaaS — DDL PostgreSQL (Neon Serverless)\n-- ============================================================\n\nCREATE EXTENSION IF NOT EXISTS pgcrypto;\n\n-- ------------------------------------------------------------\n-- E-1: Tenant\n-- ------------------------------------------------------------\nCREATE TABLE tenants (\n  id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),\n  name        VARCHAR(255) NOT NULL,\n  slug        VARCHAR(100) NOT NULL UNIQUE,\n  active      BOOLEAN      NOT NULL DEFAULT true,\n  created_at  TIMESTAMPTZ  NOT NULL DEFAULT NOW()\n);\n\n-- ------------------------------------------------------------\n-- E-2: User (Atendente / Gerente)\n-- ------------------------------------------------------------\nCREATE TABLE users (\n  id            UUID        PRIMARY KEY DEFAULT gen_random_uuid(),\n  tenant_id     UUID        NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,\n  email         VARCHAR(255) NOT NULL,\n  name          VARCHAR(255) NOT NULL,\n  password_hash VARCHAR(255) NOT NULL,\n  role          VARCHAR(20)  NOT NULL CHECK (role IN ('ATENDENTE','GERENTE')),\n  active        BOOLEAN      NOT NULL DEFAULT true,\n  created_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW(),\n  UNIQUE (tenant_id, email)\n);\nCREATE INDEX idx_users_tenant_id ON users(tenant_id);\nCREATE INDEX idx_users_role      ON users(role);\n\n-- ------------------------------------------------------------\n-- E-3: Film\n-- ------------------------------------------------------------\nCREATE TABLE films (\n  id               UUID         PRIMARY KEY DEFAULT gen_random_uuid(),\n  tenant_id        UUID         NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,\n  title            VARCHAR(255) NOT NULL,\n  director         VARCHAR(255),\n  duration_minutes INT          NOT NULL,\n  rating           VARCHAR(10),\n  synopsis         TEXT,\n  poster_url       VARCHAR(500),\n  created_at       TIMESTAMPTZ  NOT NULL DEFAULT NOW(),\n  updated_at       TIMESTAMPTZ  NOT NULL DEFAULT NOW()\n);\nCREATE INDEX idx_films_tenant_id ON films(tenant_id);\n\n-- ------------------------------------------------------------\n-- E-4: Room\n-- ------------------------------------------------------------\nCREATE TABLE rooms (\n  id              UUID         PRIMARY KEY DEFAULT gen_random_uuid(),\n  tenant_id       UUID         NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,\n  name            VARCHAR(100) NOT NULL,\n  capacity        INT          NOT NULL,\n  layout_metadata JSONB,\n  created_at      TIMESTAMPTZ  NOT NULL DEFAULT NOW(),\n  updated_at      TIMESTAMPTZ  NOT NULL DEFAULT NOW()\n);\nCREATE INDEX idx_rooms_tenant_id ON rooms(tenant_id);\n\n-- ------------------------------------------------------------\n-- E-5: Seat\n-- ------------------------------------------------------------\nCREATE TABLE seats (\n  id            UUID        PRIMARY KEY DEFAULT gen_random_uuid(),\n  room_id       UUID        NOT NULL REFERENCES rooms(id) ON DELETE CASCADE,\n  tenant_id     UUID        NOT NULL,\n  row_label     VARCHAR(10)  NOT NULL,\n  column_number INT          NOT NULL,\n  seat_code     VARCHAR(20)  NOT NULL,\n  status        VARCHAR(20)  NOT NULL DEFAULT 'AVAILABLE'\n                             CHECK (status IN ('AVAILABLE','BLOCKED')),\n  created_at    TIMESTAMPTZ  NOT NULL DEFAULT NOW(),\n  UNIQUE (room_id, row_label, column_number)\n);\nCREATE INDEX idx_seats_room_id   ON seats(room_id);\nCREATE INDEX idx_seats_tenant_id ON seats(tenant_id);\n\n-- ------------------------------------------------------------\n-- E-6: Session\n-- ------------------------------------------------------------\nCREATE TABLE sessions (\n  id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),\n  tenant_id  UUID        NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,\n  film_id    UUID        NOT NULL REFERENCES films(id)   ON DELETE RESTRICT,\n  room_id    UUID        NOT NULL REFERENCES rooms(id)   ON DELETE RESTRICT,\n  starts_at  TIMESTAMPTZ NOT NULL,\n  price      NUMERIC(10,2) NOT NULL,\n  status     VARCHAR(20)  NOT NULL DEFAULT 'SCHEDULED'\n             CHECK (status IN ('SCHEDULED','OPEN','CLOSED','CANCELLED')),\n  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),\n  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\nCREATE INDEX idx_sessions_tenant_id ON sessions(tenant_id);\nCREATE INDEX idx_sessions_starts_at ON sessions(starts_at);\nCREATE INDEX idx_sessions_status    ON sessions(status);\nCREATE INDEX idx_sessions_film_id   ON sessions(film_id);\nCREATE INDEX idx_sessions_room_id   ON sessions(room_id);\n\n-- ------------------------------------------------------------\n-- E-7: SessionSeat  (pré-populada na criação da sessão;\n--                    SELECT FOR UPDATE aqui garante anti-double-booking)\n-- ------------------------------------------------------------\nCREATE TABLE session_seats (\n  id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),\n  session_id UUID        NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,\n  seat_id    UUID        NOT NULL REFERENCES seats(id)    ON DELETE RESTRICT,\n  tenant_id  UUID        NOT NULL,\n  status     VARCHAR(20) NOT NULL DEFAULT 'AVAILABLE'\n             CHECK (status IN ('AVAILABLE','SOLD','BLOCKED')),\n  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),\n  UNIQUE (session_id, seat_id)\n);\nCREATE INDEX idx_session_seats_session_id        ON session_seats(session_id);\nCREATE INDEX idx_session_seats_session_status    ON session_seats(session_id, status);\nCREATE INDEX idx_session_seats_tenant_id         ON session_seats(tenant_id);\n\n-- ------------------------------------------------------------\n-- E-8: Buyer  (PII: nome, e-mail, CPF cifrado AES-256-GCM)\n-- ------------------------------------------------------------\nCREATE TABLE buyers (\n  id               UUID         PRIMARY KEY DEFAULT gen_random_uuid(),\n  tenant_id        UUID         NOT NULL REFERENCES tenants(id) ON DELETE RESTRICT,\n  name             VARCHAR(255) NOT NULL,          -- PII\n  email            VARCHAR(255) NOT NULL,          -- PII\n  cpf_hash         CHAR(64)     NOT NULL,          -- SHA-256 hex para lookup\n  cpf_encrypted    TEXT         NOT NULL,          -- AES-256-GCM (PII)\n  lgpd_consent_at  TIMESTAMPTZ  NOT NULL,\n  created_at       TIMESTAMPTZ  NOT NULL DEFAULT NOW()\n);\nCREATE INDEX idx_buyers_tenant_id ON buyers(tenant_id);\nCREATE INDEX idx_buyers_cpf_hash  ON buyers(cpf_hash);\nCREATE INDEX idx_buyers_tenant_cpf ON buyers(tenant_id, cpf_hash);\n\n-- ------------------------------------------------------------\n-- E-9: Ticket\n-- ------------------------------------------------------------\nCREATE TABLE tickets (\n  id               UUID         PRIMARY KEY DEFAULT gen_random_uuid(),\n  tenant_id        UUID         NOT NULL REFERENCES tenants(id) ON DELETE RESTRICT,\n  session_id       UUID         NOT NULL REFERENCES sessions(id) ON DELETE RESTRICT,\n  seat_id          UUID         NOT NULL REFERENCES seats(id)    ON DELETE RESTRICT,\n  buyer_id         UUID         NOT NULL REFERENCES buyers(id)   ON DELETE RESTRICT,\n  sold_by_user_id  UUID         NOT NULL REFERENCES users(id)    ON DELETE RESTRICT,\n  status           VARCHAR(20)  NOT NULL DEFAULT 'SOLD'\n                   CHECK (status IN ('SOLD','CANCELLED')),\n  price            NUMERIC(10,2) NOT NULL,\n  sold_at          TIMESTAMPTZ  NOT NULL DEFAULT NOW(),\n  created_at       TIMESTAMPTZ  NOT NULL DEFAULT NOW(),\n  UNIQUE (session_id, seat_id)   -- garante unicidade no DB além do SELECT FOR UPDATE\n);\nCREATE INDEX idx_tickets_tenant_id       ON tickets(tenant_id);\nCREATE INDEX idx_tickets_session_id      ON tickets(session_id);\nCREATE INDEX idx_tickets_buyer_id        ON tickets(buyer_id);\nCREATE INDEX idx_tickets_status          ON tickets(status);\nCREATE INDEX idx_tickets_sold_by_user_id ON tickets(sold_by_user_id);\n\n-- ------------------------------------------------------------\n-- E-10: CancellationAudit  (imutável — sem UPDATE/DELETE)\n-- ------------------------------------------------------------\nCREATE TABLE cancellation_audits (\n  id                   UUID        PRIMARY KEY DEFAULT gen_random_uuid(),\n  tenant_id            UUID        NOT NULL,\n  ticket_id            UUID        NOT NULL REFERENCES tickets(id) ON DELETE RESTRICT,\n  cancelled_by_user_id UUID        NOT NULL REFERENCES users(id)   ON DELETE RESTRICT,\n  reason               TEXT        NOT NULL,\n  cancelled_at         TIMESTAMPTZ NOT NULL DEFAULT NOW()\n);\nCREATE INDEX idx_cancellation_audits_tenant_id  ON cancellation_audits(tenant_id);\nCREATE INDEX idx_cancellation_audits_ticket_id  ON cancellation_audits(ticket_id);\nCREATE INDEX idx_cancellation_audits_user_id    ON cancellation_audits(cancelled_by_user_id);\n",
+  "retentionPolicy": [
+    {
+      "entity": "Tenant",
+      "daysToRetain": "indefinite",
+      "rationale": "Registro do cliente B2B; mantido enquanto contrato ativo e por prazo indeterminado para histórico contratual CineDoom."
+    },
+    {
+      "entity": "User",
+      "daysToRetain": "indefinite",
+      "rationale": "Conta de usuário vinculada ao tenant; retida enquanto tenant ativo para rastreabilidade de ações RBAC.",
+      "lgpdBasis": "Execução de contrato entre CineDoom e cinema tenant — Art. 7º, V LGPD."
+    },
+    {
+      "entity": "Film",
+      "daysToRetain": "indefinite",
+      "rationale": "Catálogo operacional do tenant; sem PII; retido enquanto tenant ativo."
+    },
+    {
+      "entity": "Room",
+      "daysToRetain": "indefinite",
+      "rationale": "Cadastro estrutural de salas; referenciado por sessões históricas; sem PII."
+    },
+    {
+      "entity": "Seat",
+      "daysToRetain": "indefinite",
+      "rationale": "Layout físico de assentos; referenciado por tickets históricos; sem PII."
+    },
+    {
+      "entity": "Session",
+      "daysToRetain": 1825,
+      "rationale": "Sessões cinematográficas compõem histórico operacional; retidas 5 anos para auditoria e disputas contratuais."
+    },
+    {
+      "entity": "SessionSeat",
+      "daysToRetain": 1825,
+      "rationale": "Status de assentos por sessão; retido junto com Session para reconstrução de estado histórico."
+    },
+    {
+      "entity": "Buyer",
+      "daysToRetain": 1825,
+      "rationale": "Dados de comprador (nome, e-mail, CPF) retidos 5 anos por obrigação legal (CDC Art. 26/27) e contratual. Exclusão/anonimização executada exclusivamente pela equipe CineDoom via processo interno sob solicitação LGPD Art. 18.",
+      "lgpdBasis": "Obrigação legal (CDC) e execução de contrato de compra de ingresso — Art. 7º, II e V LGPD. Consentimento explícito coletado no campo lgpd_consent_at."
+    },
+    {
+      "entity": "Ticket",
+      "daysToRetain": 1825,
+      "rationale": "Registro de venda; base para disputas, estornos e auditoria fiscal; retido 5 anos alinhado ao prazo prescricional do CDC."
+    },
+    {
+      "entity": "CancellationAudit",
+      "daysToRetain": 2555,
+      "rationale": "Registro imutável de auditoria de cancelamentos; retido 7 anos seguindo prazo prescricional de ações civis (CC Art. 205) e melhores práticas de compliance."
+    }
+  ],
+  "indexes": [
+    {
+      "entity": "User",
+      "fields": [
+        "tenant_id",
+        "email"
+      ],
+      "kind": "btree",
+      "unique": true
+    },
+    {
+      "entity": "SessionSeat",
+      "fields": [
+        "session_id",
+        "status"
+      ],
+      "kind": "btree",
+      "unique": false
+    },
+    {
+      "entity": "Buyer",
+      "fields": [
+        "tenant_id",
+        "cpf_hash"
+      ],
+      "kind": "btree",
+      "unique": false
+    },
+    {
+      "entity": "Session",
+      "fields": [
+        "tenant_id",
+        "starts_at"
+      ],
+      "kind": "btree",
+      "unique": false
+    },
+    {
+      "entity": "Ticket",
+      "fields": [
+        "session_id",
+        "seat_id"
+      ],
+      "kind": "btree",
+      "unique": true
+    },
+    {
+      "entity": "CancellationAudit",
+      "fields": [
+        "cancelled_at"
+      ],
+      "kind": "brin",
+      "unique": false
+    }
+  ],
+  "clarifications": [
+    {
+      "id": "Q-sessionSeat-prepopulate",
+      "prompt": "SessionSeat deve ser pré-populada (uma linha por assento) no momento de criação da Sessão, ou criada on-demand no primeiro acesso ao assento?",
+      "options": [
+        {
+          "label": "Pré-populada na criação da Sessão (recomendado)",
+          "description": "Ao criar uma Session, o sistema insere automaticamente N linhas em session_seats (uma por Seat da Room). Garante que SELECT FOR UPDATE sempre encontra a linha, simplifica o polling de mapa (query única por session_id) e evita race condition de INSERT concorrente. Custo: criação de sessão mais lenta para salas grandes (ex: 300 assentos = 300 INSERTs em batch)."
+        },
+        {
+          "label": "Criada on-demand no primeiro acesso",
+          "description": "SessionSeat é inserida apenas quando o Atendente toca o assento pela primeira vez. Reduz INSERTs na criação da sessão, mas exige INSERT OR IGNORE / ON CONFLICT no fluxo de venda e complica o polling do mapa (ausência de linha = disponível). Aumenta risco de race condition no INSERT simultâneo antes do UPDATE."
+        }
+      ],
+      "allowFreeText": false,
+      "context": "A estratégia impacta a query de polling a cada 2s (AC-2) e o fluxo de trava ACID (AC-1). SessionSeat pré-populada é a abordagem padrão para SELECT FOR UPDATE com Prisma sem workarounds."
+    },
+    {
+      "id": "Q-soft-delete-buyer",
+      "prompt": "Para o direito ao esquecimento LGPD (Art. 18), qual estratégia de exclusão/anonimização de Buyer deve ser implementada no schema?",
+      "options": [
+        {
+          "label": "Anonimização in-place (soft-anonymize)",
+          "description": "Um processo interno CineDoom sobrescreve name, email, cpf_hash e cpf_encrypted com valores hash/nulos e marca um campo anonymized_at. O registro Buyer permanece no banco para manter integridade referencial com Ticket e CancellationAudit. Tickets e auditorias preservam histórico operacional sem PII."
+        },
+        {
+          "label": "Hard delete com SET NULL em FK",
+          "description": "O registro Buyer é deletado fisicamente. Requer buyer_id nullable em tickets e cancellation_audits com ON DELETE SET NULL. Perde rastreabilidade de qual comprador detinha o ticket, o que pode conflitar com obrigações de retenção do CDC (5 anos) e dificultar disputas."
+        },
+        {
+          "label": "Tabela separada BuyerAnonymizationLog",
+          "description": "Mantém Buyer com anonimização in-place e cria tabela auxiliar registrando data e base legal de cada solicitação de apagamento, criando trilha de conformidade auditável para fiscalização da ANPD."
+        }
+      ],
+      "allowFreeText": false,
+      "context": "A decisão afeta o schema de Buyer (campos nullable vs NOT NULL), as FKs em Ticket e CancellationAudit (ON DELETE RESTRICT vs SET NULL) e o processo interno da equipe CineDoom para execução de direitos LGPD."
+    }
+  ]
+}
