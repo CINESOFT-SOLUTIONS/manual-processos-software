@@ -34,6 +34,7 @@ Os artefatos aqui consolidados foram produzidos pela esteira de agentes canônic
 * **[`quality/test-strategy.md`](quality/test-strategy.md):** Pirâmide de testes, matriz de rastreabilidade bidirecional cobrindo os critérios de aceite (AC-1 a AC-8) e especificação do teste de carga concorrente (50 threads simultâneas com zero double-booking).
 
 ### 6. Planejamento Operacional e DevOps
+* **[`planning/sprints-e-backlog.md`](planning/sprints-e-backlog.md):** Plano Mestre de Sprints, Backlog e Roadmap oficial do Kanban CineDoom com 30 issues distribuidas, datas de inicio/termino e matriz da equipe.
 * **[`planning/tech-lead-plan.md`](planning/tech-lead-plan.md):** Detalhamento de 20 tarefas técnicas de desenvolvimento (`TASK-1` a `TASK-20`), caminho crítico e estimativa total de 102 horas.
 * **[`planning/devops-spec.md`](planning/devops-spec.md):** Configuração de CI/CD (GitHub Actions), provisionamento na Vercel, banco Neon e observabilidade via Axiom.
 
