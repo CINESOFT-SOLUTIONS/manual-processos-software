@@ -1,20 +1,34 @@
 # -----------------------------------------------------------------------------
 # CODEOWNERS — CineSoft Solutions (CineDoom)
-# Governança de aprovações conforme a Matriz RACI do Capítulo 3 do Manual
+# Governanca de aprovacoes conforme a Matriz RACI do Capitulo 3 do Manual
 # -----------------------------------------------------------------------------
 
-# Regra geral: Toda alteração requer revisão de membros da equipe
-* @gabrlou @carlosfreire @kayquevicente @yurynogueira
+# Regra geral: Toda alteracao requer revisao de membros da equipe
+* @gabrlou @carloseduduu @K4yquee @YuryNog
 
-# Documentos formais de governança e decisões constitucionais (PDW)
-docs/constituicao/ @gabrlou
-docs/norma-iso/ @gabrlou
+# Capitulos do Manual de Processos (Docs-as-Code SSOT)
+content/ @gabrlou @carloseduduu @K4yquee @YuryNog
+content/00-identificacao.md @gabrlou
+content/01-apresentacao-software.md @YuryNog
+content/02-processos-acordo.md @YuryNog
+content/03-processos-organizacionais.md @K4yquee
+content/04-gerenciamento-tecnico.md @K4yquee
+content/05-processos-tecnicos.md @YuryNog @gabrlou
 
-# Manual oficial e relatórios acadêmicos
-manual-processos-software.md @gabrlou @carlosfreire @kayquevicente @yurynogueira
-trabalho_latex/ @gabrlou @yurynogueira
-slides_latex/ @gabrlou @kayquevicente
+# Especificacoes de Engenharia e Decisoes Arquiteturais (ADRs)
+specs/ @gabrlou @carloseduduu
+specs/adrs/ @gabrlou
+specs/planning/ @gabrlou @K4yquee
 
-# Automações de compilação e CI
+# Diagramacao LaTeX e Apresentacao Beamer
+latex/ @K4yquee @gabrlou
+latex/report/ @K4yquee
+latex/presentation/ @K4yquee
+
+# Automacoes de compilacao, montagem e CI
 scripts/ @gabrlou
-.github/workflows/ @gabrlou
+.github/ @gabrlou
+
+# Ativos visuais e referencias normativas
+assets/ @gabrlou
+references/ @K4yquee @YuryNog

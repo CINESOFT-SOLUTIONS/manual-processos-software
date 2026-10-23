@@ -148,15 +148,11 @@ ensure_tectonic || true
 # Etapa 1: Compilação do Relatório ABNT
 if [ -f "$ROOT_DIR/latex/report/manual-processos-software.tex" ]; then
     compile_document "$ROOT_DIR/latex/report" "manual-processos-software.tex" "${BG_BLUE} LATEX ${RESET}"
-elif [ -f "$ROOT_DIR/trabalho_latex/manual-processos-software.tex" ]; then
-    compile_document "$ROOT_DIR/trabalho_latex" "manual-processos-software.tex" "${BG_BLUE} LATEX ${RESET}"
 fi
 
 # Etapa 2: Compilação dos Slides Beamer
 if [ -f "$ROOT_DIR/latex/presentation/apresentacao-manual.tex" ]; then
     compile_document "$ROOT_DIR/latex/presentation" "apresentacao-manual.tex" "${BG_YELLOW} SLIDES ${RESET}"
-elif [ -f "$ROOT_DIR/slides_latex/apresentacao-manual.tex" ]; then
-    compile_document "$ROOT_DIR/slides_latex" "apresentacao-manual.tex" "${BG_YELLOW} SLIDES ${RESET}"
 fi
 
 END_TIME=$(date +%s)

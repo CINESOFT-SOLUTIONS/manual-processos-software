@@ -29,8 +29,6 @@ ehthumbs.db
 # PDFs compilados
 latex/report/*.pdf
 latex/presentation/*.pdf
-trabalho_latex/*.pdf
-slides_latex/*.pdf
 
 # Binários locais de scripts
 scripts/bin/

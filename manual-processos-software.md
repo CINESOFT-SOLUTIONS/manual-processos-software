@@ -43,7 +43,7 @@
 | 24/09/2026 | 1.3 | Revisão técnica: correção de contradições, terminologia, justificativas de aquisição e índice de aderência. |
 | 08/10/2026 | 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento Técnico). |
 | 17/10/2026 | 1.5 | Reestruturação da capa e padronização do histórico de versões conforme diretrizes docentes. |
-| 22/10/2026 | 1.6 | Padronização formal da estrutura em Capítulos 1 a 5 e incorporação das diretrizes de `docs/estrutura-minima-manual.md`. |
+| 22/10/2026 | 1.6 | Padronização formal da estrutura em Capítulos 1 a 5 e incorporação das diretrizes de `references/guidelines/estrutura-minima-manual.md`. |
 
 ---
 
@@ -51,9 +51,9 @@
 
 ## Documentos de Referência e Controle
 
-- **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`docs/norma-iso/abnt-iso-iec-12207-2021.pdf`](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e transcrição em [`docs/norma-iso/abnt-iso-iec-12207-2021.md`](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
+- **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`references/iso-12207/abnt-iso-iec-12207-2021.pdf`](references/iso-12207/abnt-iso-iec-12207-2021.pdf) e transcrição em [`references/iso-12207/abnt-iso-iec-12207-2021.md`](references/iso-12207/abnt-iso-iec-12207-2021.md)).
 - **Fonte de Decisões Técnicas:** Especificações Formais de Engenharia e Catálogo de Decisões de Arquitetura (ADRs, disponíveis em [`specs/`](specs/)).
-- **Diretrizes Pedagógicas:** [`docs/instrucoes-disciplina.md`](docs/instrucoes-disciplina.md) e [`docs/estrutura-minima-manual.md`](docs/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
+- **Diretrizes Pedagógicas:** [`references/guidelines/instrucoes-disciplina.md`](references/guidelines/instrucoes-disciplina.md) e [`references/guidelines/estrutura-minima-manual.md`](docs/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
 
 ---
 

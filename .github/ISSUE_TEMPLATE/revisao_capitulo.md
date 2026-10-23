@@ -1,30 +1,29 @@
 ---
-name: 📖 Revisão ou Elaboração de Capítulo
-about: Proposta de elaboração, incremento ou revisão em um dos Capítulos do Manual (1 a 5).
-title: 'docs(cap-XX): [resumo da melhoria ou elaboração]'
-labels: ['documentação', 'manual']
+name: Revisao ou Elaboracao de Capitulo
+about: Proposta de elaboracao, incremento ou revisao em um dos Capitulos do Manual (1 a 5).
+title: 'docs(cap-XX): [resumo da melhoria ou elaboracao]'
+labels: ['tipo:docs', 'iso-12207']
 assignees: ''
 ---
 
-## 🎯 Objetivo da Atividade
-*Descreva com clareza qual seção do manual precisa ser criada, revisada ou ajustada.*
+## Objetivo da Atividade
+<!-- Descreva com clareza qual secao do manual precisa ser criada, revisada ou ajustada. -->
 
-## 📚 Capítulo e Seção Alvo
-- **Capítulo:** (ex.: Capítulo 3 – Processos Organizacionais Habilitadores)
-- **Subseção:** (ex.: 3.4 Papéis, competências e plano de capacitação)
-- **Cláusula ISO 12207:** (ex.: 6.2.4)
+## Capitulo e Secao Alvo
+- **Capitulo:** (ex.: Capitulo 4 – Processos de Gerenciamento Tecnico)
+- **Arquivo Fonte:** (ex.: content/04-gerenciamento-tecnico.md)
+- **Clausula ISO 12207:2021:** (ex.: 6.3.1 Planejamento do Projeto)
 
-## 📋 Diretrizes Docentes e Requisitos Mínimos
-- [ ] Verificado em `docs/estrutura-minima-manual.md`
-- [ ] Verificado nos slides da aula correspondente da Profa. Dra. Juliana Zinader
+## Diretrizes Pedagogicas e Requisitos Minimos
+- [ ] Verificado em `references/guidelines/estrutura-minima-manual.md`
+- [ ] Verificado nas diretrizes docentes da Profa. Dra. Juliana Zinader
 
-## 🔍 Alterações Propostas
-*Liste os tópicos, tabelas ou diagramas a serem adicionados:*
+## Alteracoes Propostas
 1. 
 2. 
 
-## ✅ Critérios de Aceite para Fechamento
-- [ ] Rascunho revisado pelo grupo sem inconsistências.
-- [ ] Laudo do auditor de qualidade arquivado em `docs/validacoes/`.
-- [ ] Conteúdo transferido para `manual-processos-software.md`.
-- [ ] PDF compilado com sucesso via `./scripts/compilar.sh`.
+## Criterios de Aceite para Fechamento (DoD)
+- [ ] Conteudo redigido e revisado no arquivo correspondente em `content/`.
+- [ ] Script `./scripts/montar-manual.sh` executado e `manual-processos-software.md` atualizado.
+- [ ] Script `./scripts/compilar.sh` executado com sucesso gerando os PDFs do Relatorio ABNT e Apresentacao Beamer.
+- [ ] Aprovacao em revisao por pares da equipe.

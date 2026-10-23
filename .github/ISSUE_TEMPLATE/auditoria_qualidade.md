@@ -1,30 +1,30 @@
 ---
-name: 🛡️ Auditoria de Qualidade / Não-Conformidade
-about: Registro formal de auditoria interna, não-conformidade normativa ou oportunidade de melhoria.
-title: 'qa(auditoria): [processo/capítulo auditado]'
-labels: ['qualidade', 'auditoria', 'iso-12207']
+name: Auditoria de Qualidade / Nao-Conformidade
+about: Registro formal de auditoria interna, nao-conformidade normativa ISO 12207 ou oportunidade de melhoria.
+title: 'qa(auditoria): [processo/capitulo auditado]'
+labels: ['tipo:docs', 'iso-12207']
 assignees: ''
 ---
 
-## 🔍 Identificação da Auditoria
-- **Data da Auditoria:** DD/MM/AAAA
-- **Auditor Responsável:** 
-- **Capítulo / Processo Auditado:** (ex.: Capítulo 4.2 – Gestão de Riscos / Cláusula 6.3.4)
+## Identificacao da Auditoria
+- **Data da Auditoria:** AAAA-MM-DD
+- **Auditor Responsavel:** (ex.: @K4yquee, @YuryNog)
+- **Capitulo / Processo Auditado:** (ex.: Capitulo 4.2 – Gestao de Riscos / Clausula 6.3.4)
 
-## 📑 Evidência Inspecionada
-*Indique o trecho do manual, artefato visual ou documento verificado.*
+## Evidencia Inspecionada
+<!-- Indique o trecho do manual em content/, especificacao em specs/ ou artefato compilado verificado. -->
 
-## ⚠️ Constatação
-- [ ] **Não-Conformidade Maior:** Contradição direta com a norma ISO 12207 ou com o PDW.
-- [ ] **Não-Conformidade Menor:** Falta de clareza, prolixidade ou ausência de justificativa técnica.
-- [ ] **Oportunidade de Melhoria:** Sugestão de aperfeiçoamento visual ou melhoria na rastreabilidade.
+## Constatacao
+- [ ] **Nao-Conformidade Maior:** Contradicao direta com a norma ISO/IEC/IEEE 12207:2021 ou com as especificacoes de engenharia.
+- [ ] **Nao-Conformidade Menor:** Falta de clareza tecnica, prolixidade ou ausencia de justificativa formal.
+- [ ] **Oportunidade de Melhoria:** Aperfeicoamento visual em diagramas, tabelas ou rastreabilidade.
 
-### Descrição do Problema:
-*Explique objetivamente o que foi identificado como inconsistente.*
+### Descricao do Problema:
+<!-- Explique objetivamente o que foi identificado como inconsistente. -->
 
-## 🛠️ Ação Corretiva Proposta
-*O que a equipe precisa fazer para corrigir a não-conformidade?*
+## Acao Corretiva Proposta
+<!-- O que a equipe precisa fazer para corrigir a nao-conformidade no arquivo de origem em content/ ou specs/? -->
 
-## 🏁 Critério de Resolução
-- [ ] Ajuste realizado no manual oficial.
-- [ ] Novo laudo de conformidade gerado.
+## Criterio de Resolucao
+- [ ] Ajuste realizado no arquivo fonte em `content/` ou `specs/`.
+- [ ] Script `./scripts/montar-manual.sh` e `./scripts/compilar.sh` executados sem erros.
