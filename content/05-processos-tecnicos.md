@@ -17,7 +17,7 @@ $$\text{Necessidade do Negócio} \longrightarrow \text{RF} \longrightarrow \text
 Os critérios de aceitação para o fluxo principal exigem: seleção livre de assento no mapa, confirmação da compra com transação gravada no banco, emissão do código identificador do ingresso e bloqueio imediato do assento para novos clientes.
 
 ### 5.1.4 Registro de stakeholders e necessidades elicitadas
-Mapeamento formal dos interesses de proprietários de cinemas, gerentes operacionais e atendentes de bilheteria, com registro de prioridades no PDW.
+Mapeamento formal dos interesses de proprietários de cinemas, gerentes operacionais e atendentes de bilheteria, com registro de prioridades na matriz de requisitos e critérios de aceite do projeto.
 
 ## 5.2 Arquitetura e Design
 

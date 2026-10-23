@@ -33,13 +33,13 @@
 
 # Histórico de Versões do Documento
 
-> **Documento Controlado:** Qualquer alteração neste manual deve ser formalmente registrada nesta tabela e, quando impactar definições de negócio, arquitetura ou escopo, refletida no registro de decisões do *Project Definition Workbook* (PDW, seção 50).
+> **Documento Controlado:** Qualquer alteração neste manual deve ser formalmente registrada nesta tabela e, quando impactar definições de negócio, arquitetura ou escopo, refletida no catálogo de decisões de arquitetura e especificações do projeto (`specs/`).
 
 | Data | Versão | Alteração Realizada |
 | :---: | :---: | :--- |
 | 10/09/2026 | 1.0 | Criação do documento e elaboração da capa. |
 | 16/09/2026 | 1.1 | Elaboração dos itens do Capítulo 1 (Apresentação do Software). |
-| 24/09/2026 | 1.2 | Alinhamento dos Capítulos 1, 2 e 3 ao PDW e à norma ABNT NBR ISO/IEC/IEEE 12207:2021. |
+| 24/09/2026 | 1.2 | Alinhamento dos Capítulos 1, 2 e 3 às especificações de engenharia e à norma ABNT NBR ISO/IEC/IEEE 12207:2021. |
 | 24/09/2026 | 1.3 | Revisão técnica: correção de contradições, terminologia, justificativas de aquisição e índice de aderência. |
 | 08/10/2026 | 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento Técnico). |
 | 17/10/2026 | 1.5 | Reestruturação da capa e padronização do histórico de versões conforme diretrizes docentes. |
@@ -52,7 +52,7 @@
 ## Documentos de Referência e Controle
 
 - **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`docs/norma-iso/abnt-iso-iec-12207-2021.pdf`](docs/norma-iso/abnt-iso-iec-12207-2021.pdf) e transcrição em [`docs/norma-iso/abnt-iso-iec-12207-2021.md`](docs/norma-iso/abnt-iso-iec-12207-2021.md)).
-- **Fonte de Decisões:** Project Definition Workbook (PDW, disponível em [`docs/constituicao/project-definition-workbook.md`](docs/constituicao/project-definition-workbook.md)). Este documento é a fonte única da verdade para o estudo de caso; em caso de conflito, prevalece o PDW.
+- **Fonte de Decisões Técnicas:** Especificações Formais de Engenharia e Catálogo de Decisões de Arquitetura (ADRs, disponíveis em [`specs/`](specs/)).
 - **Diretrizes Pedagógicas:** [`docs/instrucoes-disciplina.md`](docs/instrucoes-disciplina.md) e [`docs/estrutura-minima-manual.md`](docs/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
 
 ---
@@ -123,7 +123,7 @@ Este índice relaciona cada capítulo do manual ao processo normativo correspond
 
 ## Terminologia adotada
 
-Para garantir consistência interna (regra de terminologia do PDW, seção 46.3), este manual adota os seguintes termos padronizados:
+Para garantir consistência interna e rigor normativo conforme a ISO/IEC/IEEE 12207:2021, este manual adota os seguintes termos padronizados:
 
 | Termo | Significado |
 |---|---|
@@ -360,7 +360,7 @@ A gestão da qualidade (Cláusula 6.2.5) define critérios objetivos para assegu
 ## 3.6 Estratégia de gestão do conhecimento
 
 A gestão do conhecimento (Cláusula 6.2.6) assegura que ativos intelectuais sejam preservados e reutilizados:
-- **Fonte Única da Verdade:** O PDW (`docs/constituicao/project-definition-workbook.md`) centraliza todas as decisões do produto.
+- **Fonte Única da Verdade:** O repositório Docs-as-Code e as especificações de engenharia (`specs/`) centralizam todas as decisões técnicas e de produto.
 - **Versionamento Centralizado:** Todos os artefatos de processo, templates de prompt e códigos residem no repositório GitHub.
 - **Decisões Documentadas:** Mudanças estruturais exigem o registro de ADRs com contexto, opções e consequências.
 - **Lições Aprendidas:** Registradas ao final de cada incremento para aperfeiçoar os processos subsequentes.
@@ -461,7 +461,7 @@ $$\text{Necessidade do Negócio} \longrightarrow \text{RF} \longrightarrow \text
 Os critérios de aceitação para o fluxo principal exigem: seleção livre de assento no mapa, confirmação da compra com transação gravada no banco, emissão do código identificador do ingresso e bloqueio imediato do assento para novos clientes.
 
 ### 5.1.4 Registro de stakeholders e necessidades elicitadas
-Mapeamento formal dos interesses de proprietários de cinemas, gerentes operacionais e atendentes de bilheteria, com registro de prioridades no PDW.
+Mapeamento formal dos interesses de proprietários de cinemas, gerentes operacionais e atendentes de bilheteria, com registro de prioridades na matriz de requisitos e critérios de aceite do projeto.
 
 ## 5.2 Arquitetura e Design
 

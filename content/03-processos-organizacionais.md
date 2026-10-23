@@ -72,7 +72,7 @@ A gestão da qualidade (Cláusula 6.2.5) define critérios objetivos para assegu
 ## 3.6 Estratégia de gestão do conhecimento
 
 A gestão do conhecimento (Cláusula 6.2.6) assegura que ativos intelectuais sejam preservados e reutilizados:
-- **Fonte Única da Verdade:** O PDW (`docs/constituicao/project-definition-workbook.md`) centraliza todas as decisões do produto.
+- **Fonte Única da Verdade:** O repositório Docs-as-Code e as especificações de engenharia (`specs/`) centralizam todas as decisões técnicas e de produto.
 - **Versionamento Centralizado:** Todos os artefatos de processo, templates de prompt e códigos residem no repositório GitHub.
 - **Decisões Documentadas:** Mudanças estruturais exigem o registro de ADRs com contexto, opções e consequências.
 - **Lições Aprendidas:** Registradas ao final de cada incremento para aperfeiçoar os processos subsequentes.

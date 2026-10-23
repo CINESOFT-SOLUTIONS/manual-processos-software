@@ -106,7 +106,7 @@ Para que qualquer issue seja movida para `Done` no Kanban, os seguintes critéri
 
 2. **Documentação (`manual-processos-software`):**
    - Conformidade estrita com as seções do modelo da Profa. Dra. Juliana Zinader.
-   - Vocabulário técnico alinhado à terminologia padronizada do PDW.
+   - Vocabulário técnico alinhado à terminologia padronizada das especificações de engenharia e à ISO 12207.
    - Script `./scripts/montar-manual.sh` compila e gera `manual-processos-software.md` sem warnings.
    - Script `./scripts/compilar.sh` compila com sucesso o PDF do relatório ABNT e a apresentação Beamer.
 
