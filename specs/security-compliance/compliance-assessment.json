@@ -40,6 +40,12 @@
       "basis": "legitimate_interests",
       "lgpdArticle": "Art. 7º, IX LGPD",
       "rationale": "A retenção de logs por 365 dias (decisão do stakeholder: Axiom como log drain) é necessária para auditorias de segurança, investigação de incidentes e evidências SOC-2-Type-II. O tratamento de metadados de log (sem PII de comprador exposta em texto claro) é proporcional ao interesse legítimo de segurança e conformidade regulatória."
+    },
+    {
+      "purpose": "Cadastro, login e gestão de reservas no Portal do Cliente com emissão de voucher e e-mail transacional com código alfanumérico.",
+      "basis": "contract",
+      "lgpdArticle": "Art. 7º, I e V LGPD",
+      "rationale": "Necessário para a execução do contrato preliminar de reserva de assento e prestação de serviço digital ao espectador, reforçado por consentimento explícito no cadastro e comunicação de serviço."
     }
   ],
   "dataSubjectRights": [

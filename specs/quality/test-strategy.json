@@ -1,5 +1,5 @@
 {
-  "summary": "Multi-shot QA: 8/8 per-AC calls fulfilled, 20 test_cases total. Multi-shot Turn 2 — foco exclusivo AC-1: venda atômica ACID com SELECT FOR UPDATE anti-double-booking. Gerados 3 test_cases cobrindo cenário de concorrência simultânea, sucesso de um terminal e falha do outro, e integridade de estado pós-conflito.",
+  "summary": "Multi-shot QA: 14/14 per-AC calls fulfilled, 26 test_cases total cobrindo venda direta, backoffice, isolamento multi-tenant, Portal do Cliente, reserva temporária, cancelamento voluntário web e expiração Just-in-Time.",
   "test_cases": [
     {
       "id": "TC-1",
@@ -200,6 +200,48 @@
       "when": "Acessa rotas de cadastro de filmes, salas, sessões e usuários (GET, POST, PUT, DELETE)",
       "then": "API retorna HTTP 2xx para operações válidas; dados retornados pertencem exclusivamente ao tenant_id do GERENTE autenticado; ATENDENTE de outro tenant ainda recebe 403",
       "test_path": "tests/packages/auth/src/perfis-rbac.test.ts"
+    },
+    {
+      "id": "TC-21",
+      "ac": "AC-9",
+      "type": "integration",
+      "title": "Reserva atômica bloqueia assento com status RESERVED e impede venda ou reserva simultânea",
+      "path": "tests/integration/reserva-atomica.test.ts"
+    },
+    {
+      "id": "TC-22",
+      "ac": "AC-10",
+      "type": "unit",
+      "title": "Cadastro de cliente final com role CLIENTE, senha hash e proteção LGPD (HMAC-SHA256 e AES-256-GCM)",
+      "path": "tests/packages/auth/src/cadastro-cliente-lgpd.test.ts"
+    },
+    {
+      "id": "TC-23",
+      "ac": "AC-11",
+      "type": "integration",
+      "title": "NotificationService dispara voucher por e-mail com código da reserva e grava email_sent_at",
+      "path": "tests/packages/notificacoes/src/email-reserva.test.ts"
+    },
+    {
+      "id": "TC-24",
+      "ac": "AC-12",
+      "type": "integration",
+      "title": "Cancelamento voluntário pelo cliente via web atualiza reserva para CANCELLED e libera assento para AVAILABLE",
+      "path": "tests/packages/portal/src/cancelamento-reserva.test.ts"
+    },
+    {
+      "id": "TC-25",
+      "ac": "AC-13",
+      "type": "integration",
+      "title": "Atendente localiza reserva no balcão e confirma pagamento presencial convertendo em Ticket vendido (SOLD)",
+      "path": "tests/packages/bilheteria/src/baixa-reserva-balcao.test.ts"
+    },
+    {
+      "id": "TC-26",
+      "ac": "AC-14",
+      "type": "integration",
+      "title": "Reserva não paga até 60 minutos antes da sessão é considerada expirada (EXPIRED) Just-in-Time liberando assento",
+      "path": "tests/integration/expiracao-reserva-jit.test.ts"
     }
   ],
   "coverage_by_ac": {
@@ -210,7 +252,13 @@
     "AC-5": 100,
     "AC-6": 100,
     "AC-7": 100,
-    "AC-8": 100
+    "AC-8": 100,
+    "AC-9": 100,
+    "AC-10": 100,
+    "AC-11": 100,
+    "AC-12": 100,
+    "AC-13": 100,
+    "AC-14": 100
   },
   "gaps": []
 }

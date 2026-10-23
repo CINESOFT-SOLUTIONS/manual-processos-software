@@ -8,7 +8,10 @@
     "FRAME-4: Painel de Ocupacao - Gerente | /20-design/ui-mockups/painel-ocupacao.png | -",
     "FRAME-5: Back-Office Filmes | /20-design/ui-mockups/backoffice-filmes.png | -",
     "FRAME-6: Back-Office Salas e Sessoes | /20-design/ui-mockups/backoffice-sessoes.png | -",
-    "FRAME-7: Cadastro de Usuario Atendente | /20-design/ui-mockups/cadastro-usuario.png | -"
+    "FRAME-7: Cadastro de Usuario Atendente | /20-design/ui-mockups/cadastro-usuario.png | -",
+    "FRAME-8: Portal do Cliente - Catalogo e Sessoes | /20-design/ui-mockups/portal-catalogo.png | -",
+    "FRAME-9: Portal do Cliente - Reserva de Assentos e Voucher | /20-design/ui-mockups/portal-reserva.png | -",
+    "FRAME-10: Portal do Cliente - Minhas Reservas e Cancelamento | /20-design/ui-mockups/portal-minhas-reservas.png | -"
   ],
   "designTokens": [
     "color:primary=#1A1A2E",
@@ -21,6 +24,7 @@
     "color:seatSold=#EF4444",
     "color:seatSelected=#3B82F6",
     "color:seatBlocked=#9CA3AF",
+    "color:seatReserved=#F59E0B",
     "typography:heading=Inter Bold 24px",
     "typography:subheading=Inter SemiBold 18px",
     "typography:body=Inter 14px",

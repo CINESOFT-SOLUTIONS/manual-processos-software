@@ -19,7 +19,7 @@ title: "[QA] CineDoom — plataforma B2B SaaS para cinemas independentes e redes
 
 ## Resumo
 
-Multi-shot QA: 8/8 per-AC calls fulfilled, 20 test_cases total. Multi-shot Turn 2 — foco exclusivo AC-1: venda atômica ACID com SELECT FOR UPDATE anti-double-booking. Gerados 3 test_cases cobrindo cenário de concorrência simultânea, sucesso de um terminal e falha do outro, e integridade de estado pós-conflito.
+Multi-shot QA: 14/14 per-AC calls fulfilled, 26 test_cases total. Multi-shot Turn 2 — foco exclusivo AC-1: venda atômica ACID com SELECT FOR UPDATE anti-double-booking. Gerados 3 test_cases cobrindo cenário de concorrência simultânea, sucesso de um terminal e falha do outro, e integridade de estado pós-conflito.
 
 ## Cobertura por AC
 
@@ -33,6 +33,12 @@ Multi-shot QA: 8/8 per-AC calls fulfilled, 20 test_cases total. Multi-shot Turn 
 | AC-6 | 100 |
 | AC-7 | 100 |
 | AC-8 | 100 |
+| AC-9 | 100 |
+| AC-10 | 100 |
+| AC-11 | 100 |
+| AC-12 | 100 |
+| AC-13 | 100 |
+| AC-14 | 100 |
 
 ## Casos de teste
 
@@ -58,6 +64,12 @@ Multi-shot QA: 8/8 per-AC calls fulfilled, 20 test_cases total. Multi-shot Turn 
 | TC-18 | AC-3 | security | Registro de auditoria de cancelamento é isolado por tenant_id — tenant B não visualiza cancelamentos do tenant A | `tests/cancelamento-auditavel-isolamento-tenant.ac3.test.ts` |
 | TC-19 | AC-4 | unit | Query sem contexto de tenant lança erro antes de atingir banco | `tests/packages/tenancy/src/row-level-isolation.test.ts` |
 | TC-20 | AC-5 | integration | GERENTE tem acesso completo às rotas de gerenciamento do seu tenant | `tests/packages/auth/src/perfis-rbac.test.ts` |
+| TC-21 | AC-9 | integration | Reserva atômica bloqueia assento com status RESERVED e impede venda ou reserva simultânea | `tests/integration/reserva-atomica.test.ts` |
+| TC-22 | AC-10 | unit | Cadastro de cliente final com role CLIENTE, senha hash e proteção LGPD (HMAC-SHA256 e AES-256-GCM) | `tests/packages/auth/src/cadastro-cliente-lgpd.test.ts` |
+| TC-23 | AC-11 | integration | NotificationService dispara voucher por e-mail com código da reserva e grava email_sent_at | `tests/packages/notificacoes/src/email-reserva.test.ts` |
+| TC-24 | AC-12 | integration | Cancelamento voluntário pelo cliente via web atualiza reserva para CANCELLED e libera assento para AVAILABLE | `tests/packages/portal/src/cancelamento-reserva.test.ts` |
+| TC-25 | AC-13 | integration | Atendente localiza reserva no balcão e confirma pagamento presencial convertendo em Ticket vendido (SOLD) | `tests/packages/bilheteria/src/baixa-reserva-balcao.test.ts` |
+| TC-26 | AC-14 | integration | Reserva não paga até 60 minutos antes da sessão é considerada expirada (EXPIRED) Just-in-Time liberando assento | `tests/integration/expiracao-reserva-jit.test.ts` |
 
 ## Detalhamento dos casos
 

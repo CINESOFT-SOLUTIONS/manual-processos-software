@@ -32,6 +32,9 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
 - **FRAME-5** Back-Office Filmes — PNG: `/20-design/ui-mockups/backoffice-filmes.png`
 - **FRAME-6** Back-Office Salas e Sessoes — PNG: `/20-design/ui-mockups/backoffice-sessoes.png`
 - **FRAME-7** Cadastro de Usuario Atendente — PNG: `/20-design/ui-mockups/cadastro-usuario.png`
+- **FRAME-8** Portal do Cliente - Catalogo e Sessoes — PNG: `/20-design/ui-mockups/portal-catalogo.png`
+- **FRAME-9** Portal do Cliente - Reserva de Assentos e Voucher — PNG: `/20-design/ui-mockups/portal-reserva.png`
+- **FRAME-10** Portal do Cliente - Minhas Reservas e Cancelamento — PNG: `/20-design/ui-mockups/portal-minhas-reservas.png`
 
 ## Design tokens
 
@@ -46,6 +49,7 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
 - `seatSold`: `#EF4444`
 - `seatSelected`: `#3B82F6`
 - `seatBlocked`: `#9CA3AF`
+- `seatReserved`: `#F59E0B`
 
 **Typography:**
 - `heading`: `Inter Bold 24px`
