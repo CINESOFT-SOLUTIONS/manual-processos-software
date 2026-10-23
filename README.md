@@ -78,7 +78,8 @@ manual-processos/
 │   ├── pdw/                           # Project Definition Workbook (Constituição)
 │   └── guidelines/                    # Instruções e estrutura mínima docente
 │
-├── assets/                            # Ativos Visuais e Diagramas
+├── assets/                            # Ativos Visuais e Identidade de Marca
+│   ├── logos/                         # Logomarcas oficiais CineSoft Solutions e CineDoom
 │   └── diagrams/                      # Diagramas arquiteturais C4 e fluxos BPMN
 │
 ├── scripts/                           # Automação de Build e Compilação

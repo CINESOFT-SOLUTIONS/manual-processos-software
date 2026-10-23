@@ -1,14 +1,20 @@
 # Ativos Visuais e Diagramas (assets)
 
-Esta pasta centraliza os diagramas, modelos visuais de processo e esquemas arquiteturais utilizados no Manual de Processos de Software e na documentação técnica do sistema **CineDoom**.
-
-As identidades visuais internas do tema de apresentação de slides da universidade residem de forma autocontida em `latex/presentation/lib/`.
+Esta pasta centraliza os diagramas, modelos visuais de processo, esquemas arquiteturais e a identidade visual oficial do sistema **CineDoom** e da organização **CineSoft Solutions**.
 
 ---
 
 ## Estrutura de Diretórios
 
-* **`diagrams/`:** Diagramas arquiteturais (C4 Model: Contexto, Contêineres e Componentes), fluxos de processo (BPMN), diagramas de sequência de transação atômica e modelos de entidade-relacionamento.
+* **`logos/`:** Identidades visuais oficiais de marca (CineSoft Solutions e CineDoom) em alta resolução:
+  * `cinesoft-logo-horizontal-color.png`: Versão horizontal colorida da empresa.
+  * `cinesoft-logo-horizontal-black.png`: Versão horizontal monocromática da empresa.
+  * `cinesoft-icon-favicon.png`: Ícone / Favicon da empresa.
+  * `cinedoom-logo-horizontal-color.png`: Versão horizontal colorida do produto SaaS.
+  * `cinedoom-logo-horizontal-black.png`: Versão horizontal monocromática do produto SaaS.
+  * `cinedoom-icon-favicon.png`: Ícone / Favicon do produto SaaS.
+  * `cinesoft-cinedoom-brand-guide.png`: Prancha completa de identidade visual, tipografia e tokens de design.
+* **`diagrams/`:** Diagramas arquiteturais (C4 Model: Contexto, Contêineres e Componentes), fluxos de processo (BPMN) e diagramas de sequência.
 
 ---
 
