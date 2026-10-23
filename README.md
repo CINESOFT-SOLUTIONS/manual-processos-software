@@ -79,8 +79,7 @@ manual-processos/
 │   └── guidelines/                    # Instruções e estrutura mínima docente
 │
 ├── assets/                            # Ativos Visuais e Diagramas
-│   ├── diagrams/                      # Diagramas arquiteturais e fluxos BPMN
-│   └── logos/                         # Identidades visuais oficiais (UFG, INF, CineSoft)
+│   └── diagrams/                      # Diagramas arquiteturais C4 e fluxos BPMN
 │
 ├── scripts/                           # Automação de Build e Compilação
 │   ├── montar-manual.sh               # Concatena content/ em manual-processos-software.md

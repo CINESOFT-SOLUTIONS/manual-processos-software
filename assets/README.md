@@ -1,22 +1,19 @@
 # Ativos Visuais e Diagramas (assets)
 
-Esta pasta centraliza os diagramas, modelos visuais de processo e logomarcas oficiais utilizados no Manual de Processos de Software, na apresentação de slides e na documentação técnica.
+Esta pasta centraliza os diagramas, modelos visuais de processo e esquemas arquiteturais utilizados no Manual de Processos de Software e na documentação técnica do sistema **CineDoom**.
+
+As identidades visuais internas do tema de apresentação de slides da universidade residem de forma autocontida em `latex/presentation/lib/`.
 
 ---
 
 ## Estrutura de Diretórios
 
-* **`diagrams/`:** Diagramas arquiteturais (C4 Model: Contexto, Contêineres, Componentes), fluxos de processo (BPMN), diagramas de sequência de venda atômica e modelos de entidade-relacionamento.
-* **`logos/`:** Logomarcas e identidades visuais institucionais em alta resolução (vetores e PNGs com fundo transparente):
-  * Universidade Federal de Goiás (UFG)
-  * Instituto de Informática (INF/UFG)
-  * Engenharia de Software (ES/INF)
-  * CineSoft Solutions e CineDoom
+* **`diagrams/`:** Diagramas arquiteturais (C4 Model: Contexto, Contêineres e Componentes), fluxos de processo (BPMN), diagramas de sequência de transação atômica e modelos de entidade-relacionamento.
 
 ---
 
 ## Padrão de Arquivos e Resolução
 
-* **Exportações Vetoriais:** Arquivos `.svg` e `.pdf` (obrigatórios para inclusão em documentos LaTeX sem perda de nitidez).
-* **Imagens Raster:** Arquivos `.png` em resolução mínima de 300 DPI com canal alfa (transparência).
-* **Código-Fonte de Diagramas:** Textos fonte em PlantUML (`.puml`) ou Mermaid (`.mmd`) devem residir junto aos diagramas ou diretamente incorporados nos documentos Markdown.
+* **Exportações Vetoriais:** Arquivos `.svg` e `.pdf` (recomendados para inclusão no LaTeX sem distorção).
+* **Imagens Raster:** Arquivos `.png` em alta resolução (300 DPI) com canal alfa (fundo transparente).
+* **Fontes Editáveis:** Textos-fonte em PlantUML (`.puml`) ou Mermaid (`.mmd`) podem ser armazenados diretamente junto aos diagramas ou incorporados nos documentos Markdown.
