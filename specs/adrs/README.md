@@ -19,6 +19,7 @@ Registro formal de decisões técnicas e arquiteturais (ISO/IEC/IEEE 12207:2021 
 | **[ADR-009](#adr-009---anonimização-in-place-para-lgpd-art-18-sem-quebra-de-fk-do-cdc)** | Anonimização *In-Place* para LGPD Art. 18 sem Quebra de FK do CDC | Aprovada | 2026-10-23 | Conformidade LGPD com integridade referencial contábil (5 anos) |
 | **[ADR-010](#adr-010---auditoria-de-cancelamentos-append-only-via-trigger-postgresql)** | Auditoria de Cancelamentos Append-Only via Trigger PostgreSQL | Aprovada | 2026-10-23 | Imutabilidade em nível de banco de dados sem custo de S3 WORM |
 | **[ADR-011](#adr-011---log-drain-gerenciado-axiom-para-retenção-de-365-dias-lgpd)** | Log Drain Gerenciado (Axiom) para Retenção de 365 Dias (LGPD) | Aprovada | 2026-10-23 | Observabilidade e retenção legal fora do limite de 1h da Vercel |
+| **[ADR-012](#adr-012---portal-do-cliente-autenticação-de-espectador-expiração-just-in-time-e-notificação-transacional)** | Portal do Cliente, Autenticação de Espectador, Expiração Just-in-Time e Notificação Transacional | Aprovada | 2026-10-23 | Reserva online sem gateway com baixa presencial no balcão e expiração atômica |
 
 ---
 
@@ -78,3 +79,8 @@ Registro formal de decisões técnicas e arquiteturais (ISO/IEC/IEEE 12207:2021 
 * **Contexto:** A retenção legal de logs de auditoria e segurança exigida pela LGPD é de no mínimo 365 dias, enquanto a Vercel retém apenas 1 hora no plano básico.
 * **Decisão:** Integração do Log Drain da Vercel com a plataforma Axiom (plano generoso e ingestão OpenTelemetry nativa).
 * **Consequências:** Logs operacionais e eventos de auditoria são despachados em tempo real e armazenados com retenção de 1 ano, cumprindo os requisitos de auditoria externa.
+
+### ADR-012 - Portal do Cliente, Autenticação de Espectador, Expiração Just-in-Time e Notificação Transacional
+* **Contexto:** Necessidade de incorporar o Portal do Cliente para reserva pública de assentos com pagamento presencial no balcão até 1 hora antes da sessão, cadastro/login de cliente, e-mail transacional e cancelamento web.
+* **Decisão:** Trava ACID via `session_seats.status = 'RESERVED'`, expiração Just-in-Time no PostgreSQL Neon (`reservation_expires_at > NOW()`), autenticação unificada via NextAuth.js (role `CLIENTE`), envio de voucher por `NotificationService` e endpoint de cancelamento pelo cliente.
+* **Consequências:** Solução viável dentro do prazo de 21 dias sem gateway financeiro externo e sem necessidade de daemons/filas assíncronas dedicadas.

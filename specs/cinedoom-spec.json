@@ -29,11 +29,11 @@
   "promptHash": "2a5758db3e707e2059a8a17eddc9c595b3d727db76b7ae92abd6c93eb2da89f2",
   "source": "llm",
   "specObject": {
-    "title": "F-CINEDOOM-MVP: Plataforma B2B SaaS de Bilheteria e Back-Office para Cinemas Independentes",
-    "briefSummary": "Digitaliza operações de bilheteria presencial e back-office para cinemas independentes e redes de pequeno/médio porte no Brasil. Entrega catálogo de filmes, gestão de salas/assentos, sessões, mapa interativo com polling 2s, venda ACID sem double-booking, cancelamento auditável, painel de ocupação em tempo real e autenticação por perfil (Atendente/Gerente), com isolamento multi-tenant por row-level e conformidade LGPD.",
+    "title": "F-CINEDOOM-MVP: Plataforma SaaS de Gestão de Cinemas, Bilheteria e Portal do Cliente",
+    "briefSummary": "Digitaliza operações de bilheteria presencial, back-office e portal público do cliente para cinemas independentes e redes de pequeno e médio porte no Brasil. Entrega catálogo de filmes, gestão de salas/assentos, sessões, mapa interativo com polling 2s, venda e reserva ACID sem double-booking, cancelamento auditável e voluntário web, painel de ocupação em tempo real, e-mail transacional e autenticação unificada por perfil (Gerente, Atendente e Cliente), com isolamento multi-tenant por row-level e conformidade LGPD.",
     "whatHow": {
-      "what": "MVP SaaS B2B com módulos de catálogo de filmes, gestão de salas e assentos, sessões cinematográficas, mapa de assentos interativo, venda de ingressos com garantia ACID, cancelamento auditável, painel de ocupação e autenticação com perfis Atendente e Gerente — tudo isolado por tenant_id compartilhando schema PostgreSQL.",
-      "how": "Monólito modular em Next.js 14 (App Router) + TypeScript + Tailwind CSS, com Prisma ORM sobre PostgreSQL Serverless (Neon). Trava atômica de assentos via SELECT FOR UPDATE dentro de transação Prisma. Mapa de assentos com polling client-side a cada 2s via Route Handler. Isolamento multi-tenant por tenant_id com middleware de contexto injetando filtro global no Prisma Client. Autenticação stateful com NextAuth.js com roles ATENDENTE/GERENTE. Deploy contínuo na Vercel com preview environments por branch."
+      "what": "Sistema SaaS com três módulos integrados: Back-Office do Gerente, Bilheteria do Atendente e Portal do Cliente. Permite consulta pública e autenticada de filmes e sessões, escolha e bloqueio temporário de assentos, autenticação de clientes com proteção LGPD, despacho de e-mail transacional com voucher para pagamento presencial, painel de reservas com opção de cancelamento voluntário web e baixa presencial na bilheteria com conversão em venda confirmada ou expiração Just-in-Time.",
+      "how": "Monólito modular em Next.js 14 (App Router) + TypeScript + Tailwind CSS, com Prisma ORM sobre PostgreSQL Serverless (Neon). Trava atômica de assentos via SELECT FOR UPDATE dentro de transação Prisma com status 'RESERVED'. Expiração Just-in-Time em queries SQL para liberar assentos não pagos 60 minutos antes da sessão sem daemons externos. Mapa de assentos com polling client-side a cada 2s. Isolamento multi-tenant por tenant_id via middleware no Prisma Client. Autenticação unificada com NextAuth.js com roles GERENTE, ATENDENTE e CLIENTE. Serviço transacional de e-mails para emissão de comprovantes de reserva. Deploy contínuo na Vercel."
     },
     "userStories": [
       {
@@ -71,6 +71,36 @@
         "asA": "Gerente",
         "want": "criar contas de Atendente vinculadas ao meu tenant com permissões restritas ao perfil operacional",
         "soThat": "haja controle de acesso granular e responsabilidade rastreável por ação realizada no sistema"
+      },
+      {
+        "id": "US-7",
+        "asA": "Cliente/Espectador",
+        "want": "me cadastrar e realizar login no Portal do Cliente com e-mail e senha, informando meus dados e consentimento LGPD",
+        "soThat": "eu tenha acesso ao meu painel pessoal de reservas e histórico de ingressos"
+      },
+      {
+        "id": "US-8",
+        "asA": "Cliente/Espectador",
+        "want": "consultar a programação de filmes e sessões e reservar assentos disponíveis no mapa interativo com confirmação de reserva e geração de código identificador",
+        "soThat": "eu garanta meus lugares com antecedência para pagamento presencial na bilheteria"
+      },
+      {
+        "id": "US-9",
+        "asA": "Cliente/Espectador",
+        "want": "receber um e-mail transacional e visualizar na tela o comprovante da minha reserva com código, assentos e prazo limite de comparecimento",
+        "soThat": "eu tenha as instruções exatas de comparecimento e pagamento no balcão do cinema"
+      },
+      {
+        "id": "US-10",
+        "asA": "Cliente/Espectador",
+        "want": "acessar a área 'Minhas Reservas' no portal e cancelar uma reserva pendente antes do prazo limite",
+        "soThat": "os assentos sejam liberados imediatamente caso eu não possa comparecer"
+      },
+      {
+        "id": "US-11",
+        "asA": "Atendente",
+        "want": "buscar reservas ativas pelo código ou CPF do cliente na bilheteria e registrar o pagamento presencial",
+        "soThat": "a reserva seja convertida em venda confirmada com emissão de ingresso impresso ou digital"
       }
     ],
     "acceptanceCriteria": [
@@ -113,6 +143,36 @@
         "id": "AC-8",
         "statement": "O catálogo de filmes, o cadastro de salas com layout de assentos e as sessões cinematográficas devem ser criáveis, editáveis e listáveis exclusivamente por usuários com perfil GERENTE, com validação de campos obrigatórios retornando erros descritivos por campo.",
         "testPath": "packages/backoffice/src/catalogo-salas-sessoes.test.ts"
+      },
+      {
+        "id": "AC-9",
+        "text": "A solicitação de reserva via Portal do Cliente deve executar transação atômica atualizando o assento para 'RESERVED' e associando o reservation_id, bloqueando-o para outros usuários e rejeitando a operação caso falte menos de 60 minutos para a sessão.",
+        "testRef": "tests/integration/reserva-atomica.test.ts"
+      },
+      {
+        "id": "AC-10",
+        "text": "O cadastro do cliente final deve persistir credenciais de acesso seguras (senha com hash seguro) com role 'CLIENTE' e dados PII em conformidade com a LGPD, permitindo autenticação e sessão no Portal do Cliente.",
+        "testRef": "packages/auth/src/cadastro-cliente-lgpd.test.ts"
+      },
+      {
+        "id": "AC-11",
+        "text": "Após a confirmação da reserva, o sistema deve despachar um e-mail transacional com voucher contendo código identificador único, data/hora da sessão, sala, assentos e horário limite para pagamento presencial, gravando o timestamp em email_sent_at.",
+        "testRef": "packages/notificacoes/src/email-reserva.test.ts"
+      },
+      {
+        "id": "AC-12",
+        "text": "O cliente autenticado deve conseguir visualizar suas reservas e solicitar o cancelamento voluntário de reservas com status 'PENDING', atualizando o status para 'CANCELLED' e liberando imediatamente os assentos para 'AVAILABLE'.",
+        "testRef": "packages/portal/src/cancelamento-reserva.test.ts"
+      },
+      {
+        "id": "AC-13",
+        "text": "O atendente na bilheteria deve conseguir localizar uma reserva válida pelo código ou CPF e, ao registrar o pagamento presencial no balcão, converter a reserva em ingresso vendido ('SOLD') com registro do atendente operador.",
+        "testRef": "packages/bilheteria/src/baixa-reserva-balcao.test.ts"
+      },
+      {
+        "id": "AC-14",
+        "text": "Reservas não pagas até 60 minutos antes do início da sessão devem ser consideradas expiradas ('EXPIRED') em tempo de execução através de queries Just-in-Time, liberando os assentos para venda no balcão sem retenção indevida de capacidade.",
+        "testRef": "tests/integration/expiracao-reserva-jit.test.ts"
       }
     ],
     "nfrs": [
@@ -148,15 +208,12 @@
       }
     ],
     "outOfScope": [
-      "Processamento de pagamento online (PIX, cartão de crédito/débito) — pagamento é registrado como offline pelo atendente",
-      "Integração com gateways de pagamento ou emissão de comprovantes fiscais (NFC-e, SAT)",
-      "Venda de ingressos pelo canal online/self-service pelo comprador final (B2C)",
-      "Aplicativo mobile nativo (iOS/Android)",
-      "Relatórios financeiros e conciliação de caixa avançada",
-      "Gestão de estoque de alimentos e bebidas (concessionária)",
-      "Integração com distribuidoras de filmes ou sistemas de DRM",
-      "Suporte a múltiplos idiomas (i18n) além do português brasileiro",
-      "Exportação de dados para BI externo ou integração com ERPs"
+      "Gateway de pagamento online (cartão de crédito/débito online ou checkout PIX no portal) — pagamento das reservas é realizado presencialmente na bilheteria física.",
+      "Integração com sistemas de emissão fiscal externos (NFC-e / SAT).",
+      "Aplicativo mobile nativo para Android/iOS (o acesso é via web responsiva).",
+      "Gestão de bomboniere e estoque de alimentos/bebidas.",
+      "Integração com distribuidoras cinematográficas ou serviços de DRM.",
+      "Suporte a múltiplos idiomas (i18n) além do português brasileiro."
     ],
     "clarificationsNeeded": []
   },

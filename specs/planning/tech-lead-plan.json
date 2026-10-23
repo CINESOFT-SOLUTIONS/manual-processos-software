@@ -1,5 +1,5 @@
 {
-  "summary": "Decomposição do MVP CineDoom em 20 tasks cobrindo infra/CI, schema ACID multi-tenant, auth RBAC, PII/LGPD (HMAC-SHA256+AES-256-GCM via Vercel Secrets), módulos de backoffice, bilheteria com trava atômica, cancelamento auditável, painel de ocupação, observabilidade Axiom e pirâmide de testes (integração concorrente + E2E Playwright).",
+  "summary": "Decomposição do MVP CineDoom em 23 tasks cobrindo infra/CI, schema ACID multi-tenant, auth RBAC com perfil cliente, PII/LGPD (HMAC-SHA256+AES-256-GCM), módulos de backoffice, bilheteria com trava atômica, cancelamento auditável, Portal do Cliente com catálogo público, reserva temporária e expiração Just-in-Time, e-mail transacional, cancelamento web voluntário e baixa presencial de reservas no balcão.",
   "tasks": [
     "TASK-1: Project scaffolding & monorepo setup | agent=DevOps | hours=4 | deps=none | acs=none | Setup Next.js 14 App Router com pnpm workspaces, estrutura de pastas por módulo (bilheteria, backoffice, auth, tenancy, ocupacao, compradores), .env.example documentado, Tailwind CSS, TypeScript strict mode, ESLint import/no-cycle configurado para enforce 0 dependências circulares entre módulos",
     "TASK-2: Database schema design & Prisma migrations (Neon) | agent=DataArchitect | hours=6 | deps=TASK-1 | acs=AC-4;AC-8 | Modelar schema Prisma completo: Tenant, User(roles), Film, Room, Seat, Session, SessionSeat(pré-populada na criação de Session), Ticket, Buyer(PII cifrado), auditoria_cancelamentos(append-only); tenant_id em todas entidades de negócio; trigger PostgreSQL BEFORE DELETE/UPDATE em auditoria_cancelamentos para garantir imutabilidade; migration inicial para Neon",
@@ -20,7 +20,10 @@
     "TASK-17: UI — design system, mapa interativo e fluxos de bilheteria | agent=UI | hours=6 | deps=TASK-1 | acs=AC-1;AC-2 | Componentes Tailwind CSS: mapa de assentos interativo com estados visuais (disponível/ocupado/selecionado), fluxo de venda (seleção→cadastro comprador com consentimento LGPD→confirmação), formulários de backoffice com erro por campo; funcional em 1024×768 desktop/tablet landscape; sem polyfills experimentais; acessível em Chromium/Firefox",
     "TASK-18: Security — suite de isolamento cross-tenant (500 cenários) | agent=Security | hours=4 | deps=TASK-3;TASK-10 | acs=AC-4 | Implementar suite automatizada de 500 cenários de isolamento cross-tenant cobrindo todos endpoints autenticados; validar 0 vazamentos de PII (CPF, e-mail, ingressos) entre tenants distintos; testes de bypass de tenant_id via header/param manipulation; integração ao CI como gate obrigatório",
     "TASK-19: QA — integração concorrente, E2E e matriz de browsers | agent=QA | hours=6 | deps=TASK-10;TASK-11;TASK-12;TASK-17 | acs=AC-1;AC-2;AC-3;AC-7 | Testes de integração: venda ACID com 50 threads concorrentes (0 double-bookings validado), polling mapa 2s após venda/cancelamento, auditoria de cancelamento com campos obrigatórios, painel de ocupação percentual correto; E2E Playwright cobrindo fluxos críticos em Chromium+Firefox na matrix CI; relatório de cobertura de ACs",
-    "TASK-20: Tenant provisioning manual e documentação de onboarding | agent=DevOps | hours=2 | deps=TASK-4;TASK-13 | acs=none | Documentar processo manual de provisionamento de novo tenant (whitelist CineDoom): criação de Tenant record + GERENTE inicial via script interno; checklist de onboarding de novo dev com pnpm dev + .env.example em menos de 30min; runbook de operações de produção (rollback, rotação de chave AES, processo de anonimização LGPD)"
+    "TASK-20: Tenant provisioning manual e documentação de onboarding | agent=DevOps | hours=2 | deps=TASK-4;TASK-13 | acs=none | Documentar processo manual de provisionamento de novo tenant (whitelist CineDoom): criação de Tenant record + GERENTE inicial via script interno; checklist de onboarding de novo dev com pnpm dev + .env.example em menos de 30min; runbook de operações de produção (rollback, rotação de chave AES, processo de anonimização LGPD)",
+    "TASK-21: Portal do Cliente — catálogo de filmes, sessões e reserva ACID | agent=SoftwareArchitect | hours=5 | deps=TASK-8,TASK-17 | acs=AC-9,AC-14 | Implementar rotas públicas /filmes, /sessoes/[id] e fluxo de reserva de assento com trava atômica (session_seats.status='RESERVED'), validação de antecedência (>60min) e código único CD-XXXX com expiração Just-in-Time",
+    "TASK-22: Portal do Cliente — autenticação de cliente, 'Minhas Reservas' e cancelamento | agent=Security | hours=4 | deps=TASK-4,TASK-5,TASK-21 | acs=AC-10,AC-12 | Expandir NextAuth com role CLIENTE, proteção LGPD, painel Minhas Reservas e cancelamento voluntário pelo cliente via web liberando assentos",
+    "TASK-23: Notificação transacional & baixa presencial de reservas no balcão | agent=SoftwareArchitect | hours=5 | deps=TASK-10,TASK-21 | acs=AC-11,AC-13 | NotificationService para envio de e-mail com voucher da reserva e tela de localização e baixa presencial de reserva pelo atendente com conversão em Ticket vendido"
   ],
   "critical_path": [
     "TASK-1",
@@ -33,7 +36,7 @@
     "TASK-11",
     "TASK-19"
   ],
-  "total_estimate_hours": 102,
+  "total_estimate_hours": 116.0,
   "parallelizable_groups": [
     "TASK-15+TASK-16+TASK-17",
     "TASK-3+TASK-4+TASK-5",

@@ -19,7 +19,7 @@ title: "[Data Architect] CineDoom — plataforma B2B SaaS para cinemas independe
 
 ## Resumo
 
-Modelo de dados para plataforma B2B SaaS CineDoom: 10 entidades cobrindo multi-tenancy (Tenant), autenticação RBAC (User), catálogo cinematográfico (Film), salas e assentos (Room/Seat), sessões com mapa de status (Session/SessionSeat para SELECT FOR UPDATE anti-double-booking), venda de ingressos (Ticket), compradores com PII/LGPD cifrada (Buyer) e auditoria imutável de cancelamentos (CancellationAudit). Isolamento por tenant_id em shared schema PostgreSQL Neon Serverless.
+Modelo de dados para plataforma B2B SaaS CineDoom: 11 entidades cobrindo multi-tenancy (Tenant), autenticação RBAC com perfil cliente (User), catálogo cinematográfico (Film), salas e assentos (Room/Seat), sessões com mapa de status (Session/SessionSeat para SELECT FOR UPDATE anti-double-booking e reserva temporária), reservas web com expiração Just-in-Time (Reservation), venda de ingressos (Ticket), compradores com PII/LGPD cifrada (Buyer) e auditoria imutável de cancelamentos (CancellationAudit) (Tenant), autenticação RBAC (User), catálogo cinematográfico (Film), salas e assentos (Room/Seat), sessões com mapa de status (Session/SessionSeat para SELECT FOR UPDATE anti-double-booking), venda de ingressos (Ticket), compradores com PII/LGPD cifrada (Buyer) e auditoria imutável de cancelamentos (CancellationAudit). Isolamento por tenant_id em shared schema PostgreSQL Neon Serverless.
 
 ## Entities
 
@@ -170,6 +170,32 @@ Modelo de dados para plataforma B2B SaaS CineDoom: 10 entidades cobrindo multi-t
 | `reason` | `text` |  |  |  |
 | `cancelled_at` | `timestamp` |  |  |  |
 
+
+### E-11. Reservation
+
+- **Primary key flavor:** `UUID-PK`
+
+| Field | Type | Nullable | Indexed | PII |
+|---|---|---|---|---|
+| `id` | `uuid` |  |  |  |
+| `code` | `string` |  | ✓ |  |
+| `tenant_id` | `uuid` |  | ✓ |  |
+| `session_id` | `uuid` |  | ✓ |  |
+| `user_id` | `uuid` | ✓ | ✓ |  |
+| `buyer_id` | `uuid` | ✓ | ✓ |  |
+| `buyer_name` | `string` |  |  | ⚠ |
+| `buyer_email` | `string` |  | ✓ | ⚠ |
+| `buyer_cpf_hash` | `string` |  | ✓ |  |
+| `buyer_cpf_encrypted` | `text` |  |  | ⚠ |
+| `status` | `string` |  | ✓ |  |
+| `total_price` | `numeric` |  |  |  |
+| `expires_at` | `timestamp` |  | ✓ |  |
+| `email_sent_at` | `timestamp` | ✓ |  |  |
+| `confirmed_at` | `timestamp` | ✓ |  |  |
+| `cancelled_at` | `timestamp` | ✓ |  |  |
+| `created_at` | `timestamp` |  |  |  |
+| `updated_at` | `timestamp` |  |  |  |
+
 ## Relationships
 
 | ID | From | Kind | To | FK | onDelete |
@@ -188,6 +214,11 @@ Modelo de dados para plataforma B2B SaaS CineDoom: 10 entidades cobrindo multi-t
 | R-12 | User | `oneToMany` | Ticket | sold_by_user_id | RESTRICT |
 | R-13 | Ticket | `oneToOne` | CancellationAudit | ticket_id | RESTRICT |
 | R-14 | User | `oneToMany` | CancellationAudit | cancelled_by_user_id | RESTRICT |
+| R-15 | Tenant | `oneToMany` | Reservation | tenant_id | RESTRICT |
+| R-16 | Session | `oneToMany` | Reservation | session_id | RESTRICT |
+| R-17 | User | `oneToMany` | Reservation | user_id | RESTRICT |
+| R-18 | Buyer | `oneToMany` | Reservation | buyer_id | RESTRICT |
+| R-19 | Reservation | `oneToMany` | SessionSeat | reservation_id | SET NULL |
 
 ## Indexes
 
@@ -308,17 +339,49 @@ CREATE INDEX idx_sessions_film_id   ON sessions(film_id);
 CREATE INDEX idx_sessions_room_id   ON sessions(room_id);
 
 -- ------------------------------------------------------------
+-- E-11: Reservation (Reserva pública online com expiração Just-in-Time)
+-- ------------------------------------------------------------
+CREATE TABLE reservations (
+  id                  UUID          PRIMARY KEY DEFAULT gen_random_uuid(),
+  code                VARCHAR(10)   NOT NULL UNIQUE,
+  tenant_id           UUID          NOT NULL REFERENCES tenants(id) ON DELETE RESTRICT,
+  session_id          UUID          NOT NULL REFERENCES sessions(id) ON DELETE RESTRICT,
+  user_id             UUID          REFERENCES users(id) ON DELETE RESTRICT,
+  buyer_id            UUID          REFERENCES buyers(id) ON DELETE RESTRICT,
+  buyer_name          VARCHAR(255)  NOT NULL,
+  buyer_email         VARCHAR(255)  NOT NULL,
+  buyer_cpf_hash      CHAR(64)      NOT NULL,
+  buyer_cpf_encrypted TEXT          NOT NULL,
+  status              VARCHAR(20)   NOT NULL DEFAULT 'PENDING'
+                      CHECK (status IN ('PENDING','CONFIRMED','CANCELLED','EXPIRED')),
+  total_price         NUMERIC(10,2) NOT NULL,
+  expires_at          TIMESTAMPTZ   NOT NULL,
+  email_sent_at       TIMESTAMPTZ,
+  confirmed_at        TIMESTAMPTZ,
+  cancelled_at        TIMESTAMPTZ,
+  created_at          TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+  updated_at          TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_reservations_tenant_id        ON reservations(tenant_id);
+CREATE INDEX idx_reservations_code             ON reservations(code);
+CREATE INDEX idx_reservations_user_id          ON reservations(user_id);
+CREATE INDEX idx_reservations_session_id       ON reservations(session_id);
+CREATE INDEX idx_reservations_status_expires   ON reservations(status, expires_at);
+
+-- ------------------------------------------------------------
 -- E-7: SessionSeat  (pré-populada na criação da sessão;
 --                    SELECT FOR UPDATE aqui garante anti-double-booking)
 -- ------------------------------------------------------------
 CREATE TABLE session_seats (
-  id         UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  session_id UUID        NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
-  seat_id    UUID        NOT NULL REFERENCES seats(id)    ON DELETE RESTRICT,
-  tenant_id  UUID        NOT NULL,
-  status     VARCHAR(20) NOT NULL DEFAULT 'AVAILABLE'
-             CHECK (status IN ('AVAILABLE','SOLD','BLOCKED')),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  id                     UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id             UUID        NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+  seat_id                UUID        NOT NULL REFERENCES seats(id)    ON DELETE RESTRICT,
+  tenant_id              UUID        NOT NULL,
+  status                 VARCHAR(20) NOT NULL DEFAULT 'AVAILABLE'
+                         CHECK (status IN ('AVAILABLE','RESERVED','SOLD','BLOCKED')),
+  reservation_id         UUID        REFERENCES reservations(id) ON DELETE SET NULL,
+  reservation_expires_at TIMESTAMPTZ,
+  updated_at             TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE (session_id, seat_id)
 );
 CREATE INDEX idx_session_seats_session_id        ON session_seats(session_id);

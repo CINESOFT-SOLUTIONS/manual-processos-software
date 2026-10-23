@@ -19,7 +19,7 @@ title: "[Software Architect (C4 L3-4)] CineDoom — plataforma B2B SaaS para cin
 
 ## Resumo
 
-Plano arquitetural de software (C4 L3-L4) para o monólito modular CineDoom MVP — define módulos internos, contratos entre camadas, estratégia de trava ACID, isolamento multi-tenant via Prisma Extension, proteção PII/LGPD com CPF cifrado AES-256-GCM, auditoria append-only de cancelamentos e pirâmide de testes, respeitando as decisões macro da Solution Architecture (Next.js 14 + Neon + Vercel).
+Plano arquitetural de software (C4 L3-L4) para o monólito modular CineDoom MVP integrado aos três módulos: Back-Office do Gerente, Bilheteria do Atendente e Portal do Cliente — define módulos internos, contratos entre camadas, estratégia de trava ACID, isolamento multi-tenant via Prisma Extension, proteção PII/LGPD com CPF cifrado AES-256-GCM, auditoria append-only de cancelamentos e pirâmide de testes, respeitando as decisões macro da Solution Architecture (Next.js 14 + Neon + Vercel).
 
 ## Decisões arquiteturais
 
@@ -103,6 +103,28 @@ Plano arquitetural de software (C4 L3-L4) para o monólito modular CineDoom MVP 
   - apenas testes unitários com mocks de Prisma — _rejeitada:_ não valida FOR UPDATE real nem isolamento de tenant em nível de banco
   - Cypress em lugar de Playwright — _rejeitada:_ Playwright tem suporte nativo multi-browser e paralelismo superior no CI
 
+
+### AD-9. Trava ACID de reservas com status RESERVED e expiração Just-in-Time no PostgreSQL
+
+- **Reversível:** não
+- **Racional:** garante AC-9 e AC-14 — a criação de reserva utiliza SELECT FOR UPDATE em session_seats atualizando o status para RESERVED e associando reservation_id e reservation_expires_at; consultas de mapa e tentativas de venda de balcão avaliam a expiração sob demanda (status = 'RESERVED' AND reservation_expires_at <= NOW()), liberando assentos automaticamente sem a necessidade de workers Redis/BullMQ.
+- **Quality driver (ISO 25010):** reliability / cost
+- **Build vs. buy:** make
+
+### AD-10. NotificationService com adaptador de e-mail transacional desacoplado
+
+- **Reversível:** sim
+- **Racional:** cumpre AC-11 — interface NotificationService expõe sendReservationVoucher(reservation) desacoplada de provedor externo; utiliza adaptador Resend/Nodemailer em ambiente de produção e ConsoleLogger em desenvolvimento/testes, registrando email_sent_at na base.
+- **Quality driver (ISO 25010):** maintainability
+- **Build vs. buy:** buy (Resend) / make (Adapter)
+
+### AD-11. Autenticação e perfil CLIENTE para Portal do Espectador
+
+- **Reversível:** sim
+- **Racional:** cumpre AC-10 e AC-12 — amplia o NextAuth.js para suportar role CLIENTE, permitindo que espectadores acessem a área 'Minhas Reservas', visualizem histórico e cancelem voluntariamente reservas pendentes com liberação imediata de assentos.
+- **Quality driver (ISO 25010):** usability / security
+- **Build vs. buy:** make
+
 ## Componentes
 
 | ID | Nome | Responsabilidade | Depende de |
@@ -121,6 +143,11 @@ Plano arquitetural de software (C4 L3-L4) para o monólito modular CineDoom MVP 
 | C-12 | OcupacaoModule | Agrega dados de ocupação por sessão do dia corrente para o Gerente: query GROUP BY sessao_id COUNT(ingressos) / total_assentos; filtrado por tenant_id via TenancyContext; resultado exposto via Route Handler GET /api/ocupacao/hoje — sem cache (NFR: atualiza ao recarregar) | TenancyContext, PrismaClientSingleton |
 | C-13 | SeatMapPollingClient | React Client Component ('use client') com useEffect + setInterval(2000ms) chamando fetch('/api/sessoes/[id]/assentos'); atualiza estado local de assentos; cancela intervalo no cleanup do useEffect; exibe estados visuais (disponível/vendido/selecionado/bloqueado) conforme paleta UX | — |
 | C-14 | PrismaClientSingleton | Instância singleton de PrismaClient com $extends de TenancyContext; pattern global.__prisma para evitar múltiplas conexões em hot-reload dev Next.js; connection pool via Neon serverless driver (@neondatabase/serverless) com pool_timeout=10s | — |
+| C-16 | PortalModule | Módulo do Portal do Cliente: rotas públicas e autenticadas para consulta de catálogo, sessões e assentos; orquestra ReservaTransactionHandler e ClientDashboardModule | TenancyContext, PrismaClientSingleton, AuthModule |
+| C-17 | ReservaTransactionHandler | Executa Prisma.$transaction com SELECT FOR UPDATE em session_seats; valida janela de antecedência (>60min antes do início); cria Reservation com status PENDING e atualiza assento para RESERVED | PrismaClientSingleton, TenancyContext, NotificationService |
+| C-18 | NotificationService | Serviço de envio de e-mail transacional (voucher da reserva com código, assento, valor e instruções de comparecimento presencial); atualiza email_sent_at | PrismaClientSingleton |
+| C-19 | ClientDashboardModule | Área 'Minhas Reservas' do cliente autenticado; lista reservas ativas e histórico; executa cancelamento voluntário de reservas PENDING via rota POST /api/portal/reservas/[id]/cancelar liberando assentos para AVAILABLE | PrismaClientSingleton, TenancyContext |
+| C-20 | BaixaReservaHandler | Fluxo de bilheteria presencial: busca reserva por código ou CPF, valida vigência e converte em Ticket vendido ('SOLD') com registro do atendente operador | PrismaClientSingleton, TenancyContext, BilheteriaModule |
 | C-15 | ProvisionamentoInternalCLI | Script pnpm run provisionar-tenant executado manualmente pela equipe CineDoom; cria registro em tenants (id, nome, slug, created_at) e usuário GERENTE inicial com senha temporária; sem exposição via API pública | PrismaClientSingleton, CryptoService |
 
 ## Riscos

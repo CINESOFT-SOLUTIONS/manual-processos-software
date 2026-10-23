@@ -23,8 +23,8 @@ Decomposição do MVP CineDoom em 20 tasks cobrindo infra/CI, schema ACID multi-
 
 ## Métricas
 
-- **Total de tasks:** 20
-- **Estimativa total:** 102.0 h
+- **Total de tasks:** 23
+- **Estimativa total:** 116.0 h
 - **Caminho crítico:** TASK-1 → TASK-2 → TASK-3 → TASK-7 → TASK-8 → TASK-9 → TASK-10 → TASK-11 → TASK-19
 - **Grupos paralelizáveis:** 5
 
@@ -52,6 +52,9 @@ Decomposição do MVP CineDoom em 20 tasks cobrindo infra/CI, schema ACID multi-
 | TASK-18 | Security — suite de isolamento cross-tenant (500 cenários) | Security | 4 | TASK-3, TASK-10 | AC-4 |
 | TASK-19 | QA — integração concorrente, E2E e matriz de browsers | QA | 6 | TASK-10, TASK-11, TASK-12, TASK-17 | AC-1, AC-2, AC-3, AC-7 |
 | TASK-20 | Tenant provisioning manual e documentação de onboarding | DevOps | 2 | TASK-4, TASK-13 | — |
+| TASK-21 | Portal do Cliente — catálogo de filmes, sessões e reserva ACID | SoftwareArchitect | 5 | TASK-8, TASK-17 | AC-9, AC-14 |
+| TASK-22 | Portal do Cliente — autenticação de cliente, 'Minhas Reservas' e cancelamento | Security | 4 | TASK-4, TASK-5, TASK-21 | AC-10, AC-12 |
+| TASK-23 | Notificação transacional & baixa presencial de reservas no balcão | SoftwareArchitect | 5 | TASK-10, TASK-21 | AC-11, AC-13 |
 
 ## Detalhamento das tasks
 
@@ -238,3 +241,30 @@ Documentar processo manual de provisionamento de novo tenant (whitelist CineDoom
 - **Grupo 3:** TASK-6+TASK-7
 - **Grupo 4:** TASK-12+TASK-13+TASK-14
 - **Grupo 5:** TASK-18+TASK-20
+
+### TASK-21. Portal do Cliente — catálogo de filmes, sessões e reserva ACID
+
+- **Agente:** SoftwareArchitect
+- **Estimativa:** 5 h
+- **Depende de:** TASK-8, TASK-17
+- **Cobre ACs:** AC-9, AC-14
+
+Implementar rotas públicas `/filmes`, `/sessoes/[id]` e fluxo de reserva de assento com trava atômica no banco (`session_seats.status = 'RESERVED'`), validação de antecedência (>60 min antes do início da sessão) e geração de código de reserva único (ex: CD-8942) com valor total e data limite de pagamento presencial.
+
+### TASK-22. Portal do Cliente — autenticação de cliente, 'Minhas Reservas' e cancelamento
+
+- **Agente:** Security
+- **Estimativa:** 4 h
+- **Depende de:** TASK-4, TASK-5, TASK-21
+- **Cobre ACs:** AC-10, AC-12
+
+Expandir o NextAuth.js com perfil `CLIENTE`, cadastro com hash seguro de senha, proteção LGPD (HMAC-SHA256 e AES-256-GCM para CPF com consentimento registrado), painel autenticado "Minhas Reservas" exibindo histórico e rota `POST /api/portal/reservas/[id]/cancelar` para cancelamento voluntário antes de 1 hora da sessão com liberação imediata dos assentos.
+
+### TASK-23. Notificação transacional & baixa presencial de reservas no balcão
+
+- **Agente:** SoftwareArchitect
+- **Estimativa:** 5 h
+- **Depende de:** TASK-10, TASK-21
+- **Cobre ACs:** AC-11, AC-13
+
+Implementar o `NotificationService` para envio de e-mail com voucher da reserva contendo instruções para pagamento presencial e registrar `email_sent_at`. No módulo do atendente, implementar tela de consulta de reserva por código ou CPF, com validação de status e confirmação de recebimento presencial, convertendo a reserva em `Ticket` vendido (`SOLD`).

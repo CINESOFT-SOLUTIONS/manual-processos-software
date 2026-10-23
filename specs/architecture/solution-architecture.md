@@ -19,7 +19,7 @@ title: "[Solution Architect (C4 L1-2)] CineDoom — plataforma B2B SaaS para cin
 
 ## Resumo
 
-Plataforma B2B SaaS de bilheteria presencial e back-office para cinemas independentes no Brasil: monólito modular Next.js 14 + Prisma ORM + Neon PostgreSQL Serverless com isolamento multi-tenant por row-level (tenant_id), trava ACID anti-double-booking via SELECT FOR UPDATE, polling de mapa de assentos a 2s, RBAC ATENDENTE/GERENTE via NextAuth.js, proteção de PII/LGPD com CPF cifrado AES-256-GCM + hash SHA-256 e deploy contínuo na Vercel com preview environments por branch.
+Plataforma SaaS integrada de bilheteria presencial, back-office e portal do cliente para cinemas independentes no Brasil: monólito modular Next.js 14 + Prisma ORM + Neon PostgreSQL Serverless com isolamento multi-tenant por row-level (tenant_id), trava ACID anti-double-booking via SELECT FOR UPDATE, polling de mapa de assentos a 2s, RBAC ATENDENTE/GERENTE via NextAuth.js, proteção de PII/LGPD com CPF cifrado AES-256-GCM + hash SHA-256 e deploy contínuo na Vercel com preview environments por branch.
 
 ## Decisões arquiteturais
 
@@ -148,6 +148,21 @@ C4Container
   Rel(auth, db, "Persiste sessões e usuários via Prisma Adapter", "Prisma/TLS")
   Rel(webapp, vercel, "Servido e distribuído via edge", "CDN")
 ```
+
+
+### AD-9. Portal do Cliente com reserva de assentos sem gateway financeiro e expiração Just-in-Time
+
+- **Reversível:** não
+- **Racional:** viabiliza o 3º módulo no prazo de 21 dias com risco financeiro nulo; a reserva online bloqueia o assento via status RESERVED com expiração avaliada em tempo de execução (1 hora antes da sessão), integrando-se diretamente à fila de atendimento físico para recebimento presencial no balcão.
+- **Quality driver (ISO 25010):** cost / reliability
+- **Build vs. buy:** make
+
+### AD-10. Notificação por E-mail Transacional para Comprovantes de Reserva
+
+- **Reversível:** sim
+- **Racional:** garante que o cliente receba o comprovante com o código alfanumérico e as regras de comparecimento físico diretamente em sua caixa de entrada; arquitetura desacoplada via adapter permite envio com Resend em produção e console logging em desenvolvimento.
+- **Quality driver (ISO 25010):** usability / maintainability
+- **Build vs. buy:** buy (Resend) / make (Adapter)
 
 ## Componentes
 

@@ -23,8 +23,8 @@ A equipe é composta por 4 engenheiros de software, com atribuições divididas 
 
 | Membro | Usuário GitHub | Papel no Projeto | Foco Principal | Responsabilidade Primária |
 | :--- | :--- | :--- | :--- | :---: |
-| **Gabriel Lourenço** | `@gabrlou` | TechLead & Lead Software Architect | Núcleo do app, motor ACID de bilheteria, isolamento multi-tenant, segurança e testes de concorrência. | 11 issues (`app`) |
-| **Carlos Eduardo** | `@carloseduduu` | Backend Engineer & DevOps Lead | Criptografia PII/LGPD, CRUDs de backoffice (filmes, salas, sessões), observabilidade Axiom e pipeline CI/CD. | 9 issues (`app`) |
+| **Gabriel Lourenço** | `@gabrlou` | TechLead & Lead Software Architect | Núcleo do app, motor ACID de bilheteria, isolamento multi-tenant, segurança e testes de concorrência. | 12 issues (`app`) |
+| **Carlos Eduardo** | `@carloseduduu` | Backend Engineer & DevOps Lead | Criptografia PII/LGPD, CRUDs de backoffice (filmes, salas, sessões), observabilidade Axiom e pipeline CI/CD. | 11 issues (`app`) |
 | **Kayque Vicente** | `@K4yquee` | Process Engineer & QA Lead | Processos organizacionais (RACI), gerenciamento técnico (riscos e 11 ADRs), V&V e diagramação LaTeX/Beamer. | 5 issues (`docs`) |
 | **Yury Nogueira** | `@YuryNog` | Requirements Engineer & Compliance | Apresentação do software, acordos de aquisição/fornecimento, engenharia de requisitos, arquitetura C4 e STRIDE/LGPD. | 5 issues (`docs`) |
 
@@ -49,7 +49,7 @@ O cronograma total compreende 21 dias corridos, divididos em 3 Sprints funcionai
 
 ## 4. Backlog Detalhado por Trilha de Execução
 
-### 4.1. Trilha A: Engenharia de Software (`cinedoom-app`) — 20 Issues
+### 4.1. Trilha A: Engenharia de Software (`cinedoom-app`) — 23 Issues
 
 | Issue | Título da Tarefa | Responsável | Data Início | Data Término | Dependência | Critério de Aceite |
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
@@ -73,6 +73,9 @@ O cronograma total compreende 21 dias corridos, divididos em 3 Sprints funcionai
 | **#18** | `[FEAT(SEC)] Suíte automatizada de isolamento cross-tenant (500 cenários de teste)` | `@gabrlou` | 2026-11-07 | 2026-11-09 | Issues #3, #10 | TASK-18, AC-4 |
 | **#19** | `[FEAT(QA)] Testes de integração concorrente (50 threads), E2E e matriz de navegadores` | `@gabrlou` | 2026-11-08 | 2026-11-10 | Issues #10, #11, #12 | TASK-19, AC-1..7 |
 | **#20** | `[FEAT(OPS)] Tenant provisioning manual, onboarding checklist e runbooks de operação` | `@carloseduduu` | 2026-11-08 | 2026-11-10 | Issues #4, #13 | TASK-20 |
+| **#21** | `[FEAT(PORTAL)] Portal do Cliente — Catálogo público, mapa interativo e reserva com trava atômica` | `@gabrlou` | 2026-10-31 | 2026-11-03 | Issues #8, #17 | TASK-21, AC-9, AC-14 |
+| **#22** | `[FEAT(PORTAL-AUTH)] Autenticação de cliente, painel 'Minhas Reservas' e cancelamento voluntário web` | `@carloseduduu` | 2026-11-01 | 2026-11-04 | Issues #4, #5, #21 | TASK-22, AC-10, AC-12 |
+| **#23** | `[FEAT(NOTIFICATION)] Notificação por e-mail transacional e tela de baixa presencial de reserva no balcão` | `@carloseduduu` | 2026-11-04 | 2026-11-07 | Issues #10, #21 | TASK-23, AC-11, AC-13 |
 
 ---
 

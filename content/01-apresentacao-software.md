@@ -4,90 +4,104 @@
 
 **Nome do software:** CineDoom.
 
-O CineDoom é uma plataforma web comercial de gerenciamento operacional e bilheteria voltada para **cinemas de pequeno e médio porte**. Trata-se de um sistema administrativo de retaguarda (*back-office*) concebido para fornecimento no modelo **SaaS (Software as a Service)**, no qual o cliente acessa o sistema por meio de navegadores web modernos, sem necessidade de instalação local em seus computadores.
+O CineDoom é uma plataforma web integrada de gerenciamento operacional, bilheteria presencial e portal do cliente voltada para **cinemas de pequeno e médio porte**. O sistema é estruturado no modelo **SaaS (Software as a Service)**, permitindo que cinemas informatizem seus processos com três módulos centrais:
+
+1. **Módulo do Atendente (Bilheteria Presencial):** Operação ágil de guichê físico, emissão direta de ingressos com trava atômica anti-double-booking e baixa presencial de reservas originadas na web.
+2. **Módulo do Gerente (Back-office e Gestão):** Configuração de salas, catálogo de filmes, agendamento de sessões e acompanhamento de indicadores de ocupação em tempo real.
+3. **Portal do Cliente (Espectador Final Web):** Canal público e autenticado no qual o público consulta a programação, cadastra-se com proteção de dados LGPD, seleciona assentos no mapa interativo, solicita reservas com emissão de voucher transacional e gerencia suas reservas via web.
 
 O sistema é desenvolvido pela organização **CineSoft Solutions** e atua como estudo de caso estruturante para a aplicação formal dos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
 
 ## 1.2 Qual é o software? O que ele faz? Qual problema resolve?
 
 ### O que ele faz?
-O CineDoom centraliza as operações diárias de um cinema em uma interface web única e intuitiva:
+O CineDoom centraliza e sincroniza todas as etapas da cadeia de atendimento cinematográfico em uma interface web moderna e unificada:
 - Mantém o catálogo de filmes em cartaz e suas especificações técnicas.
-- Controla a infraestrutura de salas e seus respectivos mapas de assentos.
-- Agenda e publica sessões cinematográficas com validação automática de conflitos de horários.
-- Opera a venda e o cancelamento de ingressos na bilheteria com reserva visual de assentos e proteção atômica contra venda dupla (*double-booking*).
-- Apresenta indicadores em tempo real sobre a taxa de ocupação das salas e o faturamento operacional.
+- Controla a infraestrutura física de salas e layouts bidimensionais de assentos.
+- Agenda e publica sessões cinematográficas com prevenção automática de choques de grade.
+- Garante reservas online no Portal do Cliente com bloqueio atômico de assento e expiração inteligente Just-in-Time.
+- Despacha vouchers transacionais de reserva por e-mail com instruções para pagamento presencial.
+- Permite o cancelamento voluntário de reservas pendentes pelo próprio cliente via web antes do limite de tolerância.
+- Opera a venda e a baixa presencial de ingressos na bilheteria com trava atômica ACID (*SELECT FOR UPDATE*), eliminando riscos de venda dupla (*double-booking*).
+- Apresenta métricas gerenciais em tempo real sobre a taxa de ocupação das salas e a distribuição de assentos vendidos e reservados.
 
 ### Qual problema resolve?
-O setor de cinemas de pequeno e médio porte frequentemente gerencia suas operações com controles manuais (planilhas descentralizadas, bilhetes de papel) ou softwares legados e desconectados. Esse cenário acarreta:
-1. **Conflito de assentos:** Risco de venda dupla da mesma cadeira em horários de pico.
-2. **Descentralização da informação:** Dificuldade em cruzar disponibilidade de salas com a programação de lançamentos.
-3. **Ausência de rastreabilidade:** Falta de registro auditável sobre quem realizou cada cancelamento ou venda.
-4. **Decisão sem dados:** Incapacidade de mensurar a taxa de ocupação das salas para planejamento de grade.
+Cinemas independentes frequentemente operam com sistemas legados fragmentados ou controles manuais, resultando em:
+1. **Conflito de assentos:** Risco crítico de venda simultânea da mesma poltrona em sessões concorridas.
+2. **Inacessibilidade para o público:** Dificuldade do espectador em consultar a grade de horários e planejar sua ida ao cinema com antecedência.
+3. **Assentos ociosos por no-show:** Falta de regras claras para liberação de lugares não confirmados.
+4. **Ausência de rastreabilidade e compliance:** Descumprimento das exigências da LGPD no manuseio de dados de compradores e ausência de trilha auditável de cancelamentos.
 
-O CineDoom elimina esses gargalos ao prover um ambiente único, transacional e rastreável, com regras de negócio rígidas e feedback operacional instantâneo.
+O CineDoom elimina esses problemas ao unificar o canal digital do cliente e a bilheteria presencial sob o mesmo motor relacional transacional e auditável.
 
 ## 1.3 Público-alvo e contexto de uso
 
-O público-alvo prioritário é composto por **cinemas independentes e redes de pequeno e médio porte** atuantes no mercado nacional. A solução é B2B (*Business-to-Business*), atendendo estabelecimentos que demandam controle operacional informatizado com baixo custo inicial de implantação.
+O público-alvo compreende:
+- **Cinemas independentes e redes regionais (B2B):** Estabelecimentos que demandam controle operacional confiável e centralizado com baixo custo inicial de implantação.
+- **Público espectador (B2C mediado):** Clientes do cinema que utilizam o Portal do Cliente para consultar filmes, reservar seus assentos preferidos e gerenciar seus comprovantes antes de comparecer à sessão.
 
 O contexto de uso abrange:
-- **Ambiente de bilheteria:** Atendimento presencial rápido ao espectador, exigindo tempos de resposta inferiores a 2 segundos para seleção de assentos e conclusão da venda.
-- **Ambiente administrativo:** Planejamento semanal de grades de exibição, cadastro de filmes e acompanhamento de relatórios de desempenho operacional por parte da gerência.
+- **Portal do Cliente (Web Desktop e Mobile):** Acesso pelo espectador para consulta de horários, cadastro pessoal e reserva antecipada com voucher digital.
+- **Ambiente de bilheteria física:** Atendimento presencial ágil com tempo de resposta inferior a 2 segundos para venda direta ou localização e baixa de reservas prévias pelo atendente.
+- **Ambiente administrativo:** Planejamento semanal de exibições, cadastro de acervo e monitoramento de lotação pela gerência.
 
 ## 1.4 Quem vai usar? Em que situação? Qual o ambiente de operação esperado?
 
 ### Perfis de Usuários
-- **Atendente:** Opera a tela de bilheteria durante o atendimento presencial. Consulta sessões, seleciona assentos no mapa visual, emite ingressos e executa cancelamentos mediante confirmação.
-- **Gerente:** Configura salas, cadastra e inativa filmes, cria e cancela sessões de exibição e analisa a ocupação das salas.
-- **Administrador:** Gerencia os perfis de acesso, parametriza regras globais do sistema e audita logs operacionais.
+- **Espectador / Cliente Final:** Acessa o Portal do Cliente para consultar a programação, efetuar cadastro/login com credenciais seguras, selecionar assentos no mapa interativo, reservar ingressos com expiração Just-in-Time, receber comprovante por e-mail transacional, acompanhar seu histórico pessoal em "Minhas Reservas" e cancelar reservas antes do prazo limite.
+- **Atendente:** Opera o guichê presencial. Consulta sessões, seleciona assentos, localiza reservas web por código ou CPF, confirma o recebimento presencial, emite ingressos e executa cancelamentos justificados.
+- **Gerente:** Administra o back-office (salas, acervo de filmes, sessões de exibição), acompanha os painéis de ocupação e gerencia os operadores do sistema.
+- **Administrador:** Parametriza regras globais, audita logs operacionais e gerencia os tenants da plataforma.
 
 ### Ambiente de Operação Esperado
-- **Hardware:** Computadores desktop ou notebooks convencionais operados pelos funcionários do cinema.
-- **Software:** Navegadores web modernos com suporte a padrões ECMAScript atuais (Google Chrome, Mozilla Firefox, Microsoft Edge, Safari).
-- **Conectividade:** Conexão contínua com a internet (mínimo de 5 Mbps estável para troca de payloads JSON via HTTPS).
-- **Espectador final:** Não possui acesso direto ao sistema administrativo nesta versão; o atendimento ocorre integralmente mediado pelo atendente na bilheteria.
+- **Hardware:** Computadores e tablets nos pontos de venda físicos; smartphones, notebooks e desktops pessoais para os espectadores no Portal do Cliente.
+- **Software:** Navegadores web modernos com suporte a ECMAScript atual (Google Chrome, Mozilla Firefox, Safari, Microsoft Edge).
+- **Conectividade:** Conexão estável com a internet (mínimo de 5 Mbps para bilheteria e banda padrão 4G/5G/Wi-Fi para os clientes).
+- **Pagamento das Reservas:** O pagamento de ingressos reservados via web é concluído exclusivamente de forma presencial no balcão da bilheteria até 1 hora antes da sessão, eliminando fricção de gateways financeiros externos e fraudes de cartão.
 
 ## 1.5 Escopo e principais funcionalidades
 
-### Escopo Central e Funcionalidades Incluídas
-O escopo cobre as atividades centrais da cadeia de exibição cinematográfica:
-1. **Módulo de Filmes:** Cadastro de título, sinopse, duração, classificação indicativa e pôster.
-2. **Módulo de Salas e Assentos:** Cadastro de salas com capacidade configurável e mapeamento bidimensional de assentos (ex.: fileiras A–E, assentos 1–6).
-3. **Módulo de Sessões:** Associação de Filme + Sala + Horário de início + Preço base do ingresso.
-4. **Módulo de Bilheteria (Venda e Cancelamento):** Mapa interativo de assentos (livre, selecionado, vendido), reserva atômica contra venda simultânea e cancelamento com liberação imediata.
-5. **Módulo de Ocupação:** Painel visual com percentual de lotação da sala por sessão.
+### Escopo Central e Módulos do Sistema
+1. **Módulo de Filmes:** Acervo com título, sinopse, classificação indicativa, duração e material promocional.
+2. **Módulo de Salas e Assentos:** Mapeamento bidimensional flexível (fileiras e colunas) e controle de capacidade física.
+3. **Módulo de Sessões:** Composição de Filme + Sala + Horário + Preço, com validação de conflitos de horário.
+4. **Módulo de Bilheteria Presencial:** Venda atômica direta, cancelamento auditável por trigger PostgreSQL e baixa presencial de reservas.
+5. **Portal do Cliente:** Consulta de sessões, autenticação com proteção de dados LGPD, mapa interativo de assentos com trava temporária, despacho de e-mail transacional, painel de reservas e cancelamento voluntário web.
+6. **Módulo de Ocupação:** Painel consolidado da taxa de lotação por sessão em tempo real.
 
-### Requisitos Funcionais do Sistema (RF-01 a RF-12)
+### Requisitos Funcionais do Sistema (RF-01 a RF-18)
 
 | Código | Nome do Requisito | Escopo no Ciclo de Vida |
 |---|---|---|
-| **RF-01** | Autenticar usuário | MVP (Simplificado via seleção de perfil de balcão) |
-| **RF-02** | Gerenciar usuários e acessos | Backlog Futuro (Carga inicial via migração) |
-| **RF-03** | Cadastrar e gerenciar filmes | MVP (Must Have) |
-| **RF-04** | Cadastrar e gerenciar salas | MVP (Must Have) |
-| **RF-05** | Agendar e gerenciar sessões | MVP (Must Have) |
-| **RF-06** | Consultar disponibilidade de assentos | MVP (Must Have / Core da Demonstração) |
-| **RF-07** | Registrar venda de ingresso | MVP (Must Have / Trava Transacional Atômica) |
-| **RF-08** | Cancelar ingresso e liberar assento | MVP (Must Have) |
-| **RF-09** | Gerenciar cadastro de clientes | Backlog Futuro (Release 1.1) |
-| **RF-10** | Registrar interesse em lançamentos | Fora do Escopo Inicial |
-| **RF-11** | Gerar relatórios e métricas de ocupação | MVP (Parcial: Painel de Ocupação da Sessão) |
-| **RF-12** | Registrar trilha de auditoria | MVP (Log de operações de venda/cancelamento) |
+| **RF-01** | Autenticar usuário por perfil (Gerente, Atendente e Cliente) | MVP (Must Have / NextAuth.js com RBAC) |
+| **RF-02** | Gerenciar usuários e operadores de guichê | MVP (Gestão de atendentes pelo gerente) |
+| **RF-03** | Cadastrar e gerenciar acervo de filmes | MVP (Must Have) |
+| **RF-04** | Cadastrar e gerenciar salas e layouts de assentos | MVP (Must Have) |
+| **RF-05** | Agendar e publicar sessões cinematográficas | MVP (Must Have) |
+| **RF-06** | Consultar disponibilidade de assentos com polling de 2s | MVP (Must Have / Core Visual) |
+| **RF-07** | Registrar venda de ingresso presencial com trava ACID | MVP (Must Have / SELECT FOR UPDATE) |
+| **RF-08** | Cancelar ingresso e liberar assento com auditoria imutável | MVP (Must Have / Trigger PostgreSQL) |
+| **RF-09** | Proteger dados pessoais de compradores conforme a LGPD | MVP (Must Have / HMAC-SHA256 + AES-256-GCM) |
+| **RF-10** | Monitorar indicadores e taxas de ocupação em tempo real | MVP (Must Have / Painel Gerencial) |
+| **RF-11** | Registrar trilha de auditoria e retenção legal (Axiom) | MVP (Must Have / Retenção 365 dias) |
+| **RF-12** | Consultar programação e sessões no Portal do Cliente | MVP (Must Have / Consulta Pública) |
+| **RF-13** | Reservar assento online com trava atômica temporária | MVP (Must Have / Status RESERVED) |
+| **RF-14** | Cadastrar e autenticar cliente com consentimento LGPD | MVP (Must Have / Área pessoal segura) |
+| **RF-15** | Despachar voucher de reserva via e-mail transacional | MVP (Must Have / NotificationService) |
+| **RF-16** | Cancelar reserva pelo próprio cliente via web | MVP (Must Have / Painel Minhas Reservas) |
+| **RF-17** | Localizar e dar baixa em reserva presencial no balcão | MVP (Must Have / Conversão em Ticket) |
+| **RF-18** | Expirar reservas não pagas a 1 hora do início da sessão | MVP (Must Have / Avaliação Just-in-Time) |
 
 ## 1.6 Restrições e premissas
 
 ### Restrições
-- **Processamento Financeiro Próprio:** A CineSoft não armazena dados de cartão nem executa liquidação bancária própria (vendas balcão registradas em dinheiro/PIX/cartão simulado).
-- **Operação Exclusivamente Online:** O sistema requer conexão ativa; não há modo de contingência offline na primeira versão.
-- **Multitenancy Isolado:** A primeira versão atende uma empresa/instância por implantação.
-- **Sem Aplicativo Mobile Nativo:** Acesso via navegador web desktop responsivo.
-- **Funcionalidades Descartadas:** Streaming de vídeo, vendas online voltadas ao consumidor final, programas de fidelidade, controle de estoque de bomboniere e contabilidade fiscal.
+- **Pagamento Presencial Exclusivo:** O sistema não integra gateway de pagamento online (cartão/PIX web); as reservas efetuadas no portal são pagas presencialmente no guichê do cinema até 1 hora antes do início da sessão.
+- **Operação Conectada:** O sistema opera na nuvem sob arquitetura serverless (Vercel + Neon PostgreSQL), exigindo conectividade ativa.
+- **Multitenancy Isolado por Row-Level:** Compartilhamento de infraestrutura gerenciada com isolamento estrito via tenant_id garantido por middleware Prisma.
+- **Sem Aplicativo Nativo:** Acesso via navegador web desktop e mobile responsivo sem empacotamento para lojas de aplicativos.
+- **Funcionalidades Descartadas do MVP:** Streaming de vídeo, emissão fiscal externa (NFC-e), fidelidade por pontos e gestão de bomboniere.
 
 ### Premissas
-- A equipe do cliente possui competência básica em navegação web e receberá treinamento operacional.
-- As salas possuem configuração física de assentos fixa e pré-determinada.
-- O tempo máximo de resposta para operações comuns em condições de pico não deve ultrapassar 2 segundos.
-- As regras de negócio de venda de assentos são validadas de forma estrita no servidor e no banco de dados relacional.
-
----
+- A trava pessimista SELECT FOR UPDATE e a checagem Just-in-Time impedem matematicamente qualquer conflito de assentos entre clientes web e atendentes físicos.
+- As reservas realizadas com menos de 1 hora de antecedência em relação ao início da sessão são bloqueadas pelo sistema, reservando o inventário restante para o balcão.
+- As reservas não quitadas presencialmente até 60 minutos antes do início do filme expiram automaticamente, liberando as poltronas para venda direta.
