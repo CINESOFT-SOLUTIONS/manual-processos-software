@@ -67,6 +67,8 @@ Modelo de dados para plataforma B2B SaaS CineDoom: 11 entidades cobrindo multi-t
 | `created_at` | `timestamp` |  |  |  |
 | `updated_at` | `timestamp` |  |  |  |
 
+> **Nota de Arquitetura (`poster_url`):** Armazena exclusivamente a URL HTTPS do cartaz (`VARCHAR(500)`). Rejeita dados binários (BLOBs) para preservar o isolamento ACID e a performance do banco. No MVP, aponta para assets locais (`/public/posters/`) servidos via Edge Network da Vercel; em escala de produção (não-mockado), integra com *Direct-to-Storage* (Pre-signed URLs em AWS S3 / Cloudflare R2 / Vercel Blob) ou URLs da CDN oficial da API do TMDB.
+
 ### E-4. Room
 
 - **Primary key flavor:** `UUID-PK`

@@ -125,6 +125,16 @@ Plano arquitetural de software (C4 L3-L4) para o monólito modular CineDoom MVP 
 - **Quality driver (ISO 25010):** usability / security
 - **Build vs. buy:** make
 
+### AD-12. Gestão de Mídias de Cartazes via Desacoplamento de URLs e CDN Edge
+
+- **Reversível:** sim
+- **Racional:** desacopla o banco relacional dos arquivos estáticos, gravando apenas `poster_url` (`VARCHAR(500)`) na entidade `Film` e rejeitando tipos binários (BLOBs/bytea) no PostgreSQL para manter a performance ACID e respeitar a cota de 0.5 GB do Neon. No MVP, as imagens são servidas como assets locais (`/public/posters/`) pela rede de borda (CDN Edge) da Vercel ou via URLs diretas de CDNs públicas. Para produção em escala (cenário não-mockado), a arquitetura especifica o padrão Direct-to-Storage com Pre-signed URLs (AWS S3/Cloudflare R2/Vercel Blob), contornando o limite de payload de 4.5 MB das funções serverless da Vercel, ou integração com APIs públicas de catálogos cinematográficos (The Movie Database — TMDB).
+- **Quality driver (ISO 25010):** performance efficiency / maintainability / cost
+- **Build vs. buy:** buy (CDN/Storage) / make (URL reference)
+- **Alternativas consideradas:**
+  - Armazenar binário BLOB/bytea no PostgreSQL — _rejeitada:_ esgota rapidamente o tier gratuito do Neon e degrada índices/queries
+  - Upload binário trafegando pelo servidor Next.js — _rejeitada:_ satura conexões serverless e viola limite de payload de 4.5 MB da Vercel
+
 ## Componentes
 
 | ID | Nome | Responsabilidade | Depende de |

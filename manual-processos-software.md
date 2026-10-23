@@ -510,6 +510,9 @@ Arquitetura Monólito Modular em Next.js 14 (App Router) estruturada em camadas 
 ### 5.2.3 Justificativa das escolhas tecnológicas
 A combinação de Next.js 14, Prisma ORM e Neon PostgreSQL viabiliza o desenvolvimento integral dos três módulos dentro do prazo de 21 dias por uma equipe de 4 desenvolvedores, assegurando conformidade ACID nativa e custo de infraestrutura zero no nível de entrada.
 
+### 5.2.4 Estratégia de gestão de mídias e desacoplamento de storage
+A persistência de imagens de filmes adota o padrão de desacoplamento de storage: o PostgreSQL registra apenas a URL no campo `poster_url` (`VARCHAR(500)`), eliminando o armazenamento de binários pesados (BLOBs) no banco relacional. No MVP, as imagens são distribuídas pela CDN Edge da Vercel (`/public/posters/`) ou links de CDNs públicas de cinema. Para escala corporativa (cenário não-mockado), a arquitetura define o padrão *Direct-to-Storage* com *Pre-signed URLs* (AWS S3/Cloudflare R2/Vercel Blob), evitando o limite de payload de 4.5 MB das funções serverless, ou integração com a API pública do The Movie Database (TMDB).
+
 ## 5.3 Implementação e Integração
 
 ### 5.3.1 Padrões de codificação adotados
