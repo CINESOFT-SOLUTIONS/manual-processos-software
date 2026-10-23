@@ -21,7 +21,7 @@ Gabriel Lourenço (@gabrlou), Equipe CineSoft
 Necessidade de incorporar o Portal do Cliente para reserva pública de assentos com pagamento presencial no balcão até 1 hora antes da sessão, cadastro/login de cliente, e-mail transacional e cancelamento web.
 
 ## Decisão
-Trava ACID via `session_seats.status = 'RESERVED'`, expiração Just-in-Time no PostgreSQL Neon (`reservation_expires_at > NOW()`), autenticação unificada via NextAuth.js (role `CLIENTE`), envio de voucher por `NotificationService` e endpoint de cancelamento voluntário pelo próprio cliente via web.
+Trava ACID via `session_seats.status = 'RESERVED'`, expiração Just-in-Time no PostgreSQL Neon (`reservation_expires_at > NOW()`), autenticação unificada via NextAuth.js (role `CLIENTE`), envio de voucher por `NotificationService` (operando sob o Free Tier da Resend com 3.000 e-mails/mês gratuitos ou adaptador ConsoleLogger local a custo R$ 0,00) e endpoint de cancelamento voluntário pelo próprio cliente via web.
 
 ## Consequências
 ### Positivas

@@ -31,6 +31,7 @@ A gestão de portfólio (Cláusula 6.2.3) comprova a viabilidade do produto:
 - **Viabilidade Técnica:** A stack adotada (Next.js, Prisma, PostgreSQL) possui maturidade elevada, ampla documentação e domínio prévio por parte da equipe.
 - **Viabilidade Organizacional:** A equipe de 4 integrantes possui papéis claros e processos bem definidos, permitindo desenvolver em paralelo o software executável e a documentação normativa.
 - **Viabilidade de Negócio:** Cinemas de pequeno e médio porte representam um nicho desassistido por grandes ERPs de alto custo, validando a proposição de valor do CineDoom como SaaS leve.
+- **Viabilidade Econômica (Custo Zero):** Toda a arquitetura do MVP foi concebida sob a premissa de **custo operacional nulo (R$ 0,00)**. Todos os serviços terceirizados (Vercel, Neon, GitHub, Axiom e Resend) operam estritamente em suas cotas gratuitas permanentes (*Free Tiers*), sem exigência de cartão de crédito institucional e com adaptador local (*ConsoleLogger*) para desenvolvimento e testes automatizados sem consumo de requisições externas.
 
 ## 3.4 Papéis, competências e plano de capacitação (RACI)
 

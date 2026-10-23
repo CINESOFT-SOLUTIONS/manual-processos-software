@@ -42,13 +42,13 @@ A CineSoft disponibiliza manutenção:
 
 ## 2.3 Identificação dos fornecedores e parceiros relevantes
 
-| Fornecedor / Parceiro | Categoria | Serviço Prestado | Justificativa Técnica / Critério |
-|---|---|---|---|
-| **Vercel Inc.** | Plataforma como Serviço (PaaS) | Hospedagem do frontend, rotas serverless, CDN e deploy contínuo | Deploy atômico por commit, HTTPS nativo e alta performance de borda. |
-| **Neon Technologies** | Banco de Dados como Serviço (DBaaS) | PostgreSQL Serverless gerenciado | Autoscaling, compatibilidade total com o Prisma ORM, backups e tier inicial gratuito. |
-| **GitHub Inc.** | Ferramentas de Engenharia | Controle de versão, GitHub Actions (CI/CD) e GitHub Issues | Padronização de governança, rastreabilidade de código e automação de testes. |
-| **Axiom Inc.** | Observabilidade como Serviço (SaaS) | Log Drain e retenção contínua de telemetria | Retenção legal de 365 dias para logs de auditoria e segurança exigida pela LGPD. |
-| **Resend Technologies** | Comunicação Transacional (SaaS) | Despacho de e-mails transacionais com vouchers | Envio confiável de confirmações de reserva com código e prazo presencial. |
-| **Stripe Inc.** *(Previsto para release futura)* | Gateway de Pagamento | Processamento de transações com cartões e certificação PCI-DSS | Delegação de responsabilidade e segurança no tráfego de dados bancários. |
+| Fornecedor / Parceiro | Categoria | Serviço Prestado | Modelo de Custo | Justificativa Técnica / Critério |
+|---|---|---|---|---|
+| **Vercel Inc.** | Plataforma como Serviço (PaaS) | Hospedagem do frontend, rotas serverless, CDN e deploy contínuo | **Free Tier ($0)** | Deploy atômico por commit, HTTPS nativo e alta performance de borda sem custo. |
+| **Neon Technologies** | Banco de Dados como Serviço (DBaaS) | PostgreSQL Serverless gerenciado | **Free Tier ($0)** | Autoscaling, compatibilidade total com Prisma ORM e cota gratuita de 0.5 GB. |
+| **GitHub Inc.** | Ferramentas de Engenharia | Controle de versão, GitHub Actions (CI/CD) e GitHub Issues | **Free Tier ($0)** | Padronização de governança, rastreabilidade de código e 2.000 min/mês de automação gratuita. |
+| **Axiom Inc.** | Observabilidade como Serviço (SaaS) | Log Drain e retenção contínua de telemetria | **Free Tier ($0)** | Retenção legal de 365 dias para logs LGPD com cota de 0.5 GB/dia no plano gratuito. |
+| **Resend Technologies** | Comunicação Transacional (SaaS) | Despacho de e-mails transacionais com vouchers | **Free Tier ($0)** | Confirmação de reserva com cota gratuita de 3.000 e-mails/mês (sem exigir cartão). |
+| **Stripe Inc.** *(Previsto pós-MVP)* | Gateway de Pagamento | Processamento de transações com cartões e PCI-DSS | *Não contratado no MVP* | Delegação de responsabilidade em release futura (MVP adota pagamento 100% presencial no balcão). |
 
 ---
