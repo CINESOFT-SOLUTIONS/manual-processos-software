@@ -55,12 +55,18 @@ A gestão de decisões (Cláusula 6.3.3) registra escolhas técnicas e suas just
 
 | Código | Decisão Técnica | Justificativa | Status |
 |---|---|---|---|
-| **ADR-001** | Arquitetura Monólito Modular | Reduz sobrecarga operacional em comparação a microsserviços | Aprovada |
-| **ADR-002** | Frontend em React (Next.js) | Facilidade de desenvolvimento de interfaces ricas e reativas | Aprovada |
-| **ADR-003** | Backend em Node.js / TypeScript | Unificação de linguagem entre cliente e servidor com tipagem estática | Aprovada |
-| **ADR-004** | Banco Relacional PostgreSQL | Garantia de propriedades ACID fundamentais para a venda de ingressos | Aprovada |
-| **ADR-005** | Hospedagem na Vercel com Neon DB | Zero custo operacional inicial e deploy automático via GitHub Actions | Aprovada |
-| **ADR-006** | API RESTful padronizada | Simplicidade na comunicação JSON via HTTP | Aprovada |
+| **ADR-001** | Arquitetura Monólito Modular em Next.js 14 | Reduz sobrecarga operacional em comparação a microsserviços | Aprovada |
+| **ADR-002** | Interface Reativa com Tailwind CSS e React Components | Facilidade no desenvolvimento de mapas interativos e reativos | Aprovada |
+| **ADR-003** | Backend em TypeScript com Route Handlers | Unificação de linguagem entre cliente e servidor com tipagem estática | Aprovada |
+| **ADR-004** | Banco Relacional PostgreSQL com Prisma ORM | Garantia de propriedades ACID fundamentais para venda e reserva | Aprovada |
+| **ADR-005** | Hospedagem na Vercel com Neon Serverless | Zero custo operacional inicial e deploy automático via GitHub Actions | Aprovada |
+| **ADR-006** | API RESTful e Polling de 2s no Mapa | Simplicidade de atualização serverless sem conexões WebSocket ociosas | Aprovada |
+| **ADR-007** | Pré-população de SessionSeat para Trava SELECT FOR UPDATE | Elimina race conditions e garante anti-double-booking determinístico | Aprovada |
+| **ADR-008** | Criptografia de CPF (HMAC-SHA256 + AES-256-GCM) | Proteção contra rainbow tables no espaço finito de CPFs (LGPD) | Aprovada |
+| **ADR-009** | Anonimização In-Place para LGPD Art. 18 | Atende direito ao esquecimento sem quebra de integridade fiscal do CDC | Aprovada |
+| **ADR-010** | Auditoria Append-Only via Trigger PostgreSQL | Imutabilidade em nível de banco de dados sem custos de S3 WORM | Aprovada |
+| **ADR-011** | Log Drain Gerenciado (Axiom) para Retenção de 365 Dias | Cumpre prazo legal da LGPD fora do limite de 1h da Vercel | Aprovada |
+| **ADR-012** | Portal do Cliente com Expiração Just-in-Time | Reserva online sem gateway financeiro e baixa presencial no balcão | Aprovada |
 
 ## 4.5 Métricas de acompanhamento do projeto
 

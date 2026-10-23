@@ -44,6 +44,7 @@
 | 08/10/2026 | 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento Técnico). |
 | 17/10/2026 | 1.5 | Reestruturação da capa e padronização do histórico de versões conforme diretrizes docentes. |
 | 22/10/2026 | 1.6 | Padronização formal da estrutura em Capítulos 1 a 5 e incorporação das diretrizes de `references/guidelines/estrutura-minima-manual.md`. |
+| 23/10/2026 | 1.7 | Incorporação do Portal do Cliente (3º módulo), autenticação de cliente LGPD, reserva ACID, e-mail transacional e cancelamento web (ADR-012). |
 
 ---
 
@@ -53,7 +54,7 @@
 
 - **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`references/iso-12207/abnt-iso-iec-12207-2021.pdf`](references/iso-12207/abnt-iso-iec-12207-2021.pdf) e transcrição em [`references/iso-12207/abnt-iso-iec-12207-2021.md`](references/iso-12207/abnt-iso-iec-12207-2021.md)).
 - **Fonte de Decisões Técnicas:** Especificações Formais de Engenharia e Catálogo de Decisões de Arquitetura (ADRs, disponíveis em [`specs/`](specs/)).
-- **Diretrizes Pedagógicas:** [`references/guidelines/instrucoes-disciplina.md`](references/guidelines/instrucoes-disciplina.md) e [`references/guidelines/estrutura-minima-manual.md`](docs/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
+- **Diretrizes Pedagógicas:** [`references/guidelines/instrucoes-disciplina.md`](references/guidelines/instrucoes-disciplina.md) e [`references/guidelines/estrutura-minima-manual.md`](references/guidelines/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
 
 ---
 
@@ -295,6 +296,8 @@ A CineSoft disponibiliza manutenção:
 | **Vercel Inc.** | Plataforma como Serviço (PaaS) | Hospedagem do frontend, rotas serverless, CDN e deploy contínuo | Deploy atômico por commit, HTTPS nativo e alta performance de borda. |
 | **Neon Technologies** | Banco de Dados como Serviço (DBaaS) | PostgreSQL Serverless gerenciado | Autoscaling, compatibilidade total com o Prisma ORM, backups e tier inicial gratuito. |
 | **GitHub Inc.** | Ferramentas de Engenharia | Controle de versão, GitHub Actions (CI/CD) e GitHub Issues | Padronização de governança, rastreabilidade de código e automação de testes. |
+| **Axiom Inc.** | Observabilidade como Serviço (SaaS) | Log Drain e retenção contínua de telemetria | Retenção legal de 365 dias para logs de auditoria e segurança exigida pela LGPD. |
+| **Resend Technologies** | Comunicação Transacional (SaaS) | Despacho de e-mails transacionais com vouchers | Envio confiável de confirmações de reserva com código e prazo presencial. |
 | **Stripe Inc.** *(Previsto para release futura)* | Gateway de Pagamento | Processamento de transações com cartões e certificação PCI-DSS | Delegação de responsabilidade e segurança no tráfego de dados bancários. |
 
 ---
@@ -320,7 +323,7 @@ A gestão da infraestrutura (Cláusula 6.2.2) assegura os recursos para o ciclo 
 
 | Categoria | Recurso / Ferramenta | Finalidade | Responsável |
 |---|---|---|---|
-| **Ambiente de Desenvolvimento** | VS Code, Node.js v20, npm, Git | Edição de código e execução de servidores locais | Desenvolvedores |
+| **Ambiente de Desenvolvimento** | VS Code, Node.js v20, pnpm, Git | Edição de código e execução de servidores locais | Desenvolvedores |
 | **Controle de Versão & CI** | GitHub, GitHub Actions, Git | Versionamento, rastreamento de branches e esteira automatizada | DevOps |
 | **Persistência de Dados** | PostgreSQL gerenciado (Neon), Prisma ORM | Modelagem de dados, migrações e persistência relacional | Arquiteto / DBA |
 | **Hospedagem & Deploy** | Vercel (Produção e Preview) | Disponibilização do software web em ambiente global | DevOps |
@@ -439,12 +442,18 @@ A gestão de decisões (Cláusula 6.3.3) registra escolhas técnicas e suas just
 
 | Código | Decisão Técnica | Justificativa | Status |
 |---|---|---|---|
-| **ADR-001** | Arquitetura Monólito Modular | Reduz sobrecarga operacional em comparação a microsserviços | Aprovada |
-| **ADR-002** | Frontend em React (Next.js) | Facilidade de desenvolvimento de interfaces ricas e reativas | Aprovada |
-| **ADR-003** | Backend em Node.js / TypeScript | Unificação de linguagem entre cliente e servidor com tipagem estática | Aprovada |
-| **ADR-004** | Banco Relacional PostgreSQL | Garantia de propriedades ACID fundamentais para a venda de ingressos | Aprovada |
-| **ADR-005** | Hospedagem na Vercel com Neon DB | Zero custo operacional inicial e deploy automático via GitHub Actions | Aprovada |
-| **ADR-006** | API RESTful padronizada | Simplicidade na comunicação JSON via HTTP | Aprovada |
+| **ADR-001** | Arquitetura Monólito Modular em Next.js 14 | Reduz sobrecarga operacional em comparação a microsserviços | Aprovada |
+| **ADR-002** | Interface Reativa com Tailwind CSS e React Components | Facilidade no desenvolvimento de mapas interativos e reativos | Aprovada |
+| **ADR-003** | Backend em TypeScript com Route Handlers | Unificação de linguagem entre cliente e servidor com tipagem estática | Aprovada |
+| **ADR-004** | Banco Relacional PostgreSQL com Prisma ORM | Garantia de propriedades ACID fundamentais para venda e reserva | Aprovada |
+| **ADR-005** | Hospedagem na Vercel com Neon Serverless | Zero custo operacional inicial e deploy automático via GitHub Actions | Aprovada |
+| **ADR-006** | API RESTful e Polling de 2s no Mapa | Simplicidade de atualização serverless sem conexões WebSocket ociosas | Aprovada |
+| **ADR-007** | Pré-população de SessionSeat para Trava SELECT FOR UPDATE | Elimina race conditions e garante anti-double-booking determinístico | Aprovada |
+| **ADR-008** | Criptografia de CPF (HMAC-SHA256 + AES-256-GCM) | Proteção contra rainbow tables no espaço finito de CPFs (LGPD) | Aprovada |
+| **ADR-009** | Anonimização In-Place para LGPD Art. 18 | Atende direito ao esquecimento sem quebra de integridade fiscal do CDC | Aprovada |
+| **ADR-010** | Auditoria Append-Only via Trigger PostgreSQL | Imutabilidade em nível de banco de dados sem custos de S3 WORM | Aprovada |
+| **ADR-011** | Log Drain Gerenciado (Axiom) para Retenção de 365 Dias | Cumpre prazo legal da LGPD fora do limite de 1h da Vercel | Aprovada |
+| **ADR-012** | Portal do Cliente com Expiração Just-in-Time | Reserva online sem gateway financeiro e baixa presencial no balcão | Aprovada |
 
 ## 4.5 Métricas de acompanhamento do projeto
 

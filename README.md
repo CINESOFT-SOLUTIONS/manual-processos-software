@@ -35,7 +35,7 @@ Este repositório contém o **Manual de Processos de Software** e o pacote de go
 
 ### Fontes Normativas e Diretrizes
 1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](references/iso-12207/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](references/iso-12207/abnt-iso-iec-12207-2021.pdf)).
-2. **Fonte da Verdade de Negócio:** [Project Definition Workbook (PDW)](references/pdw/project-definition-workbook.md) — Constituição com todas as regras, modelos e restrições do CineDoom.
+2. **Fonte da Verdade de Engenharia e Negócio:** [Especificação do CineDoom](specs/cinedoom-spec.md) e [Catálogo de ADRs](specs/adrs/README.md) — Requisitos, regras de negócio, modelo de dados e decisões arquiteturais do sistema.
 3. **Diretrizes Pedagógicas:** [Instruções da Disciplina](references/guidelines/instrucoes-disciplina.md) e [Estrutura Mínima](references/guidelines/estrutura-minima-manual.md) estabelecidas pela Profa. Dra. Juliana Zinader.
 
 ---
@@ -52,15 +52,15 @@ manual-processos/
 │   ├── 02-processos-acordo.md         # Cap. 2: Aquisição, fornecimento e parceiros
 │   ├── 03-processos-organizacionais.md# Cap. 3: Ciclo de vida, infraestrutura, viabilidade, RACI e qualidade
 │   ├── 04-gerenciamento-tecnico.md    # Cap. 4: Plano de projeto, riscos, configuração e métricas
-│   └── 05-processos-tecnicos.md       # Cap. 5: Requisitos (AC-1..8), C4, Prisma, STRIDE, DPIA e testes
+│   └── 05-processos-tecnicos.md       # Cap. 5: Requisitos (AC-1..14), C4, Prisma, STRIDE, DPIA e testes
 │
 ├── specs/                             # Especificações Formais de Engenharia e Governança
-│   ├── adrs/                          # 11 Architecture Decision Records (ADR-001 a ADR-011)
+│   ├── adrs/                          # 12 Architecture Decision Records (ADR-001 a ADR-012)
 │   ├── architecture/                  # Diagramas C4, especificações de componentes e wireframes UX/UI
 │   ├── data-model/                    # Prisma Schema e dicionário relacional de dados
 │   ├── security-compliance/           # Modelagem de Ameaças STRIDE e Avaliação de Impacto LGPD (DPIA)
 │   ├── quality/                       # Matriz de rastreabilidade e suíte de concorrência ACID (50 threads)
-│   ├── planning/                      # Plano de tarefas do TechLead (20 tarefas) e DevOps CI/CD
+│   ├── planning/                      # Plano de tarefas do TechLead (23 tarefas) e DevOps CI/CD
 │   ├── cinedoom-spec.md               # Especificação funcional formal (PM)
 │   └── cinedoom-spec.json             # Metadados estruturados
 │
@@ -75,7 +75,7 @@ manual-processos/
 │
 ├── references/                        # Referências Normativas e Diretrizes
 │   ├── iso-12207/                     # Norma ABNT NBR ISO/IEC/IEEE 12207:2021
-│   ├── pdw/                           # Project Definition Workbook (Constituição)
+│   ├── pdw/                           # Registro histórico de premissas iniciais
 │   └── guidelines/                    # Instruções e estrutura mínima docente
 │
 ├── assets/                            # Ativos Visuais e Identidade de Marca
@@ -97,10 +97,10 @@ manual-processos/
 * **[manual-processos-software.md](manual-processos-software.md):** Manual unificado em arquivo único para leitura direta no GitHub.
 * **[content/](content/):** Módulos individuais dos capítulos para edição isolada e revisões via Pull Request.
 * **[specs/](specs/):** Especificações de engenharia detalhadas (ADRs, C4, Prisma, STRIDE, DPIA, QA).
-* **[specs/adrs/](specs/adrs/):** Catálogo formal de Architecture Decision Records (ADR-001 a ADR-011).
+* **[specs/adrs/](specs/adrs/):** Catálogo formal de Architecture Decision Records (ADR-001 a ADR-012).
 * **[latex/report/](latex/report/):** Código-fonte e PDF do manual conforme a ABNT NBR 14724.
 * **[latex/presentation/](latex/presentation/):** Código-fonte e PDF dos slides Beamer para apresentação perante a banca.
-* **[references/](references/):** Documentos de apoio, norma ISO 12207, PDW e diretrizes da disciplina.
+* **[references/](references/):** Documentos de apoio, norma ISO 12207 e diretrizes da disciplina.
 
 ---
 

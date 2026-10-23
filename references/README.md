@@ -12,12 +12,8 @@ Nenhuma regra ou arquitetura é definida sem respaldo nestas referências.
 * **[`iso-12207/abnt-iso-iec-12207-2021.pdf`](iso-12207/abnt-iso-iec-12207-2021.pdf):** Texto integral oficial da norma ABNT NBR ISO/IEC/IEEE 12207:2021 (Engenharia de sistemas e software — Processos de ciclo de vida de software).
 * **[`iso-12207/abnt-iso-iec-12207-2021.md`](iso-12207/abnt-iso-iec-12207-2021.md):** Síntese estruturada das cláusulas, grupos de processos (Acordo, Organizacionais Habilitadores, Gerenciamento Técnico e Processos Técnicos) e entregáveis exigidos.
 
-### 2. Constituição do CineDoom (`pdw/`)
-* **[`pdw/project-definition-workbook.md`](pdw/project-definition-workbook.md):** O Project Definition Workbook (PDW) atua como a constituição do projeto. Define:
-  * Problema de negócio, modelo de monetização B2B SaaS e proposta de valor.
-  * Regras estritas de reserva de assentos e integridade transacional.
-  * Perfis de acesso: Atendente de bilheteria e Gerente de cinema.
-  * Delimitação estrita do escopo do MVP (100% presencial, sem gateways de pagamento online ou app mobile).
+### 2. Registro Histórico de Premissas (`pdw/`)
+* **[`pdw/project-definition-workbook.md`](pdw/project-definition-workbook.md):** Registro histórico das premissas e explorações preliminares do projeto. As especificações oficiais vigentes de engenharia, requisitos funcionais (RF-01 a RF-18) e regras de negócio residem exclusivamente no diretório formal [`specs/`](../specs/).
 
 ### 3. Diretrizes Acadêmicas da Disciplina (`guidelines/`)
 * **[`guidelines/instrucoes-disciplina.md`](guidelines/instrucoes-disciplina.md):** Requisitos oficiais da disciplina de Processos de Engenharia de Software (UFG/INF), critérios de pontuação da Profa. Dra. Juliana Zinader e padrão de 7 seções por processo.

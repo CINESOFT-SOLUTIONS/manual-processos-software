@@ -38,13 +38,13 @@ manual-processos-software/
 │   ├── 01-apresentacao-software.md      # Capitulo 1: Apresentacao do software e escopo
 │   ├── 02-processos-acordo.md           # Capitulo 2: Aquisicao e fornecimento B2B SaaS
 │   ├── 03-processos-organizacionais.md  # Capitulo 3: Ciclo de vida, ferramentas e matriz RACI
-│   ├── 04-gerenciamento-tecnico.md      # Capitulo 4: Planejamento, cronograma, riscos e 11 ADRs
+│   ├── 04-gerenciamento-tecnico.md      # Capitulo 4: Planejamento, cronograma, riscos e 12 ADRs
 │   └── 05-processos-tecnicos.md         # Capitulo 5: Requisitos, C4, Prisma, STRIDE e V&V
 ├── specs/                               # Especificacoes de Engenharia e Governanca Tecnica
-│   ├── adrs/                            # Catalogo formal de 11 Architecture Decision Records
+│   ├── adrs/                            # Catalogo formal de 12 Architecture Decision Records
 │   ├── architecture/                    # Diagramas C4, arquitetura de software e UX design
 │   ├── data-model/                      # Schema relacional Prisma e definicao de entidades
-│   ├── planning/                        # Plano do TechLead (20 tasks), cronograma e sprints
+│   ├── planning/                        # Plano do TechLead (23 tasks), cronograma e sprints
 │   ├── quality/                         # Estrategia de testes e suite de 50 threads concorrentes
 │   └── security-compliance/             # Modelagem STRIDE e Relatorio de Impacto LGPD (DPIA)
 ├── latex/                               # Compilacao tipografica de alta qualidade

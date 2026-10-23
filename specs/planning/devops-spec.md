@@ -46,7 +46,7 @@ DevOps spec para CineDoom MVP — plataforma B2B SaaS bilheteria. Cobre topologi
 - Neon Serverless PostgreSQL — pool de conexões via Neon pooler (pgBouncer gerenciado), connection string via `DATABASE_URL` (pooled) e `DATABASE_URL_UNPOOLED` para migrações
 - Réplica de leitura Neon: 1 réplica read-only para queries do painel de ocupação (US-3/AC-7) — aliviando write-primary
 - CDN: Vercel Edge Network global para assets estáticos (JS, CSS, imagens de poster via `poster_url`)
-- Secrets: Vercel Environment Variables (criptografadas em repouso) — `DATABASE_URL`, `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` (AES-256-GCM), `NEXTAUTH_URL`
+- Secrets: Vercel Environment Variables (criptografadas em repouso) — `DATABASE_URL`, `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` (AES-256-GCM), `CINEDOOM_CPF_HMAC_KEY` (HMAC-SHA256), `RESEND_API_KEY` (Notificação transacional), `NEXTAUTH_URL`
 - Rotação de secrets: manual pela equipe CineDoom via Vercel dashboard + Neon console
 - Migrações: `prisma migrate deploy` executado em CI/CD step pré-deploy (blocking gate)
 - Zero-downtime deploy: Vercel atomic deployments (swap instantâneo)

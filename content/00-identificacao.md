@@ -38,6 +38,7 @@
 | 08/10/2026 | 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento Técnico). |
 | 17/10/2026 | 1.5 | Reestruturação da capa e padronização do histórico de versões conforme diretrizes docentes. |
 | 22/10/2026 | 1.6 | Padronização formal da estrutura em Capítulos 1 a 5 e incorporação das diretrizes de `references/guidelines/estrutura-minima-manual.md`. |
+| 23/10/2026 | 1.7 | Incorporação do Portal do Cliente (3º módulo), autenticação de cliente LGPD, reserva ACID, e-mail transacional e cancelamento web (ADR-012). |
 
 ---
 
@@ -47,7 +48,7 @@
 
 - **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`references/iso-12207/abnt-iso-iec-12207-2021.pdf`](references/iso-12207/abnt-iso-iec-12207-2021.pdf) e transcrição em [`references/iso-12207/abnt-iso-iec-12207-2021.md`](references/iso-12207/abnt-iso-iec-12207-2021.md)).
 - **Fonte de Decisões Técnicas:** Especificações Formais de Engenharia e Catálogo de Decisões de Arquitetura (ADRs, disponíveis em [`specs/`](specs/)).
-- **Diretrizes Pedagógicas:** [`references/guidelines/instrucoes-disciplina.md`](references/guidelines/instrucoes-disciplina.md) e [`references/guidelines/estrutura-minima-manual.md`](docs/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
+- **Diretrizes Pedagógicas:** [`references/guidelines/instrucoes-disciplina.md`](references/guidelines/instrucoes-disciplina.md) e [`references/guidelines/estrutura-minima-manual.md`](references/guidelines/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
 
 ---
 

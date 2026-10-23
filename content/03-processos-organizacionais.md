@@ -18,7 +18,7 @@ A gestão da infraestrutura (Cláusula 6.2.2) assegura os recursos para o ciclo 
 
 | Categoria | Recurso / Ferramenta | Finalidade | Responsável |
 |---|---|---|---|
-| **Ambiente de Desenvolvimento** | VS Code, Node.js v20, npm, Git | Edição de código e execução de servidores locais | Desenvolvedores |
+| **Ambiente de Desenvolvimento** | VS Code, Node.js v20, pnpm, Git | Edição de código e execução de servidores locais | Desenvolvedores |
 | **Controle de Versão & CI** | GitHub, GitHub Actions, Git | Versionamento, rastreamento de branches e esteira automatizada | DevOps |
 | **Persistência de Dados** | PostgreSQL gerenciado (Neon), Prisma ORM | Modelagem de dados, migrações e persistência relacional | Arquiteto / DBA |
 | **Hospedagem & Deploy** | Vercel (Produção e Preview) | Disponibilização do software web em ambiente global | DevOps |

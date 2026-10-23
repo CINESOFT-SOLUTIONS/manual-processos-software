@@ -25,7 +25,7 @@ A equipe é composta por 4 engenheiros de software, com atribuições divididas 
 | :--- | :--- | :--- | :--- | :---: |
 | **Gabriel Lourenço** | `@gabrlou` | TechLead & Lead Software Architect | Núcleo do app, motor ACID de bilheteria, isolamento multi-tenant, segurança e testes de concorrência. | 12 issues (`app`) |
 | **Carlos Eduardo** | `@carloseduduu` | Backend Engineer & DevOps Lead | Criptografia PII/LGPD, CRUDs de backoffice (filmes, salas, sessões), observabilidade Axiom e pipeline CI/CD. | 11 issues (`app`) |
-| **Kayque Vicente** | `@K4yquee` | Process Engineer & QA Lead | Processos organizacionais (RACI), gerenciamento técnico (riscos e 11 ADRs), V&V e diagramação LaTeX/Beamer. | 5 issues (`docs`) |
+| **Kayque Vicente** | `@K4yquee` | Process Engineer & QA Lead | Processos organizacionais (RACI), gerenciamento técnico (riscos e 12 ADRs), V&V e diagramação LaTeX/Beamer. | 5 issues (`docs`) |
 | **Yury Nogueira** | `@YuryNog` | Requirements Engineer & Compliance | Apresentação do software, acordos de aquisição/fornecimento, engenharia de requisitos, arquitetura C4 e STRIDE/LGPD. | 5 issues (`docs`) |
 
 ---
@@ -86,7 +86,7 @@ O cronograma total compreende 21 dias corridos, divididos em 3 Sprints funcionai
 | **#1** | `[DOCS(CAP-1)] Consolidar apresentação do software, escopo e identidade visual` | `@YuryNog` | 2026-10-23 | 2026-10-26 | Cláusula 6.4.1 (Requisitos dos Stakeholders) |
 | **#2** | `[DOCS(CAP-2)] Formalizar processos de acordo (aquisição de nuvem e fornecimento B2B SaaS)` | `@YuryNog` | 2026-10-26 | 2026-10-29 | Cláusulas 6.1.1 (Aquisição) e 6.1.2 (Fornecimento) |
 | **#3** | `[DOCS(CAP-3)] Estruturar processos organizacionais habilitadores, matriz RACI e gestão da qualidade` | `@K4yquee` | 2026-10-24 | 2026-10-28 | Cláusula 6.2 (Processos Habilitadores) |
-| **#4** | `[DOCS(CAP-4)] Mapear plano de gerenciamento técnico, matriz de riscos e as 11 ADRs` | `@K4yquee` | 2026-10-28 | 2026-11-01 | Cláusula 6.3 (Gerenciamento Técnico) |
+| **#4** | `[DOCS(CAP-4)] Mapear plano de gerenciamento técnico, matriz de riscos e as 12 ADRs` | `@K4yquee` | 2026-10-28 | 2026-11-01 | Cláusula 6.3 (Gerenciamento Técnico) |
 | **#5** | `[DOCS(CAP-5.1)] Consolidar engenharia de requisitos, critérios de aceite e matriz de rastreabilidade` | `@YuryNog` | 2026-10-29 | 2026-11-02 | Cláusulas 6.4.2 e 6.4.3 (Requisitos) |
 | **#6** | `[DOCS(CAP-5.2)] Documentar arquitetura em modelo C4 (Contexto, Contêiner, Componentes) e banco relacional` | `@YuryNog` | 2026-11-02 | 2026-11-05 | Cláusulas 6.4.4 e 6.4.5 (Arquitetura e Design) |
 | **#7** | `[DOCS(CAP-5.3)] Elaborar modelagem de ameaças STRIDE e conformidade LGPD` | `@YuryNog` | 2026-11-05 | 2026-11-08 | Cláusula 7.1 e 6.4.8 (Implementação e Segurança) |

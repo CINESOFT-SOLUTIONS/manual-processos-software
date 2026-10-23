@@ -15,7 +15,7 @@ O conteúdo está particionado em módulos independentes alinhados aos capítulo
 | **[`02-processos-acordo.md`](02-processos-acordo.md)** | Capítulo 2 | Processos de aquisição (nuvem, APIs), fornecimento (SaaS, SLA) e parceiros. |
 | **[`03-processos-organizacionais.md`](03-processos-organizacionais.md)** | Capítulo 3 | Modelo de ciclo de vida, infraestrutura, viabilidade, matriz RACI e gestão da qualidade. |
 | **[`04-gerenciamento-tecnico.md`](04-gerenciamento-tecnico.md)** | Capítulo 4 | Plano de projeto, gestão de riscos, controle de configuração, ADRs e métricas. |
-| **[`05-processos-tecnicos.md`](05-processos-tecnicos.md)** | Capítulo 5 | Requisitos (US-1..6, AC-1..8), C4, Prisma, STRIDE, DPIA LGPD e suíte de testes. |
+| **[`05-processos-tecnicos.md`](05-processos-tecnicos.md)** | Capítulo 5 | Requisitos (US-1..11, AC-1..14), C4, Prisma, STRIDE, DPIA LGPD e suíte de testes. |
 
 ---
 

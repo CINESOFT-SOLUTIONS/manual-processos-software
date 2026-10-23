@@ -19,7 +19,7 @@ title: "[TechLead] CineDoom — plataforma B2B SaaS para cinemas independentes e
 
 ## Resumo
 
-Decomposição do MVP CineDoom em 20 tasks cobrindo infra/CI, schema ACID multi-tenant, auth RBAC, PII/LGPD (HMAC-SHA256+AES-256-GCM via Vercel Secrets), módulos de backoffice, bilheteria com trava atômica, cancelamento auditável, painel de ocupação, observabilidade Axiom e pirâmide de testes (integração concorrente + E2E Playwright).
+Decomposição do MVP CineDoom em 23 tasks cobrindo infra/CI, schema ACID multi-tenant, auth RBAC, PII/LGPD (HMAC-SHA256+AES-256-GCM via Vercel Secrets), módulos de backoffice, bilheteria com trava atômica, cancelamento auditável, painel de ocupação, observabilidade Axiom e pirâmide de testes (integração concorrente + E2E Playwright).
 
 ## Métricas
 
