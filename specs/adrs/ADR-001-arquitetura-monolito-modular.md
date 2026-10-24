@@ -21,10 +21,13 @@ Gabriel Lourenço (@gabrlou), Equipe CineSoft
 Necessidade de desenvolver uma aplicação robusta com prazo restrito de 3 semanas (até 12/11/2026), unificando frontend e backend.
 
 ## Decisão
-Adotar Monólito Modular usando Next.js 14 (App Router) em TypeScript. Módulos de catálogo, bilheteria, ocupação e auditoria compartilham infraestrutura com isolamento claro de serviços.
+Adotar Monólito Modular usando Next.js 14 (App Router) em TypeScript organizado em Clean Architecture (Controller -> Service -> Repository) com Feature Slices verticais (`src/features/*`). Os módulos de catálogo, bilheteria, ocupação, reserva e auditoria operam com inversão de dependência via interfaces de domínio, enquanto `src/modules/*` fornece re-exportações canônicas para garantia de integridade arquitetural (ISO/IEC/IEEE 12207).
 
 ## Consequências
 ### Positivas
 - Elimina sobrecarga de orquestração de microsserviços, simplifica transações de banco locais e viabiliza a entrega no prazo.
+- Desacopla regras de negócio e casos de uso de detalhes de persistência (Prisma ORM) através do padrão Repository.
+- Testabilidade unitária aprimorada por injeção de dependência e mocks de repositório.
 ### Negativas / Mitigações
 - Documentadas e tratadas nas suítes de testes e políticas de observabilidade do projeto.
+

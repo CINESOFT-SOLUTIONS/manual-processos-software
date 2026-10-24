@@ -29,11 +29,12 @@ Mapeamento formal dos interesses de proprietários de cinemas (redução de cust
 ## 5.2 Arquitetura e Design
 
 ### 5.2.1 Documento de arquitetura do sistema
-Arquitetura Monólito Modular em Next.js 14 (App Router) estruturada em camadas lógicas:
-1. **Camada de Apresentação:** React Server Components para o catálogo público e Client Components reativos para o mapa interativo de assentos (polling a 2s) e checkout de reserva.
-2. **Camada de Aplicação / API:** Route Handlers tipados em TypeScript processando requisições REST com validação de schemas Zod.
-3. **Camada de Domínio / Negócio:** Serviços encapsulados (`VendaTransactionHandler`, `ReservaTransactionHandler`, `CancelamentoService`, `NotificationService`, `CryptoService`).
-4. **Camada de Acesso a Dados:** Prisma Client integrado ao Neon PostgreSQL com extensão de contexto para injeção global de filtro `WHERE tenant_id`.
+Arquitetura Monólito Modular em Next.js 14 (App Router) organizada em Clean Architecture com fatias verticais de funcionalidades (`src/features/*`) e camadas lógicas estritas (Controller-Service-Repository):
+1. **Camada de Apresentação:** React Server Components para o catálogo público e Client Components reativos para o mapa interativo de assentos (polling a 2s), painéis gerenciais e checkout de reserva.
+2. **Camada de Aplicação / Controllers:** Route Handlers tipados em TypeScript (`src/app/api/**/route.ts`) atuando como Controllers finos para transporte HTTP e validação de schemas Zod.
+3. **Camada de Serviços de Aplicação:** Orquestração de regras de negócio e casos de uso (`FilmService`, `SessionService`, `CounterService`, `ReservationService`, `NotificationService`, `CryptoService`).
+4. **Camada de Domínio e Repositórios:** Interfaces de domínio e implementações de repositório (`PrismaFilmRepository`, `PrismaSessionRepository`, `PrismaCounterRepository`, `PrismaReservationRepository`) garantindo inversão de dependência e desacoplamento do ORM.
+5. **Camada de Acesso a Dados e Tenancy:** Prisma Client integrado ao Neon PostgreSQL com extensão de contexto para injeção global de filtro `WHERE tenant_id`.
 
 ### 5.2.2 Diagramas de design
 - **Diagrama C4 Nível 2 (Contêineres):** Demonstra a integração entre o navegador do espectador (Portal do Cliente), o terminal do atendente (Bilheteria), a aplicação Next.js na Vercel, o serviço transacional de e-mails e o banco de dados Neon Serverless.
