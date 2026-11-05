@@ -15,7 +15,12 @@ Nenhuma regra ou arquitetura é definida sem respaldo nestas referências.
 ### 2. Diretrizes Acadêmicas da Disciplina (`diretrizes/`)
 * **[`diretrizes/instrucoes-disciplina.md`](diretrizes/instrucoes-disciplina.md):** Requisitos oficiais da disciplina de Processos de Engenharia de Software (UFG/INF), critérios de pontuação da Profa. Dra. Juliana Zinader e padrão de 7 seções por processo.
 * **[`diretrizes/estrutura-minima-manual.md`](diretrizes/estrutura-minima-manual.md):** Sumário analítico obrigatório em capítulos mínimos exigido para a avaliação formal.
-* **[`diretrizes/orientacoes-capitulo-6.md`](diretrizes/orientacoes-capitulo-6.md):** Diretrizes específicas e roteiro pedagógico para o Capítulo 6 (Avaliação e Melhoria dos Processos de Software - MPS.BR).
+* **[`diretrizes/orientacoes-capitulo-1.md`](diretrizes/orientacoes-capitulo-1.md):** Guia detalhado do Capítulo 1 (Apresentação do Software e da Organização).
+* **[`diretrizes/orientacoes-capitulo-2.md`](diretrizes/orientacoes-capitulo-2.md):** Guia detalhado do Capítulo 2 (Processos de Acordo — Aquisição e Fornecimento).
+* **[`diretrizes/orientacoes-capitulo-3.md`](diretrizes/orientacoes-capitulo-3.md):** Guia detalhado do Capítulo 3 (Processos Organizacionais Habilitadores).
+* **[`diretrizes/orientacoes-capitulo-4.md`](diretrizes/orientacoes-capitulo-4.md):** Guia detalhado do Capítulo 4 (Processos de Gerenciamento Técnico).
+* **[`diretrizes/orientacoes-capitulo-5.md`](diretrizes/orientacoes-capitulo-5.md):** Guia detalhado do Capítulo 5 (Processos Técnicos).
+* **[`diretrizes/orientacoes-capitulo-6.md`](diretrizes/orientacoes-capitulo-6.md):** Diretrizes específicas e roteiro pedagógico para o Capítulo 6 (Avaliação e Melhoria dos Processos de Software — MPS.BR).
 * **[`diretrizes/estrutura-organizacao-repositorios.md`](diretrizes/estrutura-organizacao-repositorios.md):** Racional sobre a separação da organização GitHub em repositórios complementares (`manual-processos` e `cinedoom-app`).
 
 ### 3. Slides e Materiais de Aulas (`aulas/`)
