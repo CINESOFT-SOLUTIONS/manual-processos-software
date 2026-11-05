@@ -27,8 +27,8 @@ ehthumbs.db
 *.vrb
 
 # PDFs compilados
-latex/report/*.pdf
-latex/presentation/*.pdf
+latex/manual/*.pdf
+latex/slides/*.pdf
 
 # Binários locais de scripts
 scripts/bin/

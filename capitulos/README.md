@@ -21,7 +21,7 @@ O conteúdo está particionado em módulos independentes alinhados aos capítulo
 
 ## Diretrizes de Contribuição para a Equipe
 
-1. **Edição Exclusiva em `content/`:**
+1. **Edição Exclusiva em `capitulos/`:**
    * Nunca edite o arquivo `manual-processos-software.md` na raiz do repositório manualmente. Ele é um artefato compilado e sobregravado automaticamente pelo pipeline de build.
 2. **Pull Requests Atômicos:**
    * Crie branches específicas por capítulo (ex: `feat/capitulo-04-riscos`) para evitar conflitos de merge entre os integrantes.

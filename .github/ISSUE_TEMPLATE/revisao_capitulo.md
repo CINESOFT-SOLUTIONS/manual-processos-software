@@ -11,7 +11,7 @@ assignees: ''
 
 ## Capitulo e Secao Alvo
 - **Capitulo:** (ex.: Capitulo 4 – Processos de Gerenciamento Tecnico)
-- **Arquivo Fonte:** (ex.: content/04-gerenciamento-tecnico.md)
+- **Arquivo Fonte:** (ex.: capitulos/04-gerenciamento-tecnico.md)
 - **Clausula ISO 12207:2021:** (ex.: 6.3.1 Planejamento do Projeto)
 
 ## Diretrizes Pedagogicas e Requisitos Minimos
@@ -23,7 +23,7 @@ assignees: ''
 2. 
 
 ## Criterios de Aceite para Fechamento (DoD)
-- [ ] Conteudo redigido e revisado no arquivo correspondente em `content/`.
+- [ ] Conteudo redigido e revisado no arquivo correspondente em `capitulos/`.
 - [ ] Script `./scripts/montar-manual.sh` executado e `manual-processos-software.md` atualizado.
 - [ ] Script `./scripts/compilar.sh` executado com sucesso gerando os PDFs do Relatorio ABNT e Apresentacao Beamer.
 - [ ] Aprovacao em revisao por pares da equipe.

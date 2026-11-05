@@ -137,7 +137,7 @@ compile_document() {
 START_TIME=$(date +%s)
 printf "\n${BG_CYAN} DOCS ${RESET} ${BOLD}cinedoom-docs${RESET} ${DIM}v1.0.0${RESET}\n\n"
 
-# Etapa 0: Monta o manual Markdown consolidado a partir de content/
+# Etapa 0: Monta o manual Markdown consolidado a partir de capitulos/
 if [ -f "$ROOT_DIR/scripts/montar-manual.sh" ]; then
     "$ROOT_DIR/scripts/montar-manual.sh"
     printf "\n"
@@ -146,13 +146,13 @@ fi
 ensure_tectonic || true
 
 # Etapa 1: Compilação do Relatório ABNT
-if [ -f "$ROOT_DIR/latex/report/manual-processos-software.tex" ]; then
-    compile_document "$ROOT_DIR/latex/report" "manual-processos-software.tex" "${BG_BLUE} LATEX ${RESET}"
+if [ -f "$ROOT_DIR/latex/manual/manual-processos-software.tex" ]; then
+    compile_document "$ROOT_DIR/latex/manual" "manual-processos-software.tex" "${BG_BLUE} LATEX ${RESET}"
 fi
 
 # Etapa 2: Compilação dos Slides Beamer
-if [ -f "$ROOT_DIR/latex/presentation/apresentacao-manual.tex" ]; then
-    compile_document "$ROOT_DIR/latex/presentation" "apresentacao-manual.tex" "${BG_YELLOW} SLIDES ${RESET}"
+if [ -f "$ROOT_DIR/latex/slides/apresentacao-manual.tex" ]; then
+    compile_document "$ROOT_DIR/latex/slides" "apresentacao-manual.tex" "${BG_YELLOW} SLIDES ${RESET}"
 fi
 
 END_TIME=$(date +%s)
@@ -161,5 +161,5 @@ ELAPSED=$((END_TIME - START_TIME))
 printf "${BG_GREEN} SUCCESS ${RESET} ${GREEN}${BOLD}Build completed in %ss${RESET}\n\n" "$ELAPSED"
 printf "${BOLD}Artifacts:${RESET}\n"
 printf "  ${CYAN}•${RESET} manual-processos-software.md ${DIM}(Markdown)${RESET}\n"
-[ -f "$ROOT_DIR/latex/report/manual-processos-software.pdf" ] && printf "  ${CYAN}•${RESET} latex/report/manual-processos-software.pdf ${DIM}(ABNT NBR 14724)${RESET}\n"
-[ -f "$ROOT_DIR/latex/presentation/apresentacao-manual.pdf" ] && printf "  ${CYAN}•${RESET} latex/presentation/apresentacao-manual.pdf ${DIM}(Beamer UFG/INF)${RESET}\n\n"
+[ -f "$ROOT_DIR/latex/manual/manual-processos-software.pdf" ] && printf "  ${CYAN}•${RESET} latex/manual/manual-processos-software.pdf ${DIM}(ABNT NBR 14724)${RESET}\n"
+[ -f "$ROOT_DIR/latex/slides/apresentacao-manual.pdf" ] && printf "  ${CYAN}•${RESET} latex/slides/apresentacao-manual.pdf ${DIM}(Beamer UFG/INF)${RESET}\n\n"

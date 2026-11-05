@@ -33,7 +33,7 @@ manual-processos-software/
 │   │   └── compilar-docs.yml            # CI no GitHub Actions que compila os PDFs via Tectonic
 │   ├── PULL_REQUEST_TEMPLATE.md         # Checklist de aprovacao com impacto normativo
 │   └── CODEOWNERS                       # Governanca de revisores conforme a matriz RACI
-├── content/                             # Fonte Unica da Verdade (SSOT) dos capitulos
+├── capitulos/                             # Fonte Unica da Verdade (SSOT) dos capitulos
 │   ├── 00-identificacao.md              # Capa, identificacao dos autores e historico de versoes
 │   ├── 01-apresentacao-software.md      # Capitulo 1: Apresentacao do software e escopo
 │   ├── 02-processos-acordo.md           # Capitulo 2: Aquisicao e fornecimento B2B SaaS
@@ -60,7 +60,7 @@ manual-processos-software/
 │   ├── logos/                           # Logomarcas oficiais CineSoft Solutions e CineDoom
 │   └── diagrams/                        # Diagramas exportados
 ├── scripts/                             # Scripts de automacao local
-│   ├── montar-manual.sh                 # Concatena content/ em manual-processos-software.md
+│   ├── montar-manual.sh                 # Concatena capitulos/ em manual-processos-software.md
 │   └── compilar.sh                      # Compilacao unificada com Tectonic (Relatorio + Slides)
 ├── manual-processos-software.md         # Documento consolidado montado para leitura web
 └── README.md                            # Apresentacao do projeto, equipe e instrucoes

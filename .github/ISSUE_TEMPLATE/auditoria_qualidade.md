@@ -12,7 +12,7 @@ assignees: ''
 - **Capitulo / Processo Auditado:** (ex.: Capitulo 4.2 – Gestao de Riscos / Clausula 6.3.4)
 
 ## Evidencia Inspecionada
-<!-- Indique o trecho do manual em content/, especificacao em specs/ ou artefato compilado verificado. -->
+<!-- Indique o trecho do manual em capitulos/, especificacao em specs/ ou artefato compilado verificado. -->
 
 ## Constatacao
 - [ ] **Nao-Conformidade Maior:** Contradicao direta com a norma ISO/IEC/IEEE 12207:2021 ou com as especificacoes de engenharia.
@@ -23,8 +23,8 @@ assignees: ''
 <!-- Explique objetivamente o que foi identificado como inconsistente. -->
 
 ## Acao Corretiva Proposta
-<!-- O que a equipe precisa fazer para corrigir a nao-conformidade no arquivo de origem em content/ ou specs/? -->
+<!-- O que a equipe precisa fazer para corrigir a nao-conformidade no arquivo de origem em capitulos/ ou specs/? -->
 
 ## Criterio de Resolucao
-- [ ] Ajuste realizado no arquivo fonte em `content/` ou `specs/`.
+- [ ] Ajuste realizado no arquivo fonte em `capitulos/` ou `specs/`.
 - [ ] Script `./scripts/montar-manual.sh` e `./scripts/compilar.sh` executados sem erros.
