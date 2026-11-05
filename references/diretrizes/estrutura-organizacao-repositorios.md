@@ -54,7 +54,7 @@ manual-processos-software/
 │       └── apresentacao-manual.tex
 ├── references/                          # Documentos de apoio, diretrizes docentes e norma
 │   ├── iso-12207/                       # Norma ABNT NBR ISO/IEC/IEEE 12207:2021
-│   ├── guidelines/                      # Diretrizes e estrutura minima da Profa. Dra. Juliana
+│   ├── diretrizes/                      # Diretrizes e estrutura minima da Profa. Dra. Juliana
 │   └── pdw/                             # Historico auditavel de definicoes de projeto
 ├── assets/                              # Ativos de marca e diagramas oficiais
 │   ├── logos/                           # Logomarcas oficiais CineSoft Solutions e CineDoom

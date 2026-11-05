@@ -15,7 +15,7 @@ assignees: ''
 - **Clausula ISO 12207:2021:** (ex.: 6.3.1 Planejamento do Projeto)
 
 ## Diretrizes Pedagogicas e Requisitos Minimos
-- [ ] Verificado em `references/guidelines/estrutura-minima-manual.md`
+- [ ] Verificado em `references/diretrizes/estrutura-minima-manual.md`
 - [ ] Verificado nas diretrizes docentes da Profa. Dra. Juliana Zinader
 
 ## Alteracoes Propostas

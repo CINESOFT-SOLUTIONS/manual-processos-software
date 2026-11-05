@@ -24,7 +24,7 @@
 
 - [ ] **Fonte Unica da Verdade (SSOT):** As alteracoes foram feitas exclusivamente nos arquivos fonte em `content/` ou `specs/` (e nao diretamente em `manual-processos-software.md`).
 - [ ] **Rigor Tecnico e Terminologia:** O texto respeita as definicoes formais de Cliente (cinema B2B), Usuario (atendente/gerente) e Espectador (consumidor de balcao).
-- [ ] **Diretrizes Pedagogicas:** Segue rigorosamente a estrutura de capitulos exigida pela Profa. Dra. Juliana Zinader (`references/guidelines/estrutura-minima-manual.md`).
+- [ ] **Diretrizes Pedagogicas:** Segue rigorosamente a estrutura de capitulos exigida pela Profa. Dra. Juliana Zinader (`references/diretrizes/estrutura-minima-manual.md`).
 - [ ] **Qualidade e Estilo:** Sem emojis, sem jargoes vazios e com justificativas tecnicas ancoradas na norma.
 
 ---

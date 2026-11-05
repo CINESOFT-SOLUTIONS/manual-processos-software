@@ -36,7 +36,7 @@ Este repositório contém o **Manual de Processos de Software** e o pacote de go
 ### Fontes Normativas e Diretrizes
 1. **Base Normativa:** [ABNT NBR ISO/IEC/IEEE 12207:2021](references/iso-12207/abnt-iso-iec-12207-2021.md) (referência formal em PDF: [abnt-iso-iec-12207-2021.pdf](references/iso-12207/abnt-iso-iec-12207-2021.pdf)).
 2. **Fonte da Verdade de Engenharia e Negócio:** [Especificação do CineDoom](specs/cinedoom-spec.md) e [Catálogo de ADRs](specs/adrs/README.md) — Requisitos, regras de negócio, modelo de dados e decisões arquiteturais do sistema.
-3. **Diretrizes Pedagógicas:** [Instruções da Disciplina](references/guidelines/instrucoes-disciplina.md) e [Estrutura Mínima](references/guidelines/estrutura-minima-manual.md) estabelecidas pela Profa. Dra. Juliana Zinader.
+3. **Diretrizes Pedagógicas:** [Instruções da Disciplina](references/diretrizes/instrucoes-disciplina.md) e [Estrutura Mínima](references/diretrizes/estrutura-minima-manual.md) estabelecidas pela Profa. Dra. Juliana Zinader.
 
 ---
 
@@ -75,7 +75,7 @@ manual-processos/
 │
 ├── references/                        # Referências Normativas e Diretrizes
 │   ├── iso-12207/                     # Norma ABNT NBR ISO/IEC/IEEE 12207:2021
-│   ├── guidelines/                    # Instruções e estrutura mínima docente
+│   ├── diretrizes/                    # Instruções e estrutura mínima docente
 │   └── aulas/                         # Slides oficiais, transcrições e diagramas de aula
 │
 ├── assets/                            # Ativos Visuais e Identidade de Marca

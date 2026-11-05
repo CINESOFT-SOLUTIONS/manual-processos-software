@@ -12,11 +12,11 @@ Nenhuma regra ou arquitetura é definida sem respaldo nestas referências.
 * **[`iso-12207/abnt-iso-iec-12207-2021.pdf`](iso-12207/abnt-iso-iec-12207-2021.pdf):** Texto integral oficial da norma ABNT NBR ISO/IEC/IEEE 12207:2021 (Engenharia de sistemas e software — Processos de ciclo de vida de software).
 * **[`iso-12207/abnt-iso-iec-12207-2021.md`](iso-12207/abnt-iso-iec-12207-2021.md):** Síntese estruturada das cláusulas, grupos de processos (Acordo, Organizacionais Habilitadores, Gerenciamento Técnico e Processos Técnicos) e entregáveis exigidos.
 
-### 2. Diretrizes Acadêmicas da Disciplina (`guidelines/`)
-* **[`guidelines/instrucoes-disciplina.md`](guidelines/instrucoes-disciplina.md):** Requisitos oficiais da disciplina de Processos de Engenharia de Software (UFG/INF), critérios de pontuação da Profa. Dra. Juliana Zinader e padrão de 7 seções por processo.
-* **[`guidelines/estrutura-minima-manual.md`](guidelines/estrutura-minima-manual.md):** Sumário analítico obrigatório em capítulos mínimos exigido para a avaliação formal.
-* **[`guidelines/orientacoes-capitulo-6.md`](guidelines/orientacoes-capitulo-6.md):** Diretrizes específicas e roteiro pedagógico para o Capítulo 6 (Avaliação e Melhoria dos Processos de Software - MPS.BR).
-* **[`guidelines/estrutura-organizacao-repositorios.md`](guidelines/estrutura-organizacao-repositorios.md):** Racional sobre a separação da organização GitHub em repositórios complementares (`manual-processos` e `cinedoom-app`).
+### 2. Diretrizes Acadêmicas da Disciplina (`diretrizes/`)
+* **[`diretrizes/instrucoes-disciplina.md`](diretrizes/instrucoes-disciplina.md):** Requisitos oficiais da disciplina de Processos de Engenharia de Software (UFG/INF), critérios de pontuação da Profa. Dra. Juliana Zinader e padrão de 7 seções por processo.
+* **[`diretrizes/estrutura-minima-manual.md`](diretrizes/estrutura-minima-manual.md):** Sumário analítico obrigatório em capítulos mínimos exigido para a avaliação formal.
+* **[`diretrizes/orientacoes-capitulo-6.md`](diretrizes/orientacoes-capitulo-6.md):** Diretrizes específicas e roteiro pedagógico para o Capítulo 6 (Avaliação e Melhoria dos Processos de Software - MPS.BR).
+* **[`diretrizes/estrutura-organizacao-repositorios.md`](diretrizes/estrutura-organizacao-repositorios.md):** Racional sobre a separação da organização GitHub em repositórios complementares (`manual-processos` e `cinedoom-app`).
 
 ### 3. Slides e Materiais de Aulas (`aulas/`)
 * **[`aulas/*.pdf`](aulas/):** Slides originais das aulas ministradas na disciplina (Aulas 2, 3/4, 5, 6 e 7).
