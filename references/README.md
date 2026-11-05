@@ -17,5 +17,11 @@ Nenhuma regra ou arquitetura é definida sem respaldo nestas referências.
 
 ### 3. Diretrizes Acadêmicas da Disciplina (`guidelines/`)
 * **[`guidelines/instrucoes-disciplina.md`](guidelines/instrucoes-disciplina.md):** Requisitos oficiais da disciplina de Processos de Engenharia de Software (UFG/INF), critérios de pontuação da Profa. Dra. Juliana Zinader e padrão de 7 seções por processo.
-* **[`guidelines/estrutura-minima-manual.md`](guidelines/estrutura-minima-manual.md):** Sumário analítico obrigatório em 5 capítulos exigido para a avaliação formal.
+* **[`guidelines/estrutura-minima-manual.md`](guidelines/estrutura-minima-manual.md):** Sumário analítico obrigatório em capítulos mínimos exigido para a avaliação formal.
+* **[`guidelines/orientacoes-capitulo-6.md`](guidelines/orientacoes-capitulo-6.md):** Diretrizes específicas e roteiro pedagógico para o Capítulo 6 (Avaliação e Melhoria dos Processos de Software - MPS.BR).
 * **[`guidelines/estrutura-organizacao-repositorios.md`](guidelines/estrutura-organizacao-repositorios.md):** Racional sobre a separação da organização GitHub em repositórios complementares (`manual-processos` e `cinedoom-app`).
+
+### 4. Slides e Materiais de Aulas (`aulas/`)
+* **[`aulas/*.pdf`](aulas/):** Slides originais das aulas ministradas na disciplina (Aulas 2, 3/4, 5, 6 e 7).
+* **[`aulas/markdown/`](aulas/markdown/):** Transcrição integral estruturada de cada slide em formato Markdown para consulta rápida.
+* **[`aulas/images/`](aulas/images/):** Diagramas conceituais, mapas de processos e fluxos extraídos dos slides.
