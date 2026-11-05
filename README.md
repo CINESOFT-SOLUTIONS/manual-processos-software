@@ -75,8 +75,8 @@ manual-processos/
 │
 ├── references/                        # Referências Normativas e Diretrizes
 │   ├── iso-12207/                     # Norma ABNT NBR ISO/IEC/IEEE 12207:2021
-│   ├── pdw/                           # Registro histórico de premissas iniciais
-│   └── guidelines/                    # Instruções e estrutura mínima docente
+│   ├── guidelines/                    # Instruções e estrutura mínima docente
+│   └── aulas/                         # Slides oficiais, transcrições e diagramas de aula
 │
 ├── assets/                            # Ativos Visuais e Identidade de Marca
 │   ├── logos/                         # Logomarcas oficiais CineSoft Solutions e CineDoom
