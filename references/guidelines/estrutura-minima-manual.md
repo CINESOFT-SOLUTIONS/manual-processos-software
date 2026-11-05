@@ -42,33 +42,51 @@ Histórico de versões do documento. Pode ser uma tabela contendo a data, a vers
 
 ## 5.1 Requisitos  
 
-5.1.1 Documento de requisitos do sistema (funcionais, não funcionais, restrições)
-5.1.2 Rastreabilidade de requisitos
-5.1.3 Critérios de aceitação
-5.1.4 Registro de stakeholders e necessidades elicitadas
+5.1.1 Documento de requisitos do sistema (funcionais, não funcionais, restrições)  
+5.1.2 Rastreabilidade de requisitos  
+5.1.3 Critérios de aceitação  
+5.1.4 Registro de stakeholders e necessidades elicitadas  
 
 ## 5.2 Arquitetura e Design  
 
-5.2.1 Documento de arquitetura do sistema (visão geral, componentes, interfaces)Decisões arquiteturais (ADRs)
-5.2.2 Diagramas de design (UML, C4, etc.) \-\> pelo menos 2 diagramas.
-5.2.3 Justificativa das escolhas tecnológicas
+5.2.1 Documento de arquitetura do sistema (visão geral, componentes, interfaces) \- Decisões arquiteturais (ADRs)  
+5.2.2 Diagramas de design (UML, C4, etc.) \-\> pelo menos 2 diagramas.  
+5.2.3 Justificativa das escolhas tecnológicas  
 
 ## 5.3 Implementação e Integração  
 
-5.3.1 Padrões de codificação adotados
-5.3.2 Plano de integração entre componentes
-5.3.3 Registro de testes unitários e de integração
-5.3.4 Rastreabilidade entre código e requisitos
+5.3.1 Padrões de codificação adotados  
+5.3.2 Plano de integração entre componentes  
+5.3.3 Registro de testes unitários e de integração  
+5.3.4 Rastreabilidade entre código e requisitos  
 
-### 5.4 Verificação, Validação e Transição  
+## 5.4 Verificação, Validação e Transição  
 
-5.4.1 Plano de verificação e validação
-5.4 2 Critérios de aceitação por stakeholder
-5.4.3 Relatório de testes de aceitação
-5.4.4 Plano de transição/implantação do sistema
+5.4.1 Plano de verificação e validação  
+5.4.2 Critérios de aceitação por stakeholder  
+5.4.3 Relatório de testes de aceitação  
+5.4.4 Plano de transição/implantação do sistema  
 
 ## 5.5 Operação, Manutenção e Descontinuação  
 
-5.5.1 Procedimentos de operação e monitoramento
-5.5.2 Plano de manutenção (corretiva, preventiva, adaptativa) 
-5.5.3 Estratégia de descontinuação e migração de dados
+5.5.1 Procedimentos de operação e monitoramento  
+5.5.2 Plano de manutenção (corretiva, preventiva, adaptativa)  
+5.5.3 Estratégia de descontinuação e migração de dados  
+
+# Capítulo 6 \- Avaliação e melhoria dos processos de software
+
+6.1 Referencial e recorte  
+6.2 Diagnóstico do manual  
+6.3 Plano de uma melhoria   
+6.4 Atualização e verificação   
+6.5 Acompanhamento da execução 
+
+---
+
+### Informações de Apresentação
+
+- **Duração:** Cada grupo terá de 20 a 30 minutos de apresentação. Todos os membros do grupo deverão apresentar.
+- **Datas das apresentações:**
+  - **12/11/2026:** Apresentação dos trabalhos: G1 a G4
+  - **19/11/2026:** Apresentação dos trabalhos: G5 a G8
+  - **26/11/2026:** Apresentação dos trabalhos: G9 a G12

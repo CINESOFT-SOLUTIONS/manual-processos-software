@@ -6,7 +6,7 @@
 
 ---
 
-## Vision Geral da Atividade
+## Visão Geral da Atividade
 
 Ao longo do semestre, cada equipe aplicará os processos do ciclo de vida de software a um sistema fictício — planejando, executando, monitorando e melhorando seus processos em um **Manual de Processo da Equipe**.
 
