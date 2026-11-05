@@ -46,7 +46,7 @@ O repositório adota o modelo **Docs-as-Code**, separando a escrita modular de c
 
 ```text
 manual-processos/
-├── capitulos/                           # Capítulos modulares do manual (Fonte Canônica)
+├── manual/capitulos/                           # Capítulos modulares do manual (Fonte Canônica)
 │   ├── 00-identificacao.md            # Folha de rosto e histórico de revisões
 │   ├── 01-apresentacao-software.md    # Cap. 1: Identificação, problema, escopo e restrições
 │   ├── 02-processos-acordo.md         # Cap. 2: Aquisição, fornecimento e parceiros
@@ -83,7 +83,7 @@ manual-processos/
 │   └── diagrams/                      # Diagramas arquiteturais C4 e fluxos BPMN
 │
 ├── scripts/                           # Automação de Build e Compilação
-│   ├── montar-manual.sh               # Concatena capitulos/ em manual-processos-software.md
+│   ├── montar-manual.sh               # Concatena manual/capitulos/ em manual-processos-software.md
 │   └── compilar.sh                    # Pipeline completo de build (Markdown + LaTeX + Beamer)
 │
 ├── manual-processos-software.md       # Documento consolidado contínuo para leitura web
@@ -94,12 +94,12 @@ manual-processos/
 
 ## Guia de Navegação do Repositório
 
-* **[manual-processos-software.md](manual-processos-software.md):** Manual unificado em arquivo único para leitura direta no GitHub.
-* **[capitulos/](capitulos/):** Módulos individuais dos capítulos para edição isolada e revisões via Pull Request.
+* **[manual-processos-software.md](manual/manual-processos-software.md):** Manual unificado em arquivo único para leitura direta no GitHub.
+* **[manual/capitulos/](manual/capitulos/):** Módulos individuais dos capítulos para edição isolada e revisões via Pull Request.
 * **[specs/](specs/):** Especificações de engenharia detalhadas (ADRs, C4, Prisma, STRIDE, DPIA, QA).
 * **[specs/adrs/](specs/adrs/):** Catálogo formal de Architecture Decision Records (ADR-001 a ADR-012).
-* **[latex/manual/](latex/manual/):** Código-fonte e PDF do manual conforme a ABNT NBR 14724.
-* **[latex/slides/](latex/slides/):** Código-fonte e PDF dos slides Beamer para apresentação perante a banca.
+* **[manual/latex/](manual/latex/):** Código-fonte e PDF do manual conforme a ABNT NBR 14724.
+* **[manual/latex/](manual/latex/):** Código-fonte e PDF dos slides Beamer para apresentação perante a banca.
 * **[references/](references/):** Documentos de apoio, norma ISO 12207 e diretrizes da disciplina.
 
 ---
@@ -145,5 +145,5 @@ O projeto utiliza um pipeline automatizado que integra a concatenação modular 
 
 ### Artefatos de saída gerados:
 * `manual-processos-software.md` — Documento Markdown consolidado na raiz.
-* `latex/manual/manual-processos-software.pdf` — Relatório diagramado conforme ABNT NBR 14724 / 6024.
-* `latex/slides/apresentacao-manual.pdf` — Slides oficiais de defesa perante a banca no tema UFG/INF.
+* `manual/latex/manual-processos-software.pdf` — Relatório diagramado conforme ABNT NBR 14724 / 6024.
+* `manual/latex/apresentacao-manual.pdf` — Slides oficiais de defesa perante a banca no tema UFG/INF.

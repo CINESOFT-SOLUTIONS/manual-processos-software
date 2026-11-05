@@ -7,13 +7,13 @@
 * @gabrlou @carloseduduu @K4yquee @YuryNog
 
 # Capitulos do Manual de Processos (Docs-as-Code SSOT)
-capitulos/ @gabrlou @carloseduduu @K4yquee @YuryNog
-capitulos/00-identificacao.md @gabrlou
-capitulos/01-apresentacao-software.md @YuryNog
-capitulos/02-processos-acordo.md @YuryNog
-capitulos/03-processos-organizacionais.md @K4yquee
-capitulos/04-gerenciamento-tecnico.md @K4yquee
-capitulos/05-processos-tecnicos.md @YuryNog @gabrlou
+manual/capitulos/ @gabrlou @carloseduduu @K4yquee @YuryNog
+manual/capitulos/00-identificacao.md @gabrlou
+manual/capitulos/01-apresentacao-software.md @YuryNog
+manual/capitulos/02-processos-acordo.md @YuryNog
+manual/capitulos/03-processos-organizacionais.md @K4yquee
+manual/capitulos/04-gerenciamento-tecnico.md @K4yquee
+manual/capitulos/05-processos-tecnicos.md @YuryNog @gabrlou
 
 # Especificacoes de Engenharia e Decisoes Arquiteturais (ADRs)
 specs/ @gabrlou @carloseduduu
@@ -22,8 +22,8 @@ specs/planning/ @gabrlou @K4yquee
 
 # Diagramacao LaTeX e Apresentacao Beamer
 latex/ @K4yquee @gabrlou
-latex/manual/ @K4yquee
-latex/slides/ @K4yquee
+manual/latex/ @K4yquee
+manual/latex/ @K4yquee
 
 # Automacoes de compilacao, montagem e CI
 scripts/ @gabrlou

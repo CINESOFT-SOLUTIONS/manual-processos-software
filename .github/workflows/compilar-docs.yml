@@ -33,8 +33,8 @@ jobs:
 
       - name: Validar geração dos artefatos
         run: |
-          test -f latex/manual/manual-processos-software.pdf || (echo "[error] manual-processos-software.pdf was not generated." && exit 1)
-          test -f latex/slides/apresentacao-manual.pdf || (echo "[error] apresentacao-manual.pdf was not generated." && exit 1)
+          test -f manual/latex/manual-processos-software.pdf || (echo "[error] manual-processos-software.pdf was not generated." && exit 1)
+          test -f manual/latex/apresentacao-manual.pdf || (echo "[error] apresentacao-manual.pdf was not generated." && exit 1)
           echo "[ci:ok] All document artifacts verified successfully."
 
       - name: Upload dos PDFs como Artefatos da Execução
@@ -42,8 +42,8 @@ jobs:
         with:
           name: cinedoom-documentos-pdf
           path: |
-            latex/manual/manual-processos-software.pdf
-            latex/slides/apresentacao-manual.pdf
+            manual/latex/manual-processos-software.pdf
+            manual/latex/apresentacao-manual.pdf
           retention-days: 30
 
       - name: Publicar Release no GitHub (Apenas em Tags)
@@ -51,8 +51,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            latex/manual/manual-processos-software.pdf
-            latex/slides/apresentacao-manual.pdf
+            manual/latex/manual-processos-software.pdf
+            manual/latex/apresentacao-manual.pdf
           generate_release_notes: true
           draft: false
           prerelease: false
