@@ -51,6 +51,16 @@ Expliquem como a equipe verificará se a melhoria está sendo usada: quem fará 
 
 Exemplo: conferir, a cada revisão do quadro, se as tarefas possuem responsável e prazo e registrar as pendências. O resultado esperado é reduzir dúvidas sobre quem deve realizar cada tarefa.
 
+# **Artefatos e Evidências Visuais Obrigatórios e Recomendados**
+
+Para comprovar a aplicação da melhoria segundo os critérios do MPS.BR e do professor, a equipe deve incluir:
+- **Tabelas Estruturadas Obrigatórias:**
+  - Tabela 1: *Diagnóstico do Manual* (com as 4 perguntas didáticas e a classificação: Descrito, Parcialmente Descrito ou Não Descrito, com citação das seções).
+  - Tabela 2: *Plano de uma Melhoria* (com os 5 campos: Lacuna/Justificativa, Ação, Responsável/Prazo, Evidência da Revisão, Resultado Esperado).
+- **Evidências Visuais e Comparativas (salvas em `assets/prints/` ou blocos de código/diff):**
+  - **Quadro Comparativo Antes vs. Depois:** Trecho do texto antigo do manual confrontado diretamente com o texto atualizado após a melhoria.
+  - `print-evidencia-melhoria-kanban.png` (ou print de issue/PR): Screenshot real do quadro Kanban / GitHub Projects comprovando que a regra revisada foi colocada em prática (ex.: cards atualizados com responsáveis e prazos explícitos, conforme exigido no item 6.5).
+
 # **Entrega e critérios de avaliação**
 
 Entreguem as seções 6.1 a 6.5 no mesmo manual do projeto. A avaliação considerará a coerência do diagnóstico, as evidências citadas, a viabilidade da ação, a revisão realizada e a clareza do acompanhamento. Referenciem os documentos da Softex utilizados.

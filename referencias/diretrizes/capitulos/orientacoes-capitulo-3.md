@@ -41,6 +41,17 @@ Definam os critérios e as métricas de qualidade adotados no nível organizacio
 
 Expliquem como a equipe registra, preserva e dissemina o conhecimento técnico e de negócio. Detalhem a política de documentação arquitetural (ADRs), lições aprendidas e documentação em repositório.
 
+# **Artefatos e Assets Visuais Obrigatórios e Recomendados**
+
+Para cumprir as diretrizes da aula e da Seção 6.2 da ISO 12207, a equipe deve incluir:
+- **Diagramas Visuais Recomendados** (salvos em `assets/diagrams/` ou renderizados com Mermaid):
+  - `diagrama-ciclo-de-vida.png` ou bloco Mermaid: Fluxograma do ciclo iterativo e incremental adotado pela equipe (Sprints quinzenais, cerimônias de planning/review/retrospectiva e ciclo contínuo de releases).
+- **Tabelas Estruturadas Obrigatórias:**
+  - Tabela 1: *Inventário de Infraestrutura e Ferramentas* (categorizada por Gestão de Código, CI/CD, Hospedagem, Banco de Dados, Design e Testes).
+  - Tabela 2: *Matriz RACI de Responsabilidades* (relacionando membros da equipe e macroatividades do projeto).
+- **Evidências Visuais Complementares** (salvas em `assets/prints/`):
+  - Screenshot da documentação viva no repositório (ex.: visualização dos arquivos de especificações ou pasta `specs/` e `README.md`).
+
 # **Critérios de avaliação**
 
 Apresentem as seções 3.1 a 3.6 no Manual de Processos de Software. A avaliação considerará a consistência da justificativa do ciclo de vida, a completude do inventário, a coerência da matriz RACI e o rigor das políticas de qualidade e conhecimento.

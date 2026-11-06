@@ -35,6 +35,15 @@ Expliquem os termos do acordo com o cliente: critérios de aceite, conformidade 
 
 Listem os fornecedores e parceiros críticos para a operação contínua do software. Indiquem as dependências externas que podem impactar a disponibilidade, o custo ou a segurança da solução.
 
+# **Artefatos e Assets Visuais Obrigatórios e Recomendados**
+
+Para cumprir as diretrizes da aula e da ISO 12207, a equipe deve incluir os seguintes artefatos:
+- **Tabelas Estruturadas Obrigatórias:**
+  - Tabela 1: *Análise de Aquisição Make or Buy* (com colunas: Elemento, Adquirir pronto?, Justificativa, Possível fornecedor).
+  - Tabela 2: *Perspectiva de Fornecimento* (com colunas: Elemento com potencial, Possível adquirente, Modelo de acordo).
+- **Prints / Evidências Recomendadas** (salvos em `assets/prints/`):
+  - Screenshot dos consoles de provedores terceiros configurados no projeto (ex.: dashboard do banco de dados na Neon/Supabase, console de deploy na Vercel ou painel de API de e-mails transacionais como Resend).
+
 # **Critérios de avaliação**
 
 Apresentem as seções 2.1 a 2.3 no Manual de Processos de Software. A avaliação considerará a solidez da justificativa técnica de cada item (Make or Buy), a coerência da análise de fornecimento e o alinhamento com os preceitos da ISO/IEC/IEEE 12207:2021.

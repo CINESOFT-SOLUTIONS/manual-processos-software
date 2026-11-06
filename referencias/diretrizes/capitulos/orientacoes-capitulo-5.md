@@ -74,6 +74,22 @@ Apresentem a estratégia para as modalidades de manutenção: corretiva (correç
 ## 5.5.3 Estratégia de descontinuação e migração de dados
 Descrevam o plano para eventual encerramento responsável do ciclo de vida do produto: arquivamento de dados com conformidade à LGPD, desativação de infraestrutura e notificação de usuários.
 
+# **Artefatos e Assets Visuais Obrigatórios e Recomendados**
+
+Para cumprir as exigências formais da Seção 6.4 da ISO 12207 e as diretrizes do professor, a equipe deve incluir:
+- **Diagramas Formais de Design (Mínimo de 2 Obrigatórios na Seção 5.2.2):**
+  - `assets/diagrams/c4-containers.png` (ou bloco Mermaid): **Diagrama C4 Nível 2 (Contêineres)** representando a integração entre Frontend (Next.js/React), Backend Serverless, Banco de Dados (Neon PostgreSQL), APIs de terceiros e navegadores dos clientes/atendentes.
+  - `assets/diagrams/diagrama-sequencia-reserva.png` (ou bloco Mermaid): **Diagrama de Sequência UML ou Atividades BPMN** ilustrando a regra de reserva atômica de assentos (*SELECT FOR UPDATE*), disparo de vouchers e cancelamento.
+  - *(Opcional / Recomendado)*: `assets/diagrams/diagrama-er-banco.png`: Modelo Entidade-Relacionamento do banco de dados relacional.
+- **Prints e Screenshots Reais do Projeto (salvos em `assets/prints/`):**
+  - `print-testes-unitarios-vitest.png`: Screenshot do terminal executando `npm test` / `vitest` com a suíte de testes passando 100% em verde e exibindo as taxas de cobertura.
+  - `print-pipeline-ci-cd.png`: Screenshot da esteira de CI/CD no GitHub Actions executando com sucesso (Lint + Typecheck + Testes + Build).
+- **Tabelas Estruturadas Obrigatórias:**
+  - Tabela 1: *Catálogo de Requisitos Funcionais e Não Funcionais* (com IDs únicos RF-XX e RNF-XX).
+  - Tabela 2: *Matriz de Rastreabilidade Ponta a Ponta* (Requisito $\leftrightarrow$ Caso de Uso $\leftrightarrow$ Código $\leftrightarrow$ Teste Unitário).
+  - Tabela 3: *Quadro Comparativo de Verificação vs. Validação*.
+  - Tabela 4: *Registro de Testes de Aceitação* (Cenários, Critérios e Status de Homologação com Stakeholders).
+
 # **Critérios de avaliação**
 
 Apresentem as seções 5.1 a 5.5 no Manual de Processos de Software. A avaliação considerará a rastreabilidade ponta a ponta dos requisitos, o rigor dos diagramas de arquitetura, a robustez dos testes de V&V e a completude das práticas do ciclo de vida técnico.

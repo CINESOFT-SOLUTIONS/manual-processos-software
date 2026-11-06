@@ -43,6 +43,18 @@ Definam os indicadores objetivos que a equipe observará para acompanhar o desem
 - Métricas de qualidade: percentual de cobertura de testes automatizados e densidade de bugs.
 - Métricas de progresso: itens entregues por sprint e cumprimento do cronograma planejado.
 
+# **Artefatos e Assets Visuais Obrigatórios e Recomendados**
+
+Para cumprir as diretrizes da aula e da Seção 6.3 da ISO 12207, a equipe deve incluir:
+- **Prints / Screenshots Obrigatórios de Execução** (salvos em `assets/prints/`):
+  - `print-kanban-board.png`: **Screenshot real do quadro Kanban / GitHub Projects** do projeto, mostrando as colunas de fluxo (*Product Backlog*, *Sprint Backlog*, *In Progress*, *Code Review*, *Done*), evidenciando tarefas com responsáveis e prazos atribuídos.
+  - `print-fluxo-git-branches.png` ou bloco Mermaid: Visualização gráfica da estratégia de branches (`main` protegida, branches de feature `feat/`, tags SemVer).
+  - `print-metricas-projeto.png`: Gráfico ou dashboard de métricas (ex.: gráfico de throughput/issues fechadas do GitHub Insights ou relatório de cobertura de testes).
+- **Tabelas e Artefatos Estruturados Obrigatórios:**
+  - Tabela 1: *Risk Register* (Riscos identificados, Probabilidade, Impacto, Prioridade e Resposta/Mitigação).
+  - Tabela 2: *Cronograma de Entregas e Marcos (Milestones)*.
+  - Fichas de *Architecture Decision Records (ADRs)* estruturadas (Status, Contexto, Alternativas, Decisão e Consequências).
+
 # **Critérios de avaliação**
 
 Apresentem as seções 4.1 a 4.5 no Manual de Processos de Software. A avaliação considerará a viabilidade do cronograma, o rigor do Risk Register, a robustez da política de branches/PRs e a consistência técnica das ADRs e métricas.

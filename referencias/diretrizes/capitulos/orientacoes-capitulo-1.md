@@ -26,6 +26,17 @@ Apresentem os módulos e as capacidades essenciais da solução. Destaquem o que
 
 Identifiquem os fatores limitantes de ordem técnica, legal (ex.: LGPD), regulatória ou operacional que condicionam o projeto. Listem as premissas adotadas pela equipe para viabilizar o desenvolvimento.
 
+# **Artefatos e Assets Visuais Recomendados**
+
+Para enriquecer o capítulo e comprovar a existência do software desenvolvido, a equipe deve incluir:
+- **Screenshots / Prints do Software em Funcionamento** (salvos em `assets/prints/`):
+  - `print-portal-cliente.png`: Tela do catálogo de filmes em cartaz e tela do mapa interativo de seleção de assentos no Portal do Cliente.
+  - `print-bilheteria-atendente.png`: Tela do guichê físico de venda e baixa de ingressos pelo atendente.
+  - `print-painel-gerencial.png`: Tela de administração com sessões agendadas ou indicadores de ocupação das salas.
+- **Logotipos Oficiais** (salvos em `assets/logos/`):
+  - Logotipo da organização desenvolvedora (`cinesoft-logo-...png`).
+  - Logotipo da aplicação (`cinedoom-logo-...png`).
+
 # **Critérios de avaliação**
 
 Apresentem as seções 1.1 a 1.6 no Manual de Processos de Software. A avaliação considerará a clareza da proposta de valor, a consistência dos perfis de usuário, o alinhamento do escopo com o produto real e a precisão das restrições e premissas mapeadas.
