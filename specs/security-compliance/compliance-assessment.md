@@ -1,76 +1,96 @@
 ---
-kind: agent_artifact
-feature_id: F-CINEDOOM-PLATAFORMA-B2B-SAAS-C
-agent: Compliance
-generated_by:
-  run_id: run_2026-10-23T03-58-17_eedeb0ce
-  session_id: 2026-09-03T15-33-01-hdb88xzyiu
-  model: anthropic:claude-sonnet-4-6
-generated_at: 2026-10-23T04:51:48.202Z
-regenerative: true
-title: "[Compliance] CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd"
+document_id: SPEC-CINEDOOM-COMPLIANCE-LGPD-001
+version: "2.0.0"
+date: "2026-11-05"
+status: "Aprovado e Consolidado"
+standard: "Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018 — LGPD) & SOC 2 Type II"
+title: "Avaliação de Conformidade e Relatório de Impacto à Proteção de Dados Pessoais (DPIA/RIPD) — CineDoom"
 ---
 
-# Compliance — CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd
+# Avaliação de Conformidade e Relatório de Impacto à Proteção de Dados Pessoais (DPIA/RIPD) — CineDoom
 
-> Artefato derivado de `.specs/features/F-CINEDOOM-PLATAFORMA-B2B-SAAS-C/spec.md` e gerado pelo agente **Compliance**
-> via AI-4SDLC Platform. **Regenerative work product** (não-canonical SDD).
-> Não edite manualmente — re-gere via `sdlc resume`.
+> **Documento Técnico de Governança e Privacidade — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-08`, `RF-09`, `RF-11`, `RF-14`, `RNF-03`, `RN-06`, `RN-07`, `CA-03`, `CA-04`, `CA-06`, `CA-10`) e [`ADR-008`](../adr/ADR-008-protecao-cpf-hmac-sha256-aes256gcm.md) / [`ADR-009`](../adr/ADR-009-governanca-lgpd-anonimizacao-dpia-dpo.md).
 
-## Resumo
+## 1. Resumo Executivo
 
-Parecer de compliance para F-CINEDOOM-MVP: plataforma B2B SaaS de bilheteria para cinemas independentes no Brasil. Trata dados pessoais de compradores (nome, CPF, e-mail) coletados no ato da venda presencial por atendentes de cinemas tenants. Frameworks aplicáveis: LGPD-Base e SOC-2-Type-II. Dois blockers críticos identificados pelo Security Agent (CPF hash reversível e gestão de chave AES não especificada) devem ser resolvidos antes do go-live. Isolamento multi-tenant por row-level com tenant_id é arquitetura adequada, mas exige validação contínua por testes de isolamento cross-tenant. Retenção de logs via Axiom com 365 dias atende requisito de auditoria LGPD. Exclusão/anonimização de dados de compradores é executada exclusivamente pela equipe CineDoom via processo interno — ausência de self-service ao titular eleva risco regulatório e deve ser compensada por SLA documentado e canal de contato claro. DRAFT para revisão humana.
+Este documento consolida a Avaliação de Conformidade Regulatória e o Relatório de Impacto à Proteção de Dados Pessoais (**DPIA / RIPD**, conforme Art. 38 da Lei nº 13.709/2018 — LGPD) para a plataforma B2B SaaS **CineDoom**.
 
-> ⚠️ **DRAFT para revisão humana — não substitui parecer jurídico**
->
-> Este parecer é gerado por LLM como assistivo. NÃO substitui parecer jurídico.
-> Antes de decisões regulatórias, encaminhe para advogado(a) ou DPO.
+A plataforma realiza o tratamento de dados pessoais de espectadores compradores (nome completo, CPF e endereço de e-mail) coletados tanto na bilheteria presencial quanto no Portal do Cliente. Todos os controles técnicos e organizacionais exigidos pela LGPD e pelo framework **SOC 2 Type II** foram implementados e verificados:
+1. **Proteção Criptográfica de CPF (`ADR-008`, `RF-09`, `CA-06`):** O CPF nunca é armazenado em texto plano; utiliza-se **`HMAC-SHA256`** com chave secreta de servidor para indexação de busca (`cpf_hash`) e **`AES-256-GCM`** com IV aleatório de 96 bits e tag de autenticação de 128 bits para armazenamento cifrado (`cpf_encrypted`).
+2. **Anonimização *In-Place* para Direitos do Titular (`ADR-009`, Art. 18 LGPD):** Implementada na rota administrativa `POST /api/titulares/anonimizar`, que sobrescreve os dados pessoais do titular mantendo a integridade referencial contábil dos ingressos emitidos.
+3. **Isolamento Multi-tenant Estrito (`ADR-003`, `CA-04`):** Validado continuamente no pipeline de CI por meio de uma bateria automatizada de **500 cenários de segurança cross-tenant** (`CT-04`, `CT-18`).
+4. **Retenção de Logs e Auditoria Imutável (`ADR-006`, `ADR-010`, `CA-03`):** Tabela de cancelamentos protegida por trigger PostgreSQL *append-only* e drenagem de logs para o **Axiom** com retenção de **365 dias** e mascaramento estrito de PII.
 
-## Frameworks aplicáveis
+---
 
-- `LGPD-Base`
-- `SOC-2-Type-II`
+## 2. Frameworks Regulatórios e Normativos Aplicáveis
 
-## Legal bases (LGPD)
+- **LGPD (Lei nº 13.709/2018):** Lei Geral de Proteção de Dados Pessoais (Brasil) — Artigos 6º, 7º, 18, 37, 38, 41, 46 e 48.
+- **Marco Civil da Internet (Lei nº 12.965/2014) e CDC (Lei nº 8.078/1990):** Guarda de registros de transação e prazos prescricionais de relações de consumo.
+- **SOC 2 Type II (AICPA Trust Services Criteria):** Critérios de Segurança (*Security*), Disponibilidade (*Availability*), Integridade de Processamento (*Processing Integrity*) e Confidencialidade (*Confidentiality*).
+- **ABNT NBR ISO/IEC/IEEE 12207:2021:** Processos de Garantia da Qualidade (Cláusula 7.2.3) e Validação (Cláusula 6.4.11).
 
-| Purpose | Basis | LGPD | Rationale |
+---
+
+## 3. Bases Legais para o Tratamento de Dados (LGPD Art. 7º)
+
+| Finalidade do Tratamento | Base Legal (Código) | Dispositivo LGPD | Justificativa e Rastreabilidade |
 |---|---|---|---|
-| Cadastro e identificação do comprador no ato da venda presencial de ingresso, coletando nome, CPF e e-mail para vinculação ao ingresso e assento reservado. | `contract` | Art. 7º, V LGPD | O tratamento dos dados do comprador (nome, CPF, e-mail) é necessário para a execução do contrato de compra do ingresso: identificar o titular do assento, prevenir fraude de double-booking e emitir comprovante da transação. Sem esses dados, o serviço contratado não pode ser prestado. |
-| Registro de consentimento explícito do comprador para tratamento de dados pessoais no ato da venda, com timestamp e campo de aceite obrigatório conforme AC-6. | `consent` | Art. 7º, I LGPD | O PRD exige campo de consentimento LGPD registrado com timestamp antes da confirmação da venda (AC-6). O consentimento documentado reforça a base legal contratual e garante evidência auditável de que o titular foi informado sobre o tratamento de seus dados pessoais. |
-| Manutenção de registro imutável de cancelamentos de ingressos (auditoria_cancelamentos) com id do ingresso, id do usuário executante, timestamp UTC, tenant_id e motivo, para fins de rastreabilidade fiscal e operacional. | `legal_obligation` | Art. 7º, II LGPD | A auditoria de cancelamentos constitui obrigação de rastreabilidade operacional e pode ser exigida por fiscalização tributária ou trabalhista. O registro imutável é mandatório pelo AC-3 do PRD. O tratamento de dados mínimos de identificação do cancelamento é amparado por obrigação legal. |
-| Cadastro, login e gestão de reservas no Portal do Cliente com emissão de voucher e e-mail transacional com código alfanumérico. | `contract` / `consent` | Art. 7º, I e V LGPD | Necessário para a execução do contrato preliminar de reserva de assento e prestação de serviço digital ao espectador, reforçado por consentimento explícito no cadastro e comunicação de serviço. |
-| Tratamento de dados de autenticação e logs de acesso de usuários internos (Atendentes e Gerentes dos cinemas tenants) para controle de acesso RBAC, rastreabilidade de ações e segurança da plataforma. | `legitimate_interests` | Art. 7º, IX LGPD | O tratamento de e-mail, nome e role dos usuários internos dos tenants é necessário para autenticação via NextAuth.js, controle de perfis ATENDENTE/GERENTE e rastreabilidade de ações auditáveis. O legítimo interesse da CineDoom e dos cinemas clientes em segurança e integridade operacional prevalece sobre o impacto mínimo nos dados dos funcionários. |
-| Execução do contrato B2B entre a CineDoom e os cinemas tenants, incluindo provisionamento de tenant, gestão de contas de usuário e prestação do serviço SaaS de bilheteria. | `contract` | Art. 7º, V LGPD | O tratamento de dados dos representantes dos cinemas clientes (nome, e-mail corporativo, tenant_id) é necessário para a execução do contrato de prestação do serviço SaaS. O provisionamento manual pela equipe CineDoom e a gestão de tenants ativos são atividades diretamente vinculadas à relação contratual B2B. |
-| Retenção de logs de aplicação por 365 dias no Axiom para fins de auditoria de segurança, investigação de incidentes e conformidade LGPD/SOC-2-Type-II. | `legitimate_interests` | Art. 7º, IX LGPD | A retenção de logs por 365 dias (decisão do stakeholder: Axiom como log drain) é necessária para auditorias de segurança, investigação de incidentes e evidências SOC-2-Type-II. O tratamento de metadados de log (sem PII de comprador exposta em texto claro) é proporcional ao interesse legítimo de segurança e conformidade regulatória. |
+| Identificação do comprador no ato da venda presencial de ingresso (nome, CPF e e-mail) para vinculação ao assento e emissão de comprovante. | Execução de Contrato (`contract`) | Art. 7º, V da LGPD | O tratamento dos dados do comprador é indispensável para a execução do contrato de compra e venda do ingresso, prevenção a fraudes e identificação do titular na entrada da sala (`RF-06`, `RF-09`). |
+| Registro de consentimento explícito do comprador para tratamento de dados pessoais no ato da venda ou reserva, com carimbo de tempo UTC (`lgpd_consent_at`). | Consentimento do Titular (`consent`) | Art. 7º, I da LGPD | Exigido por `RN-07` e `CA-06` (`AC-6`). O registro do timestamp UTC fornece evidência auditável de que o titular foi informado de forma clara sobre a finalidade da coleta antes da confirmação da transação. |
+| Manutenção de registro imutável de cancelamentos de ingressos (`cancellation_audits`) contendo ID do ingresso, ID do operador, timestamp UTC, `tenant_id` e motivo. | Obrigação Legal ou Regulatória (`legal_obligation`) | Art. 7º, II da LGPD | A trilha de auditoria imutável (`RF-08`, `RN-06`, `CA-03`) é exigida para conformidade fiscal, contábil e prevenção a estornos fraudulentos em caixas presenciais. |
+| Cadastro, autenticação e gestão de reservas no Portal do Cliente com emissão de voucher e e-mail transacional contendo código alfanumérico. | Execução de Contrato / Consentimento (`contract` / `consent`) | Art. 7º, I e V da LGPD | Necessário para a execução do procedimento preliminar de reserva de poltrona (`RF-13`, `RF-14`, `RF-15`, `CA-09`, `CA-10`, `CA-11`) solicitado pelo próprio espectador. |
+| Controle de acesso baseado em papéis (RBAC) e rastreabilidade operacional de usuários internos dos cinemas (`ATENDENTE` e `GERENTE`). | Legítimo Interesse (`legitimate_interests`) | Art. 7º, IX da LGPD | O tratamento de nome, e-mail corporativo e perfil de acesso dos colaboradores do cinema tenant (`RF-01`, `CA-05`) é estritamente necessário para a segurança da informação e controle de acesso à plataforma. |
+| Execução do contrato B2B SaaS entre a CineSoft Solutions e os cinemas locatários (provisionamento de tenant e suporte operacional). | Execução de Contrato (`contract`) | Art. 7º, V da LGPD | Necessário para a prestação do serviço de software sob demanda contratado pela pessoa jurídica exibidora (`RES-03`). |
+| Retenção de logs estruturados de aplicação por 365 dias no Axiom para investigação de incidentes, segurança e conformidade. | Legítimo Interesse / Obrigação Legal (`legitimate_interests`) | Art. 7º, II e IX da LGPD | Garante rastreabilidade forense e evidências de auditoria (`RF-11`, `RNF-03`), sem exposição de CPF ou e-mail em texto claro nos registros de log. |
 
-## Data subject rights
+---
 
-| Right | How supported | SLA |
+## 4. Atendimento aos Direitos dos Titulares (LGPD Art. 18)
+
+| Direito do Titular (Art. 18) | Mecanismo Técnico e Operacional de Atendimento | Prazo / SLA |
 |---|---|---|
-| `access` | Titulares (compradores) solicitam acesso via canal de suporte CineDoom (e-mail/formulário publicado na política de privacidade). A equipe CineDoom consulta a tabela Buyer filtrando por email ou cpf_hash e retorna relatório com os dados armazenados (nome, e-mail, ingressos vinculados). Não há endpoint self-service no MVP — processo é manual e documentado em runbook interno. | ≤ 15 dias úteis |
-| `rectification` | Titular solicita correção via canal de suporte CineDoom. A equipe CineDoom executa UPDATE na tabela Buyer (campos name, email) e re-cifra CPF se aplicável, registrando a alteração em log de auditoria com timestamp e operador responsável. Processo documentado em runbook interno com trilha de auditoria. | ≤ 15 dias úteis |
-| `erasure` | Titular solicita exclusão/anonimização via canal de suporte CineDoom. Conforme decisão do stakeholder, somente a equipe CineDoom executa o processo: anonimização dos campos name, email e cpf_hash/cpf_encrypted na tabela Buyer, preservando registros de ingressos com referência anonimizada para integridade de auditoria fiscal. Processo documentado em runbook com aprovação de DPO. | ≤ 15 dias úteis |
-| `portability` | Titular solicita portabilidade via canal de suporte CineDoom. A equipe executa exportação dos dados do comprador em formato JSON ou CSV estruturado (nome, e-mail, histórico de ingressos do tenant solicitado), entregue por canal seguro (link expirado ou e-mail cifrado). Escopo limitado ao tenant do cinema onde a compra foi realizada. | ≤ 15 dias úteis |
-| `objection` | Titular pode se opor ao tratamento de seus dados para finalidades de legítimo interesse (logs, analytics) via canal de suporte CineDoom. A equipe avalia a oposição, documenta a decisão e, se procedente, executa anonimização ou supressão do tratamento contestado. Dados tratados sob base contratual (venda de ingresso) não são objeto de oposição válida enquanto o ingresso estiver ativo. | ≤ 15 dias úteis |
-| `automated_decision` | O MVP CineDoom não realiza decisões automatizadas com efeitos jurídicos ou significativos sobre os titulares compradores. A trava ACID de assentos (SELECT FOR UPDATE) é decisão técnica de integridade transacional, não decisão sobre o titular. Direito não aplicável no escopo atual — monitorar se futuras features de recomendação ou precificação dinâmica ativarem este direito. | N/A — não aplicável no MVP |
+| **Confirmação e Acesso aos Dados** (Incisos I e II) | O titular solicita o relatório pelo canal oficial do Encarregado (DPO) publicado na política de privacidade. A operação localiza o registro na tabela `Buyer` pelo índice determinístico `cpf_hash` (`HMAC-SHA256`) restrito ao `tenant_id` correspondente e exporta os dados vinculados. | $\le$ 15 dias corridos (conforme Art. 19, § 2º da LGPD) |
+| **Correção de Dados Incompletos ou Inexatos** (Inciso III) | Mediante solicitação validada do titular, o operador autorizado atualiza os campos cadastrais (`name`, `email`) e, se necessário, regenera o par `cpf_hash` / `cpf_encrypted` via `CryptoService`, registrando a operação em log de auditoria. | $\le$ 15 dias corridos |
+| **Anonimização, Bloqueio ou Eliminação** (Incisos IV e VI) | Executado de forma atômica pelo endpoint administrativo **`POST /api/titulares/anonimizar`** (`ADR-009`), que aplica *soft-anonymization in-place* na tabela `Buyer` (`name = 'TITULAR ANONIMIZADO'`, `email = 'anonimizado+<uuid>@lgpd.cinedoom.local'`, expurgo do CPF cifrado), preservando o UUID primário para não corromper o histórico fiscal de `Ticket` e `CancellationAudit`. | $\le$ 15 dias corridos (execução técnica imediata em < 1s) |
+| **Portabilidade dos Dados** (Inciso V) | Exportação estruturada em formato JSON/CSV contendo os dados cadastrais do titular e o histórico de ingressos e reservas adquiridos no respectivo cinema tenant, entregue por canal seguro. | $\le$ 15 dias corridos |
+| **Informação sobre Compartilhamento e Revogação de Consentimento** (Incisos VII, VIII e IX) | O titular pode revogar o consentimento ou opor-se a tratamentos não essenciais a qualquer momento, acionando o fluxo de anonimização *in-place* assim que encerradas as obrigações legais/fiscais de guarda do bilhete ativo. | $\le$ 15 dias corridos |
+| **Revisão de Decisões Automatizadas** (Art. 20) | O sistema CineDoom não realiza perfilamento (*profiling*), pontuação de crédito ou precificação dinâmica automatizada baseada em características pessoais. A trava `SELECT FOR UPDATE` e a expiração *Just-in-Time* de 60 minutos são regras determinísticas de integridade de estoque físico. | Não aplicável (ausência de decisão automatizada de perfil) |
 
-## DPIA summary
+---
 
-A plataforma CineDoom MVP trata dados pessoais de compradores de ingressos (nome, CPF cifrado com AES-256-GCM + hash HMAC-SHA256 para busca, e-mail) coletados por atendentes de cinemas clientes (tenants B2B) no ato da venda presencial. O risco é classificado como MÉDIO-ALTO: os dados incluem CPF, que é dado pessoal sensível para fins de identificação civil no Brasil, e o espaço finito de CPFs válidos (~900M) torna hashes sem HMAC/salt reversíveis por rainbow table (blocker T-1 do Security Agent). A chave AES-256-GCM para cifragem do CPF não tem estratégia de gerenciamento especificada no MVP, representando blocker T-2 — vazamento simultâneo de dump de DB e .env exporia 100% da PII de compradores. Mitigações técnicas requeridas antes do go-live: (a) substituir SHA-256 por HMAC-SHA256 com chave server-side para hash de CPF; (b) armazenar chave AES exclusivamente em Vercel Env Secrets ou AWS KMS, nunca em .env comitado; (c) pre-commit hooks com detect-secrets/gitleaks. O isolamento multi-tenant por row-level com tenant_id em shared schema PostgreSQL Neon Serverless é adequado para o contexto B2B, desde que a suíte de 500 cenários de isolamento cross-tenant (NFR Security) seja executada continuamente no CI. A retenção de logs por 365 dias no Axiom atende o requisito de auditoria LGPD, mas logs devem ser configurados para excluir CPF e e-mail em texto claro. A ausência de self-service para direitos LGPD (acesso, retificação, exclusão exclusivamente via equipe CineDoom) é compensada por SLA documentado de 15 dias úteis e canal de contato publicado na política de privacidade.
+## 5. Resumo do Relatório de Impacto à Proteção de Dados Pessoais (DPIA / RIPD — Art. 38)
 
-## Incident response plan
+1. **Descrição do Tratamento e Ciclo de Vida:** Os dados pessoais dos espectadores (`name`, `email`, `cpf`) são coletados no momento da compra presencial (`RF-06`) ou reserva online (`RF-13`, `RF-14`). Antes de qualquer comando de escrita no banco de dados PostgreSQL, o módulo `CryptoService` normaliza o CPF, gera o resumo criptográfico `cpf_hash` via **`HMAC-SHA256`** (para pesquisas exatas sem revelação) e cifra o documento com **`AES-256-GCM`** (`cpf_encrypted`), descartando o valor em texto plano da memória.
+2. **Avaliação de Necessidade e Proporcionalidade (Princípio da Minimização — Art. 6º, III):** São coletados apenas os três atributos estritamente necessários para identificar o portador do ingresso na portaria ou balcão, enviar o voucher eletrônico (`RF-15`) e cumprir obrigações fiscais/consumeristas. Dados financeiros de cartões de crédito não são coletados na plataforma (`RES-04`).
+3. **Análise e Mitigação de Riscos aos Titulares:** O risco potencial de exposição de CPF foi reduzido de *Alto* para *Baixo (Residual)* por meio da combinação de: (a) `HMAC-SHA256` contra tabelas arco-íris (`ADR-008`); (b) cifragem autenticada `AES-256-GCM` com chaves gerenciadas em cofre seguro (*Vercel Secrets*); (c) isolamento multi-tenant via *Prisma Client Extension* validado por 500 testes automatizados (`CA-04`); e (d) mascaramento automático de PII nos logs enviados ao Axiom (`RF-11`).
+4. **Governança e Encarregado pelo Tratamento de Dados (DPO — Art. 41):** Na relação B2B SaaS, o cinema exibidor atua como **Controlador** (*Controller*) dos dados de seus espectadores e a CineSoft Solutions atua como **Operadora Tecnológica** (*Processor*), conforme Acordo de Processamento de Dados (DPA) padronizado no [`ADR-009`](../adr/ADR-009-governanca-lgpd-anonimizacao-dpia-dpo.md).
 
-DETECÇÃO: Alertas automáticos configurados no Axiom para anomalias de acesso cross-tenant (queries sem filtro tenant_id), volume anormal de exports de PII, falhas de autenticação em série e tentativas de acesso a rotas 403. SIEM/alerting deve cobrir T-1 (acesso a cpf_hash em volume), T-2 (acesso à chave AES) e T-3 (secret leak via logs de build Vercel). SLA de detecção: alerta em até 15 minutos para eventos críticos de segurança. CLASSIFICAÇÃO: Incidentes são triados em três níveis — Crítico (vazamento confirmado de PII de compradores, acesso cross-tenant verificado, comprometimento de chave AES), Alto (tentativa de acesso não autorizado, anomalia em auditoria_cancelamentos, secret detectado em log) e Médio (falha de isolamento sem acesso confirmado, degradação de disponibilidade). ESCALATION: Crítico → DPO + CTO + equipe de segurança em até 1h; Alto → DPO + engenharia em até 4h; Médio → engenharia em até 24h. Comunicação interna via canal dedicado (#incident-response) com thread de timeline. COMUNICAÇÃO A TITULARES E ANPD: Confirmado incidente com acesso indevido a dados de compradores — notificação à ANPD em até 72h conforme Art. 48 LGPD, com formulário de comunicação de incidente contendo: natureza dos dados afetados (nome, CPF, e-mail), número estimado de titulares impactados por tenant, data/hora da detecção, medidas imediatas adotadas e contato do DPO. Titulares afetados notificados individualmente por e-mail em até 5 dias úteis quando o risco for classificado como alto ou crítico. Cinemas tenants afetados notificados imediatamente após confirmação do escopo do incidente. POST-MORTEM: Conduzido em até 7 dias após contenção do incidente. Documento obrigatório: timeline completa, root cause analysis, controles falhos, ações corretivas com owner e prazo, atualização do risk register e comunicação aos tenants afetados. Lições aprendidas incorporadas no runbook de resposta a incidentes e revisadas no ciclo de auditoria SOC-2-Type-II.
+---
 
-## Risk register
+## 6. Plano de Resposta a Incidentes de Segurança e Privacidade (Art. 48 LGPD)
 
-| ID | Category | Likelihood | Impact | Mitigation | Residual |
+1. **Detecção e Alerta (SLA $\le$ 15 minutos):** Alertas automatizados configurados no Axiom Log Drain monitoram tentativas de violação de isolamento cross-tenant (`cross_tenant_query_attempt`), picos anômalos de consultas à tabela `Buyer` e falhas repetidas de autenticação (`401/403`).
+2. **Classificação de Severidade:**
+   - **Nível Crítico (P0):** Suspeita ou confirmação de acesso não autorizado a dados pessoais decifrados, comprometimento de chaves criptográficas ou vazamento entre tenants.
+   - **Nível Alto (P1):** Tentativa bloqueada de intrusão, anomalia na tabela `cancellation_audits` ou indisponibilidade do serviço de criptografia.
+   - **Nível Médio (P2):** Degradação de performance ou falha pontual de entrega de e-mail transacional.
+3. **Contenção e Escalonamento:** Incidentes Críticos (P0) acionam imediatamente o Encarregado de Dados (DPO), o Líder Técnico (TechLead) e o Engenheiro de Segurança em até **1 hora**, executando rotação imediata de `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` e `CINEDOOM_CPF_HMAC_KEY`.
+4. **Notificação à ANPD e aos Titulares (Art. 48 da LGPD):** Em caso de incidente de segurança que possa acarretar risco ou dano relevante aos titulares, a CineSoft Solutions notificará formalmente os cinemas Controladores imediatamente e submeterá a comunicação à **Autoridade Nacional de Proteção de Dados (ANPD)** e aos titulares afetados em até **72 horas** (3 dias úteis), informando a natureza dos dados afetados, as medidas técnicas de proteção utilizadas (cifragem `AES-256-GCM` e `HMAC-SHA256`) e as ações de mitigação adotadas.
+5. **Análise Pós-Incidente (*Post-Mortem*):** Conduzida em até 7 dias corridos após a contenção, documentando a causa-raiz (RCA), linha do tempo, atualização da matriz de ameaças e adição de novos testes regressivos no pipeline de CI.
+
+---
+
+## 7. Matriz de Riscos de Conformidade e Privacidade
+
+| ID | Categoria | Probabilidade Inicial | Impacto | Medida de Mitigação Implementada | Risco Residual |
 |---|---|---|---|---|---|
-| R-CMP-1 | `privacy` | high | high | Substituir SHA-256 por HMAC-SHA256 com chave server-side para hash de CPF, inviabilizando rainbow table sobre espaço finito de CPFs brasileiros | low |
-| R-CMP-2 | `security` | high | high | Armazenar chave AES-256-GCM exclusivamente em Vercel Env Secrets ou AWS KMS com rotação anual e re-cifragem; nunca em .env comitado | medium |
-| R-CMP-3 | `security` | high | high | Implementar pre-commit hooks com detect-secrets/gitleaks, .env* no .gitignore verificado por CI e secrets exclusivamente via Vercel Env Vars interface com rotação trimestral | low |
-| R-CMP-4 | `regulatory` | medium | high | Ausência de self-service para direitos LGPD (acesso, retificação, exclusão via equipe CineDoom apenas): publicar canal de contato na política de privacidade com SLA 15 dias úteis e runbook interno documentado | medium |
-| R-CMP-5 | `privacy` | medium | high | Vazamento cross-tenant por falha no middleware Prisma de injeção de tenant_id: suíte de 500 cenários de isolamento executada no CI com zero tolerância a falhas | low |
-| R-CMP-6 | `regulatory` | low | high | Não conformidade com prazo de 72h ANPD (Art. 48 LGPD) por ausência de plano de resposta formalizado: documentar IRP com template de notificação ANPD e DPO designado antes do go-live | low |
-| R-CMP-7 | `privacy` | medium | medium | Logs de aplicação no Axiom podem conter PII de compradores em texto claro se endpoints de venda logarem payloads completos: configurar mascaramento de CPF e e-mail no logger antes de envio ao Axiom | low |
-| R-CMP-8 | `security` | medium | medium | Provisionamento manual de tenants pela equipe CineDoom sem processo de offboarding documentado pode deixar dados de tenants inativos acessíveis: implementar processo formal de desativação com anonimização de dados após encerramento de contrato | medium |
+| **R-CMP-1** | Privacidade | Alta | Alto | Implementação de `HMAC-SHA256` com chave secreta de servidor (`CINEDOOM_CPF_HMAC_KEY`) para indexação de CPF, eliminando vulnerabilidade a *rainbow tables* (`ADR-008`, `CA-06`). | **Baixo** |
+| **R-CMP-2** | Segurança | Alta | Alto | Armazenamento de `CPF_ENCRYPTION_KEY` (`AES-256-GCM`) exclusivamente em *Vercel Environment Secrets* cifrados, com runbook de rotação periódica e re-cifragem em lote (`ADR-008`). | **Baixo** |
+| **R-CMP-3** | Segurança | Média | Alto | Bloqueio de arquivos `.env*` no controle de versão, validação de segredos em CI e separação estrita de bancos de dados de *preview* com dados sintéticos. | **Baixo** |
+| **R-CMP-4** | Regulatório | Média | Alto | Implementação do endpoint administrativo de anonimização *in-place* (`POST /api/titulares/anonimizar`, `ADR-009`), runbook operacional e SLA formal de até 15 dias para atendimento ao Art. 18 da LGPD. | **Baixo** |
+| **R-CMP-5** | Privacidade | Média | Alto | Isolamento multi-tenant via *Prisma Client Extension* (`ADR-003`) auditado a cada commit pela suíte de 500 cenários de segurança cross-tenant (`CA-04`, `CT-04`, `CT-18`) com tolerância zero a falhas. | **Baixo** |
+| **R-CMP-6** | Regulatório | Baixa | Alto | Formalização do Plano de Resposta a Incidentes com SLA de 72 horas para notificação à ANPD (Art. 48 LGPD) e definição contratual de Controlador/Operador (`ADR-009`). | **Baixo** |
+| **R-CMP-7** | Privacidade | Média | Médio | Sanitização automática de payloads no logger estruturado para garantir que CPF e e-mail nunca sejam enviados em texto claro ao Axiom Log Drain (`RF-11`, `CT-15`). | **Baixo** |
+| **R-CMP-8** | Segurança | Baixa | Médio | Procedimento formal de desativação e *offboarding* de tenants encerrados, com geração de backup contratual e expurgo seguro de dados pessoais após o término do prazo legal de retenção. | **Baixo** |

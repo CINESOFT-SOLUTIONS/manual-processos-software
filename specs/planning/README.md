@@ -8,11 +8,9 @@ Este diretório concentra os artefatos de planejamento, cronograma, sprints e go
 
 | Arquivo | Descrição |
 | :--- | :--- |
-| **[`sprints-e-backlog.md`](sprints-e-backlog.md)** | **Plano Mestre de Sprints e Backlog**: Distribuição das 30 issues no Kanban oficial, atribuição de responsabilidades (Gabriel, Carlos, Kayque, Yury), cronograma (23/10 a 12/11/2026), dependências e Definition of Done. |
-| **[`tech-lead-plan.md`](tech-lead-plan.md)** | Plano de implementação técnica de 20 tarefas elaborado pelo TechLead, estimativas de esforço (102h), caminho crítico e matriz de paralelização. |
-| **[`tech-lead-plan.json`](tech-lead-plan.json)** | Versão estruturada em JSON do plano de 20 tarefas para automações e rastreabilidade em pipelines. |
-| **[`devops-spec.md`](devops-spec.md)** | Especificações de infraestrutura, CI/CD GitHub Actions, Neon DB branching, observabilidade Axiom e runbooks operacionais. |
-| **[`devops-spec.json`](devops-spec.json)** | Versão estruturada em JSON da especificação de DevOps. |
+| **[`sprints-e-backlog.md`](sprints-e-backlog.md)** | **Plano Mestre de Sprints e Backlog**: Distribuição das 33 issues no Kanban oficial, atribuição de responsabilidades (Gabriel, Carlos, Kayque, Yury), cronograma (23/10 a 12/11/2026), dependências e *Definition of Done* (DoD). |
+| **[`tech-lead-plan.md`](tech-lead-plan.md)** | **Plano Técnico de Implementação (TechLead)**: Decomposição da engenharia em 23 tarefas técnicas (`TASK-1` a `TASK-23`), estimativas de esforço (116h), caminho crítico, matriz de paralelização e rastreabilidade com `RF-01` a `RF-18` e `CA-01` a `CA-14`. |
+| **[`devops-spec.md`](devops-spec.md)** | **Especificação de DevOps, Infraestrutura e Observabilidade**: Topologia Vercel + Neon Serverless, CI/CD GitHub Actions, branching de banco de dados, objetivos e indicadores de nível de serviço (`SLO-1` a `SLO-7`, `SLI-1` a `SLI-7`), observabilidade estruturada no Axiom e runbooks operacionais. |
 
 ---
 

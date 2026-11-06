@@ -1,76 +1,73 @@
 ---
-kind: agent_artifact
-feature_id: F-CINEDOOM-PLATAFORMA-B2B-SAAS-C
-agent: UI
-generated_by:
-  run_id: run_2026-10-23T03-58-17_eedeb0ce
-  session_id: 2026-09-03T15-33-01-hdb88xzyiu
-  model: anthropic:claude-sonnet-4-6
-generated_at: 2026-10-23T04:37:47.696Z
-regenerative: true
-title: "[UI] CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd"
+document_id: SPEC-CINEDOOM-UI-MOCKUPS-001
+version: "2.0.0"
+date: "2026-11-05"
+status: "Aprovado e Consolidado"
+standard: "ABNT NBR ISO/IEC/IEEE 12207:2021 (Cláusula 6.4.5 — Design de Interface)"
+title: "Especificação de Interface (UI), Tokens de Design e Protótipos HTML — CineDoom"
 ---
 
-# UI — CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd
+# Especificação de Interface (UI), Tokens de Design e Protótipos HTML — CineDoom
 
-> Artefato derivado de `.specs/features/F-CINEDOOM-PLATAFORMA-B2B-SAAS-C/spec.md` e gerado pelo agente **UI**
-> via AI-4SDLC Platform. **Regenerative work product** (não-canonical SDD).
-> Não edite manualmente — re-gere via `sdlc resume`.
+> **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`HU-01` a `HU-11`, `RF-01` a `RF-18`, `RNF-04`, `RNF-05`, `CA-01` a `CA-14`) e [`ux-design.md`](ux-design.md).
 
-## Resumo
+## Resumo Executivo
 
-UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria e back-office para cinemas independentes. Telas: Login, Mapa de Assentos (Atendente), Modal de Venda, Painel de Ocupação (Gerente) e Back-Office (filmes/salas/sessões).
+Especificação visual de interface de usuário (UI), tokens de design e protótipos HTML estruturais para o **CineDoom**, contemplando as telas de **Login**, **Mapa de Assentos da Bilheteria (Atendente)**, **Modal de Venda com Consentimento LGPD**, **Painel de Ocupação (Gerente)**, **Gestão de Back-Office (Filmes, Salas, Sessões e Usuários)** e **Portal do Cliente (Catálogo, Reserva de Poltronas, Voucher e Minhas Reservas)**.
 
-> **Mode:** `html_fallback`
+---
 
-## Frames
+## 1. Telas Especificadas (Frames)
 
-- **FRAME-1** Login — PNG: `/20-design/ui-mockups/login.png`
-- **FRAME-2** Mapa de Assentos - Atendente — PNG: `/20-design/ui-mockups/mapa-assentos.png`
-- **FRAME-3** Modal Confirmacao Venda — PNG: `/20-design/ui-mockups/modal-venda.png`
-- **FRAME-4** Painel de Ocupacao - Gerente — PNG: `/20-design/ui-mockups/painel-ocupacao.png`
-- **FRAME-5** Back-Office Filmes — PNG: `/20-design/ui-mockups/backoffice-filmes.png`
-- **FRAME-6** Back-Office Salas e Sessoes — PNG: `/20-design/ui-mockups/backoffice-sessoes.png`
-- **FRAME-7** Cadastro de Usuario Atendente — PNG: `/20-design/ui-mockups/cadastro-usuario.png`
-- **FRAME-8** Portal do Cliente - Catalogo e Sessoes — PNG: `/20-design/ui-mockups/portal-catalogo.png`
-- **FRAME-9** Portal do Cliente - Reserva de Assentos e Voucher — PNG: `/20-design/ui-mockups/portal-reserva.png`
-- **FRAME-10** Portal do Cliente - Minhas Reservas e Cancelamento — PNG: `/20-design/ui-mockups/portal-minhas-reservas.png`
+- **FRAME-1:** Tela de Autenticação (Login) — `RF-01`, `RF-14`
+- **FRAME-2:** Mapa de Assentos Interativo com Polling de 2s (Atendente) — `RF-05`, `CA-02`
+- **FRAME-3:** Modal de Confirmação de Venda e Consentimento LGPD — `RF-06`, `RF-09`, `CA-01`, `CA-06`
+- **FRAME-4:** Painel de Ocupação em Tempo Real (Gerente) — `RF-10`, `CA-07`
+- **FRAME-5:** Gestão (Back-Office) — Catálogo de Filmes — `RF-02`, `CA-08`
+- **FRAME-6:** Gestão (Back-Office) — Salas e Sessões — `RF-03`, `RF-04`, `CA-08`
+- **FRAME-7:** Gestão (Back-Office) — Cadastro de Usuário Atendente — `RF-01`, `CA-05`
+- **FRAME-8:** Portal do Cliente — Catálogo de Filmes e Grade de Sessões — `RF-12`
+- **FRAME-9:** Portal do Cliente — Seleção de Poltronas, Reserva e Voucher (`CD-XXXX`) — `RF-13`, `RF-15`, `CA-09`, `CA-11`
+- **FRAME-10:** Portal do Cliente — Área "Minhas Reservas" e Cancelamento Voluntário — `RF-16`, `CA-12`
 
-## Design tokens
+---
 
-**Colors:**
-- `primary`: `#1A1A2E`
-- `cta`: `#E94560`
-- `neutralBg`: `#F5F5F5`
-- `card`: `#FFFFFF`
-- `textMain`: `#2D2D2D`
-- `textSecondary`: `#6B7280`
-- `seatAvailable`: `#22C55E`
-- `seatSold`: `#EF4444`
-- `seatSelected`: `#3B82F6`
-- `seatBlocked`: `#9CA3AF`
-- `seatReserved`: `#F59E0B`
+## 2. Tokens de Design (Design Tokens)
 
-**Typography:**
+**Cores Semânticas:**
+- `primary`: `#1A1A2E` (Azul escuro institucional)
+- `cta`: `#E94560` (Vermelho destaque / ação principal)
+- `neutralBg`: `#F5F5F5` (Plano de fundo secundário)
+- `card`: `#FFFFFF` (Superfície de cartões e modais)
+- `textMain`: `#2D2D2D` (Texto primário de alto contraste)
+- `textSecondary`: `#6B7280` (Texto auxiliar e metadados)
+- `seatAvailable`: `#22C55E` (Assento disponível — `AVAILABLE`)
+- `seatSold`: `#EF4444` (Assento vendido — `SOLD`)
+- `seatReserved`: `#F59E0B` (Assento reservado online — `RESERVED`)
+- `seatSelected`: `#3B82F6` (Assento selecionado na operação atual)
+- `seatBlocked`: `#9CA3AF` (Assento bloqueado — `BLOCKED`)
+
+**Tipografia:**
 - `heading`: `Inter Bold 24px`
 - `subheading`: `Inter SemiBold 18px`
-- `body`: `Inter 14px`
-- `caption`: `Inter 12px`
+- `body`: `Inter Regular 14px`
+- `caption`: `Inter Regular 12px`
 
-**Spacing scale:**
+**Escala de Espaçamento e Bordas:**
 - `base`: `4px`
 - `lg`: `24px`
+- `radiusCard`: `6px`
+- `radiusBadge`: `4px`
 
-**Radii:**
-- `card`: `6px`
-- `badge`: `4px`
+---
 
-## Fallback HTML preview
+## 3. Protótipo HTML de Referência Visual
 
-> Preview-only (não código de produção).
+> Estrutura HTML/Tailwind de referência para validação visual dos componentes especificados.
 
 ```html
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><title>CineDoom Mockups</title><script src="https://cdn.tailwindcss.com"></script></head><body class="bg-gray-100 text-sm font-sans text-gray-800 p-6 space-y-12">
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><title>CineDoom — Protótipos de Interface</title><script src="https://cdn.tailwindcss.com"></script></head><body class="bg-gray-100 text-sm font-sans text-gray-800 p-6 space-y-12">
 
 <!-- FRAME 1: LOGIN -->
 <section>
@@ -78,7 +75,7 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
   <div class="max-w-sm mx-auto bg-white rounded-md shadow-sm p-8 space-y-5">
     <div class="text-center">
       <div class="text-2xl font-bold" style="color:#1A1A2E">CineDoom</div>
-      <p class="text-xs text-gray-500 mt-1">Plataforma B2B de Bilheteria</p>
+      <p class="text-xs text-gray-500 mt-1">Plataforma SaaS de Bilheteria e Gestão</p>
     </div>
     <div class="space-y-3">
       <div>
@@ -109,23 +106,22 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
     <div class="flex gap-4 text-xs">
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm inline-block" style="background:#22C55E"></span>Disponível</span>
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm inline-block" style="background:#EF4444"></span>Vendido</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm inline-block" style="background:#F59E0B"></span>Reservado</span>
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm inline-block" style="background:#3B82F6"></span>Selecionado</span>
       <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm inline-block" style="background:#9CA3AF"></span>Bloqueado</span>
     </div>
-    <!-- Grid assentos (5x10 simplificado) -->
+    <!-- Grid assentos (2x10 simplificado) -->
     <div class="grid gap-1" style="grid-template-columns:repeat(10,2rem)">
-      <!-- Linha A: alguns vendidos -->
       <div class="w-8 h-8 rounded-sm" style="background:#EF4444"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#EF4444"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#22C55E"></div>
-      <div class="w-8 h-8 rounded-sm" style="background:#22C55E"></div>
+      <div class="w-8 h-8 rounded-sm" style="background:#F59E0B"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#3B82F6"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#22C55E"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#22C55E"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#9CA3AF"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#22C55E"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#EF4444"></div>
-      <!-- Linha B -->
       <div class="w-8 h-8 rounded-sm" style="background:#22C55E"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#22C55E"></div>
       <div class="w-8 h-8 rounded-sm" style="background:#EF4444"></div>
@@ -165,7 +161,7 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
       </div>
       <div class="flex items-start gap-2 text-xs text-gray-500 bg-gray-50 rounded p-3">
         <input type="checkbox" class="mt-0.5" />
-        <span>Comprador consente com a coleta e uso dos dados conforme LGPD. <strong>Campo obrigatório.</strong></span>
+        <span>Comprador consente com a coleta e uso dos dados conforme LGPD. <strong>Campo obrigatório (CA-06).</strong></span>
       </div>
     </div>
     <div class="flex gap-3 justify-end">
@@ -180,7 +176,7 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
   <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-3">FRAME-4 · Painel de Ocupação — Gerente</h2>
   <div class="bg-white rounded-md shadow-sm p-6 max-w-3xl mx-auto space-y-4">
     <div class="flex items-center justify-between">
-      <div class="font-semibold text-base" style="color:#1A1A2E">Ocupação do Dia — 15/01/2025</div>
+      <div class="font-semibold text-base" style="color:#1A1A2E">Ocupação do Dia — 05/11/2026</div>
       <span class="text-xs px-2 py-0.5 rounded font-medium" style="background:#1A1A2E;color:#fff">GERENTE</span>
     </div>
     <table class="w-full text-sm">
@@ -192,24 +188,20 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
       <tbody class="divide-y">
         <tr class="py-2">
           <td class="py-2">Duna: Parte Dois</td><td>Sala 2</td><td>19:30</td><td>87/120</td>
-          <td><div class="w-32 bg-gray-200 rounded h-2"><div class="h-2 rounded" style="width:73%;background:#E94560"></div></div><span class="text-xs ml-1">73%</span></td>
+          <td><div class="w-32 bg-gray-200 rounded h-2"><div class="h-2 rounded" style="width:73%;background:#E94560"></div></div><span class="text-xs ml-1">72.5%</span></td>
         </tr>
         <tr>
-          <td class="py-2">Kung Fu Panda 4</td><td>Sala 1</td><td>15:00</td><td>45/80</td>
-          <td><div class="w-32 bg-gray-200 rounded h-2"><div class="h-2 rounded" style="width:56%;background:#E94560"></div></div><span class="text-xs ml-1">56%</span></td>
-        </tr>
-        <tr>
-          <td class="py-2">Duna: Parte Dois</td><td>Sala 2</td><td>21:45</td><td>12/120</td>
-          <td><div class="w-32 bg-gray-200 rounded h-2"><div class="h-2 rounded" style="width:10%;background:#22C55E"></div></div><span class="text-xs ml-1">10%</span></td>
+          <td class="py-2">Ainda Estou Aqui</td><td>Sala 1</td><td>15:00</td><td>45/80</td>
+          <td><div class="w-32 bg-gray-200 rounded h-2"><div class="h-2 rounded" style="width:56%;background:#E94560"></div></div><span class="text-xs ml-1">56.3%</span></td>
         </tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<!-- FRAME 5: BACK-OFFICE FILMES -->
+<!-- FRAME 5: GESTÃO FILMES -->
 <section>
-  <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-3">FRAME-5 · Back-Office — Filmes</h2>
+  <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-3">FRAME-5 · Gestão — Catálogo de Filmes</h2>
   <div class="bg-white rounded-md shadow-sm p-6 max-w-3xl mx-auto space-y-4">
     <div class="flex items-center justify-between">
       <div class="font-semibold text-base" style="color:#1A1A2E">Catálogo de Filmes</div>
@@ -218,23 +210,23 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
     <table class="w-full text-sm">
       <thead>
         <tr class="text-left text-xs text-gray-500 border-b">
-          <th class="pb-2">Título</th><th class="pb-2">Gênero</th><th class="pb-2">Duração</th><th class="pb-2">Ações</th>
+          <th class="pb-2">Título</th><th class="pb-2">Diretor</th><th class="pb-2">Duração</th><th class="pb-2">Ações</th>
         </tr>
       </thead>
       <tbody class="divide-y">
-        <tr><td class="py-2">Duna: Parte Dois</td><td>Ficção</td><td>166 min</td><td class="space-x-2"><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
-        <tr><td class="py-2">Kung Fu Panda 4</td><td>Animação</td><td>94 min</td><td class="space-x-2"><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
+        <tr><td class="py-2">Duna: Parte Dois</td><td>Denis Villeneuve</td><td>166 min</td><td class="space-x-2"><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
+        <tr><td class="py-2">Ainda Estou Aqui</td><td>Walter Salles</td><td>135 min</td><td class="space-x-2"><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<!-- FRAME 6: BACK-OFFICE SESSÕES -->
+<!-- FRAME 6: GESTÃO SESSÕES -->
 <section>
-  <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-3">FRAME-6 · Back-Office — Salas e Sessões</h2>
+  <h2 class="text-xs uppercase tracking-widest text-gray-400 mb-3">FRAME-6 · Gestão — Salas e Sessões</h2>
   <div class="bg-white rounded-md shadow-sm p-6 max-w-3xl mx-auto space-y-4">
     <div class="flex items-center justify-between">
-      <div class="font-semibold text-base" style="color:#1A1A2E">Sessões</div>
+      <div class="font-semibold text-base" style="color:#1A1A2E">Sessões Programadas</div>
       <button class="px-3 py-1.5 rounded text-white text-xs font-semibold" style="background:#E94560">+ Nova Sessão</button>
     </div>
     <table class="w-full text-sm">
@@ -244,8 +236,8 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
         </tr>
       </thead>
       <tbody class="divide-y">
-        <tr><td class="py-2">Duna: Parte Dois</td><td>Sala 2</td><td>15/01 19:30</td><td><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
-        <tr><td class="py-2">Kung Fu Panda 4</td><td>Sala 1</td><td>15/01 15:00</td><td><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
+        <tr><td class="py-2">Duna: Parte Dois</td><td>Sala 2</td><td>05/11 19:30</td><td><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
+        <tr><td class="py-2">Ainda Estou Aqui</td><td>Sala 1</td><td>05/11 15:00</td><td><a class="text-blue-600 text-xs" href="#">Editar</a></td></tr>
       </tbody>
     </table>
   </div>
@@ -268,7 +260,7 @@ UI mockups HTML fallback para CineDoom MVP — plataforma B2B SaaS de bilheteria
       <div>
         <label class="block text-xs font-medium mb-1">Perfil</label>
         <select class="w-full border rounded px-3 py-2 text-sm"><option>ATENDENTE</option></select>
-        <p class="text-xs text-gray-400 mt-1">Apenas GERENTE pode criar usuários. Perfil fixo: ATENDENTE.</p>
+        <p class="text-xs text-gray-400 mt-1">Apenas GERENTE pode criar usuários (RN-01 / CA-05).</p>
       </div>
     </div>
     <button class="w-full py-2 rounded text-white text-sm font-semibold" style="background:#E94560">Criar Conta</button>

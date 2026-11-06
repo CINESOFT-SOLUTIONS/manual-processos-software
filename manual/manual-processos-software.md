@@ -150,7 +150,7 @@ O CineDoom é uma plataforma web integrada de gerenciamento operacional, bilhete
 2. **Módulo do Gerente (Back-office e Gestão):** Configuração de salas, catálogo de filmes, agendamento de sessões e acompanhamento de indicadores de ocupação em tempo real.
 3. **Portal do Cliente (Espectador Final Web):** Canal público e autenticado no qual o público consulta a programação, cadastra-se com proteção de dados LGPD, seleciona assentos no mapa interativo, solicita reservas com emissão de voucher transacional e gerencia suas reservas via web.
 
-O sistema é desenvolvido pela organização **CineSoft Solutions** e atua como estudo de caso estruturante para a aplicação formal dos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
+O sistema é desenvolvido pela organização (fictícia) **CineSoft Solutions** e atua como estudo de caso estruturante para a aplicação formal dos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
 
 ## 1.2 Qual é o software? O que ele faz? Qual problema resolve?
 
@@ -176,8 +176,9 @@ O CineDoom elimina esses problemas ao unificar o canal digital do cliente e a bi
 
 ## 1.3 Público-alvo e contexto de uso
 
-O público-alvo compreende:
-- **Cinemas independentes e redes regionais (B2B):** Estabelecimentos que demandam controle operacional confiável e centralizado com baixo custo inicial de implantação.
+O público-alvo:
+- **Rede de Cinemas: Cinedoom:** Uma rede de cinemas que demandam de um sistema que seja capaz de sustentar a demanda por sessões e grande volume de clientes.
+
 - **Público espectador (B2C mediado):** Clientes do cinema que utilizam o Portal do Cliente para consultar filmes, reservar seus assentos preferidos e gerenciar seus comprovantes antes de comparecer à sessão.
 
 O contexto de uso abrange:
@@ -208,29 +209,6 @@ O contexto de uso abrange:
 4. **Módulo de Bilheteria Presencial:** Venda atômica direta, cancelamento auditável por trigger PostgreSQL e baixa presencial de reservas.
 5. **Portal do Cliente:** Consulta de sessões, autenticação com proteção de dados LGPD, mapa interativo de assentos com trava temporária, despacho de e-mail transacional, painel de reservas e cancelamento voluntário web.
 6. **Módulo de Ocupação:** Painel consolidado da taxa de lotação por sessão em tempo real.
-
-### Requisitos Funcionais do Sistema (RF-01 a RF-18)
-
-| Código | Nome do Requisito | Escopo no Ciclo de Vida |
-|---|---|---|
-| **RF-01** | Autenticar usuário por perfil (Gerente, Atendente e Cliente) | MVP (Must Have / NextAuth.js com RBAC) |
-| **RF-02** | Gerenciar usuários e operadores de guichê | MVP (Gestão de atendentes pelo gerente) |
-| **RF-03** | Cadastrar e gerenciar acervo de filmes | MVP (Must Have) |
-| **RF-04** | Cadastrar e gerenciar salas e layouts de assentos | MVP (Must Have) |
-| **RF-05** | Agendar e publicar sessões cinematográficas | MVP (Must Have) |
-| **RF-06** | Consultar disponibilidade de assentos com polling de 2s | MVP (Must Have / Core Visual) |
-| **RF-07** | Registrar venda de ingresso presencial com trava ACID | MVP (Must Have / SELECT FOR UPDATE) |
-| **RF-08** | Cancelar ingresso e liberar assento com auditoria imutável | MVP (Must Have / Trigger PostgreSQL) |
-| **RF-09** | Proteger dados pessoais de compradores conforme a LGPD | MVP (Must Have / HMAC-SHA256 + AES-256-GCM) |
-| **RF-10** | Monitorar indicadores e taxas de ocupação em tempo real | MVP (Must Have / Painel Gerencial) |
-| **RF-11** | Registrar trilha de auditoria e retenção legal (Axiom) | MVP (Must Have / Retenção 365 dias) |
-| **RF-12** | Consultar programação e sessões no Portal do Cliente | MVP (Must Have / Consulta Pública) |
-| **RF-13** | Reservar assento online com trava atômica temporária | MVP (Must Have / Status RESERVED) |
-| **RF-14** | Cadastrar e autenticar cliente com consentimento LGPD | MVP (Must Have / Área pessoal segura) |
-| **RF-15** | Despachar voucher de reserva via e-mail transacional | MVP (Must Have / NotificationService) |
-| **RF-16** | Cancelar reserva pelo próprio cliente via web | MVP (Must Have / Painel Minhas Reservas) |
-| **RF-17** | Localizar e dar baixa em reserva presencial no balcão | MVP (Must Have / Conversão em Ticket) |
-| **RF-18** | Expirar reservas não pagas a 1 hora do início da sessão | MVP (Must Have / Avaliação Just-in-Time) |
 
 ## 1.6 Restrições e premissas
 
@@ -471,28 +449,33 @@ A medição e controle (Cláusula 6.3.2) subsidiam o acompanhamento do avanço d
 ## 5.1 Requisitos
 
 ### 5.1.1 Documento de requisitos do sistema
-Os requisitos do CineDoom cobrem os três módulos integrados (Back-office do Gerente, Bilheteria do Atendente e Portal do Cliente), classificados formalmente em funcionais (RF-01 a RF-18) e não funcionais (RNF-01 a RNF-06), com priorização MoSCoW:
-- **RF-01 a RF-06:** Gestão de acesso, acervo de filmes, salas/assentos, sessões e visualização do mapa com polling a 2s.
-- **RF-07 a RF-11:** Venda direta no balcão com trava atômica (*SELECT FOR UPDATE*), cancelamento auditável append-only via trigger PostgreSQL, proteção de PII/LGPD (HMAC-SHA256 + AES-256-GCM), painel de ocupação e observabilidade Axiom com retenção legal de 365 dias.
-- **RF-12 a RF-18 (Portal do Cliente e Reserva):** Consulta pública de grade de exibição, reserva de assentos com status `RESERVED`, cadastro e login seguro do espectador com consentimento LGPD, emissão de voucher por e-mail transacional (*NotificationService*), painel web "Minhas Reservas" com cancelamento voluntário pelo cliente, baixa presencial da reserva pelo atendente e expiração Just-in-Time para reservas não quitadas a 1 hora da sessão.
-- **RNF-01 (Desempenho):** Tempo de resposta para consultas e reservas inferior a 2 segundos (p95 < 800ms).
-- **RNF-02 (Confiabilidade Transacional):** Zero conflitos de venda ou reserva dupla sob concorrência paralela de 50 threads simultâneas.
-- **RNF-03 (Segurança e LGPD):** Isolamento total cross-tenant e proteção criptográfica de dados de identificação do espectador.
-- **RNF-04 (Usabilidade):** Interface responsiva para o Portal do Cliente e layout intuitivo de bilheteria física.
+A especificação oficial do CineDoom ([`specs/cinedoom-spec.md`](../../specs/cinedoom-spec.md)) organiza os artefatos de requisitos em catálogos separados com identificadores únicos padronizados em português, cobrindo os três módulos integrados (Back-office do Gerente, Bilheteria do Atendente e Portal do Cliente) com priorização MoSCoW:
+- **Stakeholders (`STK-01` a `STK-05`) e Necessidades Elicitadas (`NEC-01` a `NEC-08`):** Mapeamento de patrocinadores, gerentes, atendentes, espectadores e conformidade regulatória.
+- **Histórias de Usuário (`HU-01` a `HU-11`, equiv. `US-1` a `US-11`):** Narrativas ágeis centradas nos atores do sistema.
+- **Requisitos Funcionais (`RF-01` a `RF-18`):**
+  - **RF-01 a RF-05:** Autenticação RBAC e gestão de operadores (`GERENTE`, `ATENDENTE`, `CLIENTE`), catálogo de filmes, salas/assentos, agendamento de sessões com pré-população de poltronas e mapa interativo com polling a 2s.
+  - **RF-06 a RF-11:** Venda direta no balcão com trava atômica (*SELECT FOR UPDATE*), emissão de comprovante, cancelamento auditável *append-only* via trigger PostgreSQL, proteção de PII/LGPD (`HMAC-SHA256` + `AES-256-GCM`), painel de ocupação em tempo real e observabilidade Axiom com retenção legal de 365 dias.
+  - **RF-12 a RF-18 (Portal do Cliente e Reserva):** Consulta pública de grade de exibição, reserva de assentos com status `RESERVED`, cadastro e login seguro do espectador com consentimento LGPD, emissão de voucher por e-mail transacional (*NotificationService*), painel web "Minhas Reservas" com cancelamento voluntário pelo cliente, baixa presencial da reserva pelo atendente e expiração *Just-in-Time* para reservas não quitadas a 1 hora da sessão.
+- **Requisitos Não Funcionais (`RNF-01` a `RNF-06`, norma ISO/IEC 25010):**
+  - **RNF-01 (Eficiência de Desempenho):** Latência p95 < 800 ms e p99 < 1.500 ms para venda/reserva; atualização do mapa em até 2 segundos.
+  - **RNF-02 (Confiabilidade e Atomicidade ACID):** Zero vendas ou reservas duplas (*double-booking*) sob concorrência paralela de 50 requisições simultâneas.
+  - **RNF-03 (Segurança e Conformidade LGPD):** Isolamento total cross-tenant validado por 500 cenários automatizados e proteção criptográfica de CPF (`HMAC-SHA256` + `AES-256-GCM`).
+  - **RNF-04 (Usabilidade e Acessibilidade):** Interface responsiva aderente à WCAG 2.1 Nível AA para o Portal do Cliente e terminais touchscreen de bilheteria.
+  - **RNF-05 (Compatibilidade de Navegadores):** Suporte integral a Chromium (Chrome/Edge) e Firefox em resolução mínima de `1024x768` sem dependências nativas.
+  - **RNF-06 (Manutenibilidade e Modularidade):** Clean Architecture orientada a funcionalidades com zero dependências circulares verificadas por `ESLint import/no-cycle`.
+- **Regras de Negócio (`RN-01` a `RN-12`) e Restrições (`RES-01` a `RES-06`):** Controles determinísticos de RBAC, conflito de salas, trava pessimista, antecedência mínima de 60 minutos, expiração *Just-in-Time* e isolamento por `tenant_id`.
 
 ### 5.1.2 Rastreabilidade de requisitos
-A integridade da engenharia de software é assegurada pela cadeia de rastreabilidade contínua:
-$$\text{Necessidade do Negócio} \longrightarrow \text{RF/RNF} \longrightarrow \text{ADR} \longrightarrow \text{Issue GitHub} \longrightarrow \text{Código-Fonte} \longrightarrow \text{Teste Automatizado} \longrightarrow \text{Deploy Vercel}$$
+A integridade da engenharia de software é assegurada pela cadeia de rastreabilidade bidirecional contínua:
+$$\text{Stakeholder (STK)} \longrightarrow \text{Necessidade (NEC)} \longrightarrow \text{História (HU)} \longrightarrow \text{RF / RNF / RN} \longrightarrow \text{Critério de Aceite (CA)} \longrightarrow \text{Caso de Teste (CT)} \longrightarrow \text{Código e Deploy}$$
 
-### 5.1.3 Critérios de aceitação
-Os critérios de aceitação foram formalizados para assegurar a consistência dos fluxos híbridos (digital $\to$ presencial):
-1. **Reserva Online com Trava Atômica:** A solicitação de reserva no portal valida a antecedência (>60 min), bloqueia o assento com status `RESERVED` no PostgreSQL e despacha o voucher com código alfanumérico e e-mail transacional.
-2. **Cancelamento Voluntário pelo Cliente:** O espectador autenticado cancela sua reserva pendente no portal com reversão imediata do assento para `AVAILABLE`.
-3. **Baixa Presencial na Bilheteria:** O atendente pesquisa a reserva por código ou CPF, confirma o recebimento presencial e converte a reserva em `Ticket` vendido (`SOLD`).
-4. **Expiração Just-in-Time:** Assentos reservados não confirmados até 60 minutos antes da sessão são liberados dinamicamente em tempo de execução nas queries do sistema.
+### 5.1.3 Critérios de Aceite (`CA-01` a `CA-14`)
+Os 14 critérios de aceite (`CA-01` a `CA-14`, equivalentes às anotações de código `AC-1` a `AC-14`) foram especificados no formato comportamental (*Dado que / Quando / Então*) e validados por 26 casos de teste (`CT-01` a `CT-26`, equiv. `TC-1` a `TC-26`):
+1. **Núcleo de Bilheteria, Gestão e Segurança (`CA-01` a `CA-08`):** Trava ACID anti-double-booking (`CA-01`), atualização do mapa em até 2s (`CA-02`), auditoria imutável de cancelamento antes da liberação do assento (`CA-03`), isolamento multi-tenant estrito em 500 cenários (`CA-04`), controle RBAC com bloqueio `HTTP 403` (`CA-05`), proteção LGPD com `HMAC-SHA256` e `AES-256-GCM` (`CA-06`), painel de ocupação gerencial (`CA-07`) e validação descritiva por campo no back-office (`CA-08`).
+2. **Fluxos Híbridos do Portal do Cliente (`CA-09` a `CA-14`):** Reserva online com trava atômica e antecedência mínima de 60 min (`CA-09`), autenticação de espectador com proteção LGPD (`CA-10`), despacho de voucher por e-mail transacional (`CA-11`), cancelamento voluntário pelo cliente (`CA-12`), baixa presencial no balcão convertendo reserva em ingresso vendido (`CA-13`) e expiração *Just-in-Time* automática a 1 hora da sessão (`CA-14`).
 
 ### 5.1.4 Registro de stakeholders e necessidades elicitadas
-Mapeamento formal dos interesses de proprietários de cinemas (redução de custos e controle de ocupação), gerentes (agilidade operacional), atendentes de guichê (eliminação de filas e atritos) e espectadores finais (planejamento antecipado com assento garantido).
+Mapeamento formal dos interesses de proprietários e patrocinadores (`STK-01`, `NEC-01`), gerentes de cinema (`STK-02`, `NEC-02`), atendentes de bilheteria (`STK-03`, `NEC-03`), espectadores finais (`STK-04`, `NEC-05` a `NEC-08`) e encarregados de conformidade LGPD (`STK-05`, `NEC-04`).
 
 ## 5.2 Arquitetura e Design
 
