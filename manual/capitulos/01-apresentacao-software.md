@@ -62,8 +62,8 @@ O contexto de uso abrange:
 A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes em cartaz e o mapa interativo de assentos utilizado pelo espectador.
 
 ![Figura 1 – Portal do Cliente: catálogo de filmes e mapa interativo de assentos](../assets/prints/print-portal-cliente.png)
-    
-*Figura 1 – Portal do Cliente: catálogo de filmes em cartaz e mapa interativo de assentos (ART-004).*
+
+*Figura 1 – Portal do Cliente: catálogo de filmes em cartaz e mapa interativo de assentos*
 
 ## 1.4 Quem vai usar? Em que situação? Qual o ambiente de operação esperado?
 
@@ -83,9 +83,9 @@ A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes e
 
 A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atendente para a venda direta de ingressos e a baixa de reservas originadas no portal.
 
-![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](../assets/prints/print-bilheteria-atendente.png)
+![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](manual-processos-software\assets\prints\print-portal-cliente.png)
 
-*Figura 2 – Bilheteria presencial: mapa de assentos, venda direta e baixa de reservas pelo atendente (ART-005).*
+*Figura 2 – Bilheteria presencial: mapa de assentos, venda direta e baixa de reservas pelo atendente.*
 
 ## 1.5 Escopo e principais funcionalidades
 
@@ -94,7 +94,7 @@ A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atende
 1. **Módulo de Filmes:** Acervo com título, sinopse, classificação indicativa, duração e material promocional.
 2. **Módulo de Salas e Assentos:** Mapeamento bidimensional flexível (fileiras e colunas) e controle de capacidade física.
 3. **Módulo de Sessões:** Composição de Filme + Sala + Horário + Preço, com validação de conflitos de horário.
-4. **Módulo de Bilheteria Presencial:** Venda atômica direta, cancelamento auditável com trilha append-only protegida por trigger PostgreSQL (ADR-010) e baixa presencial de reservas.
+4. **Módulo de Bilheteria Presencial:** Venda atômica direta, cancelamento auditável com trilha append-only protegida por trigger PostgreSQL e baixa presencial de reservas.
 5. **Portal do Cliente:** Consulta de sessões, autenticação com proteção de dados LGPD, mapa interativo de assentos com reserva temporária, despacho de e-mail transacional, painel de reservas e cancelamento voluntário web.
 6. **Módulo de Ocupação:** Painel consolidado sob demanda da taxa de lotação por sessão.
 7. **Módulo de Autenticação e Controle de Acesso:** Login com sessão JWT de 8 horas, RBAC para os perfis Gerente, Atendente e Cliente e revogação imediata do acesso de usuário inativado.
@@ -106,7 +106,7 @@ A Figura 3 apresenta o painel gerencial do back-office, com a programação de s
 
 ![Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação](../assets/prints/print-painel-gerencial.png)
 
-*Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação das salas (ART-006).*
+*Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação das salas*
 
 ### Fora do escopo imediato
 
