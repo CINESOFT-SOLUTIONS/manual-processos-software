@@ -16,6 +16,7 @@ Orientações oficiais fornecidas pela Profa. Dra. Juliana Zinader para a condu�
 - Critérios de avaliação, pontuação e ementa da disciplina.
 - Estrutura mínima e cronograma de entregas do manual.
 - Roteiros e diretrizes de redação específicos para cada capítulo (`diretrizes/capitulos/`), detalhando tópicos, tabelas e requisitos exigidos.
+- [Mapa de Artefatos Visuais e Evidências](diretrizes/mapa-artefatos-e-evidencias.md): checklist de imagens, diagramas e prints obrigatórios.
 
 ### 3. Slides e Materiais Didáticos das Aulas (`aulas/`)
 Slides e conteúdos ministrados ao longo das aulas teóricas da disciplina, acompanhados de transcrições estruturadas em Markdown e diagramas visuais para consulta rápida.

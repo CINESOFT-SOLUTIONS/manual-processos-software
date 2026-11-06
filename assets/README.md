@@ -8,6 +8,13 @@ Esta pasta centraliza os diagramas técnicos, modelos visuais de processo, esque
 
 * **`logos/`:** Identidades visuais oficiais de marca (CineSoft Solutions e CineDoom) em versões horizontais coloridas, monocromáticas, favicons e prancha de tokens de design.
 * **`diagrams/`:** Diagramas arquiteturais (C4 Model: Contexto, Contêineres e Componentes), fluxos de processo (BPMN) e diagramas de sequência da solução.
+* **`prints/`:** Screenshots reais de execução do sistema, quadros Kanban (GitHub Projects), terminais de testes automatizados e evidências de processo.
+
+---
+
+## 🗺️ Mapa Completo de Artefatos e Checklist
+
+Para consultar a lista completa de imagens, prints e diagramas obrigatórios por capítulo do manual, consulte o [Mapa de Artefatos Visuais e Evidências](../referencias/diretrizes/mapa-artefatos-e-evidencias.md).
 
 ---
 
