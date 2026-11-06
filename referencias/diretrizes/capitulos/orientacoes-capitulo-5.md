@@ -22,7 +22,15 @@ Identifiquem as partes interessadas do sistema e documentem as técnicas de elic
 Descrevam a visão geral da arquitetura do software, os principais componentes, módulos e interfaces externas. Vinculem com as decisões arquiteturais (ADRs) que fundamentaram a escolha.
 
 ## 5.2.2 Diagramas de design
-Apresentem pelo menos **2 diagramas formais de design** (ex.: C4 Model Nível 1/2/3, diagramas de componentes UML, diagramas de sequência ou diagramas de entidade-relacionamento). Cada diagrama deve vir acompanhado de texto explicativo sobre o fluxo representado.
+Apresentem pelo menos **2 diagramas formais de design** (exigência mínima do professor), sendo altamente recomendado cobrir o conjunto clássico de engenharia de software (estruturais e comportamentais):
+1. **Diagrama C4 Nível 2 (Contêineres):** Visão arquitetural dos subsistemas (Portal Web, Bilheteria, Route Handlers Next.js, Banco Neon e APIs externas).
+2. **Diagrama de Classes UML (Modelo de Domínio):** Representação das classes centrais do sistema (`User`, `Tenant`, `Movie`, `Room`, `Seat`, `Session`, `SessionSeat`, `Reservation`, `Ticket`), seus atributos tipados, métodos e multiplicidades de associação.
+3. **Diagrama de Sequência UML:** Fluxo temporal de mensagens da reserva atômica de assentos (*SELECT FOR UPDATE* com expiração JIT).
+4. **Diagrama de Casos de Uso UML:** Mapeamento dos atores (*Espectador*, *Atendente*, *Gerente*) e suas interações com as funcionalidades do sistema.
+5. **Diagrama de Estados UML (Ciclo de Vida do Assento):** Transições de estado da poltrona (`AVAILABLE` $\to$ `RESERVED` $\to$ `SOLD` / `CANCELLED`).
+6. **Diagrama Entidade-Relacionamento (DER):** Esquema relacional das tabelas do banco de dados PostgreSQL.
+
+Cada diagrama incluído deve vir acompanhado de texto explicativo sobre os elementos e o fluxo representado.
 
 ## 5.2.3 Justificativa das escolhas tecnológicas
 Justifiquem o stack de tecnologias adotado para frontend, backend, persistência, bibliotecas e serviços de infraestrutura, destacando benefícios de desempenho, manutenibilidade e produtividade.
@@ -79,7 +87,10 @@ Descrevam o plano para eventual encerramento responsável do ciclo de vida do pr
 Para cumprir as exigências formais da Seção 6.4 da ISO 12207 e as diretrizes do professor, a equipe deve incluir:
 - **Diagramas Formais de Design (Mínimo de 2 Obrigatórios na Seção 5.2.2):**
   - `assets/diagrams/c4-containers.png` (ou bloco Mermaid): **Diagrama C4 Nível 2 (Contêineres)** representando a integração entre Frontend (Next.js/React), Backend Serverless, Banco de Dados (Neon PostgreSQL), APIs de terceiros e navegadores dos clientes/atendentes.
-  - `assets/diagrams/diagrama-sequencia-reserva.png` (ou bloco Mermaid): **Diagrama de Sequência UML ou Atividades BPMN** ilustrando a regra de reserva atômica de assentos (*SELECT FOR UPDATE*), disparo de vouchers e cancelamento.
+  - `assets/diagrams/diagrama-classes-dominio.png` (ou bloco Mermaid): **Diagrama de Classes UML (Modelo de Domínio)** estruturando as entidades centrais do sistema (`User`, `Tenant`, `Movie`, `Room`, `Seat`, `Session`, `SessionSeat`, `Reservation`, `Ticket`), seus atributos e relacionamentos de cardinalidade.
+  - `assets/diagrams/diagrama-sequencia-reserva.png` (ou bloco Mermaid): **Diagrama de Sequência UML** ilustrando a regra de reserva atômica de assentos (*SELECT FOR UPDATE*), disparo de vouchers e cancelamento.
+  - `assets/diagrams/diagrama-casos-de-uso.png` (ou bloco Mermaid): **Diagrama de Casos de Uso UML** mapeando os atores (*Espectador*, *Atendente*, *Gerente*) e suas funcionalidades.
+  - `assets/diagrams/diagrama-estados-assento.png` (ou bloco Mermaid): **Diagrama de Máquina de Estados UML** mostrando o ciclo de vida do assento (`AVAILABLE` $\to$ `RESERVED` $\to$ `SOLD` / `CANCELLED`).
   - `assets/diagrams/diagrama-er-banco.png` (ou bloco Mermaid): **Modelo de Dados / DER (Diagrama Entidade-Relacionamento)** com tabelas, chaves primárias/estrangeiras e cardinalidades do banco de dados (Slide 19 da Aula 06).
 - **Prints e Screenshots Reais do Projeto (salvos em `assets/prints/`):**
   - `print-testes-unitarios-vitest.png`: Screenshot do terminal executando `npm test` / `vitest` com a suíte de testes passando 100% em verde e exibindo as taxas de cobertura.

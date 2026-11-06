@@ -31,7 +31,10 @@ A equipe pode usar esta página para acompanhar o status de produção e inserç
 | **4. Gerenciamento Técnico** | Fichas Estruturadas de ADRs (ADR-001 a ADR-005) | Cards | Obrigatório | Embutida no texto e em `specs/adrs/` |
 | **4. Gerenciamento Técnico** | Print / Gráfico de Métricas de Projeto (Throughput/Lead Time) | Screenshot | Recomendado | `assets/prints/print-metricas-projeto.png` |
 | **5. Processos Técnicos** | **Diagrama C4 Nível 2 (Contêineres)** | Diagrama | **Obrigatório** *(Slide 24 Aula 06)* | `assets/diagrams/c4-containers.png` ou Mermaid |
+| **5. Processos Técnicos** | **Diagrama de Classes UML (Modelo de Domínio)** | Diagrama | **Obrigatório** *(Slide 24 Aula 06)* | `assets/diagrams/diagrama-classes-dominio.png` ou Mermaid |
 | **5. Processos Técnicos** | **Diagrama de Sequência UML da Reserva de Assentos** | Diagrama | **Obrigatório** *(Slide 24 Aula 06)* | `assets/diagrams/diagrama-sequencia-reserva.png` ou Mermaid |
+| **5. Processos Técnicos** | **Diagrama de Casos de Uso UML (Atores e Ações)** | Diagrama | Recomendado | `assets/diagrams/diagrama-casos-de-uso.png` ou Mermaid |
+| **5. Processos Técnicos** | **Diagrama de Estados UML (Ciclo do Assento)** | Diagrama | Recomendado | `assets/diagrams/diagrama-estados-assento.png` ou Mermaid |
 | **5. Processos Técnicos** | **Diagrama de Modelo de Dados / DER (Banco de Dados)** | Diagrama | **Obrigatório** *(Slide 19 Aula 06)* | `assets/diagrams/diagrama-er-banco.png` ou Mermaid |
 | **5. Processos Técnicos** | Tabela de Catálogo de Requisitos (RF/RNF com IDs únicos) | Tabela | Obrigatório | Embutida no texto (`05-processos-tecnicos.md`) |
 | **5. Processos Técnicos** | Matriz de Rastreabilidade Ponta a Ponta | Tabela | Obrigatório | Embutida no texto (`05-processos-tecnicos.md`) |
@@ -80,9 +83,12 @@ A equipe pode usar esta página para acompanhar o status de produção e inserç
 - [ ] Print ou gráfico de métricas de acompanhamento (Lead time / Issues / Burndown)
 
 ### Capítulo 5 — Processos Técnicos (ISO 12207 §6.4)
-- [ ] **Diagrama 1 (Obrigatório):** C4 Model Nível 2 (Contêineres)
-- [ ] **Diagrama 2 (Obrigatório):** Sequência UML da reserva atômica (*SELECT FOR UPDATE*)
-- [ ] **Diagrama 3 (Obrigatório):** Modelo Entidade-Relacionamento (DER do PostgreSQL: salas, sessões, assentos, reservas, usuários) *(Aula 06 Slide 19)*
+- [ ] **Diagrama 1 (Obrigatório):** C4 Model Nível 2 (Contêineres da aplicação)
+- [ ] **Diagrama 2 (Obrigatório):** Diagrama de Classes UML (Modelo de Domínio: `User`, `Movie`, `Session`, `Reservation`, `Ticket`, etc.)
+- [ ] **Diagrama 3 (Obrigatório):** Sequência UML da reserva atômica (*SELECT FOR UPDATE*)
+- [ ] **Diagrama 4 (Recomendado):** Diagrama de Casos de Uso UML (Atores: Espectador, Atendente, Gerente)
+- [ ] **Diagrama 5 (Recomendado):** Diagrama de Estados UML (Máquina de estados da poltrona: `AVAILABLE`, `RESERVED`, `SOLD`)
+- [ ] **Diagrama 6 (Obrigatório):** Modelo Entidade-Relacionamento (DER do PostgreSQL) *(Aula 06 Slide 19)*
 - [x] Catálogo de Requisitos Funcionais e Não Funcionais com IDs únicos
 - [x] Matriz de Rastreabilidade Requisito $\to$ Código $\to$ Testes
 - [ ] **Print do Terminal de Testes:** Executar `npm test` no `cinedoom-app` e capturar a suíte 100% verde
