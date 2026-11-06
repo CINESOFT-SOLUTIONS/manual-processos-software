@@ -70,29 +70,6 @@ O contexto de uso abrange:
 5. **Portal do Cliente:** Consulta de sessões, autenticação com proteção de dados LGPD, mapa interativo de assentos com trava temporária, despacho de e-mail transacional, painel de reservas e cancelamento voluntário web.
 6. **Módulo de Ocupação:** Painel consolidado da taxa de lotação por sessão em tempo real.
 
-### Requisitos Funcionais do Sistema (RF-01 a RF-18)
-
-| Código | Nome do Requisito | Escopo no Ciclo de Vida |
-|---|---|---|
-| **RF-01** | Autenticar usuário por perfil (Gerente, Atendente e Cliente) | MVP (Must Have / NextAuth.js com RBAC) |
-| **RF-02** | Gerenciar usuários e operadores de guichê | MVP (Gestão de atendentes pelo gerente) |
-| **RF-03** | Cadastrar e gerenciar acervo de filmes | MVP (Must Have) |
-| **RF-04** | Cadastrar e gerenciar salas e layouts de assentos | MVP (Must Have) |
-| **RF-05** | Agendar e publicar sessões cinematográficas | MVP (Must Have) |
-| **RF-06** | Consultar disponibilidade de assentos com polling de 2s | MVP (Must Have / Core Visual) |
-| **RF-07** | Registrar venda de ingresso presencial com trava ACID | MVP (Must Have / SELECT FOR UPDATE) |
-| **RF-08** | Cancelar ingresso e liberar assento com auditoria imutável | MVP (Must Have / Trigger PostgreSQL) |
-| **RF-09** | Proteger dados pessoais de compradores conforme a LGPD | MVP (Must Have / HMAC-SHA256 + AES-256-GCM) |
-| **RF-10** | Monitorar indicadores e taxas de ocupação em tempo real | MVP (Must Have / Painel Gerencial) |
-| **RF-11** | Registrar trilha de auditoria e retenção legal (Axiom) | MVP (Must Have / Retenção 365 dias) |
-| **RF-12** | Consultar programação e sessões no Portal do Cliente | MVP (Must Have / Consulta Pública) |
-| **RF-13** | Reservar assento online com trava atômica temporária | MVP (Must Have / Status RESERVED) |
-| **RF-14** | Cadastrar e autenticar cliente com consentimento LGPD | MVP (Must Have / Área pessoal segura) |
-| **RF-15** | Despachar voucher de reserva via e-mail transacional | MVP (Must Have / NotificationService) |
-| **RF-16** | Cancelar reserva pelo próprio cliente via web | MVP (Must Have / Painel Minhas Reservas) |
-| **RF-17** | Localizar e dar baixa em reserva presencial no balcão | MVP (Must Have / Conversão em Ticket) |
-| **RF-18** | Expirar reservas não pagas a 1 hora do início da sessão | MVP (Must Have / Avaliação Just-in-Time) |
-
 ## 1.6 Restrições e premissas
 
 ### Restrições
