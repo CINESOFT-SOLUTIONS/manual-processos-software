@@ -505,8 +505,13 @@ Arquitetura Monólito Modular em Next.js 14 (App Router) organizada em Clean Arc
 5. **Camada de Acesso a Dados e Tenancy:** Prisma Client integrado ao Neon PostgreSQL com extensão de contexto para injeção global de filtro `WHERE tenant_id`.
 
 ### 5.2.2 Diagramas de design
+O design formal do sistema é documentado por meio do conjunto de modelos arquiteturais e diagramas UML/C4:
 - **Diagrama C4 Nível 2 (Contêineres):** Demonstra a integração entre o navegador do espectador (Portal do Cliente), o terminal do atendente (Bilheteria), a aplicação Next.js na Vercel, o serviço transacional de e-mails e o banco de dados Neon Serverless.
-- **Diagrama de Atividades (BPMN):** Mapeia o ciclo de vida completo da reserva de assentos: Solicitação no Portal $\to$ Trava `RESERVED` $\to$ Despacho de Voucher $\to$ [Bifurcação: Cancelamento pelo Cliente / Expiração a 1h / Comparecimento Físico com Baixa no Balcão].
+- **Diagrama de Classes UML (Modelo de Domínio):** Estrutura as classes de domínio (`User`, `Tenant`, `Movie`, `Room`, `Seat`, `Session`, `SessionSeat`, `Reservation`, `Ticket`), evidenciando atributos tipados, métodos operacionais e cardinalidades de associação.
+- **Diagrama de Sequência UML (Reserva Atômica e Baixa Presencial):** Ilustra a troca temporal de mensagens entre cliente, servidor Next.js e banco relacional com transação ACID (`SELECT FOR UPDATE`), disparo de voucher e confirmação no balcão.
+- **Diagrama de Casos de Uso UML:** Mapeia os atores do sistema (*Espectador*, *Atendente*, *Gerente*) e suas respectivas interações com as funcionalidades do sistema.
+- **Diagrama de Estados UML (Ciclo de Vida do Assento):** Mapeia a máquina de estados do assento na sessão: `AVAILABLE` $\to$ `RESERVED` (com expiração JIT) $\to$ `SOLD` (baixa presencial) ou reversão para `AVAILABLE` em caso de cancelamento.
+- **Diagrama Entidade-Relacionamento (DER / Modelo de Dados):** Especificação visual do esquema relacional de tabelas, chaves primárias/estrangeiras e índices do banco PostgreSQL.
 
 ### 5.2.3 Justificativa das escolhas tecnológicas
 A combinação de Next.js 14, Prisma ORM e Neon PostgreSQL viabiliza o desenvolvimento integral dos três módulos dentro do prazo de 21 dias por uma equipe de 4 desenvolvedores, assegurando conformidade ACID nativa e custo de infraestrutura zero no nível de entrada.
