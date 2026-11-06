@@ -10,7 +10,7 @@ O CineDoom é uma plataforma web integrada de gerenciamento operacional, bilhete
 2. **Módulo do Gerente (Back-office e Gestão):** Configuração de salas, catálogo de filmes, agendamento de sessões e acompanhamento de indicadores de ocupação em tempo real.
 3. **Portal do Cliente (Espectador Final Web):** Canal público e autenticado no qual o público consulta a programação, cadastra-se com proteção de dados LGPD, seleciona assentos no mapa interativo, solicita reservas com emissão de voucher transacional e gerencia suas reservas via web.
 
-O sistema é desenvolvido pela organização **CineSoft Solutions** e atua como estudo de caso estruturante para a aplicação formal dos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
+O sistema é desenvolvido pela organização (fictícia) **CineSoft Solutions** e atua como estudo de caso estruturante para a aplicação formal dos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
 
 ## 1.2 Qual é o software? O que ele faz? Qual problema resolve?
 
@@ -36,8 +36,9 @@ O CineDoom elimina esses problemas ao unificar o canal digital do cliente e a bi
 
 ## 1.3 Público-alvo e contexto de uso
 
-O público-alvo compreende:
-- **Cinemas independentes e redes regionais (B2B):** Estabelecimentos que demandam controle operacional confiável e centralizado com baixo custo inicial de implantação.
+O público-alvo:
+- **Rede de Cinemas: Cinedoom:** Uma rede de cinemas que demandam de um sistema que seja capaz de sustentar a demanda por sessões e grande volume de clientes.
+
 - **Público espectador (B2C mediado):** Clientes do cinema que utilizam o Portal do Cliente para consultar filmes, reservar seus assentos preferidos e gerenciar seus comprovantes antes de comparecer à sessão.
 
 O contexto de uso abrange:
