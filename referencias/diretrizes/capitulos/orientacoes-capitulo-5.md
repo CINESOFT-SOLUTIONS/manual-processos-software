@@ -1,60 +1,79 @@
 # Orientações para o Capítulo 5: Processos Técnicos
 
-Documento de diretrizes e requisitos para a elaboração do **Capítulo 5** do Manual de Processos de Software, baseado na **Seção 6.4 da ABNT NBR ISO/IEC/IEEE 12207:2021** e no material da **Aula 6**.
+Neste capítulo, a equipe documentará as práticas de engenharia de software aplicadas na construção do sistema: requisitos, arquitetura e design, implementação e integração, verificação e validação, até a transição, operação e descontinuação. A atividade é fundamentada na Seção 6.4 da ABNT NBR ISO/IEC/IEEE 12207:2021.
 
----
+# **5.1 Requisitos**
 
-## 5.1 Objetivo do Capítulo
+## 5.1.1 Documento de requisitos do sistema
+Listem formalmente os requisitos funcionais (RFs) e não funcionais (RNFs) do sistema com identificadores únicos (ex.: RF-01, RNF-01). Detalhem as regras de negócio associadas e restrições técnicas.
 
-Detalhar todas as atividades técnicas de engenharia do ciclo de vida: desde a elicitação de requisitos, modelagem de arquitetura e design, até a implementação, verificação, validação, transição, operação e manutenção do software.
+## 5.1.2 Rastreabilidade de requisitos
+Apresentem a matriz ou mecanismo de rastreabilidade garantindo que cada necessidade de negócio esteja vinculada a um requisito, a uma tarefa no quadro, ao código-fonte e ao caso de teste correspondente.
 
----
+## 5.1.3 Critérios de aceitação
+Definam os critérios objetivos que determinam quando cada requisito é considerado concluído e aceito pelos stakeholders (ex.: formato *Dado que... Quando... Então...* ou checklist de validação).
 
-## 5.2 Conteúdo Exigido na Atividade (Aula 6 - Slides 14, 24 e 41)
+## 5.1.4 Registro de stakeholders e necessidades elicitadas
+Identifiquem as partes interessadas do sistema e documentem as técnicas de elicitação empregadas (entrevistas, workshops, observação, prototipação) e as necessidades capturadas.
 
-Conforme a **Aula 6**, o capítulo reúne os seguintes blocos temáticos:
+# **5.2 Arquitetura e Design**
 
-### 5.1 Requisitos do Sistema e do Software (ISO 6.4.2 e 6.4.3)
-- **Documento de Requisitos do Sistema:**
-  - Requisitos Funcionais (RFs) completos e numerados (ex.: RF-01 a RF-18).
-  - Requisitos Não Funcionais (RNFs) de desempenho, segurança e usabilidade.
-  - Restrições técnicas e de negócio.
-- **Elicitação e Necessidades dos Stakeholders:**
-  - Registro dos stakeholders e técnicas de elicitação aplicadas (entrevistas, análise de domínio, prototipação).
-- **Rastreabilidade e Critérios de Aceitação:**
-  - Matriz vinculando necessidades de negócio ➡️ requisitos ➡️ casos de teste.
-  - Critérios de aceitação objetivos para cada funcionalidade.
+## 5.2.1 Documento de arquitetura do sistema
+Descrevam a visão geral da arquitetura do software, os principais componentes, módulos e interfaces externas. Vinculem com as decisões arquiteturais (ADRs) que fundamentaram a escolha.
 
-### 5.2 Arquitetura e Design de Software (ISO 6.4.4 e 6.4.5)
-- **Visão Geral da Arquitetura:**
-  - Padrão arquitetural adotado (ex.: Monólito Modular em Next.js com App Router e Route Handlers).
-  - Diagramas arquiteturais (C4 Model: Nível 1 - Contexto, Nível 2 - Contêineres, Nível 3 - Componentes).
-- **Design Detalhado:**
-  - Modelo de dados relacional e diagramas entidade-relacionamento (ERD).
-  - Especificação das interfaces de API e contratos de comunicação (RESTful JSON).
-- **Justificativas Tecnológicas:** Racional da escolha do stack (Next.js, Tailwind, Prisma, PostgreSQL).
+## 5.2.2 Diagramas de design
+Apresentem pelo menos **2 diagramas formais de design** (ex.: C4 Model Nível 1/2/3, diagramas de componentes UML, diagramas de sequência ou diagramas de entidade-relacionamento). Cada diagrama deve vir acompanhado de texto explicativo sobre o fluxo representado.
 
-### 5.3 Implementação e Integração de Software (ISO 6.4.7 e 6.4.8)
-- **Padrões de Codificação:** Guia de estilo, tipagem estrita com TypeScript, nomenclatura e convenções de commit.
-- **Rastreabilidade Código-Requisito:** Padrão de vinculação de branches, commits e PRs aos IDs de requisitos (`feat: RF-07 - seleção de assentos`).
-- **Plano de Integração:** Estratégia de integração contínua (CI) e esteira de automação.
+## 5.2.3 Justificativa das escolhas tecnológicas
+Justifiquem o stack de tecnologias adotado para frontend, backend, persistência, bibliotecas e serviços de infraestrutura, destacando benefícios de desempenho, manutenibilidade e produtividade.
 
-### 5.4 Verificação e Validação - V&V (ISO 6.4.11 e 6.4.12)
-- **Diferenciação Conceitual:**
-  - *Verificação ("Estamos construindo o produto corretamente?"):* Análise estática, linting, testes unitários automatizados.
-  - *Validação ("Estamos construindo o produto certo?"):* Testes de aceitação com usuários/stakeholders, fluxos fim a fim (E2E).
-- **Plano e Relatório de Testes:** Casos de teste prioritários, cobertura e evidências de execução.
+# **5.3 Implementação e Integração**
 
-### 5.5 Transição, Operação, Manutenção e Descontinuação (ISO 6.4.13 a 6.4.16)
-- **Transição:** Procedimento de implantação/deploy automatizado na Vercel e migrations de banco no Neon.
-- **Operação e Monitoramento:** Monitoramento de saúde, logging e rastreio de erros.
-- **Manutenção:** Política para tratamento de bugs críticos (hotfixes) e melhorias evolutivas.
-- **Descontinuação:** Procedimentos previstos para migração segura de dados e encerramento responsável de serviços.
+## 5.3.1 Padrões de codificação adotados
+Apresentem as diretrizes de código seguidas pelo time: convenções de nomenclatura, estruturação de pastas, padrões de tipagem estrita (TypeScript), regras de linter (ESLint) e formatação (Prettier).
 
----
+## 5.3.2 Plano de integração entre componentes
+Descrevam a estratégia de integração contínua (CI): esteira automatizada de build, validação de tipos e execução de testes a cada Pull Request.
 
-## 5.3 Critérios de Qualidade da Professora
+## 5.3.3 Registro de testes unitários e de integração
+Documentem a suíte de testes automatizados da aplicação: ferramentas utilizadas (ex.: Vitest), escopo testado (funções críticas, regras de negócio) e evidências de execução da suíte de testes.
 
-> **📌 Referência:** Seção 6.4 da ISO 12207:2017  
-> **⚠️ Atenção:** Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao seu projeto real. Qualidade > quantidade.
+## 5.3.4 Rastreabilidade entre código e requisitos
+Mostrem como commits, branches e Pull Requests referenciam explicitamente os identificadores de requisitos (ex.: `feat: RF-03 - seleção de assentos em tempo real`).
 
+# **5.4 Verificação, Validação e Transição**
+
+## 5.4.1 Plano de verificação e validação
+Diferenciem claramente as ações de **verificação** (*"Estamos construindo o produto corretamente?"* — análise de código, testes unitários) das ações de **validação** (*"Estamos construindo o produto certo?"* — testes de aceitação e homologação com stakeholders).
+
+| Critério de Comparação | Verificação | Validação |
+| :--- | :--- | :--- |
+| **Pergunta Central** | *"Estamos construindo o produto corretamente?"* | *"Estamos construindo o produto certo?"* |
+| **Foco** | Conformidade com especificações e requisitos definidos | Adequação ao uso pretendido pelo stakeholder |
+| **Quando Ocorre** | Em cada fase do ciclo de vida (contínua) | Ao final de fases ou do projeto |
+| **Quem Realiza** | Equipe técnica interna | Stakeholders e usuários reais |
+| **Exemplos** | Revisão de código, análise estática, testes unitários | Testes de aceitação, demonstrações, pilotos |
+
+## 5.4.2 Critérios de aceitação por stakeholder
+Definam as condições formais de aprovação das entregas para cada perfil de stakeholder do projeto.
+
+## 5.4.3 Relatório de testes de aceitação
+Apresentem o registro dos testes de homologação/aceitação realizados, com status de aprovação de cada cenário testado.
+
+## 5.4.4 Plano de transição/implantação do sistema
+Detalhem os procedimentos para transição do software para o ambiente de produção: automação de deploy, execução de migrações de banco de dados e validação pós-implantação (smoke test).
+
+# **5.5 Operação, Manutenção e Descontinuação**
+
+## 5.5.1 Procedimentos de operação e monitoramento
+Descrevam a rotina de operação do sistema em produção: suporte a usuários, monitoramento de desempenho e coleta de logs de erros.
+
+## 5.5.2 Plano de manutenção
+Apresentem a estratégia para as modalidades de manutenção: corretiva (correção de defeitos), adaptativa (mudanças no ambiente), perfectiva (melhorias) e preventiva (refatoração e segurança).
+
+## 5.5.3 Estratégia de descontinuação e migração de dados
+Descrevam o plano para eventual encerramento responsável do ciclo de vida do produto: arquivamento de dados com conformidade à LGPD, desativação de infraestrutura e notificação de usuários.
+
+# **Critérios de avaliação**
+
+Apresentem as seções 5.1 a 5.5 no Manual de Processos de Software. A avaliação considerará a rastreabilidade ponta a ponta dos requisitos, o rigor dos diagramas de arquitetura, a robustez dos testes de V&V e a completude das práticas do ciclo de vida técnico.

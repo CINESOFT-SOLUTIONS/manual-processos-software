@@ -1,55 +1,46 @@
-# Orientações para o Capítulo 3: Processos Organizacionais Habilitadores de Projeto
+# Orientações para o Capítulo 3: Processos Organizacionais Habilitadores
 
-Documento de diretrizes e requisitos para a elaboração do **Capítulo 3** do Manual de Processos de Software, baseado na **Seção 6.2 da ABNT NBR ISO/IEC/IEEE 12207:2021** e no material das **Aulas 3 e 4**.
+Neste capítulo, a equipe definirá os processos de nível organizacional que sustentam os projetos da empresa: ciclo de vida, infraestrutura, estratégia de portfólio, competências humanas, qualidade e gestão do conhecimento. A atividade é fundamentada na Seção 6.2 da ABNT NBR ISO/IEC/IEEE 12207:2021.
 
----
+# **3.1 Modelo de ciclo de vida adotado e justificado**
 
-## 3.1 Objetivo do Capítulo
+Definam o modelo de ciclo de vida adotado pela equipe (ex.: iterativo e incremental, Scrum adaptado, Kanban). Expliquem as fases, as cerimônias ou iterações previstas e justifiquem a escolha com base na natureza do software e nos prazos do projeto.
 
-Estabelecer os processos em nível organizacional que fornecem a infraestrutura, as políticas de ciclo de vida, as competências humanas, a governança de portfólio, a qualidade e a gestão de conhecimento para que o projeto atenda às necessidades de todos os stakeholders.
+# **3.2 Inventário de infraestrutura e ferramentas necessárias**
 
----
+Apresentem o inventário completo da infraestrutura tecnológica e das ferramentas que viabilizam o desenvolvimento, a automação e a execução do software:
 
-## 3.2 Conteúdo Exigido na Atividade (Aulas 3 e 4)
+| Categoria | Ferramenta / Infraestrutura | Finalidade no Projeto |
+| :--- | :--- | :--- |
+| Gestão e Código | [Ex: GitHub] | [Controle de versão, issues, PRs] |
+| CI/CD e Automação | [Ex: GitHub Actions] | [Pipeline de testes e deploy contínuo] |
+| Hospedagem e Computação | [Ex: Vercel Serverless] | [Ambiente de execução e edge delivery] |
+| Banco de Dados | [Ex: Neon PostgreSQL] | [Persistência relacional gerenciada] |
+| Design e Prototipação | [Ex: Figma] | [Prototipação de telas e design system] |
+| Testes e Qualidade | [Ex: Vitest / ESLint] | [Execução de testes unitários e linter] |
 
-Conforme os slides de fechamento da **Aula 3-4 (Slide 33)** e a estrutura mínima, a equipe deve documentar os 6 processos organizacionais:
+# **3.3 Justificativa estratégica e viabilidade do projeto**
 
-### 3.1 Modelo de Ciclo de Vida Adotado e Justificado (ISO 6.2.1)
-- Identificar o modelo de processo escolhido (ex.: *Scrum adaptado, Sprints de 1 semana, abordagem iterativa e incremental*).
-- Justificar a escolha com base nas características do produto, incertezas e prazo da disciplina.
+Expliquem o alinhamento do software com a estratégia da organização desenvolvedora. Apresentem a análise de viabilidade técnica, econômica e operacional do projeto, demonstrando por que o investimento faz sentido para o portfólio da equipe.
 
-### 3.2 Inventário de Infraestrutura e Ferramentas Necessárias (ISO 6.2.2)
-- Mapear a infraestrutura de desenvolvimento, homologação e produção:
-  - Repositórios e esteira: GitHub, GitHub Actions.
-  - Hospedagem e computação: Vercel Serverless.
-  - Banco de dados gerenciado: Neon Serverless PostgreSQL.
-  - Ferramentas de design e prototipação: Figma.
-  - Ambientes de teste e métricas: Vitest, Node.js.
+# **3.4 Papéis, competências e plano de capacitação (RACI)**
 
-### 3.3 Justificativa Estratégica e Viabilidade do Projeto (Portfólio - ISO 6.2.3)
-- Análise de viabilidade do projeto: alinhamento com a estratégia da organização CineSoft Solutions e critérios de priorização do investimento.
+Identifiquem a composição da equipe, as competências requeridas para cada tecnologia do stack e a atribuição de responsabilidades. Apresentem a matriz RACI relacionando membros e principais macroatividades do projeto:
 
-### 3.4 Papéis, Competências e Plano de Capacitação / Matriz RACI (Recursos Humanos - ISO 6.2.4)
-- Mapeamento das competências técnicas necessárias (Next.js 15, Prisma ORM, Tailwind CSS, TypeScript, ISO 12207).
-- Matriz RACI relacionando membros da equipe e principais entregáveis/processos.
-- Plano de capacitação para suprir eventuais lacunas da equipe.
+| Macroatividade / Entregável | [Membro 1] | [Membro 2] | [Membro 3] | [Membro 4] |
+| :--- | :---: | :---: | :---: | :---: |
+| [Atividade ou Processo] | [R / A / C / I] | [R / A / C / I] | [R / A / C / I] | [R / A / C / I] |
 
-### 3.5 Plano de Qualidade com Critérios e Métricas (ISO 6.2.5)
-- Políticas de garantia da qualidade organizacional:
-  - Padrões de código (ESLint, Prettier).
-  - Cobertura de testes unitários e de integração.
-  - Política rigorosa de code review (aprovação de PRs).
+Descrevam o plano de capacitação para suprir eventuais lacunas técnicas identificadas na equipe.
 
-### 3.6 Estratégia de Gestão do Conhecimento (ISO 6.2.6)
-- Como a organização documenta e preserva o conhecimento técnico:
-  - Uso de ADRs (Architecture Decision Records) para decisões técnicas irreversíveis.
-  - Wikis, documentação em Markdown no próprio repositório (`manual/`, `specs/`).
-  - Histórico de lições aprendidas e revisões de sprint.
+# **3.5 Plano de qualidade com critérios e métricas**
 
----
+Definam os critérios e as métricas de qualidade adotados no nível organizacional: padrões de codificação, cobertura mínima de testes, critérios de aprovação de código (code review) e políticas de estabilidade antes do deploy em produção.
 
-## 3.3 Critérios de Qualidade da Professora
+# **3.6 Estratégia de gestão do conhecimento**
 
-> **📌 Referência:** Seção 6.2 da ISO 12207:2017  
-> **⚠️ Atenção:** Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao seu projeto real. Qualidade > quantidade.
+Expliquem como a equipe registra, preserva e dissemina o conhecimento técnico e de negócio. Detalhem a política de documentação arquitetural (ADRs), lições aprendidas e documentação em repositório.
 
+# **Critérios de avaliação**
+
+Apresentem as seções 3.1 a 3.6 no Manual de Processos de Software. A avaliação considerará a consistência da justificativa do ciclo de vida, a completude do inventário, a coerência da matriz RACI e o rigor das políticas de qualidade e conhecimento.

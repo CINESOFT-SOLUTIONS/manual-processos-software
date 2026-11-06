@@ -1,34 +1,33 @@
-# Orientações para o Capítulo 1: Apresentação do Software e da Organização
+# Orientações para o Capítulo 1: Apresentação do software
 
-Documento de diretrizes e requisitos para a elaboração do **Capítulo 1** do Manual de Processos de Software, conforme o escopo da disciplina e a estrutura mínima exigida.
+Neste capítulo, a equipe apresentará o sistema de software desenvolvido e a organização responsável. A atividade reúne a contextualização do negócio, a caracterização dos usuários e a definição de escopo, premissas e limitações.
 
----
+# **1.1 Nome e descrição do software**
 
-## 1.1 Objetivo do Capítulo
+Definam o nome oficial da organização desenvolvedora e o nome do produto de software. Expliquem, de forma concisa, qual é a identidade da equipe e como o produto se posiciona.
 
-Apresentar a organização desenvolvedora, o contexto de negócio e a visão geral da solução de software a ser desenvolvida e mantida pela equipe ao longo do projeto integrador.
+Qual é o software? O que ele faz? Qual problema resolve?
 
----
+Descrevam o problema prático ou oportunidade de mercado que motivou a criação do sistema. Expliquem a proposta de valor da solução e de que maneira ela resolve as dores identificadas.
 
-## 1.2 Conteúdo Exigido (Subseções Obrigatórias)
+# **1.2 Público-alvo e contexto de uso**
 
-### 1.1 Apresentação da Organização
-- **Nome da organização/equipe:** Identificação corporativa oficial (ex.: *CineSoft Solutions*).
-- **Missão e Visão:** O propósito da organização no setor de atuação.
-- **Estrutura da equipe:** Membros da equipe, papéis e responsabilidades na governança do projeto.
+Quem vai usar? Em que situação? Qual o ambiente de operação esperado?
 
-### 1.2 Apresentação do Software
-- **Nome da solução:** Identificação do produto (ex.: *CineDoom — Plataforma SaaS de Gestão e Totem de Autoatendimento para Cinemas*).
-- **Problema de negócio e oportunidade:** Qual dor do mercado a solução ataca (ex.: filas em bilheterias, concorrência desordenada por assentos, conformidade com a meia-entrada legal e LGPD).
-- **Público-alvo e Usuários:** Quem interage com o sistema (espectadores, operadores de bilheteria/totem, gerentes de cinema e administradores da rede).
+Mapeiem os perfis de usuários que interagem com o sistema (diretos e indiretos). Detalhem o cenário de uso típico e o ambiente operacional em que o software é executado (dispositivos, navegadores, totens, retaguarda).
 
-### 1.3 Visão Geral das Funcionalidades
-- **Módulos do sistema:** Visão de alto nível das principais capacidades da plataforma (Catálogo e Programação de Sessões, Mapa Interativo de Assentos, Venda de Ingressos, Gestão de Meia-Entrada, Totem de Autoatendimento e Painel Administrativo).
-- **Premissas e Restrições Globais:** Limitações tecnológicas, regulatórias (Lei da Meia-Entrada, LGPD) ou orçamentárias que impactam o projeto.
+# **1.3 Escopo e principais funcionalidades**
 
----
+O que está dentro do escopo? Quais são as funcionalidades centrais do sistema?
 
-## 1.3 Critérios de Qualidade da Professora
+Apresentem os módulos e as capacidades essenciais da solução. Destaquem o que compõe o núcleo funcional do produto entregue pela equipe e o que está expressamente fora do escopo imediato.
 
-> **⚠️ Atenção:** Qualidade > quantidade. As descrições devem ser consistentes, sem textos genéricos, e diretamente aplicadas ao projeto real da equipe.
+# **1.4 Restrições e premissas**
 
+Quais são as limitações conhecidas? Quais premissas a equipe está assumindo?
+
+Identifiquem os fatores limitantes de ordem técnica, legal, regulatória ou operacional que condicionam o projeto. Listem as premissas adotadas pela equipe para viabilizar o desenvolvimento.
+
+# **Critérios de avaliação**
+
+Apresentem as seções 1.1 a 1.4 no Manual de Processos de Software. A avaliação considerará a clareza da proposta de valor, a consistência dos perfis de usuário, o alinhamento do escopo com o produto real e a precisão das restrições e premissas mapeadas.
