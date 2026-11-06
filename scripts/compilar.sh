@@ -146,7 +146,7 @@ fi
 ensure_tectonic || true
 
 # Etapa 1: Compilação do Manual ABNT LaTeX
-if [ -f "$ROOT_DIR/manual/manual/latex-processos-software.tex" ]; then
+if [ -f "$ROOT_DIR/manual/latex/manual-processos-software.tex" ]; then
     compile_document "$ROOT_DIR/manual/latex" "manual-processos-software.tex" "${BG_BLUE} LATEX ${RESET}"
 fi
 
@@ -156,4 +156,4 @@ ELAPSED=$((END_TIME - START_TIME))
 printf "${BG_GREEN} SUCCESS ${RESET} ${GREEN}${BOLD}Build completed in %ss${RESET}\n\n" "$ELAPSED"
 printf "${BOLD}Artifacts:${RESET}\n"
 printf "  ${CYAN}•${RESET} manual/manual-processos-software.md ${DIM}(Markdown)${RESET}\n"
-[ -f "$ROOT_DIR/manual/manual/latex-processos-software.pdf" ] && printf "  ${CYAN}•${RESET} manual/manual/latex-processos-software.pdf ${DIM}(ABNT NBR 14724)${RESET}\n\n"
+[ -f "$ROOT_DIR/manual/latex/manual-processos-software.pdf" ] && printf "  ${CYAN}•${RESET} manual/latex/manual-processos-software.pdf ${DIM}(ABNT NBR 14724)${RESET}\n\n"

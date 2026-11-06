@@ -1,4 +1,4 @@
-name: Compilar Documentos (LaTeX & Beamer)
+name: Compilar Documentos (LaTeX & Markdown)
 
 on:
   push:
@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   compilar-pdfs:
-    name: Compilação de Artefatos ABNT e Slides
+    name: Compilação de Artefatos ABNT e Markdown
     runs-on: ubuntu-latest
 
     steps:
@@ -33,8 +33,8 @@ jobs:
 
       - name: Validar geração dos artefatos
         run: |
+          test -f manual/manual-processos-software.md || (echo "[error] manual-processos-software.md was not generated." && exit 1)
           test -f manual/latex/manual-processos-software.pdf || (echo "[error] manual-processos-software.pdf was not generated." && exit 1)
-          test -f manual/latex/apresentacao-manual.pdf || (echo "[error] apresentacao-manual.pdf was not generated." && exit 1)
           echo "[ci:ok] All document artifacts verified successfully."
 
       - name: Upload dos PDFs como Artefatos da Execução
@@ -43,7 +43,7 @@ jobs:
           name: cinedoom-documentos-pdf
           path: |
             manual/latex/manual-processos-software.pdf
-            manual/latex/apresentacao-manual.pdf
+            manual/manual-processos-software.md
           retention-days: 30
 
       - name: Publicar Release no GitHub (Apenas em Tags)
@@ -52,7 +52,7 @@ jobs:
         with:
           files: |
             manual/latex/manual-processos-software.pdf
-            manual/latex/apresentacao-manual.pdf
+            manual/manual-processos-software.md
           generate_release_notes: true
           draft: false
           prerelease: false
