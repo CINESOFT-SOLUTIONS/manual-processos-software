@@ -80,15 +80,17 @@ Para cumprir as exigências formais da Seção 6.4 da ISO 12207 e as diretrizes 
 - **Diagramas Formais de Design (Mínimo de 2 Obrigatórios na Seção 5.2.2):**
   - `assets/diagrams/c4-containers.png` (ou bloco Mermaid): **Diagrama C4 Nível 2 (Contêineres)** representando a integração entre Frontend (Next.js/React), Backend Serverless, Banco de Dados (Neon PostgreSQL), APIs de terceiros e navegadores dos clientes/atendentes.
   - `assets/diagrams/diagrama-sequencia-reserva.png` (ou bloco Mermaid): **Diagrama de Sequência UML ou Atividades BPMN** ilustrando a regra de reserva atômica de assentos (*SELECT FOR UPDATE*), disparo de vouchers e cancelamento.
-  - *(Opcional / Recomendado)*: `assets/diagrams/diagrama-er-banco.png`: Modelo Entidade-Relacionamento do banco de dados relacional.
+  - `assets/diagrams/diagrama-er-banco.png` (ou bloco Mermaid): **Modelo de Dados / DER (Diagrama Entidade-Relacionamento)** com tabelas, chaves primárias/estrangeiras e cardinalidades do banco de dados (Slide 19 da Aula 06).
 - **Prints e Screenshots Reais do Projeto (salvos em `assets/prints/`):**
   - `print-testes-unitarios-vitest.png`: Screenshot do terminal executando `npm test` / `vitest` com a suíte de testes passando 100% em verde e exibindo as taxas de cobertura.
   - `print-pipeline-ci-cd.png`: Screenshot da esteira de CI/CD no GitHub Actions executando com sucesso (Lint + Typecheck + Testes + Build).
-- **Tabelas Estruturadas Obrigatórias:**
+- **Tabelas e Procedimentos Obrigatórios:**
   - Tabela 1: *Catálogo de Requisitos Funcionais e Não Funcionais* (com IDs únicos RF-XX e RNF-XX).
   - Tabela 2: *Matriz de Rastreabilidade Ponta a Ponta* (Requisito $\leftrightarrow$ Caso de Uso $\leftrightarrow$ Código $\leftrightarrow$ Teste Unitário).
-  - Tabela 3: *Quadro Comparativo de Verificação vs. Validação*.
-  - Tabela 4: *Registro de Testes de Aceitação* (Cenários, Critérios e Status de Homologação com Stakeholders).
+  - Tabela 3: *Quadro Comparativo de Verificação vs. Validação* (Slide 33 da Aula 06).
+  - Tabela 4: *Critérios de Entrada e Saída de V&V (Entry / Exit Criteria)* (Slide 37 da Aula 06).
+  - Tabela 5: *Registro de Testes de Aceitação* (Cenários, Critérios e Status de Homologação com Stakeholders).
+  - Procedimento: *Procedimento de Rollback e Critérios de Implantação* (Slide 31 e 36 da Aula 06).
 
 # **Critérios de avaliação**
 

@@ -46,13 +46,16 @@ Definam os indicadores objetivos que a equipe observará para acompanhar o desem
 # **Artefatos e Assets Visuais Obrigatórios e Recomendados**
 
 Para cumprir as diretrizes da aula e da Seção 6.3 da ISO 12207, a equipe deve incluir:
-- **Prints / Screenshots Obrigatórios de Execução** (salvos em `assets/prints/`):
+- **Diagramas e Prints Obrigatórios de Execução** (salvos em `assets/prints/` e `assets/diagrams/`):
+  - `eap-projeto-3-niveis.png` (ou bloco Mermaid): **EAP / WBS (Estrutura Analítica do Projeto) com pelo menos 3 níveis** (nível 1: CineDoom; nível 2: macrofases/módulos; nível 3: entregáveis/pacotes de trabalho), conforme exigido no Slide 08 da Aula 05.
   - `print-kanban-board.png`: **Screenshot real do quadro Kanban / GitHub Projects** do projeto, mostrando as colunas de fluxo (*Product Backlog*, *Sprint Backlog*, *In Progress*, *Code Review*, *Done*), evidenciando tarefas com responsáveis e prazos atribuídos.
   - `print-fluxo-git-branches.png` ou bloco Mermaid: Visualização gráfica da estratégia de branches (`main` protegida, branches de feature `feat/`, tags SemVer).
   - `print-metricas-projeto.png`: Gráfico ou dashboard de métricas (ex.: gráfico de throughput/issues fechadas do GitHub Insights ou relatório de cobertura de testes).
 - **Tabelas e Artefatos Estruturados Obrigatórios:**
-  - Tabela 1: *Risk Register* (Riscos identificados, Probabilidade, Impacto, Prioridade e Resposta/Mitigação).
+  - Tabela 1: *Risk Register* ($\ge 5$ riscos mapeados por Probabilidade, Impacto, Prioridade e Resposta/Mitigação para os 3 críticos, conforme Slide 13 da Aula 05).
   - Tabela 2: *Cronograma de Entregas e Marcos (Milestones)*.
+  - Tabela 3: *Matriz de Decisão Ponderada (Pugh Matrix)* com $\ge 3$ alternativas e $\ge 4$ critérios com pesos para respaldar a decisão arquitetural principal (Slide 13 da Aula 05).
+  - Fichas de *Architecture Decision Records (ADRs)* estruturadas (Status, Contexto, Alternativas, Decisão e Consequências).
   - Fichas de *Architecture Decision Records (ADRs)* estruturadas (Status, Contexto, Alternativas, Decisão e Consequências).
 
 # **Critérios de avaliação**
