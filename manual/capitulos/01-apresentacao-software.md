@@ -83,7 +83,7 @@ A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes e
 
 A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atendente para a venda direta de ingressos e a baixa de reservas originadas no portal.
 
-![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](manual-processos-software\assets\prints\print-portal-cliente.png)
+![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](../assets/prints/print-bilheteria-atendente.png)
 
 *Figura 2 – Bilheteria presencial: mapa de assentos, venda direta e baixa de reservas pelo atendente.*
 
