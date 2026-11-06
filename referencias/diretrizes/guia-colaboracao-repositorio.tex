@@ -1,0 +1,281 @@
+\documentclass[11pt,a4paper]{article}
+
+% =========================================================================
+% PACOTES E CONFIGURAÇÕES VISUAIS
+% =========================================================================
+\usepackage[
+  a4paper,
+  left=2cm,
+  right=2cm,
+  top=2.2cm,
+  bottom=2.2cm,
+  headheight=15pt,
+  headsep=0.8cm
+]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{graphicx}
+\graphicspath{{../../assets/}{assets/}{../../assets/logos/}{assets/logos/}}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage{hyperref}
+
+% --- Cores do Design System CineSoft ---
+\definecolor{cinzaEscuro}{HTML}{111827}
+\definecolor{cinzaMedio}{HTML}{374151}
+\definecolor{cinzaClaro}{HTML}{F3F4F6}
+\definecolor{azulCine}{HTML}{1D4ED8}
+\definecolor{azulClaro}{HTML}{EFF6FF}
+\definecolor{vermelhoCine}{HTML}{BE123C}
+\definecolor{vermelhoClaro}{HTML}{FFF1F2}
+\definecolor{verdeCine}{HTML}{047857}
+\definecolor{verdeClaro}{HTML}{ECFDF5}
+\definecolor{douradoCine}{HTML}{B45309}
+\definecolor{douradoClaro}{HTML}{FFFBEB}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=azulCine,
+  urlcolor=azulCine,
+  citecolor=azulCine
+}
+
+% --- Cabeçalhos e Rodapés ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textbf{\color{cinzaMedio}CineSoft Solutions} $\cdot$ CineDoom}
+\fancyhead[R]{\small\color{cinzaMedio}Guia Prático de Colaboração do Repositório}
+\fancyfoot[L]{\small\color{cinzaMedio}Manual de Processos de Software (ISO 12207 / MPS.BR)}
+\fancyfoot[R]{\small\bfseries\color{cinzaEscuro}\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+% --- Caixas Estilizadas (tcolorbox) ---
+\newtcolorbox{alertaCritico}[1][]{
+  colback=vermelhoClaro,
+  colframe=vermelhoCine,
+  coltitle=vermelhoCine,
+  fonttitle=\bfseries,
+  title=ATENÇÃO CRÍTICA (REGRA DE OURO),
+  sharp corners,
+  boxrule=1pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  #1
+}
+
+\newtcolorbox{dicaPratica}[1][]{
+  colback=verdeClaro,
+  colframe=verdeCine,
+  coltitle=verdeCine,
+  fonttitle=\bfseries,
+  title=DICA PRÁTICA PARA A EQUIPE,
+  sharp corners,
+  boxrule=1pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  #1
+}
+
+\newtcolorbox{caixaInfo}[2][]{
+  colback=azulClaro,
+  colframe=azulCine,
+  coltitle=azulCine,
+  fonttitle=\bfseries,
+  title=#2,
+  sharp corners,
+  boxrule=1pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  #1
+}
+
+\setlist{itemsep=3pt, topsep=4pt, parsep=0pt}
+\setlength{\parskip}{5pt}
+\setlength{\parindent}{0pt}
+
+% =========================================================================
+% INÍCIO DO DOCUMENTO
+% =========================================================================
+\begin{document}
+
+% --- CABEÇALHO COM LOGOTIPOS ---
+\begin{center}
+  \includegraphics[height=1.3cm]{cinesoft-logo-horizontal-color.png}
+  \hspace{1.5cm}
+  \includegraphics[height=1.3cm]{cinedoom-logo-horizontal-color.png}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{center}
+  {\LARGE \textbf{\color{cinzaEscuro}Guia de Colaboração no Repositório de Documentação}}\\[0.2cm]
+  {\large \color{azulCine}\textbf{Manual de Processos de Software $\cdot$ CineDoom}}\\[0.1cm]
+  {\small \color{cinzaMedio}Alinhado às normas ABNT NBR ISO/IEC/IEEE 12207:2021 e Modelo MPS.BR:2024}
+\end{center}
+
+\vspace{0.3cm}
+\hrule height 1pt
+\vspace{0.4cm}
+
+% =========================================================================
+\section{1. Objetivo Deste Guia}
+% =========================================================================
+Este documento foi elaborado para garantir que todos os membros da equipe **CineSoft Solutions** compreendam rapidamente:
+\begin{itemize}
+  \item Como o repositório de documentação está organizado;
+  \item \textbf{Onde e como} cada pessoa deve escrever e atualizar o Manual de Processos;
+  \item O que \textbf{NUNCA} deve ser feito diretamente para evitar sobrescrita de trabalho;
+  \item Quais são as \textbf{evidências e artefatos visuais obrigatórios} cobrados pela professora e pela banca;
+  \item Como compilar o documento final e manter paridade total de 100\% com a avaliação.
+\end{itemize}
+
+% =========================================================================
+\section{2. Anatomia do Repositório (O que fica onde)}
+% =========================================================================
+O repositório foi reestruturado de forma modular e conceitual:
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=1.2cm and 1.8cm,
+  box/.style={rectangle, draw=cinzaMedio, fill=cinzaClaro, rounded corners=3pt, text=cinzaEscuro, font=\small\bfseries, align=center, inner sep=6pt, line width=0.8pt},
+  destaque/.style={rectangle, draw=azulCine, fill=azulClaro, rounded corners=3pt, text=azulCine, font=\small\bfseries, align=center, inner sep=6pt, line width=1pt},
+  scriptBox/.style={rectangle, draw=douradoCine, fill=douradoClaro, rounded corners=3pt, text=douradoCine, font=\small\bfseries, align=center, inner sep=6pt, line width=1pt},
+  outBox/.style={rectangle, draw=verdeCine, fill=verdeClaro, rounded corners=3pt, text=verdeCine, font=\small\bfseries, align=center, inner sep=6pt, line width=1pt},
+  arrow/.style={->, >=stealth, thick, color=cinzaMedio}
+]
+
+  % Nós principais
+  \node[destaque] (capitulos) {manual/capitulos/\\ \footnotesize (00 a 06-*.md)\\ \tiny \color{cinzaMedio}VOCÊ EDITA AQUI};
+  \node[scriptBox, right=of capitulos] (script) {scripts/montar-manual.sh\\ \footnotesize (Script de automação)\\ \tiny \color{cinzaMedio}JUNTA OS MÓDULOS};
+  \node[outBox, right=of script] (manualFinal) {manual/manual-processos-software.md\\ \footnotesize (Manual Consolidado)\\ \tiny \color{vermelhoCine}NÃO EDITAR DIRETO};
+
+  \node[box, below=1.0cm of capitulos] (diretrizes) {referencias/diretrizes/\\ \footnotesize orientações por capítulo e\\ \footnotesize mapa de artefatos (50 itens)};
+  \node[box, below=1.0cm of script] (assets) {assets/prints/ \& diagrams/\\ \footnotesize imagens, telas reais,\\ \footnotesize 9 diagramas e evidências};
+
+  % Conexões
+  \draw[arrow] (capitulos) -- node[above, font=\tiny\bfseries] {Lê arquivos} (script);
+  \draw[arrow] (script) -- node[above, font=\tiny\bfseries] {Compila em} (manualFinal);
+  \draw[arrow, dashed] (diretrizes) -- node[left, font=\tiny] {Orienta} (capitulos);
+  \draw[arrow, dashed] (assets) -- node[left, font=\tiny] {Embarca em} (capitulos);
+
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.2cm}
+
+\begin{table}[h!]
+\small
+\centering
+\begin{tabularx}{\textwidth}{p{3.8cm} p{3.2cm} X}
+\toprule
+\textbf{Diretório} & \textbf{Finalidade} & \textbf{O que você encontra lá?} \\
+\midrule
+\texttt{manual/capitulos/} & \textbf{Edição ativa dos capítulos} & Arquivos individuais \texttt{00-identificacao.md} até \texttt{06-avaliacao-melhoria.md}. \textbf{É AQUI que você escreve!} \\
+\midrule
+\texttt{manual/} & Manual montado e LaTeX & Contém o manual compilado (\texttt{manual-processos-software.md}) e a estrutura de compilação LaTeX (\texttt{latex/}). \\
+\midrule
+\texttt{referencias/diretrizes/} & \textbf{Regras da professora} & A estrutura mínima exigida, o mapa de artefatos e a pasta \texttt{capitulos/} com as diretrizes específicas de cada capítulo. \\
+\midrule
+\texttt{referencias/aulas/} & Material didático & Slides de aula em PDF e Markdown transcrito (\texttt{aula-02} a \texttt{aula-07}). \\
+\midrule
+\texttt{referencias/normas/} & Normas canônicas & Cópia de consulta da ISO/IEC/IEEE 12207:2021. \\
+\midrule
+\texttt{assets/} & \textbf{Ativos e Evidências} & Pastas \texttt{logos/}, \texttt{diagrams/} e \texttt{prints/} com imagens e screenshots. \\
+\midrule
+\texttt{specs/adrs/} & Decisões Técnicas & Fichas formais de Arquitetura (ADR-001 a ADR-012). \\
+\midrule
+\texttt{scripts/} & Automação & Script \texttt{montar-manual.sh} que junta os capítulos automaticamente. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% =========================================================================
+\section{3. Fluxo de Trabalho Obrigatório (Passo a Passo)}
+% =========================================================================
+
+\begin{alertaCritico}
+\textbf{NUNCA EDITE \texttt{manual/manual-processos-software.md} DIRETAMENTE!}
+
+Esse arquivo é gerado de forma \textbf{automatizada} a partir da pasta \texttt{manual/capitulos/}. Qualquer alteração feita nele à mão será perdida na próxima compilação.
+\end{alertaCritico}
+
+\subsection*{O Ciclo Correto de Trabalho:}
+\begin{enumerate}
+  \item \textbf{Consulte a Diretriz do Capítulo:} Antes de redigir, abra o arquivo correspondente em: \\
+  \texttt{referencias/diretrizes/capitulos/orientacoes-capitulo-X.md}. \\
+  Ele informa exatamente os tópicos, as perguntas orientadoras e as tabelas exigidas.
+  \item \textbf{Edite na Pasta Modular:} Escreva o conteúdo em \texttt{manual/capitulos/0X-*.md}.
+  \item \textbf{Salve os Artefatos Visuais:} Se o capítulo exigir diagramas ou prints de tela, salve o arquivo em \texttt{assets/prints/} ou \texttt{assets/diagrams/} e referencie no Markdown com \texttt{![Legenda](assets/...)}.
+  \item \textbf{Recompile o Manual Consolidado:} No terminal, na raiz do repositório, execute:
+  \begin{verbatim}
+  ./scripts/montar-manual.sh
+  \end{verbatim}
+  O script juntará todos os módulos e atualizará o arquivo unificado em menos de 1 segundo.
+  \item \textbf{Commit Semântico:} Faça commit das alterações com mensagens claras (\texttt{git add .} e \texttt{git commit -m "docs: atualizar secao 5.2 com diagramas"}).
+\end{enumerate}
+
+\newpage
+
+% =========================================================================
+\section{4. No que Prestar Atenção Redobrada (Critérios da Professora)}
+% =========================================================================
+Em processos de software, \textbf{texto descritivo puro não comprova conformidade}. A banca avalia se a equipe possui \textbf{evidências visuais e registros concretos} da aplicação em funcionamento.
+
+\begin{dicaPratica}
+Consulte sempre o arquivo central: \textbf{\texttt{referencias/diretrizes/mapa-artefatos-e-evidencias.md}}. \\
+Ele contém o checklist com status de marcação (\texttt{[ ]} / \texttt{[x]}) de todos os 50 artefatos mapeados para o projeto.
+\end{dicaPratica}
+
+\subsection*{A. Diagramas Técnicos Obrigatórios (Capítulos 4 e 5)}
+\begin{itemize}
+  \item \textbf{EAP / WBS de 3 Níveis (Cap. 4.1):} Exigência explícita do Slide 08 da Aula 05. Deve mostrar o projeto desdobrado em Macrofases e Pacotes de Trabalho.
+  \item \textbf{Diagrama C4 Nível 2 - Contêineres (Cap. 5.2.2):} Arquitetura com Next.js 14, Neon PostgreSQL, Vercel e APIs de e-mail.
+  \item \textbf{Diagrama de Classes UML (Cap. 5.2.2):} Modelo de domínio com \texttt{User}, \texttt{Tenant}, \texttt{Movie}, \texttt{Session}, \texttt{Reservation}, \texttt{Ticket}, etc., com atributos tipados e cardinalidades.
+  \item \textbf{Diagrama de Sequência UML (Cap. 5.2.2):} Fluxo da reserva atômica de assentos (\texttt{SELECT FOR UPDATE}) e expiração JIT.
+  \item \textbf{Diagrama Entidade-Relacionamento - DER (Cap. 5.2.2):} Modelo relacional de dados do PostgreSQL.
+\end{itemize}
+
+\subsection*{B. Screenshots e Provas Reais de Execução}
+\begin{itemize}
+  \item \textbf{Print do Quadro Kanban / GitHub Projects (Cap. 4.1 e Cap. 6.5):} Deve mostrar as tarefas nas colunas (\textit{Product Backlog, Sprint Backlog, In Progress, Code Review, Done}) \textbf{com responsáveis e prazos explícitos}. É a prova viva do MPS.BR!
+  \item \textbf{Print da Suíte de Testes Vitest (Cap. 5.3.3):} Executar \texttt{npm test} no \texttt{cinedoom-app} e capturar o terminal com a suíte \textbf{100\% verde} (24 suítes e 748 testes passando).
+  \item \textbf{Prints do Software em Operação (Cap. 1):} Telas reais do Portal do Cliente (mapa de assentos), guichê da Bilheteria e painel do Gerente.
+\end{itemize}
+
+\subsection*{C. Tabelas Estruturadas com Metodologia Formal}
+\begin{itemize}
+  \item \textbf{Make or Buy (Cap. 2.1):} Tabela justificando o que foi feito em casa (\textit{Não}), o que foi contratado (\textit{Sim}) e o que é híbrido (\textit{Parcial}).
+  \item \textbf{Risk Register (Cap. 4.2):} Pelo menos 5 riscos mapeados por probabilidade e impacto, com resposta mitigadora para os 3 críticos.
+  \item \textbf{Matriz de Decisão Ponderada / Pugh Matrix (Cap. 4.4):} Respaldo formal da escolha de arquitetura contra $\ge 3$ alternativas e $\ge 4$ critérios com pesos.
+  \item \textbf{Quadro Verificação vs. Validação (Cap. 5.4.1):} Distinção conceitual obrigatória da ISO 12207 (\textit{"Construir o produto corretamente"} vs. \textit{"Construir o produto certo"}).
+\end{itemize}
+
+% =========================================================================
+\section{5. Resumo Rápido (Cheat Sheet da Equipe)}
+% =========================================================================
+
+\begin{caixaInfo}{COMO FAZER UMA ENTREGA EM 4 ETAPAS}
+\begin{description}[leftmargin=1.5cm, style=nextline]
+  \item[\textbf{1. Planejar}] Abra \texttt{referencias/diretrizes/capitulos/orientacoes-capitulo-X.md} e verifique quais tabelas, diagramas e textos seu capítulo precisa.
+  \item[\textbf{2. Produzir}] Edite o arquivo em \texttt{manual/capitulos/0X-*.md} e salve as imagens em \texttt{assets/prints/} ou \texttt{assets/diagrams/}.
+  \item[\textbf{3. Montar}] Execute no terminal: \texttt{./scripts/montar-manual.sh} e confira se o arquivo \texttt{manual/manual-processos-software.md} foi atualizado.
+  \item[\textbf{4. Versionar}] Crie uma branch (\texttt{git checkout -b feat/cap-X}), faça commit e abra um Pull Request para a branch \texttt{main}.
+\end{description}
+\end{caixaInfo}
+
+\vspace{0.4cm}
+\begin{center}
+  \small\color{cinzaMedio}
+  \textbf{CineSoft Solutions $\cdot$ Engenharia de Processos de Software}\\
+  Em caso de dúvidas conceituais, consulte os slides originais em \texttt{referencias/aulas/markdown/}.
+\end{center}
+
+\end{document}
