@@ -52,7 +52,7 @@ manual-processos-software/
 │   │   └── manual-processos-software.tex
 │   └── presentation/                    # Apresentacao oral da banca (Beamer tema UFG/INF)
 │       └── apresentacao-manual.tex
-├── references/                          # Documentos de apoio, diretrizes docentes e norma
+├── referencias/                          # Documentos de apoio, diretrizes docentes e norma
 │   ├── iso-12207/                       # Norma ABNT NBR ISO/IEC/IEEE 12207:2021
 │   ├── diretrizes/                      # Diretrizes e estrutura minima da Profa. Dra. Juliana
 │   └── pdw/                             # Historico auditavel de definicoes de projeto

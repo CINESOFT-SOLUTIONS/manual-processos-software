@@ -54,3 +54,4 @@ Identificar, quantificar e propor ações de mitigação contínuas em uma tabel
 
 > **📌 Referência:** Seção 6.3 da ISO 12207:2017  
 > **⚠️ Atenção:** Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao seu projeto real. Qualidade > quantidade.
+

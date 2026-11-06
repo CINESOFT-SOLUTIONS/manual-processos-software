@@ -51,3 +51,4 @@ A equipe deve apresentar a **Tabela de Perspectiva de Fornecimento**:
 | *Ex: Módulo de Validação de Meia-Entrada Legal* | *Outras ticketeiras e eventos culturais* | *API por consulta (Pay-per-use)* |
 
 > **💡 Dica da Professora:** O que é desenvolvido internamente como diferencial competitivo hoje pode se tornar um ativo de fornecimento comercial amanhã.
+

@@ -57,3 +57,4 @@ Conforme a **Aula 6**, o capítulo reúne os seguintes blocos temáticos:
 
 > **📌 Referência:** Seção 6.4 da ISO 12207:2017  
 > **⚠️ Atenção:** Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao seu projeto real. Qualidade > quantidade.
+

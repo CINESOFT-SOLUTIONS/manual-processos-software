@@ -52,3 +52,4 @@ Conforme os slides de fechamento da **Aula 3-4 (Slide 33)** e a estrutura mínim
 
 > **📌 Referência:** Seção 6.2 da ISO 12207:2017  
 > **⚠️ Atenção:** Os artefatos não precisam ser extensos — precisam ser consistentes, justificados e aplicados ao seu projeto real. Qualidade > quantidade.
+

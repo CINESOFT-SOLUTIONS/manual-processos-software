@@ -31,3 +31,4 @@ Apresentar a organização desenvolvedora, o contexto de negócio e a visão ger
 ## 1.3 Critérios de Qualidade da Professora
 
 > **⚠️ Atenção:** Qualidade > quantidade. As descrições devem ser consistentes, sem textos genéricos, e diretamente aplicadas ao projeto real da equipe.
+
