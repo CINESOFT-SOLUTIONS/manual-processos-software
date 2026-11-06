@@ -16,13 +16,13 @@ Nenhuma regra ou arquitetura é definida sem respaldo nestas referências.
 * **[`diretrizes/instrucoes-disciplina.md`](diretrizes/instrucoes-disciplina.md):** Requisitos oficiais da disciplina de Processos de Engenharia de Software (UFG/INF), critérios de pontuação da Profa. Dra. Juliana Zinader e padrão de 7 seções por processo.
 * **[`diretrizes/estrutura-minima-manual.md`](diretrizes/estrutura-minima-manual.md):** Sumário analítico obrigatório em capítulos mínimos exigido para a avaliação formal.
 * **[`diretrizes/estrutura-repositorios.md`](diretrizes/estrutura-repositorios.md):** Racional sobre a separação da organização GitHub em repositórios complementares (`manual-processos` e `cinedoom-app`).
-* **[`diretrizes/capitulos/`](diretrizes/capitulos/):** Roteiro e requisitos específicos para redação de cada capítulo:
-  * [`capitulo-1.md`](diretrizes/capitulos/capitulo-1.md): Apresentação do Software e da Organização
-  * [`capitulo-2.md`](diretrizes/capitulos/capitulo-2.md): Processos de Acordo (Aquisição e Fornecimento)
-  * [`capitulo-3.md`](diretrizes/capitulos/capitulo-3.md): Processos Organizacionais Habilitadores
-  * [`capitulo-4.md`](diretrizes/capitulos/capitulo-4.md): Processos de Gerenciamento Técnico
-  * [`capitulo-5.md`](diretrizes/capitulos/capitulo-5.md): Processos Técnicos de Engenharia
-  * [`capitulo-6.md`](diretrizes/capitulos/capitulo-6.md): Avaliação e Melhoria dos Processos de Software (MPS.BR)
+* **[`diretrizes/capitulos/`](diretrizes/capitulos/):** Orientações e requisitos específicos para redação de cada capítulo:
+  * [`orientacoes-capitulo-1.md`](diretrizes/capitulos/orientacoes-capitulo-1.md): Apresentação do Software e da Organização
+  * [`orientacoes-capitulo-2.md`](diretrizes/capitulos/orientacoes-capitulo-2.md): Processos de Acordo (Aquisição e Fornecimento)
+  * [`orientacoes-capitulo-3.md`](diretrizes/capitulos/orientacoes-capitulo-3.md): Processos Organizacionais Habilitadores
+  * [`orientacoes-capitulo-4.md`](diretrizes/capitulos/orientacoes-capitulo-4.md): Processos de Gerenciamento Técnico
+  * [`orientacoes-capitulo-5.md`](diretrizes/capitulos/orientacoes-capitulo-5.md): Processos Técnicos de Engenharia
+  * [`orientacoes-capitulo-6.md`](diretrizes/capitulos/orientacoes-capitulo-6.md): Avaliação e Melhoria dos Processos de Software (MPS.BR)
 
 ### 3. Slides e Materiais Didáticos das Aulas (`aulas/`)
 * **[`aulas/*.pdf`](aulas/):** Slides originais das aulas ministradas na disciplina (Aulas 2, 3/4, 5, 6 e 7).
