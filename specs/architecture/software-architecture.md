@@ -1,194 +1,180 @@
 ---
-kind: agent_artifact
-feature_id: F-CINEDOOM-PLATAFORMA-B2B-SAAS-C
-agent: Software Architect (C4 L3-4)
-generated_by:
-  run_id: run_2026-10-23T03-58-17_eedeb0ce
-  session_id: 2026-09-03T15-33-01-hdb88xzyiu
-  model: anthropic:claude-sonnet-4-6
-generated_at: 2026-10-23T04:45:03.412Z
-regenerative: true
-title: "[Software Architect (C4 L3-4)] CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd"
+document_id: SPEC-CINEDOOM-SOFTWARE-ARCH-001
+version: "2.0.0"
+date: "2026-11-05"
+status: "Aprovado e Consolidado"
+standard: "ABNT NBR ISO/IEC/IEEE 12207:2021 (Cláusula 6.4.4 / 6.4.5 — Arquitetura e Design de Software)"
+title: "Arquitetura de Software (C4 Níveis 3 e 4) — CineDoom"
 ---
 
-# Software Architect (C4 L3-4) — CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd
+# Arquitetura de Software (C4 Níveis 3 e 4) — CineDoom
 
-> Artefato derivado de `.specs/features/F-CINEDOOM-PLATAFORMA-B2B-SAAS-C/spec.md` e gerado pelo agente **Software Architect (C4 L3-4)**
-> via AI-4SDLC Platform. **Regenerative work product** (não-canonical SDD).
-> Não edite manualmente — re-gere via `sdlc resume`.
+> **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-01` a `RF-18`, `RNF-01` a `RNF-06`, `RN-01` a `RN-12`, `CA-01` a `CA-14`, `RES-01` a `RES-06`) e [`ADR-001` a `ADR-014`](../adr/).
 
-## Resumo
+## Resumo Executivo
 
-Plano arquitetural de software (C4 L3-L4) para o monólito modular CineDoom MVP integrado aos três módulos: Back-Office do Gerente, Bilheteria do Atendente e Portal do Cliente — define módulos internos, contratos entre camadas, estratégia de trava ACID, isolamento multi-tenant via Prisma Extension, proteção PII/LGPD com CPF cifrado AES-256-GCM, auditoria append-only de cancelamentos e pirâmide de testes, respeitando as decisões macro da Solution Architecture (Next.js 14 + Neon + Vercel).
+Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o monólito modular **CineDoom**, abrangendo os três módulos integrados: **Back-Office do Gerente**, **Bilheteria do Atendente** e **Portal do Cliente**. Define a organização interna em *Clean Architecture* orientada a funcionalidades (*Feature-Driven Architecture*), contratos entre camadas (`Controller -> Service -> Repository`), estratégia de trava pessimista ACID (`SELECT FOR UPDATE`), isolamento multi-tenant via *Prisma Client Extension*, proteção criptográfica de PII/LGPD (`HMAC-SHA256` + `AES-256-GCM`), auditoria *append-only* de cancelamentos e pirâmide de testes automatizados com **Vitest** e **Playwright**.
 
-## Decisões arquiteturais
+---
 
-### AD-1. Clean Architecture e Feature-Driven Architecture (Controller-Service-Repository)
+## 1. Decisões de Design e Arquitetura de Software
 
-- **Reversível:** sim
-- **Racional:** Evolução do padrão Ports & Adapters para Clean Architecture organizada por Feature Slices (`src/features/<modulo>/[domain|application|infrastructure]`). Desacopla integralmente as regras de negócio de detalhes de persistência e transporte HTTP através do padrão Controller-Service-Repository com Inversão de Dependência estrita:
-  1. **Controllers (Apresentação / HTTP):** Route Handlers enxutos em `src/app/api/**` que tratam requisições, validam autorização NextAuth, RBAC e contexto de Tenancy via headers.
-  2. **Services (Aplicação):** Casos de uso e validação de schemas Zod em `application/`, interagindo exclusivamente com interfaces de repositório.
-  3. **Repository Interfaces (Domínio):** Contratos abstratos (`ISaleRepository`, `IFilmRepository`, `IUserRepository`, `ICounterRepository`, etc.) em `domain/`.
-  4. **Prisma Repositories (Infraestrutura):** Implementações concretas em `infrastructure/` que encapsulam as queries e travas ACID no Neon PostgreSQL.
-- **Quality driver (ISO 25010):** maintainability / testability
-- **Build vs. buy:** make
+### AD-1. Clean Architecture e Feature-Driven Architecture (Padrão Controller-Service-Repository) (`ADR-001`)
+
+- **Reversível:** Sim
+- **Racional:** Organiza o código-fonte em fatias verticais de domínio (`src/features/<modulo>/[domain|application|infrastructure]`), desacoplando integralmente as regras de negócio de detalhes de persistência e transporte HTTP por meio de Inversão de Dependência estrita (`RNF-06`):
+  1. **Controllers (Apresentação / HTTP):** Route Handlers enxutos em `src/app/api/**` que tratam requisições HTTP, validam sessão NextAuth, aplicam RBAC e extraem o contexto de Tenancy.
+  2. **Services (Aplicação):** Orquestração de casos de uso e validação de esquemas Zod em `application/`, interagindo exclusivamente com interfaces abstratas de repositório.
+  3. **Interfaces de Repositório (Domínio):** Contratos puros (`ISaleRepository`, `IFilmRepository`, `IUserRepository`, `ICounterRepository`, etc.) definidos em `domain/`.
+  4. **Prisma Repositories (Infraestrutura):** Implementações concretas em `infrastructure/` que encapsulam as consultas SQL e travas ACID no Neon PostgreSQL.
+- **Atributo de Qualidade (ISO/IEC 25010):** Manutenibilidade e Testabilidade (*Maintainability / Testability*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 - **Alternativas consideradas:**
-  - Transaction Script flat em Route Handlers — _rejeitada:_ acopla domínio a HTTP e Prisma, dificultando teste e evolução
-  - Monólito em camadas tradicional não-fatiado (`/controllers`, `/services`, `/repositories` globais) — _rejeitada:_ menor coesão por domínio comparado a Feature Slices
+  - *Transaction Script* diretamente nos Route Handlers — *rejeitada:* acopla regras de negócio ao protocolo HTTP e ao ORM, prejudicando testes unitários isolados.
+  - Monólito em camadas horizontais globais (`/controllers`, `/services`, `/repositories`) — *rejeitada:* menor coesão modular em comparação com *Feature Slices*.
 
-### AD-2. Prisma Client Extension para injeção global de WHERE tenant_id
+### AD-2. Prisma Client Extension para injeção global de `WHERE tenant_id` (`ADR-003`)
 
-- **Reversível:** não
-- **Racional:** garante AC-4 de forma declarativa e centralizada; Client Extension intercepta toda query model antes da execução, eliminando risco de query sem filtro; impede vazamento cross-tenant mesmo em novos módulos adicionados por membros do time
-- **Quality driver (ISO 25010):** security
-- **Build vs. buy:** make
+- **Reversível:** Não
+- **Racional:** Garante o critério de aceite `CA-04` (`AC-4`), o requisito `RNF-03` e a regra `RN-12` de forma declarativa e centralizada; a *Client Extension* intercepta toda operação de modelo antes da execução no PostgreSQL, eliminando o risco de consultas sem filtro de locatário.
+- **Atributo de Qualidade (ISO/IEC 25010):** Segurança (*Security*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 - **Alternativas consideradas:**
-  - Middleware Prisma legado ($use) — _rejeitada:_ deprecated em Prisma 5+, sem tipagem na extensão
-  - RLS nativa PostgreSQL — _rejeitada:_ exigiria SET LOCAL por conexão em serverless pooled, complexidade operacional e testabilidade reduzida
+  - Middleware legado do Prisma (`$use`) — *rejeitada:* depreciado a partir do Prisma 5+.
+  - Row-Level Security (RLS) nativa do PostgreSQL via `SET LOCAL` — *rejeitada:* aumenta a complexidade em conexões efêmeras gerenciadas por PgBouncer em modo transacional.
 
-### AD-3. SELECT FOR UPDATE dentro de Prisma.$transaction para trava ACID de assentos
+### AD-3. `SELECT FOR UPDATE` dentro de `Prisma.$transaction` para trava ACID de poltronas (`ADR-005`)
 
-- **Reversível:** não
-- **Racional:** garante AC-1 — serializa concorrência no nível de linha do assento sem lock de tabela inteira; Neon Serverless suporta SERIALIZABLE/FOR UPDATE em conexões pooladas via pgBouncer em transaction mode; Prisma expõe $queryRaw para emitir o SELECT FOR UPDATE antes do INSERT de ingresso
-- **Quality driver (ISO 25010):** reliability
-- **Build vs. buy:** make
+- **Reversível:** Não
+- **Racional:** Garante `CA-01` (`AC-1`), `RF-06`, `RNF-02` e `RN-05` — serializa disputas concorrentes no nível da linha da poltrona (`session_seats`) sem bloquear a tabela inteira; retorna imediatamente `HTTP 409 Conflict` para transações concorrentes perdedoras.
+- **Atributo de Qualidade (ISO/IEC 25010):** Confiabilidade (*Reliability*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 - **Alternativas consideradas:**
-  - Optimistic locking com version field — _rejeitada:_ gera retry loops em carga alta de concorrência, experiência degradada no pico de estreia
-  - Redis SETNX distributed lock — _rejeitada:_ adiciona infra externa desnecessária para MVP sem ganho tangível sobre FOR UPDATE em banco único
+  - Bloqueio otimista (*Optimistic Locking*) com coluna de versão — *rejeitada:* degrada a experiência em picos de alta concorrência (50 threads simultâneas).
+  - Lock distribuído via Redis (`SETNX`) — *rejeitada:* introduz dependência de infraestrutura externa desnecessária quando o próprio PostgreSQL resolve a atomicidade na mesma transação.
 
-### AD-4. AES-256-GCM para cifração de CPF no CryptoService com SHA-256 para campo de busca indexado
+### AD-4. Cifragem `AES-256-GCM` e hash `HMAC-SHA256` no `CryptoService` (`ADR-008`)
 
-- **Reversível:** sim
-- **Racional:** cumpre AC-6 e LGPD — o campo cpf_cifrado armazena ciphertext (IV + tag + ciphertext concatenados em base64) para exibição/descriptografia; cpf_hash armazena SHA-256 do CPF normalizado para busca por índice sem expor plaintext; chave simétrica via env var no MVP com rotação manual documentada
-- **Quality driver (ISO 25010):** security
-- **Build vs. buy:** make
+- **Reversível:** Sim
+- **Racional:** Cumpre `CA-06` (`AC-6`), `RF-09`, `RNF-03` e `RN-07` — o campo `cpf_encrypted` armazena o texto cifrado autenticado (`IV + AuthTag + Ciphertext` em Base64) e `cpf_hash` armazena o resumo determinístico `HMAC-SHA256` (com chave secreta `CINEDOOM_CPF_HMAC_KEY`) para busca indexada sem exposição do CPF em texto claro e com resistência total a *rainbow tables*.
+- **Atributo de Qualidade (ISO/IEC 25010):** Segurança (*Security*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 - **Alternativas consideradas:**
-  - bcrypt para hash — _rejeitada:_ hash unidirecional impede exibição parcial do CPF ao atendente
-  - pgcrypto no banco — _rejeitada:_ exige gestão de chaves no PostgreSQL, vaza chave via pg_stat_activity em log de queries
+  - `bcrypt` para o CPF — *rejeitada:* algoritmo com salt aleatório por chamada impede busca indexada `O(1)` por igualdade na coluna `cpf_hash`.
+  - Extensão `pgcrypto` diretamente no banco — *rejeitada:* exporia o CPF em texto plano no tráfego entre aplicação e banco e nos logs de consultas SQL.
 
-### AD-5. Auditoria de cancelamentos via tabela append-only com trigger PostgreSQL impedindo UPDATE/DELETE
+### AD-5. Auditoria de cancelamentos em tabela *append-only* com trigger PostgreSQL (`ADR-006`)
 
-- **Reversível:** não
-- **Racional:** cumpre AC-3 — auditoria_cancelamentos recebe INSERT do CancelamentoService antes de liberar o assento; trigger BEFORE UPDATE OR DELETE lança RAISE EXCEPTION com código P0001, tornando a tabela imutável em nível de banco sem depender de disciplina de código
-- **Quality driver (ISO 25010):** reliability
-- **Build vs. buy:** make
-- **Alternativas consideradas:**
-  - Log em arquivo imutável — _rejeitada:_ inacessível para queries de auditoria e difícil de correlacionar com IDs de entidades
-  - Event store externo — _rejeitada:_ overhead de infra desproporcional para MVP
+- **Reversível:** Não
+- **Racional:** Cumpre `CA-03` (`AC-3`), `RF-08` e `RN-06` — a tabela `cancellation_audits` recebe o `INSERT` do serviço de cancelamento **antes** da liberação do assento para `AVAILABLE`; um trigger `BEFORE UPDATE OR DELETE` no PostgreSQL lança `RAISE EXCEPTION` com código `P0001`, tornando os registros imutáveis no nível do SGBD.
+- **Atributo de Qualidade (ISO/IEC 25010):** Confiabilidade (*Reliability*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 
-### AD-6. ESLint import/no-cycle + módulos com barrel index explícito para enforcement de boundary no CI
+### AD-6. Fronteiras modulares com `ESLint import/no-cycle` e *barrel exports* (`ADR-011`)
 
-- **Reversível:** sim
-- **Racional:** cumpre NFR Maintainability — cada módulo (bilheteria, backoffice, auth, tenancy, ocupacao, compradores) expõe apenas o que está no index.ts público; imports cruzando boundary passam pelo index e são auditados pelo no-cycle; CI falha em PR com dependência circular
-- **Quality driver (ISO 25010):** maintainability
-- **Build vs. buy:** reuse
-- **Alternativas consideradas:**
-  - NX module boundaries — _rejeitada:_ overhead de migração para NX workspace sem ganho claro em monorepo único
-  - TypeScript paths sem lint — _rejeitada:_ não detecta ciclos em runtime
+- **Reversível:** Sim
+- **Racional:** Cumpre `RNF-06` (Manutenibilidade) — cada módulo expõe apenas sua API pública por meio de um arquivo `index.ts`; a regra `import/no-cycle` no pipeline de CI garante zero dependências circulares entre módulos (`CT-17`).
+- **Atributo de Qualidade (ISO/IEC 25010):** Manutenibilidade (*Maintainability*)
+- **Estratégia (*Build vs. Buy*):** Reúso (*Reuse*)
 
-### AD-7. Polling client-side com useEffect + setInterval(2000ms) no SeatMapPollingClient em vez de SSE/WebSocket
+### AD-7. Polling client-side a cada 2 segundos no `SeatMapPollingClient` (`ADR-007`)
 
-- **Reversível:** sim
-- **Racional:** cumpre AC-2 e NFR Compatibility — polling é stateless, compatível com Vercel Edge e não requer infra de conexões persistentes; Route Handler GET /api/sessoes/[id]/assentos é cacheável com Cache-Control: no-store; custo de 1 req/2s por terminal ativo é aceitável no horizonte MVP
-- **Quality driver (ISO 25010):** compatibility
-- **Build vs. buy:** make
-- **Alternativas consideradas:**
-  - Server-Sent Events — _rejeitada:_ Vercel Serverless Functions têm limite de 60s de streaming, instável com cold start Neon
-  - WebSocket via Pusher/Ably — _rejeitada:_ adiciona custo e dependência externa desnecessária para MVP
+- **Reversível:** Sim
+- **Racional:** Cumpre `CA-02` (`AC-2`), `RF-05`, `RNF-01` e `RNF-05` — utiliza `useEffect` + `setInterval(2000)` consultando `GET /api/sessoes/[id]/assentos` com cabeçalho `Cache-Control: no-store`, garantindo atualização visual em até 2 segundos sem exigir conexões WebSocket persistentes na Vercel.
+- **Atributo de Qualidade (ISO/IEC 25010):** Compatibilidade (*Compatibility*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 
-### AD-8. Pirâmide de testes — Jest unitário (core de domínio puro) + Prisma integration (branch Neon real) + Playwright E2E (Chromium + Firefox)
+### AD-8. Pirâmide de testes automatizados com Vitest e Playwright (`ADR-011`)
 
-- **Reversível:** sim
-- **Racional:** cumpre todos os @test: mapeados nos ACs; testes de integração rodam contra branch Neon isolado via Neon API no CI, garantindo SELECT FOR UPDATE real em AC-1; Playwright valida NFR Compatibility na matriz de browsers
-- **Quality driver (ISO 25010):** reliability
-- **Build vs. buy:** reuse
-- **Alternativas consideradas:**
-  - apenas testes unitários com mocks de Prisma — _rejeitada:_ não valida FOR UPDATE real nem isolamento de tenant em nível de banco
-  - Cypress em lugar de Playwright — _rejeitada:_ Playwright tem suporte nativo multi-browser e paralelismo superior no CI
+- **Reversível:** Sim
+- **Racional:** Cobertura integral dos critérios de aceite `CA-01` a `CA-14` (`AC-1` a `AC-14`) e dos 26 casos de teste (`CT-01` a `CT-26`); utiliza **Vitest** para testes unitários, de segurança (500 cenários cross-tenant) e de integração concorrente (50 threads simultâneas), e **Playwright** para testes fim a fim (E2E) na matriz Chromium e Firefox em resolução `1024x768` (`RNF-05`).
+- **Atributo de Qualidade (ISO/IEC 25010):** Confiabilidade e Testabilidade (*Reliability / Testability*)
+- **Estratégia (*Build vs. Buy*):** Reúso (*Reuse*)
 
+### AD-9. Reserva online com status `RESERVED` e expiração *Just-in-Time* no PostgreSQL (`ADR-012`)
 
-### AD-9. Trava ACID de reservas com status RESERVED e expiração Just-in-Time no PostgreSQL
+- **Reversível:** Não
+- **Racional:** Garante `CA-09` (`AC-9`), `CA-14` (`AC-14`), `RF-13`, `RF-18`, `RN-08` e `RN-11` — a reserva bloqueia a poltrona com `SELECT FOR UPDATE` atribuindo `status = 'RESERVED'` e `reservation_expires_at = starts_at - 60 min`; consultas ao mapa de assentos e operações de venda avaliam a expiração sob demanda (`status = 'RESERVED' AND reservation_expires_at <= NOW()`), liberando poltronas vencidas automaticamente sem depender de filas em background.
+- **Atributo de Qualidade (ISO/IEC 25010):** Confiabilidade e Eficiência de Custos (*Reliability / Cost*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 
-- **Reversível:** não
-- **Racional:** garante AC-9 e AC-14 — a criação de reserva utiliza SELECT FOR UPDATE em session_seats atualizando o status para RESERVED e associando reservation_id e reservation_expires_at; consultas de mapa e tentativas de venda de balcão avaliam a expiração sob demanda (status = 'RESERVED' AND reservation_expires_at <= NOW()), liberando assentos automaticamente sem a necessidade de workers Redis/BullMQ.
-- **Quality driver (ISO 25010):** reliability / cost
-- **Build vs. buy:** make
+### AD-10. `NotificationService` com adaptador de e-mail transacional desacoplado (`ADR-013`)
 
-### AD-10. NotificationService com adaptador de e-mail transacional desacoplado
+- **Reversível:** Sim
+- **Racional:** Cumpre `CA-11` (`AC-11`) e `RF-15` — a interface `NotificationService` expõe `sendReservationVoucher(reservation)` desacoplada do provedor de transporte, utilizando Resend/SMTP em produção e logger estruturado em ambiente de testes, gravando o carimbo `email_sent_at`.
+- **Atributo de Qualidade (ISO/IEC 25010):** Manutenibilidade (*Maintainability*)
+- **Estratégia (*Build vs. Buy*):** Híbrida (*Buy* / *Make*)
 
-- **Reversível:** sim
-- **Racional:** cumpre AC-11 — interface NotificationService expõe sendReservationVoucher(reservation) desacoplada de provedor externo; utiliza adaptador Resend/Nodemailer em ambiente de produção e ConsoleLogger em desenvolvimento/testes, registrando email_sent_at na base.
-- **Quality driver (ISO 25010):** maintainability
-- **Build vs. buy:** buy (Resend) / make (Adapter)
+### AD-11. Autenticação de espectadores com perfil `CLIENTE` no Portal (`ADR-014`)
 
-### AD-11. Autenticação e perfil CLIENTE para Portal do Espectador
+- **Reversível:** Sim
+- **Racional:** Cumpre `CA-10` (`AC-10`), `CA-12` (`AC-12`), `RF-14`, `RF-16` e `RN-09` — estende o NextAuth.js com o papel `CLIENTE`, permitindo acesso autenticado à área "Minhas Reservas" e cancelamento voluntário com proteção estrita contra IDOR (`user_id === session.user.id`).
+- **Atributo de Qualidade (ISO/IEC 25010):** Usabilidade e Segurança (*Usability / Security*)
+- **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 
-- **Reversível:** sim
-- **Racional:** cumpre AC-10 e AC-12 — amplia o NextAuth.js para suportar role CLIENTE, permitindo que espectadores acessem a área 'Minhas Reservas', visualizem histórico e cancelem voluntariamente reservas pendentes com liberação imediata de assentos.
-- **Quality driver (ISO 25010):** usability / security
-- **Build vs. buy:** make
+### AD-12. Gestão de mídias de cartazes via desacoplamento de URLs e CDN Edge
 
-### AD-12. Gestão de Mídias de Cartazes via Desacoplamento de URLs e CDN Edge
+- **Reversível:** Sim
+- **Racional:** Armazena exclusivamente a referência `poster_url` (`VARCHAR(500)`) na entidade `Film`, rejeitando objetos binários (`BLOB/bytea`) no PostgreSQL para preservar a cota do Neon (`RES-01`) e a velocidade das consultas; distribui os cartazes estáticos pela CDN Edge da Vercel.
+- **Atributo de Qualidade (ISO/IEC 25010):** Eficiência de Desempenho e Custo (*Performance Efficiency / Cost*)
+- **Estratégia (*Build vs. Buy*):** Híbrida (*Buy* CDN / *Make* referência URL)
 
-- **Reversível:** sim
-- **Racional:** desacopla o banco relacional dos arquivos estáticos, gravando apenas `poster_url` (`VARCHAR(500)`) na entidade `Film` e rejeitando tipos binários (BLOBs/bytea) no PostgreSQL para manter a performance ACID e respeitar a cota de 0.5 GB do Neon. No MVP, as imagens são servidas como assets locais (`/public/posters/`) pela rede de borda (CDN Edge) da Vercel ou via URLs diretas de CDNs públicas. Para produção em escala (cenário não-mockado), a arquitetura especifica o padrão Direct-to-Storage com Pre-signed URLs (AWS S3/Cloudflare R2/Vercel Blob), contornando o limite de payload de 4.5 MB das funções serverless da Vercel, ou integração com APIs públicas de catálogos cinematográficos (The Movie Database — TMDB).
-- **Quality driver (ISO 25010):** performance efficiency / maintainability / cost
-- **Build vs. buy:** buy (CDN/Storage) / make (URL reference)
-- **Alternativas consideradas:**
-  - Armazenar binário BLOB/bytea no PostgreSQL — _rejeitada:_ esgota rapidamente o tier gratuito do Neon e degrada índices/queries
-  - Upload binário trafegando pelo servidor Next.js — _rejeitada:_ satura conexões serverless e viola limite de payload de 4.5 MB da Vercel
+---
 
-## Componentes
+## 2. Catálogo de Componentes Internos (C4 Nível 3)
 
-| ID | Nome | Responsabilidade | Depende de |
-|----|------|------------------|------------|
-| C-1 | AuthModule | Configuração NextAuth.js com CredentialsProvider + callbacks JWT injetando role (ATENDENTE&#124;GERENTE&#124;CLIENTE) e tenant_id no token; exposição de hook useSession tipado e helper getServerSession para Route Handlers | PrismaClientSingleton |
-| C-2 | RBACGuard | Next.js Middleware (middleware.ts) interceptando rotas /gestao/** e /api/gestao/** (com redirecionamento automático de rotas legadas /gerente/** e /backoffice/**); valida role no JWT via getToken; retorna 403 JSON para ATENDENTE e CLIENTE; propaga tenant_id via header x-tenant-id | AuthModule |
-| C-3 | TenancyContext | Prisma Client Extension ($extends) que wraps model.findMany/findFirst/update/delete injetando where: { tenant_id: currentTenantId }; currentTenantId lido de AsyncLocalStorage populado pelo RBACGuard a cada request | PrismaClientSingleton |
-| C-4 | CryptoService | Serviço puro (sem deps externas além de Node crypto): encryptCPF(plaintext) → base64(IV+tag+ciphertext) usando AES-256-GCM; decryptCPF(ciphertext) → plaintext; hashCPF(plaintext) → HMAC-SHA-256 para indexação; chaves lidas de env | — |
-| C-5 | BilheteriaModule | Módulo de Bilheteria com Clean Architecture (features/bilheteria): SaleService, CounterService e CancellationService desacoplados via ISaleRepository, ICounterRepository e ICancellationRepository; Route Handlers enxutos em /api/vendas, /api/bilheteria/** e /api/ingressos | PrismaSaleRepository, PrismaCounterRepository, PrismaCancellationRepository, TenancyContext |
-| C-6 | VendaTransactionHandler | Executa Prisma.$transaction com trava pessimista SELECT FOR UPDATE NOWAIT no nível de linha em session_seats; cria Ticket atômico e atualiza assento para 'SOLD'; lança ConflitoAssentoError em disputa | PrismaSaleRepository, TenancyContext |
-| C-7 | CancelamentoService | Caso de uso de cancelamento: valida tenant; persiste INSERT em auditoria_cancelamentos (id_ingresso, id_usuario, timestamp_utc, tenant_id, motivo) via ICancellationRepository ANTES de liberar o assento para AVAILABLE | ICancellationRepository, TenancyContext |
-| C-8 | AuditoriaRepository | Adapter Prisma exclusivo para auditoria_cancelamentos (PrismaCancellationRepository); tabela protegida por trigger PostgreSQL BEFORE UPDATE OR DELETE RAISE EXCEPTION 'registro imutavel' | PrismaClientSingleton, TenancyContext |
-| C-9 | SeatMapRouteHandler | Route Handler GET /api/sessoes/[id]/assentos; responde com Cache-Control: no-store; consome SessionSeatsService desacoplado de ISessionSeatsRepository; resposta ultrarrápida com isolamento por tenant | SessionSeatsService, RBACGuard |
-| C-10 | GestaoModule | Módulo de Gestão (Back-office) em features/catalogo e features/identidade: CRUD de filmes, salas e sessões com pré-população de assentos e gestão de usuários; acessível via /gestao/** e /api/gestao/** com validação Zod (AC-8) | FilmService, RoomService, SessionService, UserService, RBACGuard |
-| C-11 | CompradoresModule | Registra comprador no ato da venda: valida nome/CPF/e-mail; persiste cpf_hash via HMAC-SHA256 e cpf_cifrado via AES-256-GCM com consentimento LGPD gravado com timestamp UTC | CryptoService, TenancyContext, PrismaClientSingleton |
-| C-12 | OcupacaoModule | Agrega dados de ocupação por sessão do dia corrente em features/ocupacao: OccupancyService desacoplado de IOccupancyRepository; exposto via Route Handler GET /api/ocupacao/painel | OccupancyService, TenancyContext, PrismaOccupancyRepository |
-| C-13 | SeatMapPollingClient | React Client Component ('use client') com useEffect + setInterval(2000ms) chamando fetch('/api/sessoes/[id]/assentos'); atualiza estado visual com polling resiliente a cada 2 segundos | — |
-| C-14 | PrismaClientSingleton | Instância singleton de PrismaClient com $extends de TenancyContext; connection pool Neon serverless com pool_timeout=10s | — |
-| C-16 | PortalModule | Módulo do Portal do Cliente: rotas públicas e autenticadas para consulta de catálogo, sessões e assentos; orquestra ReservaTransactionHandler e ClientDashboardModule | TenancyContext, PrismaClientSingleton, AuthModule |
-| C-17 | ReservaTransactionHandler | Executa Prisma.$transaction com SELECT FOR UPDATE em session_seats; valida janela de antecedência (>60min antes do início); cria Reservation com status PENDING e atualiza assento para RESERVED | PrismaClientSingleton, TenancyContext, NotificationService |
-| C-18 | NotificationService | Serviço de envio de e-mail transacional (voucher da reserva com código, assento, valor e instruções de comparecimento presencial); atualiza email_sent_at | PrismaClientSingleton |
-| C-19 | ClientDashboardModule | Área 'Minhas Reservas' do cliente autenticado; lista reservas ativas e histórico; executa cancelamento voluntário de reservas PENDING via rota POST /api/portal/reservas/[id]/cancelar liberando assentos para AVAILABLE | PrismaClientSingleton, TenancyContext |
-| C-20 | BaixaReservaHandler | Fluxo de bilheteria presencial: busca reserva por código ou CPF, valida vigência e converte em Ticket vendido ('SOLD') com registro do atendente operador | PrismaClientSingleton, TenancyContext, BilheteriaModule |
-| C-15 | ProvisionamentoInternalCLI | Script pnpm run provisionar-tenant executado manualmente pela equipe CineDoom; cria registro em tenants (id, nome, slug, created_at) e usuário GERENTE inicial com senha temporária; sem exposição via API pública | PrismaClientSingleton, CryptoService |
+| ID | Componente / Módulo | Responsabilidade Técnica | Depende de |
+|----|---------------------|--------------------------|------------|
+| **C-1** | `AuthModule` | Configuração do NextAuth.js (`CredentialsProvider`) + callbacks JWT injetando `role` (`ATENDENTE`, `GERENTE`, `CLIENTE`) e `tenant_id` no token; helpers tipados de sessão (`RF-01`, `RF-14`). | `PrismaClientSingleton` |
+| **C-2** | `RBACGuard` | Middleware Next.js (`middleware.ts`) interceptando rotas protegidas (`/gestao/**`, `/api/gestao/**`, `/bilheteria/**`, `/portal/minhas-reservas`); valida `role` no JWT e retorna `HTTP 403` para acessos não autorizados (`RN-01`, `CA-05`). | `AuthModule` |
+| **C-3** | `TenancyContext` | *Prisma Client Extension* (`$extends`) que intercepta operações CRUD injetando `where: { tenant_id: currentTenantId }` lido de `AsyncLocalStorage` (`RN-12`, `CA-04`). | `PrismaClientSingleton` |
+| **C-4** | `CryptoService` | Serviço criptográfico puro (`node:crypto`): `encryptCPF(plaintext)` via `AES-256-GCM`, `decryptCPF(ciphertext)` e `hashCPF(plaintext)` via `HMAC-SHA256` (`RF-09`, `RN-07`, `CA-06`). | — |
+| **C-5** | `BilheteriaModule` | Módulo de Bilheteria em `src/features/bilheteria`: `SaleService`, `CounterService` e `CancellationService` desacoplados por interfaces de domínio (`RF-06`, `RF-07`, `RF-08`, `RF-17`). | `PrismaSaleRepository`, `PrismaCounterRepository`, `PrismaCancellationRepository`, `TenancyContext` |
+| **C-6** | `VendaTransactionHandler` | Executa `Prisma.$transaction` com trava pessimista `SELECT FOR UPDATE NOWAIT` em `session_seats`; cria `Ticket` atômico e atualiza poltrona para `SOLD`, ou lança `ConflitoAssentoError` (`HTTP 409`) (`RN-05`, `CA-01`). | `PrismaSaleRepository`, `TenancyContext` |
+| **C-7** | `CancelamentoService` | Caso de uso de cancelamento presencial: valida tenant, insere registro em `cancellation_audits` **antes** de liberar a poltrona para `AVAILABLE` (`RF-08`, `RN-06`, `CA-03`). | `ICancellationRepository`, `TenancyContext` |
+| **C-8** | `AuditoriaRepository` | Adaptador Prisma para `cancellation_audits` (`PrismaCancellationRepository`); tabela protegida por trigger PostgreSQL `BEFORE UPDATE OR DELETE` (`CA-03`). | `PrismaClientSingleton`, `TenancyContext` |
+| **C-9** | `SeatMapRouteHandler` | Route Handler `GET /api/sessoes/[id]/assentos` com `Cache-Control: no-store`; consome `SessionSeatsService` e aplica expiração JIT antes de retornar os estados (`RF-05`, `RF-18`, `CA-02`, `CA-14`). | `SessionSeatsService`, `RBACGuard` |
+| **C-10** | `GestaoModule` | Módulo de Back-office em `src/features/catalogo` e `src/features/identidade`: CRUD de filmes, salas, sessões (com pré-população de `SessionSeat`) e operadores, validado com Zod (`RF-01` a `RF-04`, `RN-02` a `RN-04`, `CA-08`). | `FilmService`, `RoomService`, `SessionService`, `UserService`, `RBACGuard` |
+| **C-11** | `CompradoresModule` | Registra comprador no ato da venda e processa anonimização *in-place* (Art. 18 LGPD) via `/api/titulares/anonimizar` (`RF-09`, `CA-06`, `ADR-009`). | `CryptoService`, `TenancyContext`, `PrismaClientSingleton` |
+| **C-12** | `OcupacaoModule` | Calcula indicadores agregados de ocupação por sessão do dia corrente (`OccupancyService` / `GET /api/ocupacao/painel`) isolados por tenant (`RF-10`, `CA-07`). | `OccupancyService`, `TenancyContext`, `PrismaOccupancyRepository` |
+| **C-13** | `SeatMapPollingClient` | Client Component React com `useEffect` + `setInterval(2000ms)` atualizando reativamente o mapa de poltronas (`RF-05`, `CA-02`). | — |
+| **C-14** | `PrismaClientSingleton` | Instância singleton de `PrismaClient` estendida com `TenancyContext` e conectada ao pooler do Neon Serverless. | — |
+| **C-15** | `ProvisionamentoInternalCLI` | Script administrativo (`pnpm run provisionar-tenant`) para criação controlada de novos cinemas tenants e conta inicial de `GERENTE` (`RES-03`). | `PrismaClientSingleton`, `CryptoService` |
+| **C-16** | `PortalModule` | Módulo do Portal do Cliente: rotas públicas de catálogo e grade de exibição (`/portal/**`) e orquestração do checkout de reserva (`RF-12`, `RF-13`). | `TenancyContext`, `PrismaClientSingleton`, `AuthModule` |
+| **C-17** | `ReservaTransactionHandler` | Executa `Prisma.$transaction` com `SELECT FOR UPDATE` em `session_seats`; valida antecedência mínima (> 60 min), cria `Reservation` (`PENDING`) com código `CD-XXXX` e marca assento como `RESERVED` (`RF-13`, `RN-08`, `CA-09`). | `PrismaClientSingleton`, `TenancyContext`, `NotificationService` |
+| **C-18** | `NotificationService` | Serviço de disparo de e-mail transacional contendo o voucher da reserva e instruções de comparecimento presencial; registra `email_sent_at` (`RF-15`, `CA-11`). | `PrismaClientSingleton` |
+| **C-19** | `ClientDashboardModule` | Painel autenticado "Minhas Reservas" do espectador; lista reservas e processa cancelamento voluntário em `POST /api/portal/reservas/[id]/cancelar` (`RF-16`, `RN-09`, `CA-12`). | `PrismaClientSingleton`, `TenancyContext` |
+| **C-20** | `BaixaReservaHandler` | Caso de uso de bilheteria presencial (`CounterService`): localiza reserva por código `CD-XXXX` ou CPF (`cpf_hash`), valida vigência e converte em `Ticket` vendido (`SOLD`) (`RF-17`, `RN-10`, `CA-13`). | `PrismaClientSingleton`, `TenancyContext`, `BilheteriaModule` |
 
-## Riscos
+---
 
-| ID | Descrição | Likelihood | Impacto | Mitigação |
-|----|-----------|------------|---------|-----------|
-| R-1 | Neon Serverless cold start em conexão poolada pode violar SLA p95 <800ms em endpoint de venda sob carga moderada | medium | high | usar @neondatabase/serverless driver com WebSocket pool persistente; configurar min_pool_size=2 no Neon para manter conexões warm; monitorar p95 via Vercel Analytics desde o primeiro deploy em staging |
-| R-2 | Prisma Client Extension não intercepta $queryRaw e $executeRaw — queries brutas emitidas por VendaTransactionHandler não recebem filtro automático de tenant_id | high | high | adicionar tenant_id explicitamente em todos os $queryRaw como parâmetro tipado; lint custom rule proibindo $queryRaw sem tenant_id; revisar em code review checklist |
-| R-3 | Hash SHA-256 de CPF sem salt é vulnerável a rainbow table attack pré-computado sobre o espaço finito de CPFs brasileiros (~1B combinações) | medium | high | adicionar HMAC-SHA-256 com chave secreta CINEDOOM_CPF_HMAC_KEY em vez de SHA-256 puro; documentar como decisão de segurança no ADR antes do primeiro deploy em produção |
-| R-4 | Polling 2s por sessão ativa multiplica queries ao Neon em dias de estreia com múltiplos terminais simultâneos | medium | medium | adicionar índice composto (sessao_id, tenant_id) na tabela assentos; configurar Connection Pool size máximo no Neon dashboard; considerar cache de 1s com stale-while-revalidate no Route Handler se latência crescer |
-| R-5 | Trigger PostgreSQL de imutabilidade de auditoria_cancelamentos pode ser removido por migration Prisma acidental (prisma migrate reset em staging) | low | high | marcar migration do trigger como 'manual' com comentário -- @cinedoom-immutable-trigger; adicionar smoke test pós-deploy que tenta DELETE em auditoria_cancelamentos e espera erro; proteger migration de reset em CI com flag |
-| R-6 | Implementação de direito ao esquecimento LGPD via processo manual pela equipe CineDoom sem SLA documentado pode gerar não-conformidade legal | medium | high | documentar SLO de 15 dias úteis para atendimento de requisição de exclusão (prazo LGPD); criar runbook de anonimização (cpf_cifrado=NULL, cpf_hash=NULL, email='anonimizado@cinedoom.internal') executável pela equipe interna |
-| R-7 | Múltiplas instâncias Vercel Serverless em paralelo podem criar múltiplas instâncias de PrismaClient quebrando o singleton e esgotando connections no Neon | medium | medium | usar pattern global.__prisma com verificação NODE_ENV; limitar max_connections no Neon pool a 10; monitorar connection count via Neon dashboard nas primeiras semanas pós-launch |
-| R-8 | SELECT FOR UPDATE NOWAIT lança erro imediato em conflito — se VendaTransactionHandler não mapear corretamente o erro PG P0002/55P03 para ConflitoAssentoError, o cliente recebe 500 em vez de 409 | low | high | unit test cobrindo o mapeamento de erro Prisma raw para ConflitoAssentoError; integration test AC-1 com 2 transações paralelas validando HTTP 409 na segunda |
+## 3. Riscos Técnicos de Implementação e Mitigações
 
-## Encryption at-rest
+| ID | Descrição do Risco Técnico | Probabilidade | Impacto | Mitigação Implementada no Código |
+|----|----------------------------|---------------|---------|----------------------------------|
+| **R-1** | *Cold start* em conexão serverless elevar a latência do endpoint de venda acima de 800ms (`RNF-01`). | Média | Alto | Uso de connection pooling via PgBouncer gerenciado pelo Neon e queries enxutas dentro da transação ACID. |
+| **R-2** | Consultas SQL brutas (`$queryRaw`) não serem interceptadas automaticamente pela *Prisma Client Extension*. | Alta | Alto | Parametrização explícita e obrigatória de `tenant_id` em toda chamada `$queryRaw` do `VendaTransactionHandler`, auditada pela suíte de 500 cenários (`CA-04`). |
+| **R-3** | Reversão de hash de CPF por *rainbow table* caso fosse utilizado SHA-256 simples. | Média | Alto | Substituição definitiva por **`HMAC-SHA256`** com segredo `CINEDOOM_CPF_HMAC_KEY` no `CryptoService` (`ADR-008`, `CT-06`). |
+| **R-4** | Sobrecarga de leituras pelo polling de 2 segundos em sessões de grande procura. | Média | Médio | Índice composto `(session_id, status)` na tabela `session_seats` e resposta JSON minimalista (`CT-10`). |
+| **R-5** | Remoção acidental do trigger de imutabilidade de `cancellation_audits` em migrações futuras. | Baixa | Alto | Teste automatizado específico (`CT-03`, `CT-14`) no pipeline de CI que tenta executar `UPDATE/DELETE` na tabela de auditoria e exige exceção do banco. |
+| **R-6** | Solicitação de exclusão de dados (Art. 18 LGPD) violar chaves estrangeiras de ingressos fiscais já vendidos. | Média | Alto | Implementação de *soft-anonymization in-place* (`ADR-009`, `/api/titulares/anonimizar`), sobrescrevendo PII sem apagar a chave primária referenciada por `tickets`. |
+| **R-7** | Criação excessiva de instâncias `PrismaClient` em recarregamentos de funções serverless. | Média | Médio | Padrão *Singleton* atrelado a `globalThis.__prisma` em `src/lib/prisma.ts`. |
+| **R-8** | Conflito de trava `SELECT FOR UPDATE NOWAIT` retornar erro genérico `HTTP 500` em vez de `HTTP 409`. | Baixa | Alto | Mapeamento explícito de códigos de erro PostgreSQL (`55P03` / `P2034`) para `ConflitoAssentoError` (`HTTP 409 Conflict`), validado em `CT-01` e `CT-09`. |
 
-AES-256-GCM para PII de compradores (CPF cifrado) implementado no CryptoService em camada de aplicação. Chave simétrica CINEDOOM_CPF_KEY (32 bytes) e CINEDOOM_CPF_HMAC_KEY gerenciadas como Vercel Environment Variables encrypted-at-rest (Vercel usa AES-256 para secrets em repouso). Neon PostgreSQL Serverless armazena dados em volumes com criptografia AES-256 gerenciada pela Neon (provider-managed). Rotação de chave de aplicação: política máxima de 365 dias com rotação documentada em runbook — processo: gerar nova chave, re-cifrar todos os registros cpf_cifrado em batch com nova chave, atualizar env var, invalidar cache. Customer-managed keys (CMK) não disponíveis no plano Neon MVP — avaliar upgrade para Neon Business com BYOK ou migração para RDS+AWS KMS quando tenant count justificar custo.
+---
 
-## Access control & audit log
+## 4. Criptografia em Repouso e Gestão de Segredos
 
-RBAC need-to-know implementado no RBACGuard (Next.js middleware): ATENDENTE acessa rotas operacionais (/bilheteria/**, /api/bilheteria/** e /api/sessoes/**/assentos); CLIENTE acessa o portal público (/portal/** e rotas de reserva); GERENTE acessa adicionalmente rotas gerenciais (/gestao/**, /api/gestao/**, /api/ocupacao/** e /api/usuarios/**, com aliases de compatibilidade para /gerente/** e /backoffice/**); qualquer acesso fora do escopo do perfil retorna HTTP 403 com body {error: 'FORBIDDEN', code: 'RBAC_DENIED'}. Audit log IMUTÁVEL: tabela auditoria_cancelamentos com trigger PostgreSQL BEFORE UPDATE OR DELETE RAISE EXCEPTION 'registro imutavel' — garante append-only em nível de banco independente de disciplina de aplicação. Campos auditados por cancelamento: id_ingresso, id_usuario_executante, tenant_id, timestamp_utc, motivo (NOT NULL). Acesso a dados sensíveis de comprador (cpf_cifrado, email) restrito a Server Components/Route Handlers autenticados — jamais expostos em logs de aplicação (Vercel Log Drain configurado com sanitização de campos PII). Futura evolução para WORM recomendada: exportar auditoria_cancelamentos para S3 com Object Lock (Compliance Mode, retention 5 anos) via job semanal quando volume de tenants justificar custo operacional.
+O módulo `CryptoService` implementa criptografia autenticada **`AES-256-GCM`** para o campo `cpf_encrypted` e resumo criptográfico **`HMAC-SHA256`** para o campo indexado `cpf_hash` (`ADR-008`). As chaves simétricas de 256 bits (`CPF_ENCRYPTION_KEY` e `CINEDOOM_CPF_HMAC_KEY`) são armazenadas exclusivamente como variáveis cifradas em repouso no cofre da Vercel (*Vercel Environment Secrets*). A política de rotação prevê substituição máxima a cada 365 dias por meio de script de re-cifragem em lote sem indisponibilidade.
 
-## Perguntas em aberto
+---
 
-- Qual o SLO de atendimento de requisição de direito ao esquecimento LGPD (exclusão/anonimização de CPF e e-mail)? Necessário para o runbook de compliance — prazo LGPD sugere máximo 15 dias úteis.
-- O campo cpf_hash deve ser HMAC-SHA-256 (com chave secreta) em vez de SHA-256 puro para resistir a rainbow table sobre espaço finito de CPFs? Requer decisão antes do primeiro deploy em produção.
-- Existe necessidade de exportar logs de auditoria_cancelamentos para sistema externo (SIEM, S3) ou a tabela PostgreSQL é suficiente como registro permanente no MVP?
-- Qual o número máximo esperado de terminais simultâneos por sessão em pico de estreia? Necessário para dimensionar o pool Neon e validar a estratégia de polling 2s sob carga real.
-- O provisionamento manual de tenants pela equipe CineDoom tem prazo de atendimento (SLA interno) e fluxo de aprovação documentado para o período pós-launch?
+## 5. Controle de Acesso (RBAC) e Trilha de Auditoria
+
+O controle de acesso *need-to-know* é aplicado pelo `RBACGuard` e revalidado nos serviços de aplicação (`RF-01`, `RN-01`, `CA-05`):
+- **`ATENDENTE`:** Acessa `/bilheteria/**`, `/api/vendas`, `/api/bilheteria/**`, `/api/ingressos/**` e `/api/sessoes/**/assentos`.
+- **`CLIENTE`:** Acessa `/portal/**` e `/api/portal/**`.
+- **`GERENTE`:** Acessa todas as rotas operacionais do seu cinema mais `/gestao/**`, `/api/gestao/**`, `/api/ocupacao/**` e `/api/usuarios/**` (incluindo redirecionamento automático de rotas legadas `/gerente/**` e `/backoffice/**`).
+- Qualquer tentativa de acesso fora do escopo do perfil retorna `HTTP 403 Forbidden` (`{ error: 'FORBIDDEN', code: 'RBAC_DENIED' }`).
+- A tabela `cancellation_audits` mantém trilha *append-only* protegida por trigger PostgreSQL (`RN-06`, `CA-03`), complementada pela exportação de logs estruturados (sem PII em claro) para o Axiom Log Drain com retenção de 365 dias (`RF-11`).

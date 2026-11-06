@@ -32,13 +32,18 @@ Os artefatos aqui consolidados foram produzidos pela esteira de engenharia de so
 * **[`security-compliance/compliance-assessment.md`](security-compliance/compliance-assessment.md):** Relatório de Impacto à Proteção de Dados Pessoais (DPIA - Art. 38 LGPD), política de DPO (Art. 41), bases legais (Art. 7º) e direitos dos titulares (Art. 18).
 
 ### 5. Qualidade e Estratégia de Testes
-* **[`quality/test-strategy.md`](quality/test-strategy.md):** Pirâmide de testes, matriz de rastreabilidade bidirecional cobrindo os critérios de aceite (AC-1 a AC-14, 26 casos de teste) e especificação dos testes de concorrência (venda vs reserva com zero double-booking).
+* **[`quality/test-strategy.md`](quality/test-strategy.md):** Pirâmide de testes, matriz de cobertura dos Critérios de Aceite (`CA-01` a `CA-14`), catálogo dos 26 Casos de Teste (`CT-01` a `CT-26`) no formato *Dado que / Quando / Então* e especificação dos testes de concorrência ACID.
 
 ### 6. Planejamento Operacional e DevOps
 * **[`planning/sprints-e-backlog.md`](planning/sprints-e-backlog.md):** Plano Mestre de Sprints, Backlog e Roadmap oficial do Kanban CineDoom com 33 issues distribuídas (23 em `cinedoom-app` e 10 em `manual-processos-software`), datas de início/término e matriz RACI.
 * **[`planning/tech-lead-plan.md`](planning/tech-lead-plan.md):** Detalhamento de 23 tarefas técnicas de desenvolvimento (`TASK-1` a `TASK-23`), caminho crítico e estimativa total de 116 horas.
 * **[`planning/devops-spec.md`](planning/devops-spec.md):** Configuração de CI/CD (GitHub Actions), provisionamento na Vercel, banco Neon e observabilidade via Axiom.
 
-### 7. Requisitos de Produto
-* **[`cinedoom-spec.md`](cinedoom-spec.md):** Especificação funcional formal com Histórias de Usuário (`US-1` a `US-11`) e Critérios de Aceite (`AC-1` a `AC-14`).
-* **[`cinedoom-spec.json`](cinedoom-spec.json):** Metadados estruturados consumíveis por automações e ferramentas de análise.
+### 7. Engenharia de Requisitos, Regras de Negócio e Rastreabilidade
+* **[`cinedoom-spec.md`](cinedoom-spec.md):** Especificação formal completa (SRS) padronizada em português conforme a Seção 6.4 da ISO/IEC/IEEE 12207:2021, separada em:
+  * **Stakeholders (`STK-01` a `STK-05`)** e **Necessidades Elicitadas (`NEC-01` a `NEC-08`)**;
+  * **Histórias de Usuário (`HU-01` a `HU-11`)**;
+  * **Requisitos Funcionais (`RF-01` a `RF-18`)** e **Requisitos Não Funcionais (`RNF-01` a `RNF-06`)**;
+  * **Regras de Negócio (`RN-01` a `RN-12`)**;
+  * **Critérios de Aceite (`CA-01` a `CA-14`)** e **Restrições (`RES-01` a `RES-06`)**;
+  * **Matriz de Rastreabilidade Ponta a Ponta**.

@@ -1,31 +1,28 @@
 ---
-kind: agent_artifact
-feature_id: F-CINEDOOM-PLATAFORMA-B2B-SAAS-C
-agent: UX
-generated_by:
-  run_id: run_2026-10-23T03-58-17_eedeb0ce
-  session_id: 2026-09-03T15-33-01-hdb88xzyiu
-  model: anthropic:claude-sonnet-4-6
-generated_at: 2026-10-23T04:36:33.557Z
-regenerative: true
-title: "[UX] CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd"
+document_id: SPEC-CINEDOOM-UX-DESIGN-001
+version: "2.0.0"
+date: "2026-11-05"
+status: "Aprovado e Consolidado"
+standard: "ABNT NBR ISO/IEC/IEEE 12207:2021 (Cláusula 6.4.5) & WCAG 2.1 Nível AA"
+title: "Design de Experiência do Usuário (UX), Fluxos de Navegação e Wireframes — CineDoom"
 ---
 
-# UX — CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd
+# Design de Experiência do Usuário (UX), Fluxos de Navegação e Wireframes — CineDoom
 
-> Artefato derivado de `.specs/features/F-CINEDOOM-PLATAFORMA-B2B-SAAS-C/spec.md` e gerado pelo agente **UX**
-> via AI-4SDLC Platform. **Regenerative work product** (não-canonical SDD).
-> Não edite manualmente — re-gere via `sdlc resume`.
+> **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`HU-01` a `HU-11`, `RF-01` a `RF-18`, `RNF-04`, `RNF-05`, `CA-01` a `CA-14`).
 
-## Resumo
+## Resumo Executivo
 
-UX design para plataforma B2B SaaS de bilheteria presencial e back-office para cinemas independentes: fluxos de autenticação, venda de ingresso com mapa de assentos, cancelamento auditável, painel de ocupação em tempo real e back-office de gestão (filmes, salas, sessões, usuários) para perfis Atendente e Gerente.
+Especificação de Experiência do Usuário (UX) para a plataforma SaaS **CineDoom**: contempla as jornadas de navegação, fluxos de interação em Mermaid, protótipos de baixa fidelidade (*wireframes* ASCII), diretrizes do sistema de design e requisitos de acessibilidade (**WCAG 2.1 Nível AA**) para os perfis **Atendente**, **Gerente** e **Espectador (Cliente)**.
 
-## User flows
+---
 
-### FLOW-1. Autenticação e Roteamento por Perfil
+## 1. Fluxos de Usuário (Jornadas de Interação)
 
-Fluxo de login com NextAuth.js e roteamento condicional por role ATENDENTE ou GERENTE após autenticação bem-sucedida.
+### FLOW-1. Autenticação e Roteamento por Perfil (`RF-01`, `RF-14`, `CA-05`, `CA-10`)
+
+Fluxo de login com NextAuth.js e roteamento condicional automático conforme o papel do usuário autenticado (`ATENDENTE`, `GERENTE` ou `CLIENTE`).
 
 ```mermaid
 flowchart TD
@@ -34,13 +31,14 @@ flowchart TD
     C -- Não --> D[Exibe erro de autenticação]
     D --> B
     C -- Sim --> E{Perfil do usuário?}
-    E -- ATENDENTE --> F[Dashboard Atendente - Seleção de Sessão]
-    E -- GERENTE --> G[Dashboard Gerente - Painel de Ocupação]
+    E -- ATENDENTE --> F[Dashboard Atendente - Seleção de Sessão e Balcão]
+    E -- GERENTE --> G[Dashboard Gerente - Painel de Ocupação e Gestão]
+    E -- CLIENTE --> H[Portal do Cliente - Catálogo e Minhas Reservas]
 ```
 
-### FLOW-2. Atendente - Seleção de Sessão e Abertura do Mapa
+### FLOW-2. Atendente — Seleção de Sessão e Abertura do Mapa (`RF-05`, `CA-02`)
 
-Atendente visualiza sessões do dia, seleciona uma sessão e abre o mapa de assentos com polling automático de 2 segundos para atualização de disponibilidade em tempo real.
+O Atendente visualiza as sessões do dia, seleciona uma sessão e abre o mapa de assentos com polling automático a cada 2 segundos para atualização de disponibilidade em tempo real.
 
 ```mermaid
 flowchart TD
@@ -48,16 +46,16 @@ flowchart TD
     B --> C[Seleciona sessão desejada]
     C --> D[Carrega Mapa de Assentos]
     D --> E[Polling a cada 2s: GET /api/sessoes/id/assentos]
-    E --> F{Assento disponível?}
-    F -- Sim --> G[Assento verde - clicável]
-    F -- Não --> H[Assento vermelho - bloqueado]
+    E --> F{Estado do assento?}
+    F -- AVAILABLE --> G[Assento verde - clicável]
+    F -- SOLD ou RESERVED --> H[Assento ocupado/reservado - bloqueado para nova venda]
     G --> I[Atendente clica no assento]
     I --> J[Abre formulário de venda]
 ```
 
-### FLOW-3. Atendente - Venda de Ingresso (Fluxo Principal)
+### FLOW-3. Atendente — Venda Presencial de Ingresso (`RF-06`, `RF-07`, `RF-09`, `CA-01`, `CA-06`)
 
-Fluxo ACID de venda de ingresso com validação de formulário, trava atômica anti-double-booking, cifragem de CPF e feedback imediato em caso de conflito de concorrência.
+Fluxo ACID de venda de ingresso com validação de formulário, trava atômica anti-double-booking (`SELECT FOR UPDATE`), proteção criptográfica de CPF (`HMAC-SHA256` + `AES-256-GCM`) e feedback imediato em caso de conflito de concorrência.
 
 ```mermaid
 flowchart TD
@@ -67,118 +65,120 @@ flowchart TD
     D --> B
     C -- Sim --> E[POST /api/vendas - trava SELECT FOR UPDATE]
     E --> F{Assento ainda disponível?}
-    F -- Conflito --> G[Erro: assento já ocupado - feedback imediato]
+    F -- Conflito HTTP 409 --> G[Erro: assento já ocupado - feedback imediato]
     G --> H[Mapa recarrega - assento marcado como ocupado]
-    F -- Sucesso --> I[Ingresso criado - dados PII cifrados]
+    F -- Sucesso HTTP 201 --> I[Ingresso criado - dados PII cifrados]
     I --> J[Tela de confirmação: código do ingresso]
     J --> K([Atendente informa código ao comprador])
 ```
 
-### FLOW-4. Atendente - Cancelamento Auditável de Ingresso
+### FLOW-4. Atendente — Cancelamento Auditável de Ingresso (`RF-08`, `RN-06`, `CA-03`)
 
-Fluxo de cancelamento com registro imutável em auditoria antes da liberação do assento, garantindo rastreabilidade por usuário e timestamp UTC.
+Fluxo de cancelamento com registro imutável em tabela de auditoria *append-only* antes da liberação do assento, garantindo rastreabilidade por usuário e carimbo de tempo UTC.
 
 ```mermaid
 flowchart TD
     A([Atendente autenticado]) --> B[Busca ingresso por código ou CPF]
     B --> C{Ingresso encontrado no tenant?}
     C -- Não --> D[Mensagem: ingresso não localizado]
+    D --> B
     C -- Sim --> E[Exibe detalhes do ingresso]
     E --> F[Atendente clica em Cancelar Ingresso]
     F --> G[Modal: campo obrigatório de Motivo do Cancelamento]
     G --> H{Motivo informado?}
     H -- Não --> I[Validação: campo obrigatório]
-    H -- Sim --> J[POST /api/cancelamentos]
-    J --> K[Persiste auditoria_cancelamentos ANTES de liberar assento]
-    K --> L[Assento liberado no mapa]
+    I --> G
+    H -- Sim --> J[POST /api/ingressos/id/cancelar]
+    J --> K[Persiste cancellation_audits ANTES de liberar assento]
+    K --> L[Assento liberado para AVAILABLE no mapa]
     L --> M[Confirmação de cancelamento exibida]
 ```
 
-### FLOW-5. Gerente - Painel de Ocupação em Tempo Real
+### FLOW-5. Gerente — Painel de Ocupação em Tempo Real (`RF-10`, `CA-07`)
 
-Painel de ocupação do Gerente exibindo percentual de assentos vendidos por sessão do dia corrente, isolado por tenant_id, com atualização via reload de página.
+Painel de ocupação do Gerente exibindo percentual de assentos vendidos e reservados por sessão do dia corrente, isolado por `tenant_id`.
 
 ```mermaid
 flowchart TD
     A([Gerente autenticado]) --> B[Dashboard Gerente]
-    B --> C[GET /api/ocupacao/dia-corrente]
+    B --> C[GET /api/ocupacao/painel]
     C --> D[Lista todas as sessões do dia do tenant]
     D --> E[Exibe card por sessão: percentual vendidos/total]
     E --> F{Gerente quer atualizar?}
     F -- Recarrega página --> C
-    F -- Permanece na tela --> G[Dados estáticos até próximo reload]
+    F -- Permanece na tela --> G[Visualização consolidada da grade]
 ```
 
-### FLOW-6. Gerente - Cadastro e Gestão de Filmes
+### FLOW-6. Gerente — Cadastro e Gestão de Filmes (`RF-02`, `RN-02`, `CA-08`)
 
-CRUD de filmes acessível exclusivamente ao Gerente, com validação de campos obrigatórios e isolamento por tenant_id.
+CRUD de filmes acessível exclusivamente ao Gerente, com validação de campos obrigatórios e isolamento por `tenant_id`.
 
 ```mermaid
 flowchart TD
-    A([Gerente autenticado]) --> B[Back-office: Catálogo de Filmes]
+    A([Gerente autenticado]) --> B[Gestão: Catálogo de Filmes]
     B --> C{Ação desejada?}
     C -- Novo filme --> D[Formulário: título, sinopse, duração, classificação]
     D --> E{Campos válidos?}
     E -- Não --> F[Erros descritivos por campo]
     F --> D
-    E -- Sim --> G[POST /api/filmes - persiste com tenant_id]
+    E -- Sim --> G[POST /api/gestao/filmes - persiste com tenant_id]
     G --> H[Filme listado no catálogo]
     C -- Editar --> I[Formulário preenchido com dados existentes]
     I --> E
     C -- Listar --> J[Grid de filmes do tenant]
 ```
 
-### FLOW-7. Gerente - Cadastro de Salas e Layout de Assentos
+### FLOW-7. Gerente — Cadastro de Salas e Layout de Assentos (`RF-03`, `RN-02`, `CA-08`)
 
-Gestão de salas com definição de layout de assentos, restrita ao Gerente, com persistência isolada por tenant.
+Gestão de salas com definição de layout de fileiras e colunas de assentos, restrita ao Gerente, com persistência isolada por tenant.
 
 ```mermaid
 flowchart TD
-    A([Gerente autenticado]) --> B[Back-office: Salas]
+    A([Gerente autenticado]) --> B[Gestão: Salas]
     B --> C{Ação?}
     C -- Nova sala --> D[Formulário: nome, capacidade, layout de assentos]
     D --> E{Configuração válida?}
     E -- Não --> F[Erros por campo]
     F --> D
-    E -- Sim --> G[POST /api/salas - persiste layout com tenant_id]
+    E -- Sim --> G[POST /api/gestao/salas - persiste layout com tenant_id]
     G --> H[Sala disponível para vincular a sessões]
     C -- Editar sala --> I[Editar nome e layout]
     I --> E
     C -- Listar --> J[Lista de salas do tenant com capacidade]
 ```
 
-### FLOW-8. Gerente - Criação e Gestão de Sessões
+### FLOW-8. Gerente — Criação e Gestão de Sessões (`RF-04`, `RN-03`, `RN-04`, `CA-08`)
 
-Criação de sessões vinculando filme, sala e horário, com validação de conflito de agenda e campos obrigatórios, restrita ao Gerente.
+Criação de sessões vinculando filme, sala e horário, com pré-população automática de `SessionSeat` e validação de conflito de agenda, restrita ao Gerente.
 
 ```mermaid
 flowchart TD
-    A([Gerente autenticado]) --> B[Back-office: Sessões]
+    A([Gerente autenticado]) --> B[Gestão: Sessões]
     B --> C[Lista sessões do tenant]
     C --> D[Criar nova sessão]
-    D --> E[Formulário: filme, sala, data, horário]
+    D --> E[Formulário: filme, sala, data, horário, preço]
     E --> F{Campos obrigatórios preenchidos?}
     F -- Não --> G[Erros descritivos por campo]
     G --> E
     F -- Sim --> H{Conflito de sala/horário?}
-    H -- Sim --> I[Erro: sala já ocupada neste horário]
+    H -- Sim --> I[Erro HTTP 409: sala já ocupada neste horário]
     I --> E
-    H -- Não --> J[POST /api/sessoes - persiste sessão]
-    J --> K[Sessão disponível na bilheteria]
+    H -- Não --> J[POST /api/gestao/sessoes - persiste sessão e SessionSeats]
+    J --> K[Sessão disponível na bilheteria e no portal]
 ```
 
-### FLOW-9. Gerente - Gestão de Usuários Atendentes
+### FLOW-9. Gerente — Gestão de Usuários Atendentes (`RF-01`, `RN-01`, `CA-05`)
 
-Gerente cria e gerencia contas de Atendentes vinculadas ao seu tenant com role ATENDENTE, controlando acesso granular à bilheteria.
+O Gerente cria e gerencia contas de Atendentes vinculadas ao seu cinema tenant com papel `ATENDENTE`, controlando o acesso granular à bilheteria.
 
 ```mermaid
 flowchart TD
-    A([Gerente autenticado]) --> B[Back-office: Usuários]
+    A([Gerente autenticado]) --> B[Gestão: Usuários]
     B --> C[Lista atendentes do tenant]
     C --> D[Criar novo atendente]
     D --> E[Formulário: nome, e-mail, senha temporária]
     E --> F{Dados válidos?}
-    F -- Não --> G[Erros por campo]
+    E -- Não --> G[Erros por campo]
     G --> E
     F -- Sim --> H[POST /api/usuarios - cria com role ATENDENTE e tenant_id]
     H --> I[Atendente pode acessar bilheteria]
@@ -186,25 +186,46 @@ flowchart TD
     J --> K[Conta desativada - acesso bloqueado]
 ```
 
-### FLOW-10. Controle de Acesso RBAC - Atendente tenta rota proibida
+### FLOW-10. Controle de Acesso RBAC — Bloqueio de Rota Restrita (`RF-01`, `RN-01`, `CA-05`)
 
-Middleware RBAC intercepta tentativa de acesso de Atendente a rotas restritas ao Gerente, retornando HTTP 403 e redirecionando para área permitida.
+O middleware RBAC intercepta tentativas de acesso de Atendente ou Cliente a rotas restritas ao Gerente, retornando `HTTP 403 Forbidden`.
 
 ```mermaid
 flowchart TD
-    A([Atendente autenticado]) --> B[Tenta acessar rota de gerenciamento]
+    A([Atendente ou Cliente autenticado]) --> B[Tenta acessar rota /gestao ou /api/gestao]
     B --> C[Middleware verifica role no JWT]
     C --> D{Role é GERENTE?}
-    D -- Não ATENDENTE --> E[HTTP 403 Forbidden]
-    E --> F[Redireciona para Dashboard Atendente]
+    D -- Não --> E[HTTP 403 Forbidden]
+    E --> F[Bloqueia operação e redireciona para área permitida]
     D -- Sim --> G[Acesso liberado - apenas para GERENTE]
 ```
 
-## Wireframes
+### FLOW-11. Espectador — Reserva Online no Portal e Baixa Presencial (`RF-12` a `RF-18`, `CA-09` a `CA-14`)
+
+Jornada híbrida do espectador no Portal do Cliente: consulta de filmes e sessões, seleção de assento (> 60 min antes do início), emissão de voucher `CD-XXXX` por e-mail e conversão presencial em ingresso vendido (`SOLD`) no balcão da bilheteria.
+
+```mermaid
+flowchart TD
+    A([Espectador no Portal do Cliente]) --> B[Seleciona Filme, Data e Sessão]
+    B --> C[Escolhe poltronas disponíveis no mapa]
+    C --> D{Faltam mais de 60 min para a sessão?}
+    D -- Não --> E[Bloqueia reserva web e orienta compra presencial no balcão]
+    D -- Sim --> F[Confirma dados e consentimento LGPD]
+    F --> G[Trava SELECT FOR UPDATE: Assento muda para RESERVED]
+    G --> H[Emite Voucher CD-XXXX em tela e envia E-mail Transacional]
+    H --> I{Cliente comparece até 1h antes?}
+    I -- Sim --> J[Atendente localiza reserva por código/CPF e confirma pagamento]
+    J --> K[Reserva vira CONFIRMED e Assento vira SOLD]
+    I -- Não compareceu --> L[Expiração Just-in-Time libera assento para AVAILABLE]
+```
+
+---
+
+## 2. Protótipos de Baixa Fidelidade (Wireframes)
 
 ### SCREEN-1: Login
 
-```
+```text
 +----------------------------------+
 |         CINEDOOM                 |
 |                                  |
@@ -217,18 +238,18 @@ flowchart TD
 +----------------------------------+
 ```
 
-### SCREEN-2: Dashboard Atendente - Sessões do Dia
+### SCREEN-2: Dashboard Atendente — Sessões do Dia
 
-```
+```text
 +--------------------------------------------------+
 | CINEDOOM  |  Olá, Atendente  |  [Sair]          |
 +--------------------------------------------------+
-| Sessões de Hoje - 12/07/2025                     |
+| Sessões de Hoje - 05/11/2026                     |
 +--------------------------------------------------+
-| [14:00] Matrix IV  - Sala 1  - 40/120 vendidos   |
-| [16:30] Divertida Mente 3 - Sala 2 - 80/100      |
-| [19:00] Matrix IV  - Sala 1  - 5/120 vendidos    |
-| [21:30] Oppenheimer - Sala 3 - 0/150 vendidos    |
+| [14:00] Duna: Parte Dois - Sala 1 - 40/120 vend. |
+| [16:30] Ainda Estou Aqui - Sala 2 - 80/100 vend. |
+| [19:00] O Brutalista     - Sala 1 -  5/120 vend. |
+| [21:30] Anora            - Sala 3 -  0/150 vend. |
 +--------------------------------------------------+
 | Selecione uma sessão para abrir o mapa           |
 +--------------------------------------------------+
@@ -236,39 +257,39 @@ flowchart TD
 
 ### SCREEN-3: Mapa de Assentos
 
-```
+```text
 +-------------------------------------------------------+
-| CINEDOOM | Matrix IV - Sala 1 - 19:00 | [Sair]      |
+| CINEDOOM | Duna: Parte Dois - Sala 1 - 19:00 | [Sair] |
 +-------------------------------------------------------+
-| [V]=Vendido  [D]=Disponível  [S]=Selecionado          |
+| [V]=Vendido [R]=Reservado [D]=Disponível [S]=Selec.   |
 |  Atualização automática a cada 2s                     |
 +-------------------------------------------------------+
-|  TELA  ================================================|
-|  A: [D][D][V][V][D][D][D][V][D][D]                   |
-|  B: [D][V][V][D][D][D][V][V][D][D]                   |
-|  C: [D][D][D][D][D][D][D][D][D][D]                   |
-|  D: [V][V][V][D][D][D][D][V][V][V]                   |
-|  E: [D][D][D][D][D][D][D][D][D][D]                   |
+|  TELA  ===============================================|
+|  A: [D][D][V][V][D][D][D][R][D][D]                    |
+|  B: [D][V][V][D][D][D][V][V][D][D]                    |
+|  C: [D][D][D][D][S][D][D][D][D][D]                    |
+|  D: [V][V][V][D][D][D][D][V][V][V]                    |
+|  E: [D][D][D][D][D][D][D][D][D][D]                    |
 +-------------------------------------------------------+
-| Assento selecionado: --      [Confirmar Seleção]      |
+| Assento selecionado: C-05     [Confirmar Seleção]     |
 +-------------------------------------------------------+
 ```
 
 ### SCREEN-4: Formulário de Venda de Ingresso
 
-```
+```text
 +------------------------------------------+
 | CINEDOOM | Venda de Ingresso             |
 +------------------------------------------+
-| Sessão: Matrix IV - Sala 1 - 19:00       |
+| Sessão: Duna: Parte Dois - Sala 1 - 19:00|
 | Assento: C-05                            |
 +------------------------------------------+
 | Nome completo: [_______________________] |
 | CPF:           [___.___.___-__]          |
 | E-mail:        [_______________________] |
 |                                          |
-| [x] Concordo com coleta de dados (LGPD) |
-|     Timestamp de consentimento: --       |
+| [x] Concordo com coleta de dados (LGPD)  |
+|     Timestamp de consentimento: UTC      |
 +------------------------------------------+
 |  [Cancelar]        [Confirmar Venda]     |
 +------------------------------------------+
@@ -276,15 +297,15 @@ flowchart TD
 
 ### SCREEN-5: Confirmação de Venda
 
-```
+```text
 +------------------------------------------+
 | CINEDOOM | Venda Confirmada ✓            |
 +------------------------------------------+
-|  Ingresso #ING-2025-00847                |
+|  Ingresso #ING-2026-00847                |
 |  Comprador: João Silva                   |
-|  Sessão: Matrix IV - Sala 1 - 19:00      |
+|  Sessão: Duna: Parte Dois - Sala 1 19:00 |
 |  Assento: C-05                           |
-|  Pagamento: Offline (registrado)         |
+|  Pagamento: Presencial (registrado)      |
 +------------------------------------------+
 |  Informe o código ao comprador.          |
 +------------------------------------------+
@@ -294,21 +315,20 @@ flowchart TD
 
 ### SCREEN-6: Cancelamento de Ingresso
 
-```
+```text
 +------------------------------------------+
 | CINEDOOM | Cancelar Ingresso             |
 +------------------------------------------+
 | Buscar ingresso:                         |
 | Código: [___________]  [Buscar]          |
 +------------------------------------------+
-| Ingresso #ING-2025-00847                 |
+| Ingresso #ING-2026-00847                 |
 | Comprador: João Silva                    |
-| Sessão: Matrix IV - Sala 1 - 19:00       |
+| Sessão: Duna: Parte Dois - Sala 1 19:00  |
 | Assento: C-05                            |
 +------------------------------------------+
 | Motivo do cancelamento: (obrigatório)    |
 | [________________________________________|
-|  ________________________________________|
 |  ______________________________________] |
 +------------------------------------------+
 | Executor: atendente@cinema.com           |
@@ -316,38 +336,38 @@ flowchart TD
 +------------------------------------------+
 ```
 
-### SCREEN-7: Dashboard Gerente - Painel de Ocupação
+### SCREEN-7: Dashboard Gerente — Painel de Ocupação
 
-```
+```text
 +-----------------------------------------------------------+
-| CINEDOOM  |  Olá, Gerente  |  Ocupação do Dia  |  [Sair] |
+| CINEDOOM  |  Olá, Gerente  |  Ocupação do Dia  |  [Sair]  |
 +-----------------------------------------------------------+
-| Painel de Ocupação - 12/07/2025  [Recarregar]            |
+| Painel de Ocupação - 05/11/2026  [Recarregar]             |
 +-----------------------------------------------------------+
-| Sessão                | Sala   | Vendidos | Total | %    |
-+-----------------------+--------+----------+-------+------+
-| 14:00 Matrix IV       | Sala 1 |   40     |  120  | 33%  |
-| 16:30 Divertida Mente | Sala 2 |   80     |  100  | 80%  |
-| 19:00 Matrix IV       | Sala 1 |    5     |  120  |  4%  |
-| 21:30 Oppenheimer     | Sala 3 |    0     |  150  |  0%  |
+| Sessão                | Sala   | Vendidos | Total | %     |
++-----------------------+--------+----------+-------+-------+
+| 14:00 Duna: Parte 2   | Sala 1 |   40     |  120  | 33.3% |
+| 16:30 Ainda Estou Aqui| Sala 2 |   80     |  100  | 80.0% |
+| 19:00 O Brutalista    | Sala 1 |    5     |  120  |  4.2% |
+| 21:30 Anora           | Sala 3 |    0     |  150  |  0.0% |
 +-----------------------------------------------------------+
-| [Gerenciar Filmes] [Salas] [Sessões] [Usuários]          |
+| [Gerenciar Filmes] [Salas] [Sessões] [Usuários]           |
 +-----------------------------------------------------------+
 ```
 
-### SCREEN-8: Back-office - Catálogo de Filmes
+### SCREEN-8: Gestão (Back-office) — Catálogo de Filmes
 
-```
+```text
 +----------------------------------------------+
-| CINEDOOM Back-Office | Filmes         [Sair] |
+| CINEDOOM Gestão | Filmes              [Sair] |
 +----------------------------------------------+
 | [+ Novo Filme]              [Buscar: ______] |
 +----------------------------------------------+
 | Título           | Duração | Classif | Ações |
 +------------------+---------+---------+-------+
-| Matrix IV        | 148 min | 14 anos | [Ed.] |
-| Divertida Mente3 | 100 min | Livre   | [Ed.] |
-| Oppenheimer      | 180 min | 14 anos | [Ed.] |
+| Duna: Parte Dois | 166 min | 14 anos | [Ed.] |
+| Ainda Estou Aqui | 135 min | 14 anos | [Ed.] |
+| O Brutalista     | 215 min | 16 anos | [Ed.] |
 +----------------------------------------------+
 | Voltar ao Painel                             |
 +----------------------------------------------+
@@ -355,16 +375,16 @@ flowchart TD
 
 ### SCREEN-9: Formulário de Filme (Criar/Editar)
 
-```
+```text
 +----------------------------------------------+
-| CINEDOOM | Novo Filme                           |
+| CINEDOOM | Novo Filme                        |
 +----------------------------------------------+
 | Título:        [__________________________]  |
 | Sinopse:       [__________________________]  |
 |                [__________________________]  |
 | Duração (min): [______]                      |
-| Classificação: [Livre v]                     |
-| Gênero:        [__________________________]  |
+| Classificação: [14 anos v]                   |
+| Diretor:       [__________________________]  |
 +----------------------------------------------+
 | * Campo obrigatório                          |
 +----------------------------------------------+
@@ -372,55 +392,55 @@ flowchart TD
 +----------------------------------------------+
 ```
 
-### SCREEN-10: Back-office - Gestão de Salas
+### SCREEN-10: Gestão (Back-office) — Salas
 
-```
+```text
 +----------------------------------------------+
-| CINEDOOM Back-Office | Salas          [Sair] |
+| CINEDOOM Gestão | Salas               [Sair] |
 +----------------------------------------------+
 | [+ Nova Sala]                                |
 +----------------------------------------------+
-| Nome    | Capacidade | Linhas | Cols | Ações  |
-+---------+------------+--------+------+--------+
-| Sala 1  |    120     |   10   |  12  | [Ed.]  |
-| Sala 2  |    100     |   10   |  10  | [Ed.]  |
-| Sala 3  |    150     |   12   |  13  | [Ed.]  |
+| Nome    | Capacidade | Linhas | Cols | Ações |
++---------+------------+--------+------+-------+
+| Sala 1  |    120     |   10   |  12  | [Ed.] |
+| Sala 2  |    100     |   10   |  10  | [Ed.] |
+| Sala 3  |    150     |   12   |  13  | [Ed.] |
 +----------------------------------------------+
 | Voltar ao Painel                             |
 +----------------------------------------------+
 ```
 
-### SCREEN-11: Back-office - Sessões
+### SCREEN-11: Gestão (Back-office) — Sessões
 
-```
+```text
 +------------------------------------------------------------+
-| CINEDOOM Back-Office | Sessões                   [Sair] |
+| CINEDOOM Gestão | Sessões                           [Sair] |
 +------------------------------------------------------------+
-| [+ Nova Sessão]           Filtrar por data: [__________] |
+| [+ Nova Sessão]           Filtrar por data: [__________]   |
 +------------------------------------------------------------+
-| Filme              | Sala   | Data       | Hora  | Ações  |
-+--------------------+--------+------------+-------+--------+
-| Matrix IV          | Sala 1 | 12/07/2025 | 14:00 | [Ed.]  |
-| Divertida Mente 3  | Sala 2 | 12/07/2025 | 16:30 | [Ed.]  |
-| Oppenheimer        | Sala 3 | 12/07/2025 | 21:30 | [Ed.]  |
+| Filme              | Sala   | Data       | Hora  | Ações   |
++--------------------+--------+------------+-------+---------+
+| Duna: Parte Dois   | Sala 1 | 05/11/2026 | 14:00 | [Ed.]   |
+| Ainda Estou Aqui   | Sala 2 | 05/11/2026 | 16:30 | [Ed.]   |
+| Anora              | Sala 3 | 05/11/2026 | 21:30 | [Ed.]   |
 +------------------------------------------------------------+
-| Voltar ao Painel                                         |
+| Voltar ao Painel                                           |
 +------------------------------------------------------------+
 ```
 
-### SCREEN-12: Back-office - Gestão de Usuários
+### SCREEN-12: Gestão (Back-office) — Usuários
 
-```
+```text
 +----------------------------------------------+
-| CINEDOOM Back-Office | Usuários       [Sair] |
+| CINEDOOM Gestão | Usuários            [Sair] |
 +----------------------------------------------+
 | [+ Novo Atendente]                           |
 +----------------------------------------------+
-| Nome         | E-mail             | Status    |
-+--------------+--------------------+-----------+
-| Ana Souza    | ana@cinema.com     | Ativo      |
-| Carlos Lima  | carlos@cinema.com  | Ativo      |
-| Marcos Reis  | marcos@cinema.com  | Inativo    |
+| Nome         | E-mail             | Status   |
++--------------+--------------------+----------+
+| Ana Souza    | ana@cinema.com     | Ativo    |
+| Carlos Lima  | carlos@cinema.com  | Ativo    |
+| Marcos Reis  | marcos@cinema.com  | Inativo  |
 +----------------------------------------------+
 | Novo Atendente:                              |
 | Nome:  [________________________]            |
@@ -430,19 +450,28 @@ flowchart TD
 +----------------------------------------------+
 ```
 
-## Design system notes
+---
 
-Paleta: primária #1A1A2E (azul escuro cinema), secundária #E94560 (vermelho ingresso/CTA), neutros #F5F5F5 (fundo), #FFFFFF (cards), #2D2D2D (texto principal), #6B7280 (texto secundário). Semântica de status de assentos: verde #22C55E (disponível), vermelho #EF4444 (vendido/ocupado), azul #3B82F6 (selecionado pelo atendente atual), cinza #9CA3AF (bloqueado/manutenção). Tipografia: Inter como fonte principal; heading 24px/700, subheading 18px/600, body 14px/400, caption 12px/400; line-height 1.5 para body. Spacing: escala 4px base (4, 8, 12, 16, 24, 32, 48px). Componentes-chave: SeatMap (grid responsivo de assentos com estados visuais distintos), SessionCard (card de sessão com barra de ocupação visual), OccupancyTable (tabela com coluna de percentual com barra progress inline), FormField (label + input + mensagem de erro por campo), ConfirmationModal (modal de confirmação para ações destrutivas como cancelamento), BadgeRole (chip ATENDENTE/GERENTE com cores distintas). Bordas: radius 6px para cards e inputs, 4px para badges. Sombra: shadow-sm para cards elevados. Modo escuro não previsto no MVP.
+## 3. Diretrizes do Sistema de Design (Design System)
 
-## Acessibilidade
+- **Paleta de Cores:** Primária `#1A1A2E` (azul escuro cinema), secundária/CTA `#E94560` (vermelho ingresso), fundos neutros `#F5F5F5` e `#FFFFFF`, texto principal `#2D2D2D` e texto secundário `#6B7280`.
+- **Semântica de Estados de Poltrona:**
+  - Verde `#22C55E`: Disponível (`AVAILABLE`)
+  - Vermelho `#EF4444`: Vendido/Ocupado (`SOLD`)
+  - Âmbar `#F59E0B`: Reservado Online (`RESERVED`)
+  - Azul `#3B82F6`: Selecionado na operação atual
+  - Cinza `#9CA3AF`: Bloqueado/Manutenção (`BLOCKED`)
+- **Tipografia e Espaçamento:** Fonte principal `Inter` (títulos `24px/700`, subtítulos `18px/600`, corpo `14px/400`, legendas `12px/400`); grade de espaçamento base de `4px` (`4, 8, 12, 16, 24, 32, 48px`).
+- **Componentes Reutilizáveis:** `SeatMap`, `SessionCard`, `OccupancyTable`, `FormField` (com erro descritivo por campo conforme `CA-08`), `ConfirmationModal` e `BadgeRole`.
 
-- WCAG 2.1 AA: contraste mínimo 4.5:1 para texto body e 3:1 para texto grande — verificar vermelho #E94560 sobre fundos claros
-- Mapa de assentos: cada assento deve ter aria-label descritivo (ex: 'Assento C-05, disponível') e ser navegável via teclado (Tab + Enter/Space para selecionar)
-- Estados de assento comunicados via aria-pressed (selecionado) e aria-disabled (vendido/bloqueado), não apenas cor — daltonismo (deuteranopia) requer ícone ou padrão além da cor
-- Formulário de venda: aria-required em todos os campos obrigatórios; aria-describedby vinculando campo ao respectivo erro inline; foco gerenciado para primeiro campo com erro após submit
-- Modal de cancelamento: foco preso dentro do modal (focus trap) enquanto aberto; fechamento via Escape; aria-modal=true e role=dialog com aria-labelledby
-- Painel de ocupação: tabela com caption descritiva, scope=col em headers, dados numéricos alinhados à direita para leitura consistente com screen readers
-- Polling de 2s do mapa: atualizações via JavaScript não devem mover o foco do usuário nem causar anúncio automático de screen reader a cada ciclo — usar aria-live=off na região do mapa e anunciar apenas mudanças relevantes
-- Tamanho mínimo de área clicável dos assentos: 44x44px (WCAG 2.5.5) para uso em tablets touchscreen na bilheteria
-- Skip link 'Pular para o conteúdo principal' visível ao receber foco no topo de cada página
-- Mensagens de erro de concorrência (assento já vendido) devem ser anunciadas via aria-live=assertive para feedback imediato ao atendente
+---
+
+## 4. Diretrizes de Acessibilidade (WCAG 2.1 Nível AA — `RNF-04`)
+
+- **Contraste Visual:** Razão de contraste mínima de `4.5:1` para textos de corpo e `3:1` para textos grandes e elementos gráficos.
+- **Navegação por Teclado no Mapa de Assentos:** Cada poltrona possui `aria-label` descritivo (ex.: *"Assento C-05, disponível"*) e suporte completo a navegação via `Tab` e seleção com `Enter` ou `Space`.
+- **Independência de Cor (Daltonismo):** Estados comunicados via `aria-pressed` (selecionado) e `aria-disabled` (vendido/reservado/bloqueado), acompanhados de rótulos textuais e ícones.
+- **Formulários Acessíveis:** Atributos `aria-required` em todos os campos obrigatórios (`CA-06`, `CA-08`) e `aria-describedby` vinculando cada input à sua mensagem de erro específica.
+- **Modais de Confirmação:** Foco contido dentro do modal (*focus trap*), fechamento por tecla `Escape` e atributos `role="dialog"` e `aria-modal="true"`.
+- **Atualização Silenciosa no Polling de 2s:** As atualizações periódicas do mapa de assentos (`CA-02`) não deslocam o foco do teclado do operador; conflitos de concorrência (`HTTP 409`, `CA-01`) são anunciados via `aria-live="assertive"`.
+- **Área de Toque:** Dimensão mínima de `44x44px` (WCAG 2.5.5) nos botões de poltrona para operação ergonômica em terminais touchscreen de bilheteria (`RNF-04`, `RNF-05`).

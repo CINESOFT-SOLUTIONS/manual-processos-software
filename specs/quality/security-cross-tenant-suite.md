@@ -1,14 +1,15 @@
-# Relatório de Conformidade: Bateria de 500 Cenários de Isolamento Cross-Tenant (TASK-18 / Issue #18 / AC-4)
+# Relatório de Conformidade: Bateria de 500 Cenários de Isolamento Cross-Tenant (TASK-18 / Issue #18 / CA-04)
 
 ## 1. Rastreabilidade e Governança
 
 - **Issue:** #18 — `[TEST(SECURITY)] Suíte de testes automatizados de isolamento cross-tenant (500 cenários)`
-- **Task TechLead:** TASK-18
-- **Critério de Aceite Coberto:** AC-4 (Isolamento Multi-tenant Estrito)
-- **Casos de Teste Vinculados:** TC-4, TC-12, TC-15, TC-17, TC-18, TC-19
+- **Tarefa TechLead:** `TASK-18`
+- **Requisitos e Regras Cobertos:** `RNF-03` (Segurança e Isolamento Multi-tenant), `RN-12` (Isolamento Estrito por Tenant via Prisma Extension), `RES-02` (Isolamento Multi-tenant por Coluna `tenant_id`)
+- **Critério de Aceite Coberto:** `CA-04` (equiv. código `AC-4` — Isolamento Multi-tenant Estrito)
+- **Casos de Teste Vinculados:** `CT-04`, `CT-12`, `CT-15`, `CT-17`, `CT-18`, `CT-19` (equiv. `TC-4`, `TC-12`, `TC-15`, `TC-17`, `TC-18`, `TC-19`)
 - **Normas de Referência:**
-  - ABNT NBR ISO/IEC/IEEE 12207:2021 — Processo de Validação (6.4.11) e Processo de Garantia da Qualidade (7.2.3).
-  - OWASP Top 10 API Security Risks — API1:2023 Broken Object Level Authorization (BOLA).
+  - ABNT NBR ISO/IEC/IEEE 12207:2021 — Processo de Validação (Cláusula 6.4.11) e Processo de Garantia da Qualidade (Cláusula 7.2.3).
+  - OWASP Top 10 API Security Risks — API1:2023 *Broken Object Level Authorization* (BOLA).
 
 ---
 
@@ -23,10 +24,10 @@ A suíte foi implementada em `tests/unit/security-cross-tenant-suite.test.ts` e 
 - **Ingressos e Cancelamentos (40 cenários):** Tentativas de cancelamento cruzado de ingressos (`POST /api/ingressos/[id]/cancelar`) e vazamento em listagens (`GET /api/ingressos`). Retorno compulsório: `404 Not Found`, com zero transações de auditoria indevidas.
 - **Backoffice Operadores e Titulares LGPD (40 cenários):** Tentativas de leitura/edição/inativação de operadores (`/api/backoffice/usuarios/[id]`) e pedidos cruzados de anonimização Art. 18 LGPD (`/api/titulares/anonimizar`). Retorno compulsório: `404 Not Found`.
 
-### Categoria 2: Ataques de Injeção de Parâmetros, Headers e Body (150 cenários)
-- **Header Spoofing (50 cenários):** Envio de cabeçalhos forjados (`x-tenant-id`, `X-Tenant-Id`, `x-forced-tenant-id`, `x-override-tenant`, `x-tenant-override`) com IDs de tenants concorrentes. O sistema prioriza estritamente a sessão JWT do usuário, ignorando qualquer spoofing de cabeçalho.
-- **Query Parameter Tampering (50 cenários):** Injeção de parâmetros maliciosos na URL (`?tenantId=...`, `?tenant_id=...`, `?cinema_id=...`). O backend filtra compulsoriamente pelo `tenantId` da sessão autenticada.
-- **JSON Body Payload Tampering (50 cenários):** Payloads de escrita contendo `tenantId` de outro cinema. O backend sobrescreve compulsoriamente os campos pelo tenant do operador logado.
+### Categoria 2: Ataques de Injeção de Parâmetros, Cabeçalhos e Corpo da Requisição (150 cenários)
+- **Falsificação de Cabeçalhos / Header Spoofing (50 cenários):** Envio de cabeçalhos forjados (`x-tenant-id`, `X-Tenant-Id`, `x-forced-tenant-id`, `x-override-tenant`, `x-tenant-override`) com IDs de tenants concorrentes. O sistema prioriza estritamente a sessão JWT do usuário, ignorando qualquer spoofing de cabeçalho.
+- **Adulteração de Parâmetros de URL / Query Parameter Tampering (50 cenários):** Injeção de parâmetros maliciosos na URL (`?tenantId=...`, `?tenant_id=...`, `?cinema_id=...`). O backend filtra compulsoriamente pelo `tenantId` da sessão autenticada.
+- **Adulteração de Corpo JSON / Payload Tampering (50 cenários):** Payloads de escrita contendo `tenantId` de outro cinema. O backend sobrescreve compulsoriamente os campos pelo tenant do operador logado.
 
 ### Categoria 3: Validação Exaustiva da Tenancy Extension no Prisma (100 cenários)
 - 10 entidades de domínio protegidas (`Film`, `Room`, `Seat`, `Session`, `SessionSeat`, `Buyer`, `Ticket`, `Reservation`, `CancellationAudit`, `User`).
@@ -45,13 +46,13 @@ A suíte foi implementada em `tests/unit/security-cross-tenant-suite.test.ts` e 
 | Categoria | Cenários Executados | Taxa de Sucesso | Tempo de Execução |
 |---|---|---|---|
 | Categoria 1 (Endpoints REST BOLA) | 200 | 100% (200/200) | ~1.4s |
-| Categoria 2 (Header/Param/Body Injection) | 150 | 100% (150/150) | ~1.1s |
+| Categoria 2 (Injeção de Cabeçalho/Parâmetro/Payload) | 150 | 100% (150/150) | ~1.1s |
 | Categoria 3 (Prisma Tenancy Extension) | 100 | 100% (100/100) | ~0.6s |
-| Categoria 4 (Concorrência AsyncLocalStorage) | 50 | 100% (50/50) | ~0.8s |
+| Categoria 4 (Concorrência `AsyncLocalStorage`) | 50 | 100% (50/50) | ~0.8s |
 | **Total da Suíte de Segurança** | **500** | **100% (500/500)** | **~3.9s** |
 
 ---
 
 ## 4. Conclusão de Conformidade
 
-Todos os 500 cenários foram executados com **zero vazamentos de dados** e **100% de taxa de sucesso**. O sistema CineDoom atende rigorosamente ao critério **AC-4**, garantindo isolamento criptográfico e lógico pleno entre cinemas concorrentes na arquitetura multi-tenant.
+Todos os 500 cenários foram executados com **zero vazamentos de dados** e **100% de taxa de sucesso**. O sistema CineDoom atende rigorosamente ao critério de aceite **`CA-04` (`AC-4`)**, ao requisito não funcional **`RNF-03`** e à regra de negócio **`RN-12`**, garantindo isolamento criptográfico e lógico pleno entre cinemas concorrentes na arquitetura multi-tenant.

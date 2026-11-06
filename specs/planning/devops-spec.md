@@ -1,172 +1,137 @@
 ---
-kind: agent_artifact
-feature_id: F-CINEDOOM-PLATAFORMA-B2B-SAAS-C
-agent: DevOps
-generated_by:
-  run_id: run_2026-10-23T03-58-17_eedeb0ce
-  session_id: 2026-09-03T15-33-01-hdb88xzyiu
-  model: anthropic:claude-sonnet-4-6
-generated_at: 2026-10-23T04:46:54.821Z
-regenerative: true
-title: "[DevOps] CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd"
+document_id: SPEC-CINEDOOM-DEVOPS-001
+version: "2.0.0"
+date: "2026-11-05"
+status: "Aprovado e Consolidado"
+standard: "ABNT NBR ISO/IEC/IEEE 12207:2021 (Cláusulas 6.4.8, 6.4.12 e 6.4.13)"
+title: "Especificação de DevOps, Infraestrutura, Observabilidade e SLOs — CineDoom"
 ---
 
-# DevOps — CineDoom — plataforma B2B SaaS para cinemas independentes e redes de pequeno/méd
+# Especificação de DevOps, Infraestrutura, Observabilidade e SLOs — CineDoom
 
-> Artefato derivado de `.specs/features/F-CINEDOOM-PLATAFORMA-B2B-SAAS-C/spec.md` e gerado pelo agente **DevOps**
-> via AI-4SDLC Platform. **Regenerative work product** (não-canonical SDD).
-> Não edite manualmente — re-gere via `sdlc resume`.
+> **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-08`, `RF-11`, `RNF-01` a `RNF-06`, `CA-01` a `CA-14`, `RES-01` a `RES-06`) e [`ADR-002`](../adr/ADR-002-neon-postgresql-serverless.md) / [`ADR-010`](../adr/ADR-010-observabilidade-axiom-cicd-vercel.md).
 
-## Resumo
+## Resumo Executivo
 
-DevOps spec para CineDoom MVP — plataforma B2B SaaS bilheteria. Cobre topologia Vercel+Neon Serverless, SLOs de availability/latency/error_rate/ACID, observabilidade OTel estruturada, runbooks para incidentes críticos (double-booking, polling degradado, vazamento cross-tenant).
+Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraestrutura para o **CineDoom**. Define a topologia de implantação em **Vercel + Neon PostgreSQL Serverless**, os Objetivos e Indicadores de Nível de Serviço (**SLOs** e **SLIs**) de disponibilidade, latência, integridade ACID e isolamento multi-tenant, a especificação de observabilidade com logs estruturados no **Axiom** e os procedimentos operacionais padrão (*runbooks*) para resposta a incidentes.
 
-## Deployment topology
+---
 
-## Ambientes
+## 1. Topologia de Implantação e Ambientes
 
-### dev
-- Next.js 14 rodando local via `pnpm dev`
-- Neon Serverless branch dedicado por dev (branch feature via Neon CLI)
-- Variáveis via `.env.local` (cópia de `.env.example`)
-- Sem CDN; hot-reload padrão Next.js
-- Seed de dados via `prisma db seed`
+### 1.1 Ambiente de Desenvolvimento (`dev`)
+- Aplicação Next.js 14 executando localmente via `pnpm dev`.
+- Branch dedicado por desenvolvedor no Neon Serverless (ou fallback local resiliente).
+- Variáveis de ambiente carregadas via `.env.local` (baseado em `.env.example` documentado).
+- Seed automatizado de dados de demonstração via `npx prisma db seed`.
 
-### preview (staging por branch)
-- Vercel Preview Environments automáticos por PR/branch
-- Neon branch isolado por preview (criado via Vercel-Neon integration)
-- Variáveis de ambiente injetadas pelo Vercel (DATABASE_URL por branch)
-- Domínio: `cinedoom-<branch>.vercel.app`
-- Sem CDN de produção; edge network Vercel padrão
-- Testes de integração (ACID, isolamento, RBAC) rodam no CI apontando para este branch
+### 1.2 Ambiente de Homologação por Pull Request (`preview` / staging)
+- Ambientes *Vercel Preview* provisionados automaticamente para cada Pull Request / branch.
+- Branch efêmero e isolado do banco Neon criado via integração nativa Vercel-Neon, populado exclusivamente com dados sintéticos.
+- Domínio efêmero: `cinedoom-<branch>.vercel.app`.
+- O pipeline de CI no GitHub Actions executa verificação de tipos (`tsc --noEmit`), linting (`ESLint import/no-cycle`), os **748 testes unitários/integração (Vitest)** e a suíte E2E (**Playwright** em Chromium e Firefox) como *gate* obrigatório antes do merge.
 
-### prod
-- Vercel Production (região primária: GRU — São Paulo via Vercel Edge Network)
-- Next.js App Router com RSC + Route Handlers como API
-- Neon Serverless PostgreSQL — pool de conexões via Neon pooler (pgBouncer gerenciado), connection string via `DATABASE_URL` (pooled) e `DATABASE_URL_UNPOOLED` para migrações
-- Réplica de leitura Neon: 1 réplica read-only para queries do painel de ocupação (US-3/AC-7) — aliviando write-primary
-- CDN: Vercel Edge Network global para assets estáticos (JS, CSS, imagens de poster via `poster_url`)
-- Secrets: Vercel Environment Variables (criptografadas em repouso) — `DATABASE_URL`, `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` (AES-256-GCM), `CINEDOOM_CPF_HMAC_KEY` (HMAC-SHA256), `RESEND_API_KEY` (Notificação transacional), `NEXTAUTH_URL`
-- Rotação de secrets: manual pela equipe CineDoom via Vercel dashboard + Neon console
-- Migrações: `prisma migrate deploy` executado em CI/CD step pré-deploy (blocking gate)
-- Zero-downtime deploy: Vercel atomic deployments (swap instantâneo)
-- Rollback: Vercel instant rollback para deployment anterior via dashboard/CLI
-- Backups: Neon point-in-time recovery (PITR) — retenção 7 dias no plano padrão; snapshot diário manual recomendado para dados de auditoria (CancellationAudit)
-- Retenção de logs de aplicação: Vercel Log Drains → destino externo (ex: Axiom ou Datadog) com retenção 90 dias para logs operacionais, 365 dias para logs de auditoria LGPD/cancelamentos
-- Multi-tenancy: row-level isolation via Prisma Client Extension (AD-2) — nenhum dado traversa tenant_id boundary
-- LGPD: exclusão/anonimização de PII executada manualmente pela equipe CineDoom via script interno autenticado; CPF cifrado AES-256-GCM com chave rotacionável
+### 1.3 Ambiente de Produção (`prod`)
+- **Hospedagem:** Vercel Production (região primária de execução: `gru1` — São Paulo via Vercel Edge Network).
+- **Banco de Dados:** Neon Serverless PostgreSQL — pool de conexões gerenciado via PgBouncer (`DATABASE_URL`) para leituras/polling e conexão direta (`DATABASE_URL_UNPOOLED`) para migrações e transações ACID.
+- **CDN:** Vercel Edge Network global para distribuição de assets estáticos e cartazes (`poster_url`).
+- **Gestão de Segredos:** *Vercel Environment Variables* cifradas em repouso (`DATABASE_URL`, `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY`, `CINEDOOM_CPF_HMAC_KEY`, `RESEND_API_KEY`, `NEXTAUTH_URL`).
+- **Migrações de Esquema:** `prisma migrate deploy` executado como etapa bloqueante no pipeline de CI/CD antes da promoção do deploy.
+- **Implantação Zero-Downtime e Rollback:** Deploys atômicos na Vercel com capacidade de *rollback* instantâneo para a versão estável anterior via painel ou CLI.
+- **Backups e Recuperação:** *Point-in-Time Recovery* (PITR) nativo do Neon + snapshots periódicos da tabela imutável `cancellation_audits`.
+- **Retenção de Logs (`RF-11`):** Drenagem via *Vercel Log Drains* para o **Axiom** com retenção de **365 dias** para trilhas de auditoria LGPD e cancelamentos (`CA-03`).
 
-## SLOs
+---
 
-| ID | Metric | Target | Rationale |
+## 2. Objetivos de Nível de Serviço (SLOs)
+
+| ID | Métrica | Meta (Target) | Justificativa e Rastreabilidade |
 |---|---|---|---|
-| SLO-1 | `api_availability` | 99.5% mensal | Baseline conservador SaaS B2B single-region Vercel+Neon; exclui janelas de manutenção Neon programadas |
-| SLO-2 | `latency_p95_venda` | 800ms | NFR Performance — endpoint POST /api/ingressos incluindo SELECT FOR UPDATE + persistência em Neon poolado sob até 20 req/s |
-| SLO-3 | `latency_p99_venda` | 1500ms | NFR Performance — cauda longa aceitável para trava ACID em pico de concorrência |
-| SLO-4 | `latency_p95_polling` | 300ms | Mapa de assentos GET /api/sessoes/[id]/assentos — polling 2s requer resposta rápida para UX adequada |
-| SLO-5 | `error_rate_5xx` | <0.5% das requisições | Erros de servidor não devem exceder 0.5% do total de requests em janela de 5min |
-| SLO-6 | `double_booking_rate` | 0 ocorrências | NFR Reliability — zero double-bookings garantido por ACID; qualquer ocorrência é P0 imediato |
-| SLO-7 | `cross_tenant_leak_rate` | 0 ocorrências | NFR Security — nenhum vazamento cross-tenant tolerado; qualquer ocorrência é P0 com notificação LGPD |
+| **SLO-1** | `api_availability` | $\ge$ 99.5% mensal | Disponibilidade operacional da plataforma SaaS em produção (excluindo janelas programadas). |
+| **SLO-2** | `latency_p95_venda` | $<$ 800 ms | Atende ao **`RNF-01`** — endpoint de venda presencial (`POST /api/vendas`) e reserva online (`POST /api/portal/reservas`) incluindo trava `SELECT FOR UPDATE` sob carga de até 20 req/s. |
+| **SLO-3** | `latency_p99_venda` | $<$ 1.500 ms | Atende ao **`RNF-01`** — limite superior para o percentil 99 sob contenção de trava ACID em horários de estreia. |
+| **SLO-4** | `latency_p95_polling` | $<$ 300 ms | Atende ao **`RF-05`** e **`CA-02`** — consulta do mapa de assentos (`GET /api/sessoes/[id]/assentos`) a cada 2 segundos. |
+| **SLO-5** | `error_rate_5xx` | $<$ 0.5% das requisições | Taxa máxima de erros internos do servidor (`HTTP 5xx`) em janelas móveis de 5 minutos. |
+| **SLO-6** | `double_booking_rate` | `0 ocorrências` | Atende ao **`RNF-02`**, **`CA-01`** e **`CA-09`** — tolerância zero a vendas ou reservas duplas para a mesma poltrona. |
+| **SLO-7** | `cross_tenant_leak_rate` | `0 ocorrências` | Atende ao **`RNF-03`**, **`RN-12`** e **`CA-04`** — tolerância zero a vazamento de dados entre cinemas concorrentes. |
 
-## SLIs
+---
 
-| ID | Metric | Measurement | Source |
+## 3. Indicadores de Nível de Serviço (SLIs)
+
+| ID | Indicador | Fórmula de Medição | Fonte de Coleta |
 |---|---|---|---|
-| SLI-1 | `api_availability` | Porcentagem de requisições HTTP com status 2xx ou 4xx | excluindo 5xx) / total de requisições em janela 5min (Vercel Analytics + Log Drain |
-| SLI-2 | `latency_p95_venda` | Percentil 95 de duração do OTel span 'POST /api/ingressos' em ms | otel-collector → Axiom/Datadog |
-| SLI-3 | `latency_p99_venda` | Percentil 99 de duração do OTel span 'POST /api/ingressos' em ms | otel-collector |
-| SLI-4 | `latency_p95_polling` | Percentil 95 de duração do OTel span 'GET /api/sessoes/{id}/assentos' em ms | otel-collector |
-| SLI-5 | `error_rate_5xx` | count | http.response.status_code >= 500) / count(total requests) em janela 5min (Vercel Log Drain + métrica derivada |
-| SLI-6 | `double_booking_detected` | count | eventos 'double_booking_conflict' no log estruturado) — deve ser 0 em produção (application log audit |
-| SLI-7 | `cross_tenant_leak_detected` | count | alertas 'cross_tenant_query_attempt' disparados pelo Prisma Extension) — deve ser 0 (application log audit |
+| **SLI-1** | `api_availability` | $\text{Requisições HTTP (2xx + 4xx)} / \text{Total de Requisições}$ em janela de 5 min | Vercel Analytics + Axiom Log Drain |
+| **SLI-2** | `latency_p95_venda` | Percentil 95 de duração das requisições de venda/reserva em milissegundos | OpenTelemetry / Axiom |
+| **SLI-3** | `latency_p99_venda` | Percentil 99 de duração das requisições de venda/reserva em milissegundos | OpenTelemetry / Axiom |
+| **SLI-4** | `latency_p95_polling` | Percentil 95 de duração do endpoint `GET /api/sessoes/{id}/assentos` em ms | OpenTelemetry / Axiom |
+| **SLI-5** | `error_rate_5xx` | $\text{Contagem}(\text{status\_code} \ge 500) / \text{Contagem}(\text{total de requisições})$ em 5 min | Axiom Log Drain |
+| **SLI-6** | `double_booking_detected` | Contagem de eventos de inconsistência de assento duplicado nos logs de auditoria | Auditoria de Aplicação / Banco |
+| **SLI-7** | `cross_tenant_leak_detected` | Contagem de violações detectadas pela *Prisma Tenancy Extension* (`TenantContextError`) | Axiom Log Drain |
 
-## Observability spec
+---
 
-## Logs Estruturados (JSON)
+## 4. Especificação de Observabilidade (`RF-11`)
 
-Campos obrigatórios em todo log:
-- `timestamp`: ISO 8601 UTC
-- `level`: DEBUG | INFO | WARN | ERROR
-- `service`: 'cinedoom-api'
-- `env`: dev | preview | prod
-- `tenant_id`: UUID do tenant (NUNCA logar CPF, e-mail ou nome de comprador em claro)
-- `user_id`: UUID do usuário autenticado
-- `request_id`: UUID por request (header x-request-id propagado)
-- `module`: bilheteria | backoffice | auth | tenancy | ocupacao
+### 4.1 Estrutura de Logs em Formato JSON
+Todo registro de log emitido pela aplicação deve conter obrigatoriamente:
+- `timestamp`: Data e hora em formato ISO 8601 UTC
+- `level`: `DEBUG` | `INFO` | `WARN` | `ERROR`
+- `service`: `'cinedoom-api'`
+- `env`: `dev` | `preview` | `prod`
+- `tenant_id`: UUID do cinema tenant (**Proibido registrar CPF, e-mail ou nome de comprador em texto claro**)
+- `user_id`: UUID do operador ou cliente autenticado
+- `request_id`: UUID de correlação da requisição (`x-request-id`)
+- `module`: `bilheteria` | `catalogo` | `identidade` | `ocupacao` | `portal` | `tenancy`
 
-Campos adicionais por evento:
-- Venda: `session_id`, `seat_id`, `ticket_id`, `action: 'ticket_sold'`
-- Cancelamento: `ticket_id`, `cancellation_audit_id`, `motivo_hash` (não logar motivo PII em claro), `action: 'ticket_cancelled'`
-- Conflict ACID: `action: 'double_booking_conflict'`, `session_id`, `seat_id`, `competing_request_id`
-- Auth: `action: 'login_success'|'login_failure'|'authz_denied'`, `role`, `route`
-- Tenant isolation violation: `action: 'cross_tenant_query_attempt'`, `expected_tenant_id`, `attempted_tenant_id` — level ERROR
+**Campos específicos por evento de domínio:**
+- **Venda Confirmada (`RF-06`):** `session_id`, `seat_id`, `ticket_id`, `action: 'ticket_sold'`
+- **Cancelamento Auditável (`RF-08`, `CA-03`):** `ticket_id`, `cancellation_audit_id`, `action: 'ticket_cancelled'`
+- **Conflito de Concorrência ACID (`CA-01`, `CA-09`):** `action: 'double_booking_conflict_blocked'`, `session_id`, `seat_id`, `status_code: 409`
+- **Autenticação e RBAC (`RF-01`, `CA-05`):** `action: 'login_success' | 'login_failure' | 'rbac_denied'`, `role`, `route`
+- **Tentativa de Violação Cross-Tenant (`CA-04`):** `action: 'cross_tenant_query_attempt'`, `expected_tenant_id`, `attempted_tenant_id` (`level: ERROR`)
 
-## OTel Spans (Traces)
-
-- `POST /api/ingressos` — span raiz venda; child spans:
-  - `prisma.transaction.seat_lock` (SELECT FOR UPDATE)
-  - `prisma.insert.ticket`
+### 4.2 Rastreamento Distribuído (OpenTelemetry Spans)
+- `POST /api/vendas` e `POST /api/portal/reservas` — span raiz da transação:
+  - `prisma.transaction.seat_lock` (`SELECT FOR UPDATE`)
+  - `prisma.insert.ticket_or_reservation`
   - `prisma.insert.buyer`
-- `GET /api/sessoes/{id}/assentos` — span raiz polling mapa
-  - `prisma.query.session_seats`
-- `DELETE /api/ingressos/{id}` — span cancelamento
-  - `prisma.insert.cancellation_audit`
-  - `prisma.update.session_seat_release`
-- `POST /api/auth/[...nextauth]` — span autenticação
-- `prisma.extension.tenant_filter` — span injetado pela Prisma Extension em toda query (valida tenant_id)
+- `GET /api/sessoes/{id}/assentos` — span de polling do mapa (`prisma.query.session_seats`)
+- `POST /api/ingressos/{id}/cancelar` — span de cancelamento (`prisma.insert.cancellation_audit` + `prisma.update.session_seat_release`)
+- `prisma.extension.tenant_filter` — span de validação do filtro `tenant_id`
 
-## Métricas RED
+### 4.3 Matriz de Alertas Operacionais
 
-- **Rate**: `http_requests_total{method, route, status_code, tenant_id}` — counter
-- **Errors**: `http_errors_total{route, status_code, error_type}` — counter; `double_booking_total{session_id}` — counter
-- **Duration**: `http_request_duration_ms{route, method}` — histogram (buckets: 50, 100, 200, 500, 800, 1500, 3000ms)
-- Polling específico: `seat_map_poll_duration_ms` — histogram separado para GET /api/sessoes/*/assentos
-- Audit: `cancellation_audit_written_total{tenant_id}` — counter
+| Alerta | Condição de Disparo | Severidade | Canal de Notificação |
+|--------|---------------------|------------|----------------------|
+| `HighErrorRate5xx` | `error_rate_5xx > 1%` por 5 minutos | **P1** | Slack `#cinedoom-alerts` + PagerDuty |
+| `VendaLatencyHigh` | `p95` de venda/reserva $> 1.000\text{ ms}$ por 3 minutos | **P2** | Slack `#cinedoom-alerts` |
+| `PollingLatencyHigh` | `p95` do polling de assentos $> 500\text{ ms}$ por 5 minutos | **P2** | Slack `#cinedoom-alerts` |
+| `DoubleBookingDetected` | Qualquer violação de unicidade de assento vendido | **P0** | PagerDuty + Slack `#cinedoom-p0` |
+| `CrossTenantLeakDetected` | `cross_tenant_query_attempt > 0` em produção | **P0** | PagerDuty + Slack `#cinedoom-p0` + DPO LGPD |
+| `NeonPoolExhausted` | Erros de conexão ao PostgreSQL $> 10/\text{min}$ | **P1** | Slack `#cinedoom-alerts` |
 
-## Alertas
+---
 
-| Alerta | Condição | Severidade | Canal |
-|--------|----------|------------|-------|
-| HighErrorRate5xx | error_rate_5xx > 1% por 5min | P1 | Slack #cinedoom-alerts + PagerDuty |
-| VendaLatencyHigh | p95 latency POST /api/ingressos > 1000ms por 3min | P2 | Slack #cinedoom-alerts |
-| PollingLatencyHigh | p95 GET assentos > 500ms por 5min | P2 | Slack #cinedoom-alerts |
-| DoubleBookingDetected | double_booking_total incremento > 0 | P0 | PagerDuty + Slack #cinedoom-p0 |
-| CrossTenantLeakDetected | cross_tenant_query_attempt count > 0 | P0 | PagerDuty + Slack #cinedoom-p0 + equipe LGPD |
-| NeonConnectionPoolExhausted | pg connection errors > 10/min | P1 | Slack #cinedoom-alerts |
+## 5. Monitoramento Contínuo Pós-Implantação
 
-## Post-market monitoring
+### 5.1 Detecção de Anomalias e Desvios (*Drift Detection*)
+- **Desvio de Volume Operacional (*Data Drift*):** Monitoramento semanal do volume de vendas e reservas por tenant; quedas abruptas ($> 50\%$) sem feriado ou fim de cartaz disparam verificação de saúde das rotas.
+- **Anomalia de Cancelamentos (*Behavioral Drift*):** Aumento $> 3\times$ na taxa média de cancelamentos de um cinema em 7 dias aciona alerta gerencial para auditoria de caixa na tabela `cancellation_audits`.
+- **Desvio de Esquema (*Schema Drift*):** O pipeline de CI valida `prisma migrate status`; qualquer divergência entre o esquema versionado e o banco bloqueia o deploy.
 
-## Post-Market Monitoring Plan (EU AI Act Art. 72 / NIST AI RMF MEASURE 2)
+### 5.2 Governança de SLOs
+- Revisão periódica do orçamento de erros (*error budget*) pelo Líder Técnico (TechLead).
+- Incidentes de severidade **P0** exigem resposta em até 15 minutos, relatório *post-mortem* em até 48 horas e, se envolverem dados pessoais, acionamento do plano de resposta LGPD (notificação à ANPD em até 72h conforme [`compliance-assessment.md`](../security-compliance/compliance-assessment.md)).
 
-### Escopo
-CineDoom MVP não contém modelos de IA/ML, mas opera com dados PII sensíveis (CPF, e-mail) e lógica crítica ACID. O plano cobre monitoramento contínuo de comportamento do sistema em produção.
+---
 
-### Drift Detection
-- **Data drift**: monitorar distribuição de volume de vendas por tenant/sessão semanalmente — alertar se volume cair >50% sem evento programado (indica possível falha silenciosa de persistência ou tenant abandonado)
-- **Concept drift (comportamental)**: monitorar taxa de cancelamentos por tenant — aumento >3x da média histórica em 7 dias dispara revisão manual (possível fraude ou bug de UI)
-- **Schema drift**: pipeline CI valida `prisma migrate status` em produção; qualquer drift entre schema esperado e real bloqueia deploy e dispara alerta P1
+## 6. Procedimentos Operacionais Padrão (Runbooks)
 
-### Performance Degradation Alerts
-- SLO breach automático: qualquer SLO fora de target por >10min dispara revisão de incidente
-- Trend alert: latência p95 de venda crescendo >20% semana-a-semana por 2 semanas consecutivas → revisão de índices Neon e pool sizing
-- Neon cold start monitoring: rastrear frequência de cold starts via span `prisma.connect` duration >500ms; >5% das requests com cold start dispara revisão de pool warmup
-
-### SLOs em Produção — Revisão Periódica
-- Revisão mensal de SLOs pelo tech lead CineDoom
-- Relatório de error budget consumption enviado para stakeholders mensalmente
-- Revisão semestral de política de retenção LGPD (compradores, audit logs)
-
-### Processo de Resposta
-- P0 (double-booking, cross-tenant leak): resposta em <15min, postmortem em 48h, notificação aos tenants afetados em <24h, avaliação de obrigação LGPD de notificação à ANPD
-
-## Runbook hints
-
-- 5xx spike: verificar Vercel Function logs via Log Drain → identificar rota com maior error_rate → checar Neon connection pool (dashboard Neon) → se pool exhausted, aumentar pool_size no connection string ou throttle de requests
-- Double-booking detectado (P0): imediatamente pausar sessão afetada via admin script → auditar tabela SessionSeat para o session_id → identificar ticket duplicado → remover ticket inválido mantendo auditoria → notificar tenant → postmortem obrigatório
-- Latência alta em POST /api/ingressos: checar OTel trace do span prisma.transaction.seat_lock → se lock wait >500ms, investigar concorrência na sessão (muitos SELECT FOR UPDATE simultâneos) → considerar retry com backoff ou fila de venda para pico
-- Polling de mapa lento (>500ms p95): checar span prisma.query.session_seats → verificar índice em SessionSeat(session_id, tenant_id, status) no Neon → EXPLAIN ANALYZE na query → se Neon cold start, avaliar connection warmup
-- Cross-tenant leak detectado (P0): rotacionar NEXTAUTH_SECRET e CPF_ENCRYPTION_KEY imediatamente → suspender tenants potencialmente afetados → auditar logs do span prisma.extension.tenant_filter → identificar query sem filtro → patch emergencial + notificação LGPD à ANPD se dados expostos
-- Neon connection pool exhausted: aumentar pool_size na DATABASE_URL (parâmetro ?pgbouncer=true&connection_limit=N) → verificar queries longas via Neon query insights → matar sessions idle >30s → avaliar réplica de leitura para queries de painel de ocupação
-- CPF_ENCRYPTION_KEY rotation: gerar nova chave AES-256-GCM → script de re-encrypt em batch sobre Buyer.cpf_encrypted com tenant_id filtrado → deploy com nova chave → validar decryptabilidade em staging antes de prod
-- Rollback de deploy: via Vercel dashboard → Deployments → selecionar deployment anterior → Promote to Production → verificar se migration foi aplicada (se sim, avaliar migration reversa via prisma migrate resolve)
-- Tenant data deletion request (LGPD): executar script interno autenticado de anonimização → setar Buyer.name='ANONIMIZADO', Buyer.email=hash, Buyer.cpf_hash=DELETED, Buyer.cpf_encrypted=NULL → registrar execução em log de auditoria interno → confirmar para solicitante em <15 dias úteis
+1. **Pico de Erros `HTTP 5xx`:** Inspecionar os logs no Axiom filtrando por `status_code >= 500` $\to$ identificar a rota afetada $\to$ verificar o painel de conexões do Neon PostgreSQL $\to$ se o pool estiver saturado, ajustar `connection_limit` na string do PgBouncer ou executar *rollback* imediato na Vercel caso decorra de deploy recente.
+2. **Latência Elevada na Venda/Reserva (`> 800ms p95`):** Inspecionar o span `prisma.transaction.seat_lock` $\to$ verificar se há contenção excessiva de `SELECT FOR UPDATE` na mesma sessão de estreia $\to$ validar se o erro `HTTP 409` está sendo retornado rapidamente sem espera em fila longa.
+3. **Polling do Mapa de Assentos Lento (`> 300ms p95`):** Verificar o plano de execução (`EXPLAIN ANALYZE`) da consulta em `session_seats` $\to$ confirmar uso do índice composto `idx_session_seats_session_status` $\to$ verificar se o endpoint está roteando pelo *Neon Connection Pooler*.
+4. **Suspeita de Violação Cross-Tenant (P0):** Rotacionar imediatamente `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` e `CINEDOOM_CPF_HMAC_KEY` na Vercel $\to$ auditar os registros do span `prisma.extension.tenant_filter` no Axiom $\to$ aplicar correção emergencial, executar a bateria de 500 cenários (`security-cross-tenant-suite.test.ts`) e acionar o DPO conforme o plano de resposta a incidentes.
+5. **Rotação Anual da Chave `CPF_ENCRYPTION_KEY` (`ADR-008`):** Gerar nova chave AES-256-GCM de 32 bytes $\to$ executar script autenticado de re-cifragem em lote sobre `Buyer.cpf_encrypted` e `Reservation.buyer_cpf_encrypted` $\to$ atualizar a variável no cofre da Vercel e validar a integridade em staging antes de produção.
+6. **Atendimento a Solicitação de Anonimização LGPD (Art. 18 — `ADR-009`):** Executar chamada autenticada com perfil `GERENTE` ao endpoint `POST /api/titulares/anonimizar` informando o CPF do titular solicitante $\to$ verificar o retorno de confirmação da anonimização *in-place* $\to$ registrar o protocolo de atendimento e responder formalmente ao titular em até 15 dias.
