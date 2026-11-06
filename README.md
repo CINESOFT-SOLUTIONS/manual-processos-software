@@ -1,7 +1,5 @@
 # Manual de Processos de Software — CineDoom
 
-> 📘 **Guia Prático do Repositório (PDF):** Consulte o [Guia de Colaboração (PDF)](referencias/diretrizes/guia-colaboracao-repositorio.pdf) para entender o fluxo de trabalho da equipe, a organização de pastas e o checklist de 50 artefatos e evidências exigidos pela banca.
-
 <table width="100%">
   <thead>
     <tr>
