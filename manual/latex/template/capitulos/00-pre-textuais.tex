@@ -6,30 +6,30 @@
 % 1. CAPA OFICIAL (PÁGINA 1)
 \capamanual[images/capa.png]
 
-% 2. FICHA INSTITUCIONAL E EXPEDIENTE COM AS LOGOS OFICIAIS (PÁGINA 2)
+% 2. FICHA INSTITUCIONAL E EXPEDIENTE (PÁGINA 2 - VERSO DA CAPA)
 \thispagestyle{empty}
-\vspace*{2pt}
+\vspace*{-12pt}
 \noindent
 \begin{minipage}{0.48\textwidth}
-  \includegraphics[height=1.2cm]{logos/cinesoft-logo-horizontal-color.png}
+  \includegraphics[height=1.05cm]{logos/cinesoft-logo-horizontal-color.png}
 \end{minipage}%
 \hfill
 \begin{minipage}{0.48\textwidth}
   \raggedleft
-  \includegraphics[height=1.2cm]{logos/cinedoom-logo-horizontal-color.png}
+  \includegraphics[height=1.05cm]{logos/cinedoom-logo-horizontal-color.png}
 \end{minipage}
 
-\vspace{10pt}
+\vspace{8pt}
 \noindent
-{\fontsize{13pt}{17pt}\fontExtraBold\color{BrandNavy}CINESOFT SOLUTIONS — ENGENHARIA DE SOFTWARE}\\[3pt]
-{\fontsize{10pt}{13.5pt}\fontMedium\color{BrandCrimson}Manual Corporativo de Processos de Ciclo de Vida de Software (Plataforma CineDoom)}
+{\fontsize{11.5pt}{15pt}\fontExtraBold\color{BrandNavy}CINESOFT SOLUTIONS — ENGENHARIA DE SOFTWARE}\\[2pt]
+{\fontsize{9pt}{12pt}\fontMedium\color{BrandCrimson}Manual Corporativo de Processos de Ciclo de Vida de Software (Plataforma CineDoom)}
 
-\vspace{12pt}
+\vspace{8pt}
 \noindent
-{\fontsize{9.3pt}{13.2pt}\selectfont
+{\fontsize{8.5pt}{12pt}\selectfont
 \textbf{\textcolor{BrandNavy}{Instituição Acadêmica Vinculada:}}\\
 Universidade Federal de Goiás (UFG) — Instituto de Informática (INF)\\
-Bacharelado em Engenharia de Software • Disciplina: Processos de Software\\[8pt]
+Bacharelado em Engenharia de Software • Disciplina: Processos de Software\\[6pt]
 \textbf{\textcolor{BrandNavy}{Diretoria Técnica e Autoria (Equipe Doomscoders):}}
 \begin{listapontos}
   \itemponto{Carlos Eduardo Freire da Silva}{Arquitetura de Processos, Governança e Gestão de Portfólio}
@@ -41,116 +41,137 @@ Bacharelado em Engenharia de Software • Disciplina: Processos de Software\\[8p
 
 \vspace{6pt}
 \noindent
-{\fontsize{10pt}{13.5pt}\fontExtraBold\color{BrandNavy}Escopo Tecnológico do Produto de Referência (CineDoom):}\\[3pt]
-{\fontsize{9.2pt}{13pt}\selectfont
-O presente Manual regulamenta os processos técnicos, gerenciais e organizacionais aplicados ao desenvolvimento, operação e evolução da plataforma \textbf{CineDoom} — sistema SaaS e B2C de bilheteria digital, reserva concorrente de assentos em tempo real, catálogo de programação cinematográfica e vendas de bomboniere, estruturado em três macroentregas evolutivas (\textbf{v1.0 MVP Core}, \textbf{v2.0 Escala, Pagamentos PIX/Stripe e E-mail Transacional Resend} e \textbf{v3.0 Enterprise Multi-Tenant e Emissão Fiscal NFC-e}).}
-
-\vspace{10pt}
-\noindent
-{\fontsize{10pt}{13.5pt}\fontExtraBold\color{BrandNavy}Histórico de Revisões do Manual:}\\[3pt]
-\input{../../../assets/capitulo-00/tabelas/historico-versoes.tex}
+{\fontsize{9pt}{12pt}\fontExtraBold\color{BrandNavy}Escopo Tecnológico do Produto de Referência (CineDoom):}\\[2pt]
+{\fontsize{8.2pt}{11.5pt}\selectfont
+O presente Manual regulamenta os processos técnicos, gerenciais e organizacionais aplicados ao desenvolvimento, operação e evolução da plataforma \textbf{CineDoom} — sistema SaaS e B2C de bilheteria digital, reserva concorrente de assentos em tempo real, catálogo de filmes e vendas de bomboniere, estruturado em três macroentregas evolutivas (\textbf{v1.0 MVP Core}, \textbf{v2.0 Escala, PIX/Stripe e Resend} e \textbf{v3.0 Enterprise e NFC-e}).}
 
 \vspace{6pt}
+\noindent
+{\fontsize{8.8pt}{11.5pt}\fontExtraBold\color{BrandNavy}Histórico de Revisões do Manual:}\\[2pt]
+\input{../../../assets/capitulo-00/tabelas/historico-versoes.tex}
+
+\vspace{4pt}
 \noindent
 \begin{tcolorbox}[
   enhanced,
   colback=BrandTableAlt,
   colframe=BrandSecondary!60!BrandCrimson,
-  boxrule=1.0pt,
-  arc=6pt,
-  left=12pt,
-  right=12pt,
-  top=9pt,
-  bottom=9pt,
-  fontupper=\fontsize{8.8pt}{12.4pt}\selectfont\color{BrandBodyText}
+  boxrule=0.7pt,
+  arc=4pt,
+  left=8pt,
+  right=8pt,
+  top=4pt,
+  bottom=4pt,
+  fontupper=\fontsize{7.4pt}{9.8pt}\selectfont\color{BrandBodyText}
 ]
-  {\fontsize{9.5pt}{12.5pt}\fontExtraBold\color{BrandNavy}Ficha Catalográfica e Controle Normativo do Documento}\\[5pt]
-  \textbf{Título:} Manual de Processos de Software — CineSoft Solutions \& Plataforma CineDoom\\
-  \textbf{Código de Controle de Configuração:} \codigoinline{CS-MPS-2026-V3}\\
-  \textbf{Normas Técnicas de Referência:} ABNT NBR ISO/IEC/IEEE 12207:2021 • ISO/IEC 15504 (SPICE) • Guia Geral MPS de Software (MPS.BR / SOFTEX — Níveis G e F)\\
-  \textbf{Stack de Engenharia Auditada:} Next.js 16 (App Router), React 19, TypeScript 5, Prisma ORM, PostgreSQL (Neon Serverless), Resend Transactional API, GitHub Actions e Vercel Cloud\\
-  \textbf{Design System:} Cores Oficiais CineDoom (\#1A1A2E, \#0F3460, \#E94560, \#00D4FF)\\
+  {\fontsize{7.8pt}{10pt}\fontExtraBold\color{BrandNavy}Ficha Catalográfica e Controle Normativo do Documento}\\[2pt]
+  \textbf{Título:} Manual de Processos de Software — CineSoft Solutions \& Plataforma CineDoom • \textbf{Código:} \codigoinline{CS-MPS-2026-V3}\\
+  \textbf{Normas Técnicas de Referência:} ABNT NBR ISO/IEC/IEEE 12207:2021 • ISO/IEC 15504 (SPICE) • Guia Geral MPS de Software (MPS.BR — Níveis G e F)\\
+  \textbf{Stack Auditada:} Next.js 16, React 19, TypeScript 5, Prisma ORM, PostgreSQL (Neon), Resend API, GitHub Actions e Vercel Cloud\\
   \textbf{Local e Ano de Publicação:} Goiânia — GO, Brasil • 2026
 \end{tcolorbox}
 
-\vfill
+\vspace*{\fill}
 \noindent
-\textcolor{BrandCrimson}{\rule{\textwidth}{0.8pt}}\\[3pt]
-{\fontsize{8.2pt}{11pt}\color{BrandGrayMed}%
+\textcolor{BrandCrimson}{\rule{\textwidth}{0.5pt}}\\[2pt]
+{\fontsize{7pt}{9pt}\color{BrandGrayMed}%
 Template Editorial e Identidade Visual desenvolvidos em \LaTeX\ segundo a identidade de marca da CineSoft Solutions.}
 \clearpage
 
-% 3. LISTA DE ABREVIATURAS E SIGLAS
+% 3. LISTA DE ABREVIATURAS E SIGLAS (PÁGINA 3)
 \tituloSecaoPrincipal{Lista de Abreviaturas e Siglas}
 
 \noindent
-{\fontsize{9pt}{13pt}\selectfont
-\renewcommand{\arraystretch}{1.18}
-\begin{tabularx}{\textwidth}{@{}>{\fontExtraBold\color{BrandNavy}}p{2.6cm} X@{}}
+{\fontsize{7.8pt}{9.8pt}\selectfont
+\begin{minipage}[t]{0.48\textwidth}
+\begin{tabularx}{\linewidth}{@{}>{\fontExtraBold\color{BrandNavy}}p{1.6cm} X@{}}
   ABNT      & Associação Brasileira de Normas Técnicas \\
-  ADR       & \textit{Architecture Decision Record} (Decisão Arquitetural) \\
+  ADR       & \textit{Architecture Decision Record} \\
   API       & \textit{Application Programming Interface} \\
-  B2B / B2C & \textit{Business-to-Business} / \textit{Business-to-Consumer} \\
-  CI/CD     & \textit{Continuous Integration / Continuous Deployment} \\
-  DoD / DoR & \textit{Definition of Done} / \textit{Definition of Ready} \\
-  GPP       & Gerência de Portfólio de Projetos (Processo MPS.BR) \\
-  GPR       & Gerência de Projetos (Processo MPS.BR — Nível G) \\
-  GQM       & \textit{Goal-Question-Metric} (Paradigma de Medição) \\
-  GQA       & Garantia da Qualidade (Processo MPS.BR — Nível F) \\
-  GCO       & Gerência de Configuração (Processo MPS.BR — Nível F) \\
-  IEC       & \textit{International Electrotechnical Commission} \\
-  IEEE      & \textit{Institute of Electrical and Electronics Engineers} \\
-  ISO       & \textit{International Organization for Standardization} \\
-  JWT       & \textit{JSON Web Token} (Padrão de Autenticação RFC 7519) \\
-  LGPD      & Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018) \\
-  MED       & Medição (Processo MPS.BR — Nível F) \\
-  MPS.BR    & Melhoria de Processo do Software Brasileiro (SOFTEX) \\
-  MTTR      & \textit{Mean Time To Recovery} \\
-  MVP       & \textit{Minimum Viable Product} (Produto Mínimo Viável) \\
-  NFC-e     & Nota Fiscal de Consumidor Eletrônica (Modelo 65 — SEFAZ) \\
-  ORM       & \textit{Object-Relational Mapping} (Prisma ORM) \\
-  REQ       & Engenharia de Requisitos (Processo MPS.BR — Nível G) \\
-  RNF       & Requisito Não Funcional \\
-  SaaS      & \textit{Software as a Service} (Software como Serviço) \\
-  SLA / SLO & \textit{Service Level Agreement} / \textit{Service Level Objective} \\
+  B2B/B2C   & \textit{Business-to-Business / Consumer} \\
+  CI/CD     & \textit{Continuous Integration / Deployment} \\
+  DoD / DoR & \textit{Definition of Done / Ready} \\
+  GPP       & Gerência de Portfólio de Projetos \\
+  GPR       & Gerência de Projetos (MPS.BR — G) \\
+  GQM       & \textit{Goal-Question-Metric} \\
+  GQA       & Garantia da Qualidade (MPS.BR — F) \\
+  GCO       & Gerência de Configuração (Nível F) \\
+  IEC       & \textit{Intl. Electrotechnical Commission} \\
+  IEEE      & \textit{Inst. of Electrical and Electronics Eng.} \\
+  ISO       & \textit{Intl. Organization for Standardization} \\
+  JWT       & \textit{JSON Web Token} (RFC 7519) \\
+  LGPD      & Lei Geral de Proteção de Dados \\
+  MED       & Medição (MPS.BR — Nível F) \\
 \end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\begin{tabularx}{\linewidth}{@{}>{\fontExtraBold\color{BrandNavy}}p{1.6cm} X@{}}
+  MPS.BR    & Melhoria de Processo do Software \\
+  MTTR      & \textit{Mean Time To Recovery} \\
+  MVP       & \textit{Minimum Viable Product} \\
+  NFC-e     & Nota Fiscal de Consumidor Eletrônica \\
+  ORM       & \textit{Object-Relational Mapping} \\
+  PaaS      & \textit{Platform as a Service} \\
+  PIX       & Pagamento Instantâneo Brasileiro \\
+  PMP       & Plano de Melhoria de Processo \\
+  PPR       & Processo Padrão de Requisitos \\
+  QA        & \textit{Quality Assurance} \\
+  RBAC      & \textit{Role-Based Access Control} \\
+  SaaS      & \textit{Software as a Service} \\
+  SLA / SLO & \textit{Service Level Agreement / Objective} \\
+  SPICE     & ISO/IEC 15504 Process Improvement \\
+  UFG       & Universidade Federal de Goiás \\
+  UI / UX   & \textit{User Interface / User Experience} \\
+  V\&V      & Verificação e Validação \\
+  WBS / EAP & \textit{Work Breakdown Structure} \\
+\end{tabularx}
+\end{minipage}
 }
 \clearpage
 
-% 4. LISTA DE FIGURAS E LISTA DE TABELAS/QUADROS
-\tituloSecaoPrincipal{Lista de Figuras}
-\makeatletter
-\@starttoc{lof}
-\makeatother
-
-\vspace{22pt}
-\tituloSecaoPrincipal{Lista de Tabelas e Quadros}
-\makeatletter
-\@starttoc{lot}
-\makeatother
+% 4. LISTA DE FIGURAS
+\listoffigures
 \clearpage
 
-% 5. SUMÁRIO
-\tituloSecaoPrincipal{Sumário}
-\makeatletter
-\@starttoc{toc}
-\makeatother
+% 5. LISTA DE TABELAS
+\listoftables
 \clearpage
 
-% 6. APRESENTAÇÃO
-\addMainEntryToTOC{Apresentação}
+% 6. SUMÁRIO
+\tableofcontents
+\clearpage
+
+% 7. APRESENTAÇÃO INSTITUCIONAL
 \tituloSecaoPrincipal{Apresentação}
 
-A engenharia de sistemas digitais contemporâneos exige que organizações de tecnologia conciliem velocidade de entrega com previsibilidade operacional, segurança transacional e rastreabilidade normativa. No setor de entretenimento e exibição cinematográfica, onde picos de tráfego em estreias mundiais geram milhares de requisições simultâneas sobre um inventário finito de assentos físicos, a ausência de processos formais de ciclo de vida compromete diretamente a continuidade do negócio e a confiança do consumidor final.
+\noindent
+Prezado(a) leitor(a), avaliador(a) e engenheiro(a),
 
-Este documento constitui o \destaqueazul{Manual de Processos de Software da CineSoft Solutions}, elaborado pela equipe \termochave{Doomscoders} para institucionalizar a arquitetura de processos aplicada ao desenvolvimento, validação, entrega contínua e evolução da plataforma \destaqueazul{CineDoom}. Mais do que um referencial descritivo, este manual consolida práticas reais de engenharia de software alinhadas simultaneamente ao padrão internacional \termochave{ABNT NBR ISO/IEC/IEEE 12207:2021} e ao modelo brasileiro de maturidade \termochave{MPS.BR (SOFTEX)} nos níveis \textbf{G (Parcialmente Gerenciado)} e \textbf{F (Gerenciado)}.
+\vspace{8pt}
+\noindent
+Seja bem-vindo(a) ao \textbf{Manual Corporativo de Processos de Ciclo de Vida de Software} da \textbf{CineSoft Solutions}, documento técnico que regulamenta formalmente todas as práticas de engenharia, governança e gestão da qualidade aplicadas ao ciclo de vida da plataforma \textbf{CineDoom}.
 
-Para garantir aderência à realidade operacional de uma empresa de produto digital, a estratégia de engenharia documentada neste manual estrutura a evolução do ecossistema CineDoom em \textbf{três macroentregas progressivas}:
-\begin{listapontos}
-  \itemponto{Macroentrega 1 (CineDoom v1.0 — MVP Core Operacional)}{Compreende o núcleo transacional construído e implantado em nuvem, abrangendo catálogo de filmes e sessões, máquina de estados de reserva de assentos com bloqueio temporário (\codigoinline{SeatHold}), compra de ingressos e bomboniere, autenticação JWT e painel administrativo.}
-  \itemponto{Macroentrega 2 (CineDoom v2.0 — Escala, Pagamentos Reais e Mensageria)}{Expande a infraestrutura para alta concorrência, integrando gateway de pagamento real (PIX dinâmico com webhook e Stripe), serviço de e-mail transacional \textbf{Resend} para envio automatizado de vouchers QR Code e recuperação de senha, além de banco PostgreSQL gerenciado com alta disponibilidade.}
-  \itemponto{Macroentrega 3 (CineDoom v3.0 — Plataforma SaaS Multi-Tenant e Fiscal)}{Consolida o modelo de negócios B2B2C para múltiplas redes exibidoras, incorporando emissão fiscal automatizada (NFC-e junto à SEFAZ), motor de precificação dinâmica, programa de fidelidade e observabilidade distribuída com OpenTelemetry.}
-\end{listapontos}
+\vspace{8pt}
+\noindent
+Este manual foi concebido em estrito alinhamento com os padrões internacionais da \textbf{ABNT NBR ISO/IEC/IEEE 12207:2021} (Processos de Ciclo de Vida de Software) e com o modelo de referência \textbf{MPS.BR} (\textit{Melhoria de Processo do Software Brasileiro}), cobrindo integralmente as áreas de processo dos \textbf{Níveis G e F} da modalidade de software da SOFTEX.
 
-Ao longo das unidades deste volume, são apresentados os fundamentos organizacionais, o mapeamento normativo, os fluxos detalhados de cada processo (entradas, atividades, papéis, artefatos e critérios de verificação), bem como os mecanismos de medição GQM e melhoria contínua que sustentam a excelência técnica da CineSoft Solutions.
+\vspace{8pt}
+\noindent
+A engenharia de processos documentada neste manual reflete uma abordagem contemporânea de engenharia de software transacional, integrando:
+
+\begin{itemize}[leftmargin=18pt, itemsep=4pt, topsep=4pt]
+  \item \textbf{Arquitetura e Requisitos:} Especificação formal de requisitos baseada em casos de uso e modelo C4, orientada a microserviços e componentes Serverless na stack Next.js 16 (App Router) e PostgreSQL;
+  \item \textbf{Governança de Código e CI/CD:} Automação de pipelines com GitHub Actions para linting, validação de schema Prisma e cobertura de testes automatizados;
+  \item \textbf{Gestão de Qualidade e Medição:} Monitoramento baseado no paradigma GQM (\textit{Goal-Question-Metric}), assegurando rastreabilidade ponta a ponta desde os requisitos até o deploy em produção na Vercel Cloud;
+  \item \textbf{Melhoria Contínua:} Avaliação sistemática de processos com plano de melhoria contínua (PMP) documentado com base nos achados e lições aprendidas de cada macroentrega.
+\end{itemize}
+
+\vspace{8pt}
+\noindent
+Esperamos que este manual sirva não apenas como instrumento de auditoria e conformidade acadêmica perante a Universidade Federal de Goiás (UFG), mas como patrimônio de engenharia vivo e auditável para toda a equipe.
+
+\vspace{18pt}
+\noindent
+\textbf{Equipe Doomscoders / CineSoft Solutions}\\
+Goiânia — GO, 2026
 \clearpage

@@ -18,6 +18,11 @@
 \usetikzlibrary{calc,positioning}
 \usepackage{fancyhdr}
 
+% Compatibilidade com pandoc moderno
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+
 % Controle de fundo das páginas internas: limpo, com respiro visual total
 \newif\ifshowcontentbg
 \showcontentbgtrue

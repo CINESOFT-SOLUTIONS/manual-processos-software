@@ -17,14 +17,12 @@
 % -----------------------------------------------------------------------------
 % 2. NUMERAÇÃO DE SEÇÕES E SUMÁRIO
 % -----------------------------------------------------------------------------
+% Os títulos já trazem sua própria numeração explícita herdada do Markdown (ex: "1.1 Nome..."),
+% portanto secnumdepth é definido como 0 para não duplicar números automáticos ("1.0.1 1.1 ...").
 \newcounter{unitcounter}
 \setcounter{unitcounter}{0}
-\setcounter{secnumdepth}{3}
+\setcounter{secnumdepth}{0}
 \setcounter{tocdepth}{3}
-
-\renewcommand{\thesection}{\arabic{unitcounter}.\arabic{section}}
-\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
-\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
 
 % -----------------------------------------------------------------------------
 % 3. FORMATAÇÃO DOS TÍTULOS
@@ -32,22 +30,22 @@
 % Nível 1: Barra vertical fina em Crimson + Título Midnight Navy #1A1A2E
 \titleformat{\section}
   {\normalfont\fontsize{13pt}{16pt}\fontExtraBold\color{BrandNavy}}
-  {\editorialBarIcon\hspace{7pt}\thesection}
-  {7pt}
+  {\editorialBarIcon\hspace{7pt}}
+  {0pt}
   {}
 
-% Nível 2: Título Deep Sapphire #0F3460 com numeração
+% Nível 2: Título Deep Sapphire #0F3460
 \titleformat{\subsection}
   {\normalfont\fontsize{11.5pt}{15pt}\fontSemiBold\color{BrandSecondary}}
-  {\thesubsection}
-  {8pt}
+  {}
+  {0pt}
   {}
 
 % Nível 3: Subseção em tom cinza-escuro com peso médio
 \titleformat{\subsubsection}
   {\normalfont\fontsize{10.5pt}{14pt}\fontSemiBold\color{BrandGrayDark}}
-  {\thesubsubsection}
-  {6pt}
+  {}
+  {0pt}
   {}
 
 \titleformat{\paragraph}[block]
@@ -100,22 +98,22 @@
   }%
 }
 
-\renewcommand{\cftsecindent}{0.85cm}
-\renewcommand{\cftsecnumwidth}{1.05cm}
+\renewcommand{\cftsecindent}{0.45cm}
+\renewcommand{\cftsecnumwidth}{0pt}
 \renewcommand{\cftsecfont}{\fontsize{9.5pt}{12.5pt}\fontMedium\color{BrandBodyText}}
 \renewcommand{\cftsecpagefont}{\fontsize{9.5pt}{12.5pt}\fontMedium\color{BrandBodyText}}
 \renewcommand{\cftsecleader}{\cinedoomLineLeader}
 \setlength{\cftbeforesecskip}{3pt}
 
-\renewcommand{\cftsubsecindent}{1.70cm}
-\renewcommand{\cftsubsecnumwidth}{1.25cm}
+\renewcommand{\cftsubsecindent}{0.85cm}
+\renewcommand{\cftsubsecnumwidth}{0pt}
 \renewcommand{\cftsubsecfont}{\fontsize{9pt}{12pt}\fontRegular\color{BrandGrayMed}}
 \renewcommand{\cftsubsecpagefont}{\fontsize{9pt}{12pt}\fontRegular\color{BrandGrayMed}}
 \renewcommand{\cftsubsecleader}{\cinedoomLineLeader}
 \setlength{\cftbeforesubsecskip}{2pt}
 
-\renewcommand{\cftsubsubsecindent}{2.50cm}
-\renewcommand{\cftsubsubsecnumwidth}{1.50cm}
+\renewcommand{\cftsubsubsecindent}{1.40cm}
+\renewcommand{\cftsubsubsecnumwidth}{0pt}
 \renewcommand{\cftsubsubsecfont}{\fontsize{8.5pt}{11.5pt}\fontLight\color{BrandGrayLight}}
 \renewcommand{\cftsubsubsecpagefont}{\fontsize{8.5pt}{11.5pt}\fontLight\color{BrandGrayLight}}
 \renewcommand{\cftsubsubsecleader}{\cinedoomLineLeader}

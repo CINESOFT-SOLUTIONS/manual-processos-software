@@ -1,80 +1,244 @@
 % =============================================================================
 % CAPÍTULO 4: PROCESSOS DE GERENCIAMENTO TÉCNICO
-% Alinhado à ISO/IEC/IEEE 12207:2021 (6.3) e MPS.BR (GPR e GCO)
-% Fonte: manual-processos/manual/capitulos/04-gerenciamento-tecnico.md
+% GERADO AUTOMATICAMENTE VIA scripts/sync-md-to-latex.py A PARTIR DO MD
 % =============================================================================
 
 \aberturacapitulo{Capítulo 4}{Processos de Gerenciamento Técnico}
 
-\secao{Plano de projeto: escopo, cronograma e entregas}
 
-O gerenciamento técnico da \termochave{CineSoft Solutions} orienta a execução do projeto \destaqueazul{CineDoom} assegurando que prazos, custos, escopo e critérios de qualidade sejam rigorosamente monitorados em conformidade com o processo de \textbf{Gerência de Projetos (GPR)} do MPS.BR.
 
-\subsecao{Estrutura Analítica do Projeto (EAP / WBS)}
+\subsecao{4.1 Plano de projeto: escopo, cronograma, recursos e entregas}
 
-A Estrutura Analítica do Projeto organiza as entregas em três níveis hierárquicos:
+O processo de planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 -- Cláusula 6.3.1) estabelece a Estrutura Analítica do Projeto (EAP/WBS), o roadmap comercial em \textbf{três Macroentregas}, o cronograma detalhado de Sprints, a alocação nominal de responsáveis e a rotina formal para monitorar o progresso e corrigir eventuais desvios.
 
-\figuracomfonte{capitulo-04/diagramas/eap-projeto-3-niveis.pdf}{0.98\textwidth}{Estrutura Analítica do Projeto (EAP de 3 Níveis) do CineDoom}{CineSoft Solutions (2026)}{fig:eap_projeto}
 
-\subsecao{Cronograma de Entregas e Marcos (Milestones)}
+\subsubsecao{Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis)}
 
-\input{../../../assets/capitulo-04/tabelas/cronograma-marcos.tex}
+O diagrama abaixo decompõe o produto \textbf{CineDoom} em três níveis hierárquicos (Nível 1: Produto; Nível 2: Macroentregas e Governança; Nível 3: Pacotes de Trabalho e Entregáveis verificáveis):
 
-\subsecao{Quadro de Execução Kanban do Projeto}
 
-O acompanhamento contínuo dos fluxos de trabalho ocorre no GitHub Projects:
+\subsubsecao{Escopo e Marcos Comerciais por Macroentrega (Milestones)}
 
-\figuracomfonte{capitulo-04/prints/print-kanban-board.png}{0.92\textwidth}{Quadro de Execução Kanban da Plataforma CineDoom}{CineSoft Solutions (2026)}{fig:kanban_board}
+A estratégia de produto da CineSoft Solutions divide o ciclo de vida do CineDoom em três grandes marcos contratuais de entrega:
 
-\secao{Plano de gestão de riscos: matriz e respostas}
+\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X X X X}
 
-Em sistemas transacionais, riscos técnicos e operacionais devem ser mitigados proativamente para assegurar a continuidade da exibição nas salas:
+\toprule
+Marco (Milestone)
+Versão Alvo
+Escopo Funcional e Infraestrutura Associada
+Responsável Geral
+Prazo / Janela
+Status
+ \\
+\midrule
+
+\bottomrule
+
+\textbf{Macroentrega 1 (MVP Operacional)} & \texttt{v1.0.0} & Núcleo Multi-tenant, RBAC (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}), criptografia CPF (\texttt{HMAC-SHA256} + \texttt{AES-256-GCM}), CRUDs de filmes/salas/sessões, bilheteria presencial atômica, portal de reservas web com expiração JIT, painel de ocupação, anonimização LGPD e deploy em produção (\texttt{RF-01} a \texttt{RF-18}). & \textbf{Gabriel Lourenço} & Out/2026 -- Nov/2026 & \textbf{Concluído (Em Produção)} \\
+\textbf{Macroentrega 2 (Escala \& Pagamentos)} & \texttt{v2.0.0} & Integração de gateway financeiro online (PIX QR Code dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do \textbf{Resend Pro} com domínio corporativo próprio (\texttt{@cinedoom.com.br}), upgrade para \textbf{Supabase/Neon Pro} (backups PITR e réplicas) e \textbf{Vercel Pro}. & \textbf{Carlos Eduardo} & Dez/2026 -- Jan/2027 & \textbf{Planejado (Próxima Fase)} \\
+\textbf{Macroentrega 3 (Enterprise \& Fiscal)} & \texttt{v3.0.0} & Emissão fiscal eletrônica automatizada (\textbf{NFC-e / SAT} via API Focus NFe integrada à SEFAZ), módulo de bomboniere e estoque, programa de fidelidade, \textbf{Console Global de Administração de Tenants} (\emph{Self-Service Billing}) e BI financeiro avançado. & \textbf{Kayque Vicente \& Yury Nogueira} & Fev/2027 -- Abr/2027 & \textbf{Backlog Evolutivo} \\
+\end{tabularx}\end{center}
+
+
+\subsubsecao{\texorpdfstring{Cronograma Detalhado de Execução da Macroentrega 1 (\texttt{v1.0.0})}{Cronograma Detalhado de Execução da Macroentrega 1 (v1.0.0)}}
+
+A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenharia com pacotes de trabalho atribuídos nominalmente aos engenheiros da CineSoft Solutions:
+
+\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X X X}
+
+\toprule
+Sprint / Iteração
+Pacotes de Trabalho e Requisitos Entregues
+Responsáveis Diretos
+Início
+Término
+Status
+ \\
+\midrule
+
+\bottomrule
+
+\textbf{Sprint 1 --- Fundação, Arquitetura e Segurança} & Setup Next.js 14/TypeScript (\texttt{\#1}), modelagem Prisma/PostgreSQL e trigger append-only (\texttt{\#2}), extensão Multi-tenant (\texttt{\#3}), autenticação NextAuth/RBAC (\texttt{\#4}), criptografia PII de CPF (\texttt{\#5}), Log Drain Axiom (\texttt{\#15}) e pipeline CI/CD (\texttt{\#16}). & \textbf{Gabriel Lourenço} \& \textbf{Carlos Eduardo} (Apoio: \textbf{Yury Nogueira}) & 23/10/2026 & 29/10/2026 & \textbf{100\% Concluído} \\
+\textbf{Sprint 2 --- Back-office, Salas e Bilheteria ACID} & Design System e mapa interativo 2D (\texttt{\#17}), CRUDs de filmes, salas e sessões com pré-população (\texttt{\#6}, \texttt{\#7}, \texttt{\#8}), polling a 2s (\texttt{\#9}), venda atômica com \texttt{SELECT\ FOR\ UPDATE} (\texttt{\#10}) e gestão de atendentes (\texttt{\#13}). & \textbf{Gabriel Lourenço} \& \textbf{Carlos Eduardo} (QA: \textbf{Kayque Vicente}) & 30/10/2026 & 04/11/2026 & \textbf{100\% Concluído} \\
+\textbf{Sprint 3 --- Portal do Cliente, Governança LGPD e QA} & Portal público e reserva web com expiração JIT (\texttt{\#21}), autenticação de espectador e \emph{``Minhas Reservas''} (\texttt{\#22}), \texttt{NotificationService} e baixa de reserva no balcão (\texttt{\#23}), cancelamento auditado (\texttt{\#11}), painel de ocupação (\texttt{\#12}), anonimização Art. 18 (\texttt{\#14}) e suíte de 770 testes / 500 cenários \emph{cross-tenant} (\texttt{\#18}, \texttt{\#19}). & \textbf{Gabriel Lourenço}, \textbf{Carlos Eduardo}, \textbf{Kayque Vicente} \& \textbf{Yury Nogueira} & 05/11/2026 & 09/11/2026 & \textbf{100\% Concluído} \\
+\end{tabularx}\end{center}
+
+
+\subsubsecao{Rotina de Acompanhamento e Tratamento de Desvios e Atrasos}
+
+Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle: 1. \textbf{Monitoramento Diário no Quadro Kanban (GitHub Projects):} Todo cartão de tarefa deve conter obrigatoriamente \textbf{responsável nominal}, \textbf{data-limite (deadline)}, \textbf{estimativa} e \textbf{critério de aceite}. Tarefas paradas na coluna \emph{In Progress} por mais de \textbf{48 horas} sem commits ou atualização de status acionam um alerta automático de impedimento (\emph{blocker}). 2. \textbf{Revisão Semanal de Sprint e Burndown:} Ao final de cada semana, o Gerente de Projeto (\textbf{Kayque Vicente}) e o Tech Lead (\textbf{Gabriel Lourenço}) auditam o percentual de pacotes concluídos versus planejados. 3. \textbf{Protocolo de Tratamento de Desvios e Atrasos:} - \textbf{Desvio Leve (atraso ≤ 24h em tarefa não crítica):} Realocação de par técnico (\emph{pair programming}) entre os desenvolvedores de backend e frontend para destravar a entrega dentro da mesma Sprint. - \textbf{Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):} Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos \emph{Must Have} de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+
+\subsecao{4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas}
+
+O processo de gestão de riscos (Cláusula 6.3.4) identifica continuamente ameaças técnicas, operacionais, de segurança e de fornecedores externos que possam afetar a disponibilidade ou a integridade financeira e legal do CineDoom.
+
+
+\subsubsecao{Critérios de Classificação e Reavaliação Contínua}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Probabilidade de Ocorrência:} \textbf{Alta} (forte tendência de ocorrer em operação normal ou picos de estreia), \textbf{Média} (pode ocorrer sob condições específicas de carga ou falha de terceiros) ou \textbf{Baixa} (evento raro ou já contido por barreiras nativas).
+\item
+  \textbf{Impacto no Negócio:} \textbf{Alto} (indisponibilidade da bilheteria, venda dupla de poltronas, perda financeira ou violação da LGPD), \textbf{Médio} (degradação parcial de funcionalidade secundária com contorno disponível) ou \textbf{Baixo} (inconveniência visual sem bloqueio operacional).
+\item
+  \textbf{Matriz de Prioridade:} A combinação de Probabilidade × Impacto define a prioridade de tratamento como \textbf{Crítico} (exige barreira arquitetural imediata e teste automatizado obrigatório), \textbf{Alto} (exige mitigação ativa e monitoramento) ou \textbf{Médio} (monitorado com plano de contingência).
+\item
+  \textbf{Ciclo de Reavaliação:} O \emph{Risk Register} é revisado formalmente ao final de cada Sprint e antes do início de cada nova Macroentrega.
+\end{itemize}
+
+
+\subsubsecao{\texorpdfstring{Matriz de Riscos do Produto (\emph{Risk Register})}{Matriz de Riscos do Produto (Risk Register)}}
+
 \input{../../../assets/capitulo-04/tabelas/registro-riscos.tex}
 
-\secao{Plano de gestão de configuração e políticas de branch}
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-O processo de Gerência de Configuração (GCO) garante a rastreabilidade e integridade de todos os artefatos de código, esquemas de banco e documentação técnica.
 
-\subsecao{Estratégia de Ramificação (GitFlow Institucional)}
+\subsecao{4.3 Plano de gestão de configuração: controle de versões, branches e releases}
 
-A CineSoft Solutions adota a seguinte política estrita de branches:
+O processo de gestão de configuração (Cláusula 6.3.5) assegura a integridade, o rastreamento e a reprodutibilidade de todos os ativos de software da CineSoft Solutions.
 
-\figuracomfonte{capitulo-04/diagramas/fluxo-git-branches.pdf}{0.95\textwidth}{Fluxo de Ramificação e Promoção de Branches Git (GitFlow)}{CineSoft Solutions (2026)}{fig:fluxo_git}
 
-\begin{listapontos}
-  \itemponto{main}{Branch protegido de produção. Apenas aceita merges a partir de \codigoinline{staging} após aprovação formal de release.}
-  \itemponto{staging}{Ambiente de homologação e testes de aceitação com clientes reais.}
-  \itemponto{develop}{Branch de integração contínua ativo para consolidação das features validadas.}
-  \itemponto{feature/* e fix/*}{Branches efêmeros derivados de \codigoinline{develop}. Exigem no mínimo dois code reviews para merge.}
-\end{listapontos}
+\subsubsecao{Itens de Configuração (CIs) Controlados}
 
-\secao{Registro de decisões técnicas relevantes (ADRs)}
+São submetidos a controle formal de versão no GitHub: 1. Código-fonte da aplicação web e APIs (\texttt{src/}). 2. Esquema relacional e migrações determinísticas do banco de dados (\texttt{prisma/schema.prisma} e \texttt{prisma/migrations/}). 3. Suíte de testes unitários, de integração e de segurança (\texttt{tests/}). 4. Pipelines de automação e configuração de deploy (\texttt{.github/workflows/ci.yml}, \texttt{.github/workflows/deploy.yml} e \texttt{vercel.json}). 5. Especificações técnicas, ADRs e Manual de Processos (\texttt{specs/} e \texttt{manual/}).
 
-Todas as decisões arquiteturais estruturantes são registradas em fichas formais no repositório (\codigoinline{specs/adrs/}). Para a seleção da arquitetura de autenticação e sessão, aplicou-se a Matriz de Decisão Ponderada (Pugh Matrix):
 
-\input{../../../assets/capitulo-04/tabelas/matriz-pugh-decisao.tex}
+\subsubsecao{Estratégia de Branches e Regras de Pull Request}
 
-\secao{Métricas de acompanhamento do projeto}
+A CineSoft Solutions adota um fluxo estruturado em três branches permanentes (\texttt{develop}, \texttt{staging} e \texttt{main}) aliado a branches efêmeras por funcionalidade:
 
-A governança do projeto utiliza o paradigma \destaqueazul{GQM (Goal-Question-Metric)}, com indicadores de throughput e lead time monitorados continuamente:
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\texttt{main} (Produção Protegida):} Reflete exclusivamente o código estável em execução para os cinemas clientes (\texttt{https://cinedoom.vercel.app/}). Proíbe \emph{force push} e exige que toda alteração tenha passado pela validação completa da esteira de CI.
+\item
+  \textbf{\texttt{staging} (Homologação e Pré-Produção):} Ambiente espelhado para validação integrada e testes de aceitação antes da promoção para produção.
+\item
+  \textbf{\texttt{develop} (Integração de Engenharia):} Branch base para consolidação diária das entregas aprovadas da Sprint.
+\item
+  \textbf{\texttt{feat/*} e \texttt{fix/*} (Branches de Trabalho):} Criadas a partir de \texttt{develop} para cada requisito ou correção (ex.: \texttt{feat/RF-06-venda-atomica}).
+\item
+  \textbf{Regras Obrigatórias de Pull Request:} Todo PR requer (1) compilação TypeScript limpa (\texttt{tsc\ -\/-noEmit}), (2) zero erros de ESLint (\texttt{import/no-cycle}), (3) \textbf{100\% dos 770 testes passando no Vitest} e (4) revisão técnica aprovada por outro engenheiro da equipe.
+\end{itemize}
 
-\figuracomfonte{capitulo-04/prints/print-metricas-projeto.png}{0.92\textwidth}{Painel Analítico de Eficiência de Fluxo (Throughput e Lead Time)}{CineSoft Solutions (2026)}{fig:metricas_projeto}
 
-\verificacaoconformidade{Ponto de Controle — Gerenciamento Técnico}{%
-  \begin{enumerate}[label=\textbf{\alph*)}, leftmargin=0.8cm, itemsep=3pt]
-    \item Quais critérios de aceite são validados obrigatoriamente antes que uma branch \texttt{feature/*} seja integrada ao \texttt{develop}?
-    \item Como a matriz de decisão ponderada (Pugh Matrix) orienta a aprovação de novas ADRs no projeto?
-  \end{enumerate}
-}
+\subsubsecao{Versionamento Semântico (SemVer) e Convenção de Commits}
 
-\notatecnica{%
-  \itemcaixa{A suíte de testes do CineDoom é executada em paralelo no GitHub Actions a cada push, reduzindo o tempo de validação do pipeline para menos de 3 minutos.}
-}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Padrão SemVer (\texttt{MAJOR.MINOR.PATCH}):}
 
-\saibamaisnormativo{%
-  \itemsaibamais{Consulte as cláusulas 6.3.1 (\textit{Project Planning}) e 6.3.5 (\textit{Configuration Management}) da norma \linkcaixa{https://www.iso.org/standard/63711.html}{ISO 12207:2021} para diretrizes formais de auditoria.}
-}
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{MAJOR} (\texttt{v1.0.0}, \texttt{v2.0.0}, \texttt{v3.0.0}): Transição entre as \textbf{3 Macroentregas} ou mudanças estruturais de arquitetura.
+  \item
+    \texttt{MINOR} (\texttt{v1.1.0}, \texttt{v1.2.0}): Adição de novas funcionalidades retrocompatíveis dentro de uma Macroentrega.
+  \item
+    \texttt{PATCH} (\texttt{v1.0.1}, \texttt{v1.0.2}): Correções de bugs, ajustes de responsividade ou melhorias de performance sem quebra de contrato.
+  \end{itemize}
+\item
+  \textbf{Conventional Commits:} Mensagens padronizadas no formato \texttt{\textless{}tipo\textgreater{}(\textless{}escopo\textgreater{}):\ \textless{}descrição\ concisa\textgreater{}} (tipos permitidos: \texttt{feat}, \texttt{fix}, \texttt{refactor}, \texttt{test}, \texttt{docs}, \texttt{chore}, \texttt{ci}), garantindo geração automatizada de \emph{changelogs} e rastreabilidade direta com as issues.
+\end{itemize}
 
-\sintesecapitulo{%
-  \itemcaixa{O gerenciamento técnico rigoroso assegura que a CineSoft Solutions entregue software confiável com total rastreabilidade de código, riscos e decisões.}
-}
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+
+\subsecao{4.4 Registro de decisões técnicas relevantes (ADRs)}
+
+O processo de gestão de decisões (Cláusula 6.3.3) fundamenta as escolhas arquiteturais de alto impacto por meio de análise multicritério e fichas estruturadas de \emph{Architecture Decision Records (ADRs)}.
+
+
+\subsubsecao{\texorpdfstring{Matriz de Decisão Ponderada (\emph{Pugh Matrix}) --- Escolha da Arquitetura Base (\texttt{ADR-001})}{Matriz de Decisão Ponderada (Pugh Matrix) --- Escolha da Arquitetura Base (ADR-001)}}
+
+Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions avaliou três alternativas tecnológicas contra cinco critérios ponderados de negócio e engenharia (escala de \texttt{1} a \texttt{5}, onde \texttt{5} é a melhor aderência):
+
+\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X}
+
+\toprule
+Critério de Avaliação
+Peso
+Alt. A: Monólito Modular (Next.js 14 Fullstack + Prisma ACID)
+Alt. B: Microsserviços Distribuídos (Node/Go + Mensageria Kafka)
+Alt. C: SPA React Separada + Backend Tradicional em VM Dedicada
+ \\
+\midrule
+
+\bottomrule
+
+\textbf{1. Garantia de Atomicidade Transacional (Anti-Double-Booking)} & \textbf{30\%} & \textbf{5} \emph{(Transação ACID única no banco relacional sem sagas distribuídas)} & \textbf{2} \emph{(Consistência eventual complexa; alto risco de race condition)} & \textbf{5} \emph{(Transação ACID direta em banco relacional único)} \\
+\textbf{2. Velocidade de Entrega e Produtividade da Equipe (4 Engenheiros)} & \textbf{25\%} & \textbf{5} \emph{(Repositório único, tipagem TypeScript ponta a ponta e deploy unificado)} & \textbf{1} \emph{(Alta sobrecarga de orquestração, múltiplos deploys e contratos)} & \textbf{3} \emph{(Duplicação de DTOs/tipagens e manutenção de dois pipelines)} \\
+\textbf{3. Eficiência de Custo Operacional (TCO Inicial e Escala SaaS)} & \textbf{20\%} & \textbf{5} \emph{(Serverless pay-as-you-go; escala do piloto ao Pro sem ociosidade)} & \textbf{2} \emph{(Custo fixo elevado de clusters Kubernetes e brokers ativos 24/7)} & \textbf{3} \emph{(Custo fixo de servidores ligados mesmo fora de horário de sessão)} \\
+\textbf{4. Isolamento Lógico Multi-Tenant e Segurança LGPD} & \textbf{15\%} & \textbf{5} \emph{(Middleware unificado + Prisma Extension centralizada no mesmo runtime)} & \textbf{3} \emph{(Necessidade de propagar e auditar contexto de tenant em N serviços)} & \textbf{4} \emph{(Isolamento centralizado no backend, mas exige gestão de CORS/Auth)} \\
+\textbf{5. Desempenho de Borda e SEO para o Catálogo Público} & \textbf{10\%} & \textbf{5} \emph{(Server Components + Edge CDN nativos para carregamento instantâneo)} & \textbf{4} \emph{(Requer BFF / API Gateway adicional para agregação na borda)} & \textbf{2} \emph{(CSR puro prejudica indexação e tempo de primeira renderização)} \\
+\textbf{Pontuação Final Ponderada (Σ \text{Peso} × \text{Nota})} & \textbf{100\%} & \textbf{5,00 (Vencedora --- Adotada)} & \textbf{2,10 (Descartada)} & \textbf{3,65 (Descartada)} \\
+\end{tabularx}\end{center}
+
+
+\subsubsecao{\texorpdfstring{Fichas Estruturadas de Decisões Arquiteturais (\texttt{ADR-001} a \texttt{ADR-012})}{Fichas Estruturadas de Decisões Arquiteturais (ADR-001 a ADR-012)}}
+
+Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralmente em \texttt{specs/adrs/} e sintetizadas abaixo com seus cinco elementos formais:
+
+\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X X}
+
+\toprule
+Código e Título
+Status
+Contexto do Problema
+Alternativas Consideradas
+Decisão e Justificativa
+Consequências e Trade-offs
+ \\
+\midrule
+
+\bottomrule
+
+\textbf{ADR-001:} Arquitetura Monólito Modular em Next.js 14 & \textbf{Aprovada} & Necessidade de integrar Portal do Cliente, Bilheteria e Back-office sob o mesmo motor transacional com equipe enxuta. & (1) Monólito Modular Next.js; (2) Microsserviços; (3) SPA + API separada. & Adotar Monólito Modular com fatias verticais (\texttt{src/features/*}) e regra ESLint \texttt{import/no-cycle}. & (+) Transações ACID simples e tipagem unificada; (-) Exige disciplina de linter para manter fronteiras modulares. \\
+\textbf{ADR-002:} Interface Reativa com Tailwind CSS & \textbf{Aprovada} & Construção de mapa 2D de assentos e painéis responsivos para desktop (guichê) e mobile (espectador). & (1) Tailwind CSS + Componentes próprios; (2) Material UI / Chakra; (3) CSS-in-JS. & Adotar Tailwind CSS com tema escuro cinematográfico (\emph{Dark UI}) e zero runtime JS de estilos. & (+) Bundle leve, alta performance mobile e identidade visual própria; (-) Classes utilitárias extensas no JSX. \\
+\textbf{ADR-003:} Backend em TypeScript com Route Handlers & \textbf{Aprovada} & Exigência de validação rigorosa de payloads e contratos seguros entre frontend e API. & (1) Next.js Route Handlers + Zod; (2) Express/NestJS separado; (3) GraphQL. & Utilizar Route Handlers RESTful tipados em TypeScript estrito combinados com schemas \texttt{Zod}. & (+) Zero incompatibilidade de tipos cliente-servidor e deploy serverless nativo; (-) Acoplado às convenções do Next.js. \\
+\textbf{ADR-004:} Banco PostgreSQL com Prisma ORM & \textbf{Aprovada} & Venda e reserva de poltronas exigem integridade relacional absoluta e bloqueio pessimista de linha. & (1) PostgreSQL + Prisma; (2) MongoDB (NoSQL); (3) MySQL + TypeORM. & Adotar PostgreSQL gerenciado com Prisma ORM e suporte a transações interativas e SQL bruto para locks. & (+) Conformidade ACID plena e migrações seguras; (-) Requer \texttt{queryRaw} pontual para \texttt{SELECT\ FOR\ UPDATE}. \\
+\textbf{ADR-005:} Cloud Serverless (Vercel + Supabase/Neon + CI) & \textbf{Aprovada} & Viabilizar operação altamente disponível desde a validação piloto (Macroentrega 1) até a escala comercial (Macroentrega 2). & (1) Vercel + DBaaS PostgreSQL + GitHub Actions; (2) AWS EC2/RDS manual; (3) Heroku/Render. & Adotar Vercel na borda, DBaaS PostgreSQL com pooler na porta \texttt{6543} e CI/CD no GitHub Actions, escalando para planos Pro. & (+) Deploy atômico, zero manutenção de SO e TCO enxuto; (-) Exige \emph{connection pooling} para funções serverless. \\
+\textbf{ADR-006:} API RESTful e Polling de 2s no Mapa de Sala & \textbf{Aprovada} & Manter o mapa de assentos atualizado entre múltiplos clientes e guichês em arquitetura serverless. & (1) HTTP Polling leve a cada 2s; (2) WebSockets dedicados; (3) Server-Sent Events (SSE). & Implementar polling RESTful otimizado a cada 2s na rota \texttt{/api/sessoes/{[}id{]}/assentos}. & (+) Compatibilidade total com serverless sem conexões ociosas; (-) Latência máxima de até 2s na visualização passiva. \\
+\textbf{ADR-007:} Pré-população de \texttt{SessionSeat} e \texttt{SELECT\ FOR\ UPDATE} & \textbf{Aprovada} & Impedir \emph{phantom reads} e \emph{double-booking} quando dois usuários tentam comprar a mesma poltrona vazia simultaneamente. & (1) Pré-popular \texttt{SessionSeat} no agendamento + Lock pessimista; (2) Inserção sob demanda; (3) Lock otimista por versão. & Criar todas as linhas de \texttt{SessionSeat} (\texttt{AVAILABLE}) na criação da sessão e aplicar \texttt{SELECT\ ...\ FOR\ UPDATE} ordenado por ID. & (+) Elimina \emph{phantom reads} e \emph{deadlocks} com garantia matemática anti-venda dupla; (-) Mais linhas armazenadas por sessão. \\
+\textbf{ADR-008:} Criptografia de CPF (\texttt{HMAC-SHA256} + \texttt{AES-256-GCM}) & \textbf{Aprovada} & Proteger o CPF do comprador (LGPD Art. 46) permitindo ao mesmo tempo busca exata no balcão da bilheteria. & (1) Hash simples SHA-256 (vulnerável a \emph{rainbow table}); (2) Cifra determinística; (3) \texttt{HMAC-SHA256} + \texttt{AES-256-GCM}. & Armazenar \texttt{cpf\_hash} (\texttt{HMAC-SHA256} com chave secreta para busca indexada O(1)) e \texttt{cpf\_encrypted} (\texttt{AES-256-GCM} com IV aleatório). & (+) Resistente a \emph{rainbow tables} no universo finito de 10\^{}\{11\} CPFs e confidencialidade total; (-) Não permite busca parcial (\texttt{LIKE}). \\
+\textbf{ADR-009:} Anonimização \emph{In-Place} para LGPD Art. 18 & \textbf{Aprovada} & Atender ao direito de eliminação de dados pessoais do titular sem destruir o histórico contábil e fiscal de vendas do cinema. & (1) Deleção física (\texttt{DELETE\ CASCADE}); (2) Tabela paralela de expurgo; (3) Sobrescrita \emph{in-place} irreversível. & Sobrescrever nome, e-mail e hashes de CPF do comprador por valores anonimizados irreversíveis, preservando os registros de \texttt{Ticket}. & (+) Concilia perfeitamente a LGPD (Art. 18) com a integridade financeira/fiscal; (-) Operação irreversível para o titular. \\
+\textbf{ADR-010:} Auditoria \emph{Append-Only} via Trigger PostgreSQL & \textbf{Aprovada} & Garantir que registros de cancelamento de ingressos jamais sejam adulterados ou apagados, mesmo por credenciais de aplicação. & (1) Controle apenas no código TypeScript; (2) Trigger PostgreSQL \texttt{BEFORE\ UPDATE\ OR\ DELETE}; (3) Bucket S3 WORM externo. & Criar a trigger \texttt{trg\_protect\_cancellation\_audits} no PostgreSQL que aborta qualquer \texttt{UPDATE} ou \texttt{DELETE} na tabela de auditoria. & (+) Imutabilidade garantida no nível do SGBD a custo zero; (-) Exige migração SQL customizada. \\
+\textbf{ADR-011:} Log Drain Gerenciado (Axiom) por 365 Dias & \textbf{Aprovada} & Cumprir a exigência legal de retenção de registros de acesso e auditoria por 1 ano fora do limite efêmero da plataforma serverless. & (1) Gravar logs no próprio PostgreSQL; (2) Axiom Log Drain SaaS; (3) Datadog Enterprise. & Exportar logs estruturados em JSON (com PII mascarado) para o Axiom Cloud com política de retenção de 365 dias. & (+) Conformidade legal sem inflar o armazenamento do banco transacional; (-) Dependência de conector externo de telemetria. \\
+\textbf{ADR-012:} Portal do Cliente com Expiração \emph{Just-in-Time} & \textbf{Aprovada} & Permitir reserva online na Macroentrega 1 sem depender de gateway financeiro, evitando que reservas abandonadas bloqueiem a sessão. & (1) Cronjob de varredura a cada minuto; (2) Expiração \emph{Just-in-Time (JIT)} na leitura/escrita; (3) Fila Redis com TTL. & Avaliar dinamicamente \texttt{expiresAt} (60 min antes da sessão) em toda consulta ao mapa e transação de balcão, liberando assentos vencidos na hora. & (+) Precisão de milissegundos sem depender de \emph{workers} ou cronjobs externos; (-) Lógica de verificação embutida nas queries de sessão. \\
+\end{tabularx}\end{center}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+
+\subsecao{4.5 Métricas de acompanhamento do projeto}
+
+O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI e do Vitest para monitorar a saúde técnica da entrega:
+
+\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X}
+
+\toprule
+Categoria de Métrica
+Indicador Objetivo
+Meta Organizacional
+Resultado Aferido na Macroentrega 1 (\texttt{v1.0.0})
+Como é Monitorado e Ação em Caso de Desvio
+ \\
+\midrule
+
+\bottomrule
+
+\textbf{Métrica de Fluxo} & \textbf{Lead Time de Issues e PRs} (tempo entre abertura da tarefa e merge em \texttt{main}) & ≤ 48\text{ horas} por pacote de trabalho & Média de \textbf{18 a 32 horas} por issue & Monitorado via GitHub Projects. Se exceder 48h, o GP aciona pareamento técnico imediato. \\
+\textbf{Métrica de Fluxo} & \textbf{Work in Progress (WIP Limit)} por engenheiro & Máximo de \textbf{2 tarefas} simultâneas em \emph{In Progress} & Respeitado (≤ 2 por membro) & Conferido na revisão diária do quadro Kanban para evitar gargalos de troca de contexto. \\
+\textbf{Métrica de Qualidade} & \textbf{Suíte de Testes Automatizados e Cobertura Crítica} & \textbf{100\% de aprovação} e 100\% nos serviços críticos & \textbf{26 suítes / 770 testes passando (100\%)} em \textasciitilde4,9s & Bloqueio automático no GitHub Actions; PRs com qualquer teste quebrado são impedidos de merge. \\
+\textbf{Métrica de Qualidade} & \textbf{Densidade de Defeitos em Produção} (bugs críticos pós-deploy) & \textbf{0 defeitos críticos} (venda dupla ou perda de dados) & \textbf{0 defeitos críticos} (ajustes apenas cosméticos/mobile) & Monitorado via telemetria e testes de usuários reais; defeitos P1 acionam rollback em \textless{} 5 min. \\
+\textbf{Métrica de Progresso} & \textbf{Cumprimento do Escopo da Macroentrega (Throughput)} & \textbf{100\% dos requisitos \texttt{RF-01} a \texttt{RF-18}} entregues no marco & \textbf{18/18 RFs (100\%)} e \textbf{14/14 Critérios de Aceite} concluídos & Auditado ao final de cada Sprint na Matriz de Rastreabilidade (Capítulo 5.1.2). \\
+\end{tabularx}\end{center}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
