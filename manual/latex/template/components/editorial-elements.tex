@@ -1,0 +1,421 @@
+% =============================================================================
+% COMPONENTES EDITORIAIS REUTILIZÁVEIS (PADRÃO PROFISSIONAL E DISCRETO)
+% =============================================================================
+
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{float}
+
+% Marcador de lista limpo para as caixas temáticas
+\newcommand{\itemcaixa}[1]{%
+  \par\vspace{5pt}\noindent
+  \hangindent=0.55cm\hangafter=1
+  \makebox[0.55cm][l]{\textcolor{white!80}{\fontsize{9pt}{9pt}\selectfont •}}{\color{white}#1}\par
+}
+
+\newcommand{\itemsaibamais}[1]{\itemcaixa{#1}}
+
+\newcommand{\linkcaixa}[2]{%
+  \href{#1}{\textcolor{white}{\textbf{\underline{#2}}}}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 2: COMANDOS SEMÂNTICOS DE SEÇÃO
+% -----------------------------------------------------------------------------
+\newcommand{\secao}[1]{\section{#1}}
+\newcommand{\subsecao}[1]{\subsection{#1}}
+\newcommand{\subsubsecao}[1]{\subsubsection{#1}}
+
+\newcommand{\topico}[1]{%
+  \par\vspace{6pt}\noindent
+  {\fontsize{10pt}{13.5pt}\fontExtraBold\color{BrandNavy}#1}\par\nopagebreak\vspace{2pt}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 3: TEXTO CORRIDO E DESTAQUES
+% -----------------------------------------------------------------------------
+\newcommand{\termochave}[1]{\textcolor{BrandNavy}{\fontExtraBold #1}}
+\newcommand{\destaqueazul}[1]{\textcolor{BrandSecondary}{\fontSemiBold #1}}
+\newcommand{\codigoinline}[1]{%
+  {\codeMonoFont\fontsize{9pt}{11pt}\selectfont\color{BrandSecondary}#1}%
+}
+
+\newcommand{\cenariopratico}[2]{%
+  \par\vspace{6pt}\noindent
+  {\fontsize{10pt}{13.5pt}\fontExtraBold\color{BrandNavy}#1}\par\nopagebreak
+  \noindent #2\par\vspace{4pt}%
+}
+\newcommand{\blocoanalogia}[2]{\cenariopratico{#1}{#2}}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 4: FIGURAS COM LEGENDA NO TOPO E FONTE NA BASE
+% -----------------------------------------------------------------------------
+\newcounter{editorialfig}
+\setcounter{editorialfig}{0}
+
+\newcommand{\figuracomfonte}[5]{%
+  \par\vspace{10pt}%
+  \noindent\begin{minipage}{\textwidth}
+    \refstepcounter{editorialfig}%
+    \label{#5}%
+    \addcontentsline{lof}{figure}{\protect\numberline{\theeditorialfig}#3}%
+    \centering
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Figura \theeditorialfig} -- #3}\par
+    \vspace{6pt}%
+    \includegraphics[width=#2]{#1}\par
+    \vspace{5pt}%
+    {\fontsize{8.5pt}{11pt}\fontRegular\color{BrandGrayMed}Fonte: #4}\par
+  \end{minipage}%
+  \par\vspace{10pt}%
+}
+
+\newcommand{\figuratikz}[4]{%
+  \par\vspace{10pt}%
+  \noindent\begin{minipage}{\textwidth}
+    \refstepcounter{editorialfig}%
+    \label{#3}%
+    \addcontentsline{lof}{figure}{\protect\numberline{\theeditorialfig}#1}%
+    \centering
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Figura \theeditorialfig} -- #1}\par
+    \vspace{6pt}%
+    #4\par
+    \vspace{5pt}%
+    {\fontsize{8.5pt}{11pt}\fontRegular\color{BrandGrayMed}Fonte: #2}\par
+  \end{minipage}%
+  \par\vspace{10pt}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 5: QUADRO EDITORIAL E TABELA INSTITUCIONAL
+% -----------------------------------------------------------------------------
+\newcounter{editorialquadro}
+\setcounter{editorialquadro}{0}
+
+\newcommand{\quadroeditorial}[4]{%
+  \par\vspace{10pt}%
+  \noindent\begin{minipage}{\textwidth}
+    \refstepcounter{editorialquadro}%
+    \label{#3}%
+    \addcontentsline{lot}{table}{\protect\numberline{Q\theeditorialquadro}#1}%
+    \centering
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Quadro \theeditorialquadro} -- #1}\par
+    \vspace{4pt}%
+    \begin{tcolorbox}[
+      enhanced,
+      colback=white,
+      colframe=BrandGrayRule,
+      boxrule=0.9pt,
+      arc=4pt,
+      left=12pt,
+      right=12pt,
+      top=10pt,
+      bottom=10pt,
+      fontupper=\fontsize{9.2pt}{13pt}\selectfont\color{BrandBodyText}
+    ]
+      #4
+    \end{tcolorbox}
+    \vspace{2pt}%
+    {\fontsize{8.5pt}{11pt}\fontRegular\color{BrandGrayMed}Fonte: #2}\par
+  \end{minipage}%
+  \par\vspace{10pt}%
+}
+
+\newcounter{editorialtabela}
+\setcounter{editorialtabela}{0}
+
+\newcommand{\tabelaeditorial}[5]{%
+  \par\vspace{10pt}%
+  \noindent\begin{minipage}{\textwidth}
+    \refstepcounter{editorialtabela}%
+    \label{#3}%
+    \addcontentsline{lot}{table}{\protect\numberline{\theeditorialtabela}#1}%
+    \centering
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Tabela \theeditorialtabela} -- #1}\par
+    \vspace{6pt}%
+    {\fontsize{9pt}{12.5pt}\selectfont
+     \renewcommand{\arraystretch}{1.30}%
+     \setlength{\tabcolsep}{7pt}%
+     \begin{tabularx}{\textwidth}{#4}
+       \arrayrulecolor{BrandNavy}\toprule[1.2pt]
+       #5
+       \arrayrulecolor{BrandNavy}\bottomrule[1.2pt]
+     \end{tabularx}%
+    }\par
+    \vspace{5pt}%
+    {\fontsize{8.5pt}{11pt}\fontRegular\color{BrandGrayMed}Fonte: #2}\par
+  \end{minipage}%
+  \par\vspace{10pt}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 6: VERIFICAÇÃO DE CONFORMIDADE
+% -----------------------------------------------------------------------------
+\newcounter{editorialcheck}
+\setcounter{editorialcheck}{0}
+
+\newcommand{\verificacaoconformidade}[2]{%
+  \refstepcounter{editorialcheck}%
+  \par\vspace{10pt}%
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colback=BrandTableAlt,
+    colframe=BrandNavy,
+    boxrule=0.8pt,
+    leftrule=3.5pt,
+    arc=2pt,
+    left=12pt,
+    right=12pt,
+    top=10pt,
+    bottom=10pt,
+    title={\fontsize{9.5pt}{12pt}\fontExtraBold\color{white}%
+           VERIFICAÇÃO DE CONFORMIDADE \theeditorialcheck\ — #1},
+    colbacktitle=BrandNavy,
+    toptitle=5pt,
+    bottomtitle=5pt,
+    fontupper=\fontsize{9.2pt}{13pt}\selectfont\color{BrandBodyText}
+  ]
+    #2
+  \end{tcolorbox}%
+  \par\vspace{8pt}%
+}
+
+\newcommand{\exerciciofixacao}[2]{\verificacaoconformidade{#1}{#2}}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 7: CAIXA CURIOSIDADES / NOTA TÉCNICA (DEEP SAPPHIRE SÓBRIO)
+% -----------------------------------------------------------------------------
+\newcommand{\caixacuriosidades}[2][NOTA TÉCNICA DE ENGENHARIA]{%
+  \par\vspace{12pt}%
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colback=BoxSapphireBg,
+    colframe=BoxSapphireBg,
+    boxrule=0pt,
+    arc=2pt,
+    left=14pt,
+    right=14pt,
+    top=12pt,
+    bottom=12pt,
+    fontupper=\fontsize{9.5pt}{13.5pt}\selectfont\color{white}
+  ]
+    {\fontsize{11pt}{14pt}\fontExtraBold\color{white}\MakeUppercase{#1}}\par
+    \vspace{3pt}%
+    \textcolor{white!30}{\rule{3.0cm}{0.6pt}}\par
+    \vspace{5pt}%
+    #2
+  \end{tcolorbox}%
+  \par\vspace{10pt}%
+}
+
+\newcommand{\notatecnica}[2][NOTA TÉCNICA DE ENGENHARIA]{%
+  \caixacuriosidades[#1]{#2}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 8: CAIXA SAIBA MAIS (CARMIM SÓBRIO #7A1D2E)
+% -----------------------------------------------------------------------------
+\newcommand{\caixasaibamais}[2][SAIBA MAIS — NORMAS E APROFUNDAMENTO]{%
+  \par\vspace{12pt}%
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colback=BoxCrimsonBg,
+    colframe=BoxCrimsonBg,
+    boxrule=0pt,
+    arc=2pt,
+    left=14pt,
+    right=14pt,
+    top=12pt,
+    bottom=12pt,
+    fontupper=\fontsize{9.5pt}{13.5pt}\selectfont\color{white}
+  ]
+    {\fontsize{11pt}{14pt}\fontExtraBold\color{white}\MakeUppercase{#1}}\par
+    \vspace{3pt}%
+    \textcolor{white!30}{\rule{3.0cm}{0.6pt}}\par
+    \vspace{5pt}%
+    #2
+  \end{tcolorbox}%
+  \par\vspace{10pt}%
+}
+
+\newcommand{\saibamaisnormativo}[2][SAIBA MAIS — NORMAS E APROFUNDAMENTO]{%
+  \caixasaibamais[#1]{#2}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 9: CAIXA PARA RELEMBRAR (CARVÃO MEIA-NOITE #161C2B)
+% -----------------------------------------------------------------------------
+\newcommand{\caixarelembrar}[2][SÍNTESE EXECUTIVA DA UNIDADE]{%
+  \par\vspace{12pt}%
+  \begin{tcolorbox}[
+    enhanced,
+    breakable,
+    colback=BoxMidnightBg,
+    colframe=BoxMidnightBg,
+    boxrule=0pt,
+    arc=2pt,
+    left=14pt,
+    right=14pt,
+    top=12pt,
+    bottom=12pt,
+    fontupper=\fontsize{9.5pt}{13.5pt}\selectfont\color{white}
+  ]
+    {\fontsize{11pt}{14pt}\fontExtraBold\color{white}\MakeUppercase{#1}}\par
+    \vspace{3pt}%
+    \textcolor{white!30}{\rule{3.0cm}{0.6pt}}\par
+    \vspace{5pt}%
+    #2
+  \end{tcolorbox}%
+  \par\vspace{10pt}%
+}
+
+\newcommand{\sintesecapitulo}[2][SÍNTESE EXECUTIVA DA UNIDADE]{%
+  \caixarelembrar[#1]{#2}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 10: LISTAS, AVISO E CÓDIGO
+% -----------------------------------------------------------------------------
+\newenvironment{listapontos}{%
+  \begin{itemize}[
+    label={\textcolor{BrandCrimson}{\fontsize{10pt}{10pt}\fontExtraBold »}},
+    leftmargin=0.95cm,
+    labelsep=0.25cm,
+    itemsep=3pt,
+    topsep=4pt,
+    parsep=2pt
+  ]
+}{%
+  \end{itemize}%
+}
+
+\newcommand{\itemponto}[2]{%
+  \item \textcolor{BrandNavy}{\fontExtraBold #1:} #2%
+}
+
+\newenvironment{listaetapas}{%
+  \begin{enumerate}[
+    label={\textcolor{BrandCrimson}{\fontExtraBold\arabic*.}},
+    leftmargin=0.95cm,
+    labelsep=0.25cm,
+    itemsep=4pt,
+    topsep=5pt,
+    parsep=2pt
+  ]
+}{%
+  \end{enumerate}%
+}
+
+\newcommand{\itemetapa}[2]{%
+  \item \textcolor{BrandNavy}{\fontExtraBold #1:} #2%
+}
+
+\newcommand{\caixaatencao}[2][Atenção:]{%
+  \par\vspace{8pt}%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=BrandTableAlt,
+    colframe=BrandSecondary,
+    boxrule=0.8pt,
+    leftrule=3.0pt,
+    arc=2pt,
+    left=12pt,
+    right=12pt,
+    top=8pt,
+    bottom=8pt,
+    fontupper=\fontsize{9.2pt}{13pt}\selectfont\color{BrandBodyText}
+  ]
+    {\fontsize{9.8pt}{13pt}\fontExtraBold\color{BrandSecondary}#1}\par\vspace{2pt}%
+    #2
+  \end{tcolorbox}%
+  \par\vspace{8pt}%
+}
+
+% Bloco de Código Estilo Dark Sóbrio
+\newcounter{editorialcodigo}
+\setcounter{editorialcodigo}{0}
+
+\newtcblisting{editoriallisting}[4][]{%
+  enhanced,
+  colback=BrandCodeBg,
+  colframe=BrandCodeBg,
+  arc=3pt,
+  boxrule=0pt,
+  left=10pt,
+  right=10pt,
+  top=8pt,
+  bottom=10pt,
+  overlay={
+    \node[
+      fill=BrandCodePill,
+      text=white,
+      font=\fontsize{7.5pt}{9pt}\fontSemiBold,
+      inner xsep=6pt,
+      inner ysep=2.5pt,
+      rounded corners=2pt,
+      anchor=south east
+    ] at ($(frame.south east) + (-8pt, 5pt)$) {#3};
+  },
+  listing only,
+  listing options={
+    basicstyle=\codeMonoFont\fontsize{8.4pt}{11.2pt}\selectfont\color{BrandCodeText},
+    commentstyle=\color{BrandCodeComment}\itshape,
+    keywordstyle=\color{BrandCodeKeyword}\bfseries,
+    stringstyle=\color{BrandCodeString},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    showstringspaces=false,
+    columns=fullflexible,
+    keepspaces=true,
+    frame=none
+  },
+  #1
+}
+
+\newcommand{\blocodigocaption}[3]{%
+  \refstepcounter{editorialcodigo}%
+  \label{#3}%
+  \centering
+  {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Código \theeditorialcodigo} -- #1}\par
+  \vspace{4pt}%
+}
+
+\newcommand{\blocodigofonte}[1]{%
+  \vspace{2pt}%
+  \centering
+  {\fontsize{8.5pt}{11pt}\fontRegular\color{BrandGrayMed}Fonte: #1}\par
+  \vspace{8pt}%
+}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 11: NOTA DE RODAPÉ
+% -----------------------------------------------------------------------------
+\newcommand{\notarodape}[1]{\footnote{#1}}
+
+% -----------------------------------------------------------------------------
+% COMPONENTE 12: REFERÊNCIAS
+% -----------------------------------------------------------------------------
+\newcommand{\refitem}[1]{%
+  \par\noindent
+  \hangindent=0cm\hangafter=1
+  {\fontsize{9.5pt}{13.5pt}\selectfont\color{BrandBodyText}#1}\par\vspace{7pt}%
+}
+
+\newcommand{\subsecaoreferencias}[1]{%
+  \par\vspace{10pt}\noindent
+  {\fontsize{11.5pt}{15pt}\fontExtraBold\color{BrandNavy}#1}\par\vspace{5pt}%
+}
+
+\newcommand{\refsite}[3]{%
+  \par\noindent
+  {\fontsize{9.5pt}{13.5pt}\selectfont\color{BrandBodyText}%
+   #1\ Disponível em: \href{#2}{\textcolor{BrandCyanLink}{\underline{#2}}}. Acesso em: #3.}\par\vspace{7pt}%
+}

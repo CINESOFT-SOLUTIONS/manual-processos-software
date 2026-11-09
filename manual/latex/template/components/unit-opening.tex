@@ -1,0 +1,256 @@
+% =============================================================================
+% COMPONENTE 1: CAPA EDITORIAL MINIMALISTA, ABERTURA DE UNIDADE E CONTRACAPA
+% Padrão: 100% Profissional, Discreto, Sóbrio e Elegante (Design System Real)
+% =============================================================================
+
+\usepackage{graphicx}
+
+% -----------------------------------------------------------------------------
+% 1. CAPA MINIMALISTA E PROFISSIONAL (DESIGN CORPORATIVO ELEGANTE)
+% -----------------------------------------------------------------------------
+\newcommand{\capamanual}[1][]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \global\showcontentbgfalse
+  \begin{tikzpicture}[remember picture, overlay]
+    % 1. Fundo sóbrio Midnight Navy (#1A1A2E) com respiro visual amplo
+    \fill[BrandNavy] (current page.south west) rectangle (current page.north east);
+
+    % Faixa superior muito sutil em Deep Sapphire
+    \fill[BrandSecondary!40]
+      (current page.north west) rectangle ($(current page.north east) + (0, -4.5cm)$);
+
+    % Filete fino de precisão Crimson (#E94560) separando o bloco superior
+    \draw[BrandCrimson, line width=1.8pt]
+      ($(current page.north west) + (2.5cm, -4.5cm)$) -- ($(current page.north east) + (-2.5cm, -4.5cm)$);
+
+    % 2. TOPO: Identificação Acadêmica e Institucional
+    \node[
+      anchor=north west,
+      text=white!85,
+      font=\fontsize{9pt}{13pt}\fontMedium,
+      align=left
+    ] at ($(current page.north west) + (2.5cm, -2.2cm)$) {%
+      {\fontsize{9.5pt}{14pt}\fontExtraBold\color{white}UNIVERSIDADE FEDERAL DE GOIÁS — UFG}\\[2pt]
+      INSTITUTO DE INFORMÁTICA — INF • BACHARELADO EM ENGENHARIA DE SOFTWARE\\
+      DISCIPLINA: PROCESSOS DE SOFTWARE%
+    };
+
+    % 3. LOGOS OFICIAIS NO CENTRO-SUPERIOR (IMPORTADAS DE ASSETS/LOGOS)
+    \begin{scope}[shift={($(current page.north west) + (2.5cm, -7.5cm)$)}]
+      % Logo CineSoft Solutions (Horizontal Branca)
+      \node[inner sep=0pt, anchor=west] at (0, 0) {
+        \includegraphics[height=1.4cm]{logos/cinesoft-logo-horizontal-white.png}
+      };
+
+      % Barra vertical fina e elegante
+      \draw[white!30, line width=0.8pt] (6.8, 0.8) -- (6.8, -0.8);
+
+      % Logo CineDoom (Horizontal Branca)
+      \node[inner sep=0pt, anchor=west] at (7.3, 0) {
+        \includegraphics[height=1.4cm]{logos/cinedoom-logo-horizontal-white.png}
+      };
+    \end{scope}
+
+    % 4. BLOCO CENTRAL DE TITULAÇÃO (EDITORIAL SÓBRIO)
+    \begin{scope}[shift={($(current page.west) + (2.5cm, -0.5cm)$)}]
+      % Rótulo técnico
+      \node[
+        anchor=west,
+        text=BrandCrimson,
+        font=\fontsize{11pt}{14pt}\fontExtraBold
+      ] at (0, 2.2) {DOCUMENTO CONTROLADO • ESPECIFICAÇÃO DE PROCESSO};
+
+      % Título principal
+      \node[
+        anchor=west,
+        text=white,
+        font=\fontsize{27pt}{33pt}\fontExtraBold,
+        align=left
+      ] at (0, 0.8) {%
+        Manual de Processos\\
+        de Software%
+      };
+
+      % Subtítulo com respiro
+      \node[
+        anchor=west,
+        text=white!85,
+        font=\fontsize{13pt}{18pt}\fontRegular,
+        align=left
+      ] at (0, -0.8) {%
+        Arquitetura de Ciclo de Vida da Plataforma CineDoom%
+      };
+
+      % Filete sutil
+      \draw[white!20, line width=0.6pt] (0, -1.8) -- (16.0cm, -1.8);
+
+      % Referência normativa com tipografia limpa
+      \node[
+        anchor=west,
+        text=white!70,
+        font=\fontsize{9.5pt}{14pt}\fontRegular,
+        align=left
+      ] at (0, -2.6) {%
+        Alinhamento Normativo: \textbf{\textcolor{white}{ABNT NBR ISO/IEC/IEEE 12207:2021}} \& \textbf{\textcolor{white}{MPS.BR (Níveis G e F)}}\\[2pt]
+        Escopo Tecnológico: \textbf{\textcolor{white}{Macroentregas v1.0 (MVP), v2.0 (Escala/Resend) e v3.0 (Enterprise)}}%
+      };
+    \end{scope}
+
+    % 5. BASE: Autoria e Expediente
+    \begin{scope}[shift={($(current page.south west) + (2.5cm, 2.4cm)$)}]
+      \node[
+        anchor=south west,
+        text=white!80,
+        font=\fontsize{8.8pt}{13.5pt}\fontRegular,
+        align=left
+      ] at (0, 0) {%
+        {\fontsize{9.5pt}{13pt}\fontExtraBold\color{white}Equipe de Engenharia (Doomscoders):}\\[2pt]
+        Carlos Eduardo Freire da Silva • Gabriel Henrique Lourenço Dias\\
+        Kayque Vicente Silva • Yury Nogueira de Oliveira Silva%
+      };
+
+      \node[
+        anchor=south east,
+        text=white!60,
+        font=\fontsize{9pt}{13pt}\fontMedium,
+        align=right
+      ] at (16.0cm, 0) {%
+        CineSoft Solutions 2026\\
+        Goiânia — GO • Brasil%
+      };
+    \end{scope}
+  \end{tikzpicture}%
+  \mbox{}%
+  \clearpage
+  \global\showcontentbgtrue
+}
+
+% -----------------------------------------------------------------------------
+% 2. ABERTURA DE CAPÍTULO MINIMALISTA E SÓBRIA (EDITORIAL ELEGANTE)
+% -----------------------------------------------------------------------------
+% Alinhado estritamente com as diretrizes do Manual de Processos de Software:
+% "Capítulo 1 – Apresentação do software", "Capítulo 2 – Processos de Acordo", etc.
+
+\newcommand{\aberturacapitulo}[2]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \global\showcontentbgfalse
+  \begin{tikzpicture}[remember picture, overlay]
+    % 1. Fundo sólido sóbrio Midnight Navy (#1A1A2E)
+    \fill[BrandNavy] (current page.south west) rectangle (current page.north east);
+
+    % 2. Cabeçalho discreto institucional
+    \begin{scope}[shift={($(current page.north west) + (2.5cm, -2.4cm)$)}]
+      \node[inner sep=0pt, anchor=west] at (0, 0) {
+        \includegraphics[height=0.95cm]{logos/cinesoft-logo-horizontal-white.png}
+      };
+
+      \draw[white!25, line width=0.6pt] (6.2, 0.5) -- (6.2, -0.5);
+
+      \node[anchor=west, text=white!80, font=\fontsize{9pt}{12pt}\fontRegular, align=left]
+        at (6.6, 0) {%
+          {\fontSemiBold\color{white}Manual de Processos de Software}\\[1pt]
+          {\fontsize{8pt}{10pt}\color{white!60}Plataforma CineDoom • ABNT NBR ISO/IEC/IEEE 12207:2021}%
+        };
+    \end{scope}
+
+    % Filete fino separador do cabeçalho
+    \draw[white!15, line width=0.5pt]
+      ($(current page.north west) + (2.5cm, -3.4cm)$) -- ($(current page.north east) + (-2.5cm, -3.4cm)$);
+
+    % 3. BLOCO CENTRAL TIPOGRÁFICO DO CAPÍTULO
+    \begin{scope}[shift={($(current page.west) + (2.5cm, 1.0cm)$)}]
+      % Identificador do Capítulo (ex: "Capítulo 1")
+      \node[
+        anchor=west,
+        text=BrandCrimson,
+        font=\fontsize{13pt}{16pt}\fontExtraBold
+      ] at (0, 2.4) {\MakeUppercase{#1}};
+
+      % Filete Crimson sóbrio abaixo do identificador
+      \draw[BrandCrimson, line width=2.0pt] (0, 1.8) -- (2.5cm, 1.8);
+
+      % Título do Capítulo em tipografia forte, limpa e legível
+      \node[
+        anchor=north west,
+        text=white,
+        align=left,
+        text width=14.5cm,
+        font=\fontsize{28pt}{35pt}\fontExtraBold
+      ] at (0, 1.2) {#2};
+    \end{scope}
+
+    % 4. BASE: Chancery institucional minimalista
+    \begin{scope}[shift={($(current page.south west) + (2.5cm, 2.4cm)$)}]
+      \draw[white!15, line width=0.5pt] (0, 1.2) -- (16.0cm, 1.2);
+      \node[anchor=west, text=white!60, font=\fontsize{8.5pt}{12pt}\fontRegular]
+        at (0, 0.5) {CineSoft Solutions • Manual de Processos de Ciclo de Vida de Software};
+      \node[anchor=east, text=white!60, font=\fontsize{8.5pt}{12pt}\fontMedium]
+        at (16.0cm, 0.5) {Plataforma CineDoom};
+    \end{scope}
+  \end{tikzpicture}%
+  \mbox{}%
+  \clearpage
+  \global\showcontentbgtrue
+  \stepcounter{unitcounter}%
+  \setcounter{section}{0}%
+  \addUnitToTOC{#1}{#2}%
+  \tituloSecaoPrincipal{#1 — #2}%
+}
+
+% Alias semântico retrocompatível
+\newcommand{\aberturaunidade}[2]{\aberturacapitulo{#1}{#2}}
+
+% -----------------------------------------------------------------------------
+% 3. CONTRACAPA MINIMALISTA E SÓBRIA
+% -----------------------------------------------------------------------------
+\newcommand{\contracapamanual}{%
+  \clearpage
+  \thispagestyle{empty}%
+  \global\showcontentbgfalse
+  \begin{tikzpicture}[remember picture, overlay]
+    % Fundo Midnight Navy
+    \fill[BrandNavy] (current page.south west) rectangle (current page.north east);
+
+    % Logos oficiais discretas importadas de assets/logos/
+    \begin{scope}[shift={($(current page.center) + (0, 4.0cm)$)}]
+      \node at (-3.4, 0) {
+        \includegraphics[height=1.2cm]{logos/cinesoft-logo-horizontal-white.png}
+      };
+      \draw[white!30, line width=0.8pt] (0, 0.6) -- (0, -0.6);
+      \node at (3.4, 0) {
+        \includegraphics[height=1.2cm]{logos/cinedoom-logo-horizontal-white.png}
+      };
+    \end{scope}
+
+    % Bloco institucional de auditoria e conformidade
+    \begin{scope}[shift={($(current page.center) + (0, -0.5cm)$)}]
+      \node[text=white, font=\fontsize{12pt}{15pt}\fontExtraBold, align=center]
+        at (0, 1.2) {GOVERNANÇA TÉCNICA E CONFORMIDADE NORMATIVA};
+
+      \draw[BrandCrimson, line width=1.2pt] (-2.5cm, 0.7) -- (2.5cm, 0.7);
+
+      \node[text=white!80, font=\fontsize{9pt}{14pt}\fontRegular, align=left, text width=13.5cm]
+        at (0, -0.5) {%
+        Este manual corporativo regulamenta o ciclo de vida e a governança de software da \textbf{CineSoft Solutions}, estabelecendo diretrizes auditáveis em conformidade com as normas \textbf{ABNT NBR ISO/IEC/IEEE 12207:2021} e com o modelo de maturidade \textbf{MPS.BR (Níveis G e F)}. Todas as práticas de requisitos, controle de versão, arquitetura e testes foram aplicadas e validadas na engenharia da plataforma \textbf{CineDoom}.
+      };
+    \end{scope}
+
+    % Colofão final discreto
+    \node[
+      anchor=south west,
+      text=white!50,
+      align=left,
+      text width=14cm,
+      font=\fontsize{8pt}{12pt}\fontLight
+    ] at ($(current page.south west) + (2.5cm, 2.2cm)$) {%
+      \textbf{\textcolor{white!70}{CineSoft Solutions — Equipe Doomscoders}} • Universidade Federal de Goiás (UFG / INF)\\
+      Diagramado em \LaTeX\ (Tectonic / XeLaTeX) em formato A4 ($210 \times 297\text{ mm}$).\\[2pt]
+      Goiânia — GO • 2026 • Todos os direitos reservados à CineSoft Solutions.
+    };
+  \end{tikzpicture}%
+  \mbox{}%
+  \clearpage
+  \global\showcontentbgtrue
+}

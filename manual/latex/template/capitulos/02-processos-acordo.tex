@@ -1,0 +1,68 @@
+% =============================================================================
+% CAPÍTULO 2: PROCESSOS DE ACORDO (AQUISIÇÃO E FORNECIMENTO)
+% Alinhado à ISO/IEC/IEEE 12207:2021 (6.1.1 e 6.1.2) e MPS.BR
+% Fonte: manual-processos/manual/capitulos/02-processos-acordo.md
+% =============================================================================
+
+\aberturacapitulo{Capítulo 2}{Processos de Acordo}
+
+\secao{Descrição do processo de aquisição}
+
+O processo de aquisição da \termochave{CineSoft Solutions} tem como objetivo obter produtos, serviços de infraestrutura e componentes de software externos necessários para viabilizar, hospedar e escalar a plataforma \destaqueazul{CineDoom}.
+
+Para cada componente tecnológico do ecossistema, a engenharia realiza uma rigorosa análise de viabilidade técnica e financeira baseada no paradigma \textbf{Make or Buy} (Construir internamente vs. Contratar como serviço gerenciado), ponderando custo total de propriedade (TCO), tempo de colocação no mercado (\textit{time-to-market}), segurança de dados (LGPD) e disponibilidade operacional.
+
+\subsecao{Matriz de Decisão: Make or Buy}
+
+A tabela a seguir consolida a decisão estratégica de aquisição para cada subsistema do CineDoom:
+\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy.tex}
+
+\secao{Descrição do processo de fornecimento}
+
+O processo de fornecimento regulamenta como a \termochave{CineSoft Solutions} disponibiliza a plataforma \destaqueazul{CineDoom} aos seus clientes adquirentes (redes exibidoras, cinemas independentes e cineclubes).
+
+\subsecao{Modelo de Fornecimento e Monetização (SaaS)}
+
+O fornecimento é estruturado no modelo de software como serviço (\destaqueazul{SaaS B2B2C}):
+\input{../../../assets/capitulo-02/tabelas/perspectiva-fornecimento.tex}
+
+\subsecao{Acordo de Nível de Serviço (SLA) e Termo de Aceite}
+
+O fornecimento é regido por um Acordo de Nível de Serviço formal que estabelece:
+\begin{listaetapas}
+  \itemetapa{Disponibilidade Global}{Meta de disponibilidade mínima de 99.5\% em horário de funcionamento comercial das salas (13h às 23h30).}
+  \itemetapa{Tempo Médio para Resposta (MTTR)}{Chamados críticos (indisponibilidade total de emissão de ingressos) atendidos em no máximo 15 minutos.}
+  \itemetapa{Termo de Aceite Formal}{A homologação de novos tenants ocorre após a execução da suíte de testes de aceitação e validação de 100\% dos fluxos de guichê e portal.}
+\end{listaetapas}
+
+\secao{Identificação dos fornecedores e parceiros relevantes}
+
+A governança do CineDoom monitora continuamente seus parceiros de infraestrutura contra métricas de desempenho e conformidade com a LGPD:
+\begin{listapontos}
+  \itemponto{Neon Inc.}{Provedor do banco de dados relacional PostgreSQL Serverless sob TLS 1.3, com retenção de logs e backup automático.}
+  \itemponto{Vercel Inc.}{Infraestrutura global de hospedagem edge e orquestração do framework Next.js 16.}
+  \itemponto{Resend Inc.}{Infraestrutura de despacho de e-mails transacionais (vouchers, confirmação de reserva e segurança de acesso).}
+  \itemponto{GitHub Inc.}{Repositório seguro de código-fonte, automação de testes com GitHub Actions e gestão de backlog.}
+\end{listapontos}
+
+\verificacaoconformidade{Ponto de Controle — Processos de Acordo}{%
+  \begin{enumerate}[label=\textbf{\alph*)}, leftmargin=0.8cm, itemsep=3pt]
+    \item Por quais razões técnicas e normativas a CineSoft Solutions optou por contratar o serviço de e-mail transacional (Resend) em vez de manter um servidor SMTP próprio?
+    \item Quais são as obrigações contratuais de conformidade com a LGPD exigidas dos fornecedores de infraestrutura em nuvem?
+  \end{enumerate}
+}
+
+\notatecnica{%
+  \itemcaixa{A dissociação entre a infraestrutura de dados (Neon) e a camada de aplicação (Vercel) permite migração transparente de provedor caso haja alteração de custos contratuais, preservando a portabilidade do produto.}
+  \itemcaixa{O custo operacional do MVP (Macroentrega 1) foi projetado para operar dentro dos planos gratuitos de nuvem, reduzindo a barreira de entrada para zero durante a fase de validação.}
+}
+
+\saibamaisnormativo{%
+  \itemsaibamais{Consulte a cláusula 6.1.1 (\textit{Acquisition Process}) e 6.1.2 (\textit{Supply Process}) da norma \linkcaixa{https://www.iso.org/standard/63711.html}{ISO/IEC/IEEE 12207:2021} para detalhamento dos requisitos contratuais de sistemas de software.}
+  \itemsaibamais{O guia \linkcaixa{https://softex.br/mpsbr/}{MPS.BR} estabelece critérios para seleção, qualificação e avaliação periódica de fornecedores no processo de Aquisição.}
+}
+
+\sintesecapitulo{%
+  \itemcaixa{O processo Make-or-Buy assegura que a CineSoft invista seus recursos de engenharia exclusivamente no núcleo de valor do produto (concorrência e bilheteria).}
+  \itemcaixa{O modelo SaaS multi-tenant reduz custos de infraestrutura e viabiliza a informatização de cinemas independentes com previsibilidade financeira.}
+}

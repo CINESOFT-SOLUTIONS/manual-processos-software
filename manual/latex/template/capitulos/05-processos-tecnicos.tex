@@ -1,0 +1,87 @@
+% =============================================================================
+% CAPÍTULO 5: PROCESSOS TÉCNICOS
+% Alinhado à ISO/IEC/IEEE 12207:2021 (6.4) e MPS.BR
+% Fonte: manual-processos/manual/capitulos/05-processos-tecnicos.md
+% =============================================================================
+
+\aberturacapitulo{Capítulo 5}{Processos Técnicos}
+
+\secao{Processo de definição de requisitos}
+
+A Engenharia de Requisitos da \termochave{CineSoft Solutions} segue o processo formal da \termochave{ISO/IEC/IEEE 12207:2021 (6.4.2 e 6.4.3)}, garantindo que as necessidades dos clientes e regulamentos legais (como a LGPD) sejam traduzidas em requisitos verificáveis.
+
+\subsecao{Catálogo Formal de Requisitos Funcionais e Não Funcionais}
+
+\input{../../../assets/capitulo-05/tabelas/catalogo-requisitos.tex}
+
+\secao{Processo de arquitetura e design do sistema}
+
+A arquitetura do CineDoom adota o padrão de \destaqueazul{Monólito Modular com Clean Architecture}, desacoplando regras de negócio corporativas de detalhes de infraestrutura e bibliotecas externas.
+
+\subsecao{Diagrama de Contêineres (C4 Model Nível 2)}
+
+O sistema CineDoom é modelado no C4 Model detalhando o relacionamento entre os contêineres:
+
+\figuracomfonte{capitulo-05/diagramas/c4-containers.pdf}{0.96\textwidth}{Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom}{CineSoft Solutions (2026)}{fig:c4_containers}
+
+O sistema é composto por:
+\begin{listapontos}
+  \itemponto{Single Page / Server Component App}{Interface Next.js 16 servida na borda pela Vercel, proporcionando renderização híbrida rápida para mobile e guichê.}
+  \itemponto{API Transacional de Negócios}{Camada de serviços escrita em TypeScript que orquestra a máquina de estados de reserva e venda.}
+  \itemponto{Repositório Relacional Serverless}{Banco de dados Neon PostgreSQL conectado via Prisma ORM com suporte a transações ACID concorrentes.}
+  \itemponto{Provedor de E-mail Externo}{Serviço Resend integrado via HTTPS REST para despacho assíncrono de notificações transacionais.}
+\end{listapontos}
+
+\subsecao{Modelo de Dados (DER) e Modelo de Domínio}
+
+O modelo relacional e as entidades de domínio são formalizados nas figuras abaixo:
+
+\figuracomfonte{capitulo-05/diagramas/diagrama-er-banco.pdf}{0.96\textwidth}{Diagrama Entidade-Relacionamento (DER) do Banco PostgreSQL}{CineSoft Solutions (2026)}{fig:der_banco}
+
+\figuracomfonte{capitulo-05/diagramas/diagrama-classes-dominio.pdf}{0.96\textwidth}{Diagrama de Classes do Domínio de Negócios CineDoom}{CineSoft Solutions (2026)}{fig:classes_dominio}
+
+\subsecao{Diagramas de Sequência e Máquina de Estados da Poltrona}
+
+A máquina de estados e o fluxo de reserva atômica são formalizados nas figuras abaixo:
+
+\figuracomfonte{capitulo-05/diagramas/diagrama-estados-assento.pdf}{0.96\textwidth}{Diagrama de Máquina de Estados do Ciclo de Vida da Poltrona}{CineSoft Solutions (2026)}{fig:estados_assento}
+
+\figuracomfonte{capitulo-05/diagramas/diagrama-sequencia-reserva.pdf}{0.96\textwidth}{Diagrama de Sequência UML: Reserva Web e Emissão de Voucher}{CineSoft Solutions (2026)}{fig:sequencia_reserva}
+
+\secao{Processo de implementação e integração de software}
+
+A implementação do CineDoom orienta-se pela manutenibilidade, cobertura de testes e aderência aos padrões de código:
+\begin{listapontos}
+  \itemponto{Padrões de Código}{Padronização rigorosa com ESLint e Prettier aplicada automaticamente via Git Hooks (Husky).}
+  \itemponto{Migrations de Banco}{Todas as alterações de schema são versionadas no Prisma e aplicadas via pipeline automatizada no deploy de homologação.}
+  \itemponto{Tratamento de Exceções}{Mapeamento de erros de concorrência com respostas padronizadas em JSON para o cliente web.}
+\end{listapontos}
+
+\secao{Processos de verificação, validação e transição (V\&V)}
+
+Em conformidade com a ISO 12207 (6.4.9 e 6.4.10), a CineSoft estabelece distinção clara entre Verificação e Validação:
+
+\input{../../../assets/capitulo-05/tabelas/verificacao-validacao.tex}
+
+\secao{Processos de operação, manutenção e descontinuação}
+
+A operação do CineDoom inclui monitoramento de saúde do banco de dados, gestão de backups diários e procedimentos de rollback imediato em caso de incidentes.
+
+\verificacaoconformidade{Ponto de Controle — Processos Técnicos}{%
+  \begin{enumerate}[label=\textbf{\alph*)}, leftmargin=0.8cm, itemsep=3pt]
+    \item Como a arquitetura modular do CineDoom garante que falhas no envio de e-mails pelo Resend não interrompam a venda física de ingressos na bilheteria?
+    \item Quais são os critérios de entrada e saída para que uma nova versão do sistema avance do ambiente de homologação para produção?
+  \end{enumerate}
+}
+
+\notatecnica{%
+  \itemcaixa{O isolamento multi-tenant do CineDoom utiliza cláusula obrigatória de \codigoinline{tenantId} em todas as consultas Prisma, garantindo separação lógica absoluta entre os dados de diferentes redes exibidoras.}
+}
+
+\saibamaisnormativo{%
+  \itemsaibamais{Consulte as cláusulas 6.4.4 (\textit{Architecture Definition}), 6.4.9 (\textit{Verification}) e 6.4.10 (\textit{Validation}) da norma \linkcaixa{https://www.iso.org/standard/63711.html}{ISO/IEC/IEEE 12207:2021} para detalhamento dos processos de ciclo de vida técnico.}
+}
+
+\sintesecapitulo{%
+  \itemcaixa{A engenharia do CineDoom comprova que arquitetura de alta concorrência e processos de ciclo de vida rigorosos são indispensáveis para garantir a integridade de vendas de ingressos digitais.}
+}

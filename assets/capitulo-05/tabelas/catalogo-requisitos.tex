@@ -1,0 +1,14 @@
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{l p{3.2cm} c X}
+\toprule
+\textbf{ID} & \textbf{Nome do Requisito} & \textbf{Tipo} & \textbf{Descrição e Regra Central} \\
+\midrule
+RF-01 & Reserva Atômica de Poltrona & Funcional & Bloqueio temporário (10 min) prevenindo duplicidade. \\
+RF-02 & Emissão e Baixa de Ingressos & Funcional & Geração de QR Code criptográfico para catraca/guichê. \\
+RF-03 & Venda no Balcão (PDV Rápido) & Funcional & Operação simplificada para atendente em menos de 30s. \\
+RNF-01 & Tempo de Resposta em Checkout & Não Func. & P95 inferior a 300ms sob carga de 50 req/s. \\
+RNF-02 & Conformidade de Segurança & Não Func. & Sanitização Zod e isolamento total de tenants. \\
+\bottomrule
+\end{tabularx}
+\end{center}

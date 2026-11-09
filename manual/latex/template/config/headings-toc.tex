@@ -1,0 +1,140 @@
+% =============================================================================
+% HIERARQUIA DE TÍTULOS E SUMÁRIO (SÓBRIO, MINIMALISTA E PROFISSIONAL)
+% =============================================================================
+
+\usepackage{titlesec}
+\usepackage[titles]{tocloft}
+\usepackage{etoolbox}
+
+% -----------------------------------------------------------------------------
+% 1. MARCADOR DISCRETO DE SEÇÃO (BARRA VERTICAL FINA / FILETE)
+% -----------------------------------------------------------------------------
+% Substitui ícones desenhados por marcadores tipográficos minimalistas
+\newcommand{\editorialBarIcon}{%
+  \textcolor{BrandCrimson}{\rule[-0.2ex]{2.2pt}{1.15em}}%
+}
+
+% -----------------------------------------------------------------------------
+% 2. NUMERAÇÃO DE SEÇÕES E SUMÁRIO
+% -----------------------------------------------------------------------------
+\newcounter{unitcounter}
+\setcounter{unitcounter}{0}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\renewcommand{\thesection}{\arabic{unitcounter}.\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+% -----------------------------------------------------------------------------
+% 3. FORMATAÇÃO DOS TÍTULOS
+% -----------------------------------------------------------------------------
+% Nível 1: Barra vertical fina em Crimson + Título Midnight Navy #1A1A2E
+\titleformat{\section}
+  {\normalfont\fontsize{13pt}{16pt}\fontExtraBold\color{BrandNavy}}
+  {\editorialBarIcon\hspace{7pt}\thesection}
+  {7pt}
+  {}
+
+% Nível 2: Título Deep Sapphire #0F3460 com numeração
+\titleformat{\subsection}
+  {\normalfont\fontsize{11.5pt}{15pt}\fontSemiBold\color{BrandSecondary}}
+  {\thesubsection}
+  {8pt}
+  {}
+
+% Nível 3: Subseção em tom cinza-escuro com peso médio
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{10.5pt}{14pt}\fontSemiBold\color{BrandGrayDark}}
+  {\thesubsubsection}
+  {6pt}
+  {}
+
+\titleformat{\paragraph}[block]
+  {\normalfont\fontsize{10pt}{13.5pt}\fontExtraBold\color{BrandCrimsonMuted}}
+  {}
+  {0pt}
+  {}
+
+\titlespacing*{\section}{0pt}{18pt plus 3pt minus 2pt}{7pt plus 1pt}
+\titlespacing*{\subsection}{0pt}{14pt plus 2pt minus 1pt}{5pt plus 1pt}
+\titlespacing*{\subsubsection}{0pt}{10pt plus 2pt minus 1pt}{4pt}
+\titlespacing*{\paragraph}{0pt}{8pt plus 1pt}{2pt}
+
+% Título de Abertura da Unidade ou Seção Pré/Pós-Textual
+\newcommand{\tituloSecaoPrincipal}[1]{%
+  \vspace*{6pt}%
+  \noindent
+  {\fontsize{16pt}{20pt}\fontExtraBold\color{BrandNavy}#1}\par
+  \vspace{4pt}%
+  \noindent\textcolor{BrandCrimson}{\rule{3.5cm}{1.2pt}}\par
+  \vspace{12pt}%
+}
+
+% -----------------------------------------------------------------------------
+% 4. ESTILO DO SUMÁRIO (SÓBRIO COM LINHA FINA CONTÍNUA)
+% -----------------------------------------------------------------------------
+\newcommand{\cinedoomLineLeader}{%
+  \hspace{6pt}\leaders\hbox{\textcolor{BrandGrayRule}{\rule[0.42ex]{2pt}{0.5pt}}}\hfill\hspace{6pt}%
+}
+
+\newcommand{\addUnitToTOC}[2]{%
+  \addtocontents{toc}{%
+    \protect\vspace{8pt}%
+    \protect\noindent
+    {\protect\fontsize{10pt}{13pt}\protect\fontExtraBold\protect\color{BrandNavy}#1 — #2}%
+    \protect\cinedoomLineLeader
+    {\protect\fontsize{10pt}{13pt}\protect\fontExtraBold\protect\color{BrandNavy}\thepage}\protect\par
+    \protect\vspace{2pt}%
+  }%
+}
+
+\newcommand{\addMainEntryToTOC}[1]{%
+  \addtocontents{toc}{%
+    \protect\vspace{8pt}%
+    \protect\noindent
+    {\protect\fontsize{10pt}{13pt}\protect\fontExtraBold\protect\color{BrandNavy}#1}%
+    \protect\cinedoomLineLeader
+    {\protect\fontsize{10pt}{13pt}\protect\fontExtraBold\protect\color{BrandNavy}\thepage}\protect\par
+    \protect\vspace{2pt}%
+  }%
+}
+
+\renewcommand{\cftsecindent}{0.85cm}
+\renewcommand{\cftsecnumwidth}{1.05cm}
+\renewcommand{\cftsecfont}{\fontsize{9.5pt}{12.5pt}\fontMedium\color{BrandBodyText}}
+\renewcommand{\cftsecpagefont}{\fontsize{9.5pt}{12.5pt}\fontMedium\color{BrandBodyText}}
+\renewcommand{\cftsecleader}{\cinedoomLineLeader}
+\setlength{\cftbeforesecskip}{3pt}
+
+\renewcommand{\cftsubsecindent}{1.70cm}
+\renewcommand{\cftsubsecnumwidth}{1.25cm}
+\renewcommand{\cftsubsecfont}{\fontsize{9pt}{12pt}\fontRegular\color{BrandGrayMed}}
+\renewcommand{\cftsubsecpagefont}{\fontsize{9pt}{12pt}\fontRegular\color{BrandGrayMed}}
+\renewcommand{\cftsubsecleader}{\cinedoomLineLeader}
+\setlength{\cftbeforesubsecskip}{2pt}
+
+\renewcommand{\cftsubsubsecindent}{2.50cm}
+\renewcommand{\cftsubsubsecnumwidth}{1.50cm}
+\renewcommand{\cftsubsubsecfont}{\fontsize{8.5pt}{11.5pt}\fontLight\color{BrandGrayLight}}
+\renewcommand{\cftsubsubsecpagefont}{\fontsize{8.5pt}{11.5pt}\fontLight\color{BrandGrayLight}}
+\renewcommand{\cftsubsubsecleader}{\cinedoomLineLeader}
+\setlength{\cftbeforesubsubsecskip}{1.5pt}
+
+\renewcommand{\cftfigindent}{0pt}
+\renewcommand{\cftfignumwidth}{2.1cm}
+\renewcommand{\cftfigpresnum}{\fontExtraBold Figura }
+\renewcommand{\cftfigaftersnum}{ -- }
+\renewcommand{\cftfigfont}{\fontsize{9.5pt}{12.5pt}\fontRegular\color{BrandBodyText}}
+\renewcommand{\cftfigpagefont}{\fontsize{9.5pt}{12.5pt}\fontSemiBold\color{BrandBodyText}}
+\renewcommand{\cftfigleader}{\cinedoomLineLeader}
+\setlength{\cftbeforefigskip}{4pt}
+
+\renewcommand{\cfttabindent}{0pt}
+\renewcommand{\cfttabnumwidth}{2.2cm}
+\renewcommand{\cfttabpresnum}{\fontExtraBold Tabela }
+\renewcommand{\cfttabaftersnum}{ -- }
+\renewcommand{\cfttabfont}{\fontsize{9.5pt}{12.5pt}\fontRegular\color{BrandBodyText}}
+\renewcommand{\cfttabpagefont}{\fontsize{9.5pt}{12.5pt}\fontSemiBold\color{BrandBodyText}}
+\renewcommand{\cfttableader}{\cinedoomLineLeader}
+\setlength{\cftbeforetabskip}{4pt}

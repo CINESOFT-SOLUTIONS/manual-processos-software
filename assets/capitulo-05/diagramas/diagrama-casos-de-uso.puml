@@ -1,0 +1,43 @@
+@startuml diagrama-casos-de-uso
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 10
+skinparam roundCorner 4
+skinparam shadowing false
+skinparam actor {
+  BackgroundColor #FFFFFF
+  BorderColor #1A1A2E
+  FontColor #1A1A2E
+}
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #1A1A2E
+  FontColor #1A1A2E
+}
+skinparam arrowColor #1A1A2E
+
+left to right direction
+
+actor "Espectador Web" as cliente
+actor "Atendente Bilheteria" as atendente
+actor "Gerente do Cinema" as gerente
+
+package "Plataforma CineDoom" {
+  usecase "UC01: Consultar Grade e Filmes" as UC01
+  usecase "UC02: Selecionar e Reservar Poltrona" as UC02
+  usecase "UC03: Venda Presencial no Guichê" as UC03
+  usecase "UC04: Baixa de Voucher de Reserva" as UC04
+  usecase "UC05: Cadastrar Filmes e Sessões" as UC05
+  usecase "UC06: Visualizar Ocupação das Salas" as UC06
+}
+
+cliente --> UC01
+cliente --> UC02
+atendente --> UC03
+atendente --> UC04
+gerente --> UC05
+gerente --> UC06
+
+UC03 ..> UC02 : <<reaproveita lock>>
+@enduml

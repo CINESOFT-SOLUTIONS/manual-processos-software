@@ -1,0 +1,26 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 11
+skinparam roundcorner 4
+
+rectangle "1.0 Plataforma SaaS CineDoom" as Root {
+  rectangle "1.1 Macroentrega 1 (MVP Operacional)" as M1 {
+    rectangle "1.1.1 Auth RBAC & Cripto CPF" as M1_1
+    rectangle "1.1.2 Back-office: Sessões e Salas" as M1_2
+    rectangle "1.1.3 Bilheteria ACID Anti-Double-Booking" as M1_3
+    rectangle "1.1.4 Portal Web & Trava SeatHold (10m)" as M1_4
+  }
+  rectangle "1.2 Macroentrega 2 (Escala Comercial)" as M2 {
+    rectangle "1.2.1 Gateway PIX Dinâmico e Stripe" as M2_1
+    rectangle "1.2.2 Mensageria Transacional Resend" as M2_2
+    rectangle "1.2.3 Neon PostgreSQL Pro & Réplicas" as M2_3
+  }
+  rectangle "1.3 Macroentrega 3 (Enterprise & Fiscal)" as M3 {
+    rectangle "1.3.1 Emissão Fiscal NFC-e SEFAZ" as M3_1
+    rectangle "1.3.2 Bomboniere e Controle de Estoque" as M3_2
+    rectangle "1.3.3 Console Global Multi-Tenant" as M3_3
+  }
+}
+@enduml

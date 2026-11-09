@@ -1,0 +1,21 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam roundcorner 4
+
+actor "Espectador / Operador" as User
+node "Plataforma CineDoom (Next.js 16)" {
+  component "Portal Web & Bilheteria" as Web
+  component "Motor de Negócios (Server Actions)" as API
+}
+database "PostgreSQL Serverless (Neon)" as DB
+component "Resend API" as Mail
+component "Gateway Stripe / PIX" as Pay
+
+User --> Web : Navega e seleciona assentos
+Web --> API : Chamadas RPC tipadas
+API --> DB : Prisma ORM (ACID)
+API --> Mail : Voucher QR Code
+API --> Pay : Webhooks de liquidação
+@enduml

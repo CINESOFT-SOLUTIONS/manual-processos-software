@@ -1,0 +1,90 @@
+% =============================================================================
+% CAPÍTULO 4: PROCESSOS DE GERENCIAMENTO TÉCNICO
+% Alinhado à ISO/IEC/IEEE 12207:2021 (6.3) e MPS.BR (GPR e GCO)
+% Fonte: manual-processos/manual/capitulos/04-gerenciamento-tecnico.md
+% =============================================================================
+
+\aberturacapitulo{Capítulo 4}{Processos de Gerenciamento Técnico}
+
+\secao{Plano de projeto: escopo, cronograma e entregas}
+
+O gerenciamento técnico da \termochave{CineSoft Solutions} orienta a execução do projeto \destaqueazul{CineDoom} assegurando que prazos, custos, escopo e critérios de qualidade sejam rigorosamente monitorados em conformidade com o processo de \textbf{Gerência de Projetos (GPR)} do MPS.BR.
+
+\subsecao{Estrutura Analítica do Projeto (EAP / WBS)}
+
+A Estrutura Analítica do Projeto organiza as entregas em três níveis hierárquicos:
+
+\figuracomfonte{capitulo-04/diagramas/eap-projeto-3-niveis.pdf}{0.98\textwidth}{Estrutura Analítica do Projeto (EAP de 3 Níveis) do CineDoom}{CineSoft Solutions (2026)}{fig:eap_projeto}
+
+\quadroeditorial{EAP de 3 Níveis do CineDoom}{CineSoft Solutions (2026)}{qua:eap_projeto}{
+  \begin{listapontos}
+    \itemponto{Nível 1 — Plataforma CineDoom}{Sistema completo de gestão de cinema, bilheteria e portal do cliente.}
+    \itemponto{Nível 2 — Pacotes de Trabalho}{2.1 Gestão de Catálogo e Salas; 2.2 Motor de Reservas e Concorrência; 2.3 Operação de Bilheteria Presencial; 2.4 Portal Web do Cliente; 2.5 Infraestrutura e CI/CD.}
+    \itemponto{Nível 3 — Atividades e Entregáveis}{2.2.1 Trava de assento com expiração (\codigoinline{SeatHold}); 2.2.2 Transação ACID anti-double-booking; 2.4.1 Seleção interativa no mapa; 2.5.1 Pipeline GitHub Actions.}
+  \end{listapontos}
+}
+
+\secao{Plano de gestão de riscos: matriz e respostas}
+
+Em sistemas transacionais, riscos técnicos e operacionais devem ser mitigados proativamente para assegurar a continuidade da exibição nas salas:
+\input{../../../assets/capitulo-04/tabelas/registro-riscos.tex}
+
+\secao{Plano de gestão de configuração e políticas de branch}
+
+O processo de Gerência de Configuração (GCO) garante a rastreabilidade e integridade de todos os artefatos de código, esquemas de banco e documentação técnica.
+
+\subsecao{Estratégia de Ramificação (GitFlow Institucional)}
+
+A CineSoft Solutions adota a seguinte política estrita de branches:
+
+\figuracomfonte{capitulo-04/diagramas/fluxo-git-branches.pdf}{0.95\textwidth}{Fluxo de Ramificação e Promoção de Branches Git (GitFlow)}{CineSoft Solutions (2026)}{fig:fluxo_git}
+
+\begin{listapontos}
+  \itemponto{main}{Branch protegido de produção. Apenas aceita merges a partir de \codigoinline{staging} após aprovação formal de release.}
+  \itemponto{staging}{Ambiente de homologação e testes de aceitação com clientes reais.}
+  \itemponto{develop}{Branch de integração contínua ativo para consolidação das features validadas.}
+  \itemponto{feature/* e fix/*}{Branches efêmeros derivados de \codigoinline{develop}. Exigem no mínimo dois code reviews para merge.}
+\end{listapontos}
+
+\secao{Registro de decisões técnicas relevantes (ADRs)}
+
+Todas as decisões arquiteturais estruturantes são registradas em fichas formais no repositório (\codigoinline{specs/adrs/}).
+
+\tabelaeditorial{Catálogo de Decisões Arquiteturais Estruturantes (ADRs)}{Engenharia CineSoft (2026)}{tab:adrs_projeto}{p{2.2cm} p{4.2cm} X}{
+  \rowcolor{BrandTableHeader}
+  \textbf{\textcolor{BrandNavy}{Código}} & \textbf{\textcolor{BrandNavy}{Título da Decisão}} & \textbf{\textcolor{BrandNavy}{Status e Motivação Central}} \\
+  \midrule
+  \codigoinline{ADR-001} & Adoção de Next.js 16 Full-Stack & \textbf{Aprovado.} Unificação de frontend e backend em TypeScript com Server Actions. \\
+  \codigoinline{ADR-002} & PostgreSQL com Prisma ORM & \textbf{Aprovado.} Tipagem estática segura, migrações determinísticas e integridade relacional. \\
+  \codigoinline{ADR-003} & Trava Atômica de Assentos & \textbf{Aprovado.} Mecanismo de lock com temporizador de 10 min para evitar double-booking. \\
+  \codigoinline{ADR-004} & Integração com Resend & \textbf{Aprovado.} Despacho confiável de e-mails transacionais com alta entregabilidade. \\
+  \codigoinline{ADR-005} & Modelo Multi-Tenant com Isolamento & \textbf{Aprovado.} Garantia de que dados de diferentes redes de cinema nunca se cruzem. \\
+}
+
+\secao{Métricas de acompanhamento do projeto}
+
+A governança do projeto utiliza o paradigma \destaqueazul{GQM (Goal-Question-Metric)}:
+\begin{listapontos}
+  \itemponto{Taxa de Defeitos em Produção}{Meta: zero incidentes de double-booking em ambientes de homologação e produção.}
+  \itemponto{Throughput do Time}{Média de 8 a 12 histórias de usuário concluídas por sprint quinzenal.}
+  \itemponto{Lead Time de Pull Requests}{Tempo médio de revisão e merge de código inferior a 24 horas.}
+\end{listapontos}
+
+\verificacaoconformidade{Ponto de Controle — Gerenciamento Técnico}{%
+  \begin{enumerate}[label=\textbf{\alph*)}, leftmargin=0.8cm, itemsep=3pt]
+    \item Quais critérios de aceite são validados obrigatoriamente antes que uma branch \texttt{feature/*} seja integrada ao \texttt{develop}?
+    \item Como a matriz de decisão ponderada (Pugh Matrix) orienta a aprovação de novas ADRs no projeto?
+  \end{enumerate}
+}
+
+\notatecnica{%
+  \itemcaixa{A suíte de testes do CineDoom é executada em paralelo no GitHub Actions a cada push, reduzindo o tempo de validação do pipeline para menos de 3 minutos.}
+}
+
+\saibamaisnormativo{%
+  \itemsaibamais{Consulte as cláusulas 6.3.1 (\textit{Project Planning}) e 6.3.5 (\textit{Configuration Management}) da norma \linkcaixa{https://www.iso.org/standard/63711.html}{ISO 12207:2021} para diretrizes formais de auditoria.}
+}
+
+\sintesecapitulo{%
+  \itemcaixa{O gerenciamento técnico rigoroso assegura que a CineSoft Solutions entregue software confiável com total rastreabilidade de código, riscos e decisões.}
+}

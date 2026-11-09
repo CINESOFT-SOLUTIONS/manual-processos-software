@@ -1,0 +1,145 @@
+% =============================================================================
+% CAPÍTULO 1: APRESENTAÇÃO DO SOFTWARE (CINEDOOM)
+% Conteúdo: Extraído diretamente de manual-processos/manual/capitulos/01-apresentacao-software.md
+% =============================================================================
+
+\aberturacapitulo{Capítulo 1}{Apresentação do software}
+
+\secao{Nome e descrição do software}
+
+\termochave{Nome do software:} \textbf{CineDoom}.
+
+O CineDoom é uma plataforma web integrada, no modelo \destaqueazul{SaaS multi-tenant}, de gerenciamento operacional, bilheteria presencial e portal do cliente, voltada para \textbf{cinemas de rua, circuitos independentes e redes de pequeno e médio porte}. O sistema permite que os cinemas informatizem seus processos com três módulos centrais:
+
+\begin{listaetapas}
+  \itemetapa{Módulo do Atendente (Bilheteria Presencial)}{Operação ágil de guichê físico, emissão direta de ingressos com trava atômica anti-double-booking e baixa presencial de reservas originadas na web.}
+  \itemetapa{Módulo do Gerente (Back-office e Gestão)}{Configuração de salas, catálogo de filmes, agendamento de sessões, gestão de operadores e acompanhamento de indicadores de ocupação.}
+  \itemetapa{Portal do Cliente (Espectador Final Web)}{Canal público e autenticado no qual o público consulta a programação, cadastra-se com proteção de dados LGPD, seleciona assentos no mapa interativo, solicita reservas com emissão de voucher transacional e gerencia suas reservas via web.}
+\end{listaetapas}
+
+A \termochave{CineSoft Solutions} é uma empresa de engenharia de software B2B especializada em soluções transacionais para o setor de entretenimento e exibição cinematográfica. O \textbf{CineDoom} posiciona-se como seu produto principal para unificar o atendimento digital (B2C) e a operação física de bilheteria (B2B) sob um único motor relacional, com isolamento multi-tenant estrito e conformidade nativa com a LGPD.
+
+O ciclo de evolução comercial do produto é organizado em \destaqueazul{três Macroentregas}:
+\begin{listapontos}
+  \itemponto{Macroentrega 1 (MVP Operacional)}{Núcleo web funcional implantado em produção, compreendendo catálogo, grade de sessões, motor de reservas online com bloqueio de 10 minutos (\codigoinline{SeatHold}), venda presencial de ingressos com concorrência ACID, autenticação de operadores e portal do cliente.}
+  \itemponto{Macroentrega 2 (Escala e Pagamentos)}{Integração de gateway de pagamento online (PIX dinâmico com Webhook e Stripe), serviço de e-mail transacional dedicado (\textbf{Resend}) para entrega de vouchers com QR Code, contingência de rede e banco PostgreSQL com réplica em nuvem.}
+  \itemponto{Macroentrega 3 (Enterprise Multi-Tenant)}{Emissão de documento fiscal eletrônico (NFC-e integrada à SEFAZ), ponto de venda de bomboniere/concessions, painel analítico avançado de rentabilidade e módulo de billing self-service para redes exibidoras.}
+\end{listapontos}
+
+\secao{Qual é o software? O que ele faz? Qual problema resolve?}
+
+O CineDoom é um sistema SaaS multi-tenant que integra a operação de bilheteria, o back-office do cinema e o portal do espectador em uma única plataforma transacional.
+
+\subsecao{O que ele faz?}
+
+O CineDoom centraliza e sincroniza todas as etapas da cadeia de atendimento cinematográfico em uma interface web moderna e unificada:
+\begin{listapontos}
+  \itemponto{Catálogo e Salas}{Mantém o catálogo de filmes em cartaz e controla a infraestrutura física de salas e layouts bidimensionais de assentos.}
+  \itemponto{Grade de Sessões}{Agenda e disponibiliza sessões cinematográficas com prevenção automática de choques de grade.}
+  \itemponto{Reserva Online Just-in-Time}{Garante reservas no Portal do Cliente com bloqueio atômico de assento (\codigoinline{SeatHold}) e expiração lógica determinística.}
+  \itemponto{Vouchers Transacionais}{Despacha vouchers transacionais por e-mail com instruções para pagamento presencial.}
+  \itemponto{Trava Anti-Double-Booking}{Opera a venda e a baixa presencial na bilheteria com trava atômica ACID (\codigoinline{SELECT FOR UPDATE}), eliminando riscos de venda dupla.}
+  \itemponto{Métricas de Ocupação}{Apresenta métricas consolidadas sobre taxa de ocupação das salas e distribuição de assentos vendidos e reservados.}
+\end{listapontos}
+
+\subsecao{Qual problema resolve?}
+
+Cinemas independentes frequentemente operam com sistemas legados fragmentados ou controles manuais, resultando em:
+\begin{listaetapas}
+  \itemetapa{Conflito de assentos}{Risco crítico de venda simultânea da mesma poltrona em sessões concorridas.}
+  \itemetapa{Inacessibilidade para o público}{Dificuldade do espectador em consultar a grade de horários e planejar sua ida ao cinema com antecedência.}
+  \itemetapa{Assentos ociosos por no-show}{Falta de regras claras para liberação de lugares não confirmados.}
+  \itemetapa{Ausência de rastreabilidade}{Descumprimento das exigências da LGPD no manuseio de dados de compradores e ausência de trilha auditável de cancelamentos.}
+\end{listaetapas}
+
+\cenariopratico{Proposta de Valor:}{O CineDoom entrega um único motor transacional e auditável para os canais físico e digital. Na prática, isso reduz o risco de venda dupla, libera assentos não confirmados para reaproveitamento, diminui a dependência de controles manuais e trata os dados pessoais dos compradores conforme a LGPD\notarodape{Conformidade com a Lei Federal nº 13.709/2018 (LGPD) e rastreabilidade total de logs de transação.}.}
+
+% FIGURAS COM OS PRINTS OFICIAIS DE MANUAL-PROCESSOS/ASSETS/CAPITULO-01/PRINTS/
+\figuracomfonte{prints/print-painel-gerencial.png}{0.88\textwidth}{Painel Gerencial e Mapa de Ocupação de Sessões}{CineSoft Solutions (2026)}{fig:painel_gerencial}
+
+\figuracomfonte{prints/print-portal-cliente.png}{0.88\textwidth}{Portal do Cliente CineDoom — Seleção e Reserva de Assentos}{CineSoft Solutions (2026)}{fig:portal_cliente}
+
+\figuracomfonte{prints/print-bilheteria-atendente.png}{0.88\textwidth}{Módulo de Bilheteria Presencial e Guichê de Atendimento}{CineSoft Solutions (2026)}{fig:bilheteria_atendente}
+
+\secao{Público-alvo e contexto de uso}
+
+O público-alvo da plataforma é categorizado em quatro perfis operacionais principais:
+\input{../../../assets/capitulo-01/tabelas/perfis-usuarios-permissoes.tex}
+
+% TABELA EDITORIAL DE AMBIENTE OPERACIONAL
+\tabelaeditorial{Matriz de Ambientes Operacionais e Requisitos de Hardware}{Engenharia CineSoft (2026)}{tab:ambiente_operacional}{p{3.2cm} p{3.8cm} X}{
+  \rowcolor{BrandTableHeader}
+  \textbf{\textcolor{BrandNavy}{Perfil}} & \textbf{\textcolor{BrandNavy}{Dispositivo}} & \textbf{\textcolor{BrandNavy}{Ambiente e Conectividade}} \\
+  \midrule
+  Portal do Cliente & Smartphone / Desktop & Navegador web moderno (Chrome, Safari, Firefox), conexão internet pública móvel ou banda larga. \\
+  Bilheteria Presencial & Computador de guichê & Terminal desktop dedicado no cinema, mouse/teclado, impressora de ticket térmico e rede interna cabeada. \\
+  Back-office Gerencial & Notebook / Desktop & Navegador desktop em ambiente administrativo do cinema com autenticação segura de operador. \\
+  Infraestrutura SaaS & Nuvem Vercel / Neon & Runtime Node.js 20, Next.js 16, banco serverless PostgreSQL com connection pooling e TLS 1.3. \\
+}
+
+% QUADRO EDITORIAL DE RESTRIÇÕES E PREMISSAS
+\quadroeditorial{Premissas e Restrições Técnicas do MVP (Macroentrega 1)}{Manual de Processos CineSoft (2026)}{qua:restricoes_mvp}{
+  \begin{listapontos}
+    \itemponto{Premissa P01}{A bilheteria física opera com conectividade estável para sincronização imediata de assentos com o portal web.}
+    \itemponto{Premissa P02}{O operador de caixa realiza a conferência e baixa presencial antes do início da sessão.}
+    \itemponto{Restrição R01}{No MVP (Macroentrega 1), o pagamento de ingressos reservados pela web é liquidado presencialmente no guichê.}
+    \itemponto{Restrição R02}{Assentos reservados pela web e não confirmados no guichê até o prazo limite (\textit{no-show}) retornam automaticamente à venda pública.}
+  \end{listapontos}
+}
+
+\caixaatencao{Regra Crítica de Negócio:}{O tempo de tolerância para retirada de reservas pendentes no guichê físico é de no máximo 20 minutos antes do início programado da sessão. Após esse período, o motor transacional libera a poltrona para venda presencial avulsa.}
+
+% BLOCO DE CÓDIGO DARK SÓBRIO
+\par\vspace{10pt}\noindent
+\begin{minipage}{\textwidth}
+\blocodigocaption{Controle Transacional de Reserva com Expiração Temporal}{Engenharia CineSoft (2026)}{cod:transacao_reserva}
+\begin{editoriallisting}{}{TypeScript / Prisma}{typescript}
+// Verificacao atomica de disponibilidade e criacao de lock temporario
+export async function holdSeat(sessionId: string, seatNumber: string, userId: string) {
+  return await prisma.$transaction(async (tx) => {
+    const existing = await tx.seatReservation.findUnique({
+      where: { sessionId_seatNumber: { sessionId, seatNumber } }
+    });
+
+    if (existing && existing.status === 'CONFIRMED') {
+      throw new Error('Assento ja vendido presencialmente');
+    }
+
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutos
+    return await tx.seatReservation.upsert({
+      where: { sessionId_seatNumber: { sessionId, seatNumber } },
+      create: { sessionId, seatNumber, userId, status: 'HOLD', expiresAt },
+      update: { userId, status: 'HOLD', expiresAt }
+    });
+  });
+}
+\end{editoriallisting}
+\blocodigofonte{Repositório oficial CineDoom: \texttt{src/modules/booking/services/booking.service.ts}}
+\end{minipage}
+\par\vspace{10pt}
+
+% VERIFICAÇÃO DE CONFORMIDADE
+\verificacaoconformidade{Ponto de Controle — Apresentação do Produto}{%
+  Como equipe de engenharia da CineSoft Solutions, responda às seguintes verificações:
+  \begin{enumerate}[label=\textbf{\alph*)}, leftmargin=0.8cm, itemsep=3pt]
+    \item Qual mecanismo de banco de dados impede que dois clientes selecionem e comprem a mesma poltrona simultaneamente na abertura de pré-vendas?
+    \item Como as três Macroentregas do CineDoom asseguram a evolução sustentável do produto perante a norma ISO/IEC/IEEE 12207:2021?
+  \end{enumerate}
+}
+
+% CAIXAS TEMÁTICAS SÓBRIAS
+\notatecnica{%
+  \itemcaixa{A arquitetura de banco de dados do CineDoom utiliza chaves compostas (\codigoinline{sessionId + seatNumber}) com integridade relacional estrita no nível do PostgreSQL, garantindo que mesmo sob concorrência extrema em microsserviços, a integridade do assento permaneça garantida pelo motor ACID.}
+  \itemcaixa{O portal web foi otimizado para navegadores mobile com carregamento inicial abaixo de 1.2s, proporcionando consulta instantânea da grade de filmes em conexões móveis 4G.}
+}
+
+\saibamaisnormativo{%
+  \itemsaibamais{Consulte o documento \linkcaixa{https://www.iso.org/standard/63711.html}{ABNT NBR ISO/IEC/IEEE 12207:2021} para verificar os processos do ciclo de vida técnico relacionados à definição de escopo e análise de requisitos.}
+  \itemsaibamais{Acesse a documentação oficial da \linkcaixa{https://softex.br/mpsbr/}{SOFTEX (Guia Geral MPS.BR)} para consultar os critérios de aceitação e rastreabilidade requeridos para os processos do Nível G (Engenharia de Requisitos).}
+}
+
+\sintesecapitulo{%
+  \itemcaixa{O CineDoom resolve a fragmentação operacional de cinemas independentes unificando bilheteria presencial, gestão de salas e portal do cliente.}
+  \itemcaixa{O produto é dividido em 3 Macroentregas planejadas: v1.0 (MVP Operacional), v2.0 (Escala e Pagamentos Online) e v3.0 (Enterprise Multi-Tenant e Fiscal).}
+  \itemcaixa{A disciplina de processos garante a transição transparente entre o protótipo acadêmico e uma plataforma de produção corporativa auditável.}
+}

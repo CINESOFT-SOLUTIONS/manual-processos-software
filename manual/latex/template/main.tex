@@ -1,0 +1,83 @@
+% =============================================================================
+% MANUAL DE PROCESSOS DE SOFTWARE — CINESOFT SOLUTIONS & CINEDOOM
+% Documento Oficial Completo em LaTeX (Alinhado à ISO 12207 e MPS.BR)
+% =============================================================================
+
+\documentclass[11pt,a4paper,oneside]{article}
+
+\usepackage{graphicx}
+% Raiz central de ativos visuais e diagramas compartilhada com o projeto
+\graphicspath{
+  {../../../assets/}
+  {../../../assets/capitulo-00/}
+  {../../../assets/capitulo-01/}
+  {../../../assets/capitulo-02/}
+  {../../../assets/capitulo-03/}
+  {../../../assets/capitulo-04/}
+  {../../../assets/capitulo-05/}
+  {../../../assets/capitulo-06/}
+  {../../assets/}
+  {assets/}
+}
+
+% 1. Configurações de cores e tipografia oficial (Design System CineDoom)
+\input{config/colors-fonts.tex}
+
+% 2. Geometria A4, cabeçalhos e rodapés discretos
+\input{config/page-setup.tex}
+
+% 3. Hierarquia de títulos, sumário e listas conectadas por linha contínua
+\input{config/headings-toc.tex}
+
+% 4. Componentes de capa oficial e abertura de capítulos
+\input{components/unit-opening.tex}
+
+% 5. Componentes editoriais (Tabelas, Quadros, Listas, Caixas Temáticas e Código)
+\input{components/editorial-elements.tex}
+
+% Hiperlinks
+\usepackage[
+  colorlinks=true,
+  linkcolor=BrandNavy,
+  citecolor=BrandNavy,
+  urlcolor=BrandCyanLink,
+  pdfborder={0 0 0}
+]{hyperref}
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+% PARTE I: ELEMENTOS PRÉ-TEXTUAIS (Capa, Expediente, Siglas, Listas, Sumário, Apresentação)
+% -----------------------------------------------------------------------------
+\input{capitulos/00-pre-textuais.tex}
+
+% -----------------------------------------------------------------------------
+% PARTE II: CAPÍTULOS DE ENGENHARIA E GOVERNANÇA (CAPÍTULOS 1 A 6)
+% -----------------------------------------------------------------------------
+% Capítulo 1 – Apresentação do software
+\input{capitulos/01-apresentacao-software.tex}
+
+% Capítulo 2 – Processos de Acordo (Aquisição e Fornecimento)
+\input{capitulos/02-processos-acordo.tex}
+
+% Capítulo 3 – Processos Organizacionais Habilitadores
+\input{capitulos/03-processos-organizacionais.tex}
+
+% Capítulo 4 – Processos de Gerenciamento Técnico
+\input{capitulos/04-gerenciamento-tecnico.tex}
+
+% Capítulo 5 – Processos Técnicos (Requisitos, Arquitetura, Implementação e V&V)
+\input{capitulos/05-processos-tecnicos.tex}
+
+% Capítulo 6 – Avaliação e melhoria dos processos de software (MPS.BR / GPR)
+\input{capitulos/06-avaliacao-melhoria.tex}
+
+% -----------------------------------------------------------------------------
+% PARTE III: ELEMENTOS PÓS-TEXTUAIS (Referências Bibliográficas e Contracapa)
+% -----------------------------------------------------------------------------
+\input{capitulos/99-pos-textuais.tex}
+
+% Contracapa oficial corporativa CineSoft / CineDoom
+\contracapamanual
+
+\end{document}

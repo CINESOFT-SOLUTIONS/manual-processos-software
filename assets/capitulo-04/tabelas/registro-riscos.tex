@@ -1,0 +1,14 @@
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{l p{2.8cm} c c X}
+\toprule
+\textbf{ID} & \textbf{Risco Identificado} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estratégia de Mitigação} \\
+\midrule
+RSK-01 & Concorrência em assentos disputados & Média & Alto & Locks otimistas e transações ACID no Postgres. \\
+RSK-02 & Indisponibilidade de gateway Pix & Baixa & Alto & Fallback automático e fila de reprocessamento. \\
+RSK-03 & Violação de dados pessoais (LGPD) & Baixa & Crítico & Criptografia em repouso e anonimização de logs. \\
+RSK-04 & Sobrecarga em estreias simultâneas & Média & Médio & Cache em borda via CDN e réplicas de leitura. \\
+RSK-05 & Débito técnico acumulado em sprints & Média & Médio & Gate obrigatório de cobertura Vitest $\ge 80\%$. \\
+\bottomrule
+\end{tabularx}
+\end{center}

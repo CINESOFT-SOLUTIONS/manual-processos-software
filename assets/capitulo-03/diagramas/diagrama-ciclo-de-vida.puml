@@ -1,0 +1,21 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+
+rectangle "1. Planejamento (DoR)" as S1
+rectangle "2. Desenvolvimento" as S2
+rectangle "3. Testes Automatizados" as S3
+rectangle "4. Code Review & CI" as S4
+rectangle "5. Homologação Staging" as S5
+rectangle "6. Aceitação UAT (DoD)" as S6
+rectangle "7. Release Produção" as S7
+
+S1 -> S2
+S2 -> S3
+S3 -> S4
+S4 -> S5
+S5 -> S6
+S6 -> S7
+S6 .> S1 : Retrospectiva
+@enduml

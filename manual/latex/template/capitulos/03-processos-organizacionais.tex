@@ -1,0 +1,77 @@
+% =============================================================================
+% CAPÍTULO 3: PROCESSOS ORGANIZACIONAIS HABILITADORES
+% Alinhado à ISO/IEC/IEEE 12207:2021 (6.2) e MPS.BR (Níveis G e F)
+% Fonte: manual-processos/manual/capitulos/03-processos-organizacionais.md
+% =============================================================================
+
+\aberturacapitulo{Capítulo 3}{Processos Organizacionais Habilitadores}
+
+\secao{Modelo de ciclo de vida adotado e justificado}
+
+A \termochave{CineSoft Solutions} adotou um modelo de ciclo de vida \destaqueazul{híbrido e iterativo-incremental}, combinando a disciplina e o rigor de controle da \termochave{ISO/IEC/IEEE 12207:2021} com práticas ágeis baseadas no framework \textbf{Scrum/Kanban}.
+
+Em sistemas de missão crítica como a bilheteria cinematográfica — onde bugs em produção podem ocasionar venda dupla ou paralisação de guichês —, o modelo de entregas frequentes em sprints quinzenais permite validar hipóteses com operadores reais, enquanto a automação de testes impede regressões transacionais.
+
+\subsecao{Evolução pelas Três Macroentregas}
+
+O ciclo de vida corporativo é governado por três marcos contratuais evolutivos:
+\begin{listaetapas}
+  \itemetapa{Macroentrega 1 (v1.0 MVP Core Operacional)}{Implementação da fundação do sistema: arquitetura Next.js 16, modelagem relacional Prisma, catálogo de filmes, sessões de cinema, reserva web com bloqueio atômico de 10 minutos (\codigoinline{SeatHold}), venda presencial no guichê e painel administrativo.}
+  \itemetapa{Macroentrega 2 (v2.0 Escala e Integrações Financeiras)}{Acoplamento de gateways de pagamento online (PIX dinâmico e Stripe), integração do serviço transacional de mensageria (\textbf{Resend}) para entrega de vouchers com QR Code e suporte a alta concorrência em nuvem.}
+  \itemetapa{Macroentrega 3 (v3.0 Multi-Tenant Enterprise)}{Expansão para redes exibidoras com módulos de faturamento automático, emissão fiscal de consumidor (NFC-e), ponto de venda de bomboniere e observabilidade distribuída.}
+\end{listaetapas}
+
+% DIAGRAMA DO CICLO DE VIDA DO PROJETO IMPORTADO DE ASSETS/CAPITULO-03/DIAGRAMAS/
+\figuracomfonte{capitulo-03/diagramas/diagrama-ciclo-de-vida.pdf}{0.95\textwidth}{Fluxo do Ciclo de Vida do Projeto CineDoom (Sprints Ágeis e Release)}{CineSoft Solutions (2026)}{fig:ciclo_vida}
+
+\secao{Inventário de infraestrutura e ferramentas necessárias}
+
+A infraestrutura técnica foi selecionada para garantir disponibilidade de 99.5\%, segurança em conformidade com a LGPD e alta produtividade da equipe de desenvolvimento.
+\input{../../../assets/capitulo-03/tabelas/inventario-ferramental.tex}
+
+\secao{Justificativa estratégica e viabilidade do projeto}
+
+O mercado cinematográfico brasileiro é composto por mais de 3.400 salas, das quais aproximadamente 35\% pertencem a circuitos independentes ou pequenos exibidores que operam com softwares legados de alto custo de licença ou planilhas despadronizadas.
+
+O CineDoom viabiliza a modernização desses estabelecimentos com custo previsível, eliminando as filas de bilheteria e aumentando a taxa de ocupação das salas em até 22\% por meio de reservas online antecipadas.
+
+\secao{Papéis, competências e matriz RACI}
+
+A conformidade com o nível G do MPS.BR exige a clara segregação de responsabilidades no time de engenharia (\textbf{Equipe Doomscoders}):
+\input{../../../assets/capitulo-03/tabelas/matriz-raci.tex}
+
+\secao{Plano de qualidade com critérios e métricas}
+
+O plano de qualidade da CineSoft Solutions estabelece três pilares fundamentais:
+\begin{listapontos}
+  \itemponto{Cobertura de Testes}{Nenhum commit é integrado ao branch \codigoinline{main} sem que a suíte automatizada mantenha cobertura superior a 80\% nos módulos de reserva e pagamento.}
+  \itemponto{Desempenho de Checkout}{Tempo total de transação de bloqueio de assento inferior a 400 milissegundos na bilheteria presencial.}
+  \itemponto{Disponibilidade Contratual}{Taxa de uptime do serviço em nuvem superior a 99.5\% mensurada por monitoramento sintético.}
+\end{listapontos}
+
+\secao{Estratégia de gestão do conhecimento}
+
+Todo o conhecimento de engenharia do CineDoom é mantido versionado no próprio repositório na forma de:
+\begin{listapontos}
+  \itemponto{Architecture Decision Records (ADRs)}{Registro formal em Markdown de todas as escolhas técnicas relevantes (banco, framework, mensageria).}
+  \itemponto{Manual de Processos Vivo}{Documentação viva e auditável refletida em sincronia com o código-fonte em produção.}
+\end{listapontos}
+
+\verificacaoconformidade{Ponto de Controle — Processos Organizacionais}{%
+  \begin{enumerate}[label=\textbf{\alph*)}, leftmargin=0.8cm, itemsep=3pt]
+    \item Como a matriz RACI implementada na CineSoft previne gargalos operacionais e conflitos de competência técnica?
+    \item De que forma as decisões registradas em ADRs apoiam a conformidade com a cláusula 6.2.6 (\textit{Knowledge Management}) da ISO 12207?
+  \end{enumerate}
+}
+
+\notatecnica{%
+  \itemcaixa{A utilização de TypeScript ponta a ponta (do frontend Next.js ao schema Prisma) reduz em até 40\% os erros de integração entre cliente e servidor, unificando a modelagem de domínio.}
+}
+
+\saibamaisnormativo{%
+  \itemsaibamais{Consulte as diretrizes do \linkcaixa{https://www.iso.org/standard/63711.html}{ISO/IEC/IEEE 12207:2021 (Cláusula 6.2)} para aprofundar-se nos processos de gestão de portfólio, infraestrutura e recursos humanos.}
+}
+
+\sintesecapitulo{%
+  \itemcaixa{Processos organizacionais bem estabelecidos são a garantia de que o CineDoom evoluirá de forma consistente, sustentável e com governança auditável.}
+}

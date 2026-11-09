@@ -1,0 +1,14 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+
+state "feature/*" as feat
+state "develop" as dev
+state "staging" as stag
+state "main (Produção)" as prod
+
+feat --> dev : PR + 2 Reviews + CI
+dev --> stag : Release Candidate
+stag --> prod : Homologação UAT
+@enduml

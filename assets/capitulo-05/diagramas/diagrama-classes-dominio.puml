@@ -1,0 +1,69 @@
+@startuml diagrama-classes-dominio
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 10
+skinparam roundCorner 4
+skinparam shadowing false
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #1A1A2E
+  ArrowColor #1A1A2E
+  FontColor #1A1A2E
+  HeaderBackgroundColor #F4F6F9
+}
+
+class Movie {
+  - id: string
+  - title: string
+  - durationInMinutes: number
+  - classification: string
+  + isValid(): boolean
+}
+
+class Session {
+  - id: string
+  - movieId: string
+  - roomId: string
+  - startTime: Date
+  - endTime: Date
+  - standardPrice: Money
+  + isAvailableForBooking(): boolean
+  + calculateOverlap(other: Session): boolean
+}
+
+class Seat {
+  - id: string
+  - roomId: string
+  - row: string
+  - number: number
+  - type: SeatType
+  + isVip(): boolean
+}
+
+class Ticket {
+  - id: string
+  - sessionId: string
+  - seatId: string
+  - orderId: string
+  - status: TicketStatus
+  - price: Money
+  + cancel(): void
+  + confirm(): void
+}
+
+class Order {
+  - id: string
+  - customerId: string
+  - items: Ticket[]
+  - total: Money
+  - status: OrderStatus
+  + addItem(ticket: Ticket): void
+  + checkout(): PaymentToken
+}
+
+Session "1" o-- "*" Ticket : contains
+Order "1" *-- "1..*" Ticket : purchases
+Movie "1" <-- "*" Session : features
+Seat "1" <-- "*" Ticket : occupies
+@enduml

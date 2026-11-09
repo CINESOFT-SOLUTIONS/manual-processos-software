@@ -1,0 +1,165 @@
+% =============================================================================
+% CONFIGURAÇÃO DE CORES E TIPOGRAFIA (DESIGN SYSTEM CINEDOOM & CINESOFT)
+% Padrão: Editorial Profissional, Minimalista, Discreto e Sóbrio
+% =============================================================================
+
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{setspace}
+\usepackage{indentfirst}
+
+% -----------------------------------------------------------------------------
+% 1. PALETA CORPORATIVA SÓBRIA (DESIGN SYSTEM CINEDOOM / CINESOFT)
+% -----------------------------------------------------------------------------
+% Azul Meia-Noite Profundo (Base de contraste e sobriedade)
+\definecolor{BrandNavy}{HTML}{1A1A2E}
+\definecolor{BrandSecondary}{HTML}{0F3460}
+\definecolor{BrandDarkBg}{HTML}{121724}
+
+% Acento Crimson Refinado (Usado apenas em detalhes pontuais, marcadores e filetes finos)
+\definecolor{BrandCrimson}{HTML}{E94560}
+\definecolor{BrandCrimsonMuted}{HTML}{9E2A3E}
+
+% Acento Ciano / Aço Técnico (Linhas sutis e links discretos)
+\definecolor{BrandSteel}{HTML}{4A607A}
+\definecolor{BrandCyanLine}{HTML}{3A7B99}
+\definecolor{BrandCyanLink}{HTML}{0B6E99}
+
+% Caixas Temáticas Editoriais (Tons sóbrios e sofisticados)
+% 1. Nota Técnica de Engenharia: Azul Safira Profundo (#0F3460) com texto branco
+\definecolor{BoxSapphireBg}{HTML}{0F3460}
+
+% 2. Saiba Mais / Normas: Carmim Sóbrio Fechado (#7A1D2E)
+\definecolor{BoxCrimsonBg}{HTML}{7A1D2E}
+
+% 3. Para Relembrar / Síntese: Carvão Meia-Noite (#161C2B) com borda fina
+\definecolor{BoxMidnightBg}{HTML}{161C2B}
+
+% Texto e Superfícies
+\definecolor{BrandBodyText}{HTML}{22262F}
+\definecolor{BrandGrayDark}{HTML}{3E4552}
+\definecolor{BrandGrayMed}{HTML}{5C6473}
+\definecolor{BrandGrayLight}{HTML}{8C95A6}
+\definecolor{BrandGrayRule}{HTML}{DCE1E8}
+\definecolor{BrandTableHeader}{HTML}{F0F3F7}
+\definecolor{BrandTableAlt}{HTML}{F9FAFC}
+
+% Bloco de Código (Sóbrio, fundo carvão escuro #181C24)
+\definecolor{BrandCodeBg}{HTML}{181C24}
+\definecolor{BrandCodeText}{HTML}{E2E5EB}
+\definecolor{BrandCodeComment}{HTML}{6F9E7D}
+\definecolor{BrandCodeKeyword}{HTML}{6593CC}
+\definecolor{BrandCodeString}{HTML}{D18F82}
+\definecolor{BrandCodePill}{HTML}{0F3460}
+
+% Aliases retrocompatíveis
+\colorlet{RefNavy}{BrandNavy}
+\colorlet{RefNavyDark}{BrandNavy}
+\colorlet{RefPurple}{BrandCrimson}
+\colorlet{RefPurpleDark}{BrandCrimsonMuted}
+\colorlet{RefLavender}{BrandSteel}
+\colorlet{RefLavenderLight}{BrandTableHeader}
+\colorlet{RefSoftLilac}{BrandTableAlt}
+\colorlet{RefTeal}{BoxSapphireBg}
+\colorlet{RefTealDark}{BoxSapphireBg}
+\colorlet{RefCyanLine}{BrandCyanLine}
+\colorlet{RefMagentaBox}{BoxCrimsonBg}
+\colorlet{RefMagentaDark}{BoxCrimsonBg}
+\colorlet{RefCyanLink}{BrandCyanLink}
+\colorlet{RefBrightCyan}{BrandCyanLine}
+\colorlet{RefDarkBg}{BrandDarkBg}
+\colorlet{RefNeonBlue}{BrandSecondary}
+\colorlet{RefNeonCyan}{BrandCyanLine}
+\colorlet{RefNeonPurple}{BrandCrimson}
+\colorlet{RefBodyText}{BrandBodyText}
+\colorlet{RefGrayDark}{BrandGrayDark}
+\colorlet{RefGrayMed}{BrandGrayMed}
+\colorlet{RefGrayLight}{BrandGrayLight}
+\colorlet{RefTableHeader}{BrandTableHeader}
+\colorlet{RefTableAlt}{BrandTableAlt}
+\colorlet{RefCodeBg}{BrandCodeBg}
+\colorlet{RefCodeText}{BrandCodeText}
+\colorlet{RefCodeComment}{BrandCodeComment}
+\colorlet{RefCodeKeyword}{BrandCodeKeyword}
+\colorlet{RefCodeString}{BrandCodeString}
+\colorlet{RefCodePurplePill}{BrandCodePill}
+
+% -----------------------------------------------------------------------------
+% 2. TIPOGRAFIA
+% -----------------------------------------------------------------------------
+\IfFontExistsTF{Montserrat}{
+  \setmainfont{Montserrat}[
+    UprightFont    = *-Regular,
+    BoldFont       = *-SemiBold,
+    ItalicFont     = *-Italic,
+    BoldItalicFont = *-SemiBoldItalic,
+    FontFace       = {l}{n}{*-Light},
+    FontFace       = {m}{n}{*-Medium},
+    FontFace       = {sb}{n}{*-SemiBold},
+    FontFace       = {eb}{n}{*-Bold}
+  ]
+  \setsansfont{Montserrat}[
+    UprightFont    = *-Regular,
+    BoldFont       = *-SemiBold,
+    ItalicFont     = *-Italic,
+    BoldItalicFont = *-SemiBoldItalic
+  ]
+}{
+  \IfFontExistsTF{Avenir Next}{
+    \setmainfont{Avenir Next}[
+      UprightFont    = * Regular,
+      BoldFont       = * Demi Bold,
+      ItalicFont     = * Italic,
+      BoldItalicFont = * Demi Bold Italic,
+      FontFace       = {l}{n}{* Ultra Light},
+      FontFace       = {m}{n}{* Medium},
+      FontFace       = {sb}{n}{* Demi Bold},
+      FontFace       = {eb}{n}{* Bold}
+    ]
+    \setsansfont{Avenir Next}[
+      UprightFont    = * Regular,
+      BoldFont       = * Demi Bold,
+      ItalicFont     = * Italic,
+      BoldItalicFont = * Demi Bold Italic
+    ]
+  }{
+    \setmainfont{Helvetica Neue}
+    \setsansfont{Helvetica Neue}
+  }
+}
+
+\IfFontExistsTF{PT Serif}{
+  \newfontfamily\footnoteSerifFont{PT Serif}[Scale=0.92]
+}{
+  \IfFontExistsTF{Georgia}{
+    \newfontfamily\footnoteSerifFont{Georgia}[Scale=0.90]
+  }{
+    \newfontfamily\footnoteSerifFont{Times New Roman}[Scale=0.95]
+  }
+}
+
+\IfFontExistsTF{Menlo}{
+  \setmonofont{Menlo}[Scale=0.86]
+  \newfontfamily\codeMonoFont{Menlo}[Scale=0.84]
+}{
+  \setmonofont{Courier New}[Scale=0.90]
+  \newfontfamily\codeMonoFont{Courier New}[Scale=0.88]
+}
+
+\newcommand{\fontLight}{\fontseries{l}\selectfont}
+\newcommand{\fontRegular}{\fontseries{m}\selectfont}
+\newcommand{\fontMedium}{\fontseries{m}\selectfont}
+\newcommand{\fontSemiBold}{\bfseries}
+\newcommand{\fontExtraBold}{\fontseries{eb}\selectfont}
+
+\AtBeginDocument{%
+  \color{BrandBodyText}%
+}
+
+\setstretch{1.32}
+\setlength{\parindent}{1.0cm}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom

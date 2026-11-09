@@ -1,0 +1,20 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 10
+
+actor Cliente
+boundary "Portal Web" as Web
+control "BookingService" as API
+database "PostgreSQL (Prisma)" as DB
+entity "Resend API" as Mail
+
+Cliente -> Web : 1. Seleciona assento na sessão
+Web -> API : 2. holdSeat(sessionId, seatNumber)
+API -> DB : 3. Transação atômica (HOLD 10m)
+DB --> API : 4. Confirmação do bloqueio
+API -> Mail : 5. Envio assíncrono do voucher
+API --> Web : 6. Retorna reserva com expiração
+Web --> Cliente : 7. Exibe chave e voucher na tela
+@enduml
