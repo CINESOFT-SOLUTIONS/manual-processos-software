@@ -1,0 +1,12 @@
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{l p{3.2cm} X}
+\toprule
+\textbf{ID} & \textbf{Requisito Funcional} & \textbf{Critério de Aceitação Formal (Dado / Quando / Então)} \\
+\midrule
+CA-01 & Bloqueio Concorrente & \textbf{Dado} um assento livre, \textbf{quando} dois clientes requisitarem bloqueio no mesmo milissegundo, \textbf{então} apenas uma transação obtém sucesso (\texttt{200}) e a outra recebe conflito (\texttt{409}). \\
+CA-02 & Expiração Automática & \textbf{Dado} um assento bloqueado há mais de 10 min sem checkout, \textbf{quando} ocorrer nova consulta, \textbf{então} o status reverte automaticamente para disponível. \\
+CA-03 & Venda no Balcão PDV & \textbf{Dado} o operador no guichê, \textbf{quando} selecionar assento vago e confirmar pagamento em dinheiro/Pix, \textbf{então} o ingresso é emitido e impresso em $<3$ segundos. \\
+\bottomrule
+\end{tabularx}
+\end{center}

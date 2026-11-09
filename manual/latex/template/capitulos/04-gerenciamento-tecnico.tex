@@ -16,13 +16,15 @@ A Estrutura Analítica do Projeto organiza as entregas em três níveis hierárq
 
 \figuracomfonte{capitulo-04/diagramas/eap-projeto-3-niveis.pdf}{0.98\textwidth}{Estrutura Analítica do Projeto (EAP de 3 Níveis) do CineDoom}{CineSoft Solutions (2026)}{fig:eap_projeto}
 
-\quadroeditorial{EAP de 3 Níveis do CineDoom}{CineSoft Solutions (2026)}{qua:eap_projeto}{
-  \begin{listapontos}
-    \itemponto{Nível 1 — Plataforma CineDoom}{Sistema completo de gestão de cinema, bilheteria e portal do cliente.}
-    \itemponto{Nível 2 — Pacotes de Trabalho}{2.1 Gestão de Catálogo e Salas; 2.2 Motor de Reservas e Concorrência; 2.3 Operação de Bilheteria Presencial; 2.4 Portal Web do Cliente; 2.5 Infraestrutura e CI/CD.}
-    \itemponto{Nível 3 — Atividades e Entregáveis}{2.2.1 Trava de assento com expiração (\codigoinline{SeatHold}); 2.2.2 Transação ACID anti-double-booking; 2.4.1 Seleção interativa no mapa; 2.5.1 Pipeline GitHub Actions.}
-  \end{listapontos}
-}
+\subsecao{Cronograma de Entregas e Marcos (Milestones)}
+
+\input{../../../assets/capitulo-04/tabelas/cronograma-marcos.tex}
+
+\subsecao{Quadro de Execução Kanban do Projeto}
+
+O acompanhamento contínuo dos fluxos de trabalho ocorre no GitHub Projects:
+
+\figuracomfonte{capitulo-04/prints/print-kanban-board.png}{0.92\textwidth}{Quadro de Execução Kanban da Plataforma CineDoom}{CineSoft Solutions (2026)}{fig:kanban_board}
 
 \secao{Plano de gestão de riscos: matriz e respostas}
 
@@ -48,27 +50,15 @@ A CineSoft Solutions adota a seguinte política estrita de branches:
 
 \secao{Registro de decisões técnicas relevantes (ADRs)}
 
-Todas as decisões arquiteturais estruturantes são registradas em fichas formais no repositório (\codigoinline{specs/adrs/}).
+Todas as decisões arquiteturais estruturantes são registradas em fichas formais no repositório (\codigoinline{specs/adrs/}). Para a seleção da arquitetura de autenticação e sessão, aplicou-se a Matriz de Decisão Ponderada (Pugh Matrix):
 
-\tabelaeditorial{Catálogo de Decisões Arquiteturais Estruturantes (ADRs)}{Engenharia CineSoft (2026)}{tab:adrs_projeto}{p{2.2cm} p{4.2cm} X}{
-  \rowcolor{BrandTableHeader}
-  \textbf{\textcolor{BrandNavy}{Código}} & \textbf{\textcolor{BrandNavy}{Título da Decisão}} & \textbf{\textcolor{BrandNavy}{Status e Motivação Central}} \\
-  \midrule
-  \codigoinline{ADR-001} & Adoção de Next.js 16 Full-Stack & \textbf{Aprovado.} Unificação de frontend e backend em TypeScript com Server Actions. \\
-  \codigoinline{ADR-002} & PostgreSQL com Prisma ORM & \textbf{Aprovado.} Tipagem estática segura, migrações determinísticas e integridade relacional. \\
-  \codigoinline{ADR-003} & Trava Atômica de Assentos & \textbf{Aprovado.} Mecanismo de lock com temporizador de 10 min para evitar double-booking. \\
-  \codigoinline{ADR-004} & Integração com Resend & \textbf{Aprovado.} Despacho confiável de e-mails transacionais com alta entregabilidade. \\
-  \codigoinline{ADR-005} & Modelo Multi-Tenant com Isolamento & \textbf{Aprovado.} Garantia de que dados de diferentes redes de cinema nunca se cruzem. \\
-}
+\input{../../../assets/capitulo-04/tabelas/matriz-pugh-decisao.tex}
 
 \secao{Métricas de acompanhamento do projeto}
 
-A governança do projeto utiliza o paradigma \destaqueazul{GQM (Goal-Question-Metric)}:
-\begin{listapontos}
-  \itemponto{Taxa de Defeitos em Produção}{Meta: zero incidentes de double-booking em ambientes de homologação e produção.}
-  \itemponto{Throughput do Time}{Média de 8 a 12 histórias de usuário concluídas por sprint quinzenal.}
-  \itemponto{Lead Time de Pull Requests}{Tempo médio de revisão e merge de código inferior a 24 horas.}
-\end{listapontos}
+A governança do projeto utiliza o paradigma \destaqueazul{GQM (Goal-Question-Metric)}, com indicadores de throughput e lead time monitorados continuamente:
+
+\figuracomfonte{capitulo-04/prints/print-metricas-projeto.png}{0.92\textwidth}{Painel Analítico de Eficiência de Fluxo (Throughput e Lead Time)}{CineSoft Solutions (2026)}{fig:metricas_projeto}
 
 \verificacaoconformidade{Ponto de Controle — Gerenciamento Técnico}{%
   \begin{enumerate}[label=\textbf{\alph*)}, leftmargin=0.8cm, itemsep=3pt]

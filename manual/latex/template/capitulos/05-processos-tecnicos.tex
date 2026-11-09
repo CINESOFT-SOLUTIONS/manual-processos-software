@@ -14,6 +14,12 @@ A Engenharia de Requisitos da \termochave{CineSoft Solutions} segue o processo f
 
 \input{../../../assets/capitulo-05/tabelas/catalogo-requisitos.tex}
 
+\subsecao{Matriz de Rastreabilidade e Critérios de Aceitação}
+
+\input{../../../assets/capitulo-05/tabelas/matriz-rastreabilidade.tex}
+
+\input{../../../assets/capitulo-05/tabelas/criterios-aceitacao.tex}
+
 \secao{Processo de arquitetura e design do sistema}
 
 A arquitetura do CineDoom adota o padrão de \destaqueazul{Monólito Modular com Clean Architecture}, desacoplando regras de negócio corporativas de detalhes de infraestrutura e bibliotecas externas.
@@ -40,9 +46,11 @@ O modelo relacional e as entidades de domínio são formalizados nas figuras aba
 
 \figuracomfonte{capitulo-05/diagramas/diagrama-classes-dominio.pdf}{0.96\textwidth}{Diagrama de Classes do Domínio de Negócios CineDoom}{CineSoft Solutions (2026)}{fig:classes_dominio}
 
-\subsecao{Diagramas de Sequência e Máquina de Estados da Poltrona}
+\subsecao{Diagramas de Sequência, Casos de Uso e Máquina de Estados}
 
-A máquina de estados e o fluxo de reserva atômica são formalizados nas figuras abaixo:
+A máquina de estados, o mapeamento de casos de uso e o fluxo de reserva atômica são formalizados nas figuras abaixo:
+
+\figuracomfonte{capitulo-05/diagramas/diagrama-casos-de-uso.pdf}{0.96\textwidth}{Diagrama de Casos de Uso UML da Plataforma CineDoom}{CineSoft Solutions (2026)}{fig:casos_uso}
 
 \figuracomfonte{capitulo-05/diagramas/diagrama-estados-assento.pdf}{0.96\textwidth}{Diagrama de Máquina de Estados do Ciclo de Vida da Poltrona}{CineSoft Solutions (2026)}{fig:estados_assento}
 
@@ -56,6 +64,8 @@ A implementação do CineDoom orienta-se pela manutenibilidade, cobertura de tes
   \itemponto{Migrations de Banco}{Todas as alterações de schema são versionadas no Prisma e aplicadas via pipeline automatizada no deploy de homologação.}
   \itemponto{Tratamento de Exceções}{Mapeamento de erros de concorrência com respostas padronizadas em JSON para o cliente web.}
 \end{listapontos}
+
+\figuracomfonte{capitulo-05/prints/print-testes-unitarios-vitest.png}{0.94\textwidth}{Terminal de Execução da Suíte Vitest (748 Testes Aprovados)}{CineSoft Solutions (2026)}{fig:testes_vitest}
 
 \secao{Processos de verificação, validação e transição (V\&V)}
 
