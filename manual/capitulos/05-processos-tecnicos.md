@@ -3,101 +3,546 @@
 ## 5.1 Requisitos
 
 ### 5.1.1 Documento de requisitos do sistema
-A especificação oficial do CineDoom ([`specs/cinedoom-spec.md`](../../specs/cinedoom-spec.md)) organiza os artefatos de requisitos em catálogos separados com identificadores únicos padronizados em português, cobrindo os três módulos integrados (Back-office do Gerente, Bilheteria do Atendente e Portal do Cliente) com priorização MoSCoW:
-- **Stakeholders (`STK-01` a `STK-05`) e Necessidades Elicitadas (`NEC-01` a `NEC-08`):** Mapeamento de patrocinadores, gerentes, atendentes, espectadores e conformidade regulatória.
-- **Histórias de Usuário (`HU-01` a `HU-11`, equiv. `US-1` a `US-11`):** Narrativas ágeis centradas nos atores do sistema.
-- **Requisitos Funcionais (`RF-01` a `RF-18`):**
-  - **RF-01 a RF-05:** Autenticação RBAC e gestão de operadores (`GERENTE`, `ATENDENTE`, `CLIENTE`), catálogo de filmes, salas/assentos, agendamento de sessões com pré-população de poltronas e mapa interativo com polling a 2s.
-  - **RF-06 a RF-11:** Venda direta no balcão com trava atômica (*SELECT FOR UPDATE*), emissão de comprovante, cancelamento auditável *append-only* via trigger PostgreSQL, proteção de PII/LGPD (`HMAC-SHA256` + `AES-256-GCM`), painel de ocupação em tempo real e observabilidade Axiom com retenção legal de 365 dias.
-  - **RF-12 a RF-18 (Portal do Cliente e Reserva):** Consulta pública de grade de exibição, reserva de assentos com status `RESERVED`, cadastro e login seguro do espectador com consentimento LGPD, emissão de voucher por e-mail transacional (*NotificationService*), painel web "Minhas Reservas" com cancelamento voluntário pelo cliente, baixa presencial da reserva pelo atendente e expiração *Just-in-Time* para reservas não quitadas a 1 hora da sessão.
-- **Requisitos Não Funcionais (`RNF-01` a `RNF-06`, norma ISO/IEC 25010):**
-  - **RNF-01 (Eficiência de Desempenho):** Latência p95 < 800 ms e p99 < 1.500 ms para venda/reserva; atualização do mapa em até 2 segundos.
-  - **RNF-02 (Confiabilidade e Atomicidade ACID):** Zero vendas ou reservas duplas (*double-booking*) sob concorrência paralela de 50 requisições simultâneas.
-  - **RNF-03 (Segurança e Conformidade LGPD):** Isolamento total cross-tenant validado por 500 cenários automatizados e proteção criptográfica de CPF (`HMAC-SHA256` + `AES-256-GCM`).
-  - **RNF-04 (Usabilidade e Acessibilidade):** Interface responsiva aderente à WCAG 2.1 Nível AA para o Portal do Cliente e terminais touchscreen de bilheteria.
-  - **RNF-05 (Compatibilidade de Navegadores):** Suporte integral a Chromium (Chrome/Edge) e Firefox em resolução mínima de `1024x768` sem dependências nativas.
-  - **RNF-06 (Manutenibilidade e Modularidade):** Clean Architecture orientada a funcionalidades com zero dependências circulares verificadas por `ESLint import/no-cycle`.
-- **Regras de Negócio (`RN-01` a `RN-12`) e Restrições (`RES-01` a `RES-06`):** Controles determinísticos de RBAC, conflito de salas, trava pessimista, antecedência mínima de 60 minutos, expiração *Just-in-Time* e isolamento por `tenant_id`.
+
+A especificação formal de requisitos da plataforma **CineDoom** ([`specs/cinedoom-spec.md`](../../specs/cinedoom-spec.md)) estrutura os requisitos funcionais (`RF`), não funcionais (`RNF`, segundo a norma ISO/IEC 25010), regras de negócio (`RN`) e restrições arquiteturais (`RES`), priorizados pelo método **MoSCoW**.
+
+#### Catálogo Formal de Requisitos Funcionais (`RF-01` a `RF-18`)
+
+| ID | Módulo | Requisito Funcional | Prioridade | Macroentrega |
+| :---: | :---: | :--- | :---: | :---: |
+| **RF-01** | Identidade & RBAC | Autenticar usuários via credenciais seguras (`bcrypt` cost 12) e sessão JWT contendo `userId`, `role` (`GERENTE`, `ATENDENTE`, `CLIENTE`) e `tenantId`. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-02** | Gestão de Operadores | Permitir ao `GERENTE` criar, listar, atualizar e inativar operadores com perfil `ATENDENTE` vinculados ao seu cinema (*tenant*), revogando sessões ativas. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-03** | Catálogo de Filmes | Permitir ao `GERENTE` manter o acervo de filmes (título, sinopse, gênero, duração em minutos, classificação indicativa e pôster). | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-04** | Salas e Assentos | Permitir ao `GERENTE` cadastrar salas de exibição (Clássica, IMAX, VIP) e gerar automaticamente a matriz 2D de poltronas (fileiras A–Z e colunas numeradas). | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-05** | Sessões | Permitir ao `GERENTE` agendar sessões (Filme + Sala + Data/Hora + Preço), validando choques de horário na mesma sala e pré-populando `SessionSeat`. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-06** | Bilheteria ACID | Disponibilizar mapa interativo da sessão com atualização por polling a cada 2 segundos e expiração *Just-in-Time* de reservas vencidas. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-07** | Bilheteria ACID | Processar a venda presencial de múltiplos assentos em transação atômica ACID com bloqueio pessimista (`SELECT ... FOR UPDATE`), impedindo *double-booking*. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-08** | Bilheteria ACID | Emitir comprovante operacional de ingresso contendo código identificador único, filme, sala, horário, poltronas e valor pago. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-09** | Auditoria & Guichê | Realizar o cancelamento síncrono de ingresso vendido na bilheteria mediante justificativa obrigatória, gravando trilha *append-only* protegida por trigger SQL. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-10** | Governança LGPD | Proteger o CPF de compradores e clientes por indexação cega `HMAC-SHA256` e criptografia autenticada `AES-256-GCM`, permitindo anonimização *in-place* (Art. 18). | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-11** | Ocupação & Logs | Apresentar painel gerencial com cálculo em tempo real da taxa de ocupação (vendidos, reservados e livres) por sessão/sala e exportar logs para o Axiom. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-12** | Portal do Cliente | Exibir catálogo público responsivo de filmes em cartaz com filtros por data, busca por título/gênero e modal de detalhes/sinopse. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-13** | Portal do Cliente | Permitir ao espectador selecionar até 5 poltronas no mapa interativo com bloqueio temporário de 10 minutos e confirmar reserva online (`RESERVED`). | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-14** | Portal do Cliente | Permitir o cadastro e login de espectadores (`CLIENTE`) com validação matemática de CPF (Módulo 11) e termo explícito de consentimento LGPD. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-15** | Notificações | Emitir voucher digital com localizador único (`CD-XXXX`) e acionar o `NotificationService` (`ResendProvider` / `ConsoleLogger`), registrando `email_sent_at`. | *Should Have* | Macroentrega 1 (`v1.0`) |
+| **RF-16** | Portal do Cliente | Disponibilizar área autenticada *"Minhas Reservas"* permitindo ao espectador consultar seus vouchers e realizar o cancelamento voluntário de reservas pendentes. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-17** | Bilheteria Híbrida | Permitir ao `ATENDENTE` localizar reservas web no balcão por código localizador (`CD-XXXX`) ou CPF e confirmar o pagamento presencial, convertendo em `SOLD`. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-18** | Expiração JIT | Invalidar automaticamente reservas pendentes não pagas quando faltarem menos de 60 minutos para o início da sessão, liberando os assentos em tempo real. | *Must Have* | Macroentrega 1 (`v1.0`) |
+
+#### Catálogo Formal de Requisitos Não Funcionais (`RNF-01` a `RNF-06` — ISO/IEC 25010)
+
+| ID | Característica ISO 25010 | Especificação e Métrica Objetiva |
+| :---: | :--- | :--- |
+| **RNF-01** | **Eficiência de Desempenho** | Latência HTTP p95 $< 800\text{ ms}$ e p99 $< 1.500\text{ ms}$ nas transações de venda e reserva; sincronização visual do mapa de assentos por polling a cada $2\text{ s}$. |
+| **RNF-02** | **Confiabilidade e Atomicidade** | Zero ocorrências de venda ou reserva dupla (*double-booking*) sob carga concorrente de 50 threads simultâneas disputando a mesma poltrona. |
+| **RNF-03** | **Segurança e Isolamento** | Isolamento multi-tenant absoluto validado por 500 cenários automatizados de intrusão *cross-tenant* e criptografia de CPF com `HMAC-SHA256` + `AES-256-GCM`. |
+| **RNF-04** | **Usabilidade e Responsividade** | Interface adaptativa para smartphones (a partir de `320px`) e terminais desktop de bilheteria (`1024x768+`), aderente às diretrizes WCAG 2.1 Nível AA. |
+| **RNF-05** | **Compatibilidade** | Operação integral via navegadores modernos (Chrome, Safari, Edge, Firefox) sem exigência de plugins locais ou aplicativos nativos. |
+| **RNF-06** | **Manutenibilidade** | Arquitetura limpa orientada a módulos com tipagem estática estrita (`tsc --noEmit`) e zero dependências circulares (`ESLint import/no-cycle`). |
+
+---
 
 ### 5.1.2 Rastreabilidade de requisitos
-A integridade da engenharia de software é assegurada pela cadeia de rastreabilidade bidirecional contínua:
-$$\text{Stakeholder (STK)} \longrightarrow \text{Necessidade (NEC)} \longrightarrow \text{História (HU)} \longrightarrow \text{RF / RNF / RN} \longrightarrow \text{Critério de Aceite (CA)} \longrightarrow \text{Caso de Teste (CT)} \longrightarrow \text{Código e Deploy}$$
 
-### 5.1.3 Critérios de Aceite (`CA-01` a `CA-14`)
-Os 14 critérios de aceite (`CA-01` a `CA-14`, equivalentes às anotações de código `AC-1` a `AC-14`) foram especificados no formato comportamental (*Dado que / Quando / Então*) e validados por 26 casos de teste (`CT-01` a `CT-26`, equiv. `TC-1` a `TC-26`):
-1. **Núcleo de Bilheteria, Gestão e Segurança (`CA-01` a `CA-08`):** Trava ACID anti-double-booking (`CA-01`), atualização do mapa em até 2s (`CA-02`), auditoria imutável de cancelamento antes da liberação do assento (`CA-03`), isolamento multi-tenant estrito em 500 cenários (`CA-04`), controle RBAC com bloqueio `HTTP 403` (`CA-05`), proteção LGPD com `HMAC-SHA256` e `AES-256-GCM` (`CA-06`), painel de ocupação gerencial (`CA-07`) e validação descritiva por campo no back-office (`CA-08`).
-2. **Fluxos Híbridos do Portal do Cliente (`CA-09` a `CA-14`):** Reserva online com trava atômica e antecedência mínima de 60 min (`CA-09`), autenticação de espectador com proteção LGPD (`CA-10`), despacho de voucher por e-mail transacional (`CA-11`), cancelamento voluntário pelo cliente (`CA-12`), baixa presencial no balcão convertendo reserva em ingresso vendido (`CA-13`) e expiração *Just-in-Time* automática a 1 hora da sessão (`CA-14`).
+A integridade da engenharia de software da CineSoft Solutions é garantida por uma matriz de rastreabilidade bidirecional que conecta cada stakeholder e requisito de negócio diretamente à implementação no código-fonte e à suíte de testes automatizados:
+
+| Necessidade / Stakeholder | Requisito(s) | Critério de Aceite | Caso de Uso / Módulo no Código-Fonte (`src/`) | Suíte de Teste Automatizado (`tests/`) |
+| :--- | :---: | :---: | :--- | :--- |
+| `STK-02` / `NEC-02` (Controle de Acesso e Equipe) | `RF-01`, `RF-02`, `RNF-03` | `CA-05` (`AC-5`) | `src/lib/auth.ts`, `src/middleware.ts`, `src/features/identidade/` | `tests/unit/auth-rbac.test.ts`, `tests/unit/users-management.test.ts` |
+| `STK-02` / `NEC-02` (Gestão de Acervo e Salas) | `RF-03`, `RF-04`, `RF-05` | `CA-08` (`AC-8`) | `src/features/catalogo/`, `src/features/salas/`, `src/features/sessoes/` | `tests/unit/catalog-filmes.test.ts`, `tests/unit/rooms-layout.test.ts`, `tests/unit/sessions-prepopulation.test.ts` |
+| `STK-03` / `NEC-03` (Mapa Reativo e Guichê) | `RF-06`, `RNF-01`, `RNF-04` | `CA-02` (`AC-2`) | `src/modules/bilheteria/components/seating-grid.tsx`, `src/app/api/sessoes/[id]/assentos/` | `tests/unit/seating-grid.test.ts`, `tests/unit/session-seats-polling.test.ts` |
+| `STK-01`, `STK-03` / `NEC-01` (Venda Atômica ACID) | `RF-07`, `RF-08`, `RNF-02` | `CA-01` (`AC-1`) | `src/features/bilheteria/application/sale.service.ts`, `src/modules/bilheteria/counter-service.ts` | `tests/unit/venda-atomica.test.ts`, `tests/unit/concurrency-acid-50-threads.test.ts` |
+| `STK-01`, `STK-05` / `NEC-04` (Cancelamento Imutável) | `RF-09` | `CA-03` (`AC-3`) | `src/features/bilheteria/application/cancellation.service.ts`, `prisma/migrations/` | `tests/unit/cancelamento-auditavel.test.ts`, `tests/unit/database-schema.test.ts` |
+| `STK-05` / `NEC-04` (Privacidade e LGPD Art. 18) | `RF-10`, `RNF-03` | `CA-06` (`AC-6`) | `src/shared/security/crypto.service.ts`, `src/features/governanca-lgpd/` | `tests/unit/cryptoservice.test.ts`, `tests/unit/compliance-anonymization.test.ts` |
+| `STK-01` / `NEC-01` (Isolamento Multi-Tenant SaaS) | `RNF-03`, `RNF-06` | `CA-04` (`AC-4`) | `src/shared/db/prisma.ts` (Tenancy Extension + `AsyncLocalStorage`) | `tests/unit/tenancy-isolation.test.ts`, `tests/unit/security-cross-tenant-suite.test.ts` |
+| `STK-02` / `NEC-02` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` (`AC-7`) | `src/app/admin/ocupacao/`, `src/shared/observability/logger.ts` | `tests/unit/observability-logger.test.ts`, `tests/unit/attendant-sales-counter.test.ts` |
+| `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12`, `RF-13`, `RF-14` | `CA-09`, `CA-10` | `src/components/booking/booking-flow.tsx`, `src/features/reserva/` | `tests/unit/booking-flow.test.ts`, `tests/integration/reserva-atomica.test.ts` |
+| `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15`, `RF-16`, `RF-17`, `RF-18` | `CA-11` a `CA-14` | `src/modules/notificacoes/notification-service.ts`, `src/app/api/portal/reservas/`, `src/app/api/bilheteria/reservas/` | `tests/integration/reserva-atomica.test.ts`, `tests/unit/film-modal-sessions.test.ts` |
+
+---
+
+### 5.1.3 Critérios de aceitação (`CA-01` a `CA-14`)
+
+Os 14 critérios de aceitação foram definidos em formato comportamental BDD (*Dado que / Quando / Então*):
+
+1. **`CA-01` (Venda Presencial Atômica Anti-Double-Booking):** *Dado que* dois operadores ou clientes tentam adquirir a mesma poltrona `AVAILABLE` simultaneamente, *quando* as transações concorrentes são submetidas, *então* o banco deve serializar o acesso via `SELECT FOR UPDATE`, aprovar apenas a primeira (`HTTP 201`) e rejeitar a segunda com `HTTP 409 Conflict`.
+2. **`CA-02` (Sincronização do Mapa em até 2s):** *Dado que* o mapa de uma sessão está aberto, *quando* o status de um assento muda para `RESERVED` ou `SOLD`, *então* o polling HTTP deve refletir a mudança visualmente em até 2 segundos.
+3. **`CA-03` (Auditoria Imutável de Cancelamento):** *Dado que* um ingresso vendido é cancelado na bilheteria, *quando* a operação é executada, *então* um registro imutável deve ser gravado em `cancellation_audits` (protegido por trigger PostgreSQL contra `UPDATE/DELETE`) antes de liberar o assento.
+4. **`CA-04` (Isolamento Estrito Multi-Tenant):** *Dado que* um operador do *Tenant A* está autenticado, *quando* tenta ler ou modificar filmes, salas, sessões ou reservas do *Tenant B*, *então* a extensão de tenancy deve bloquear o acesso em 100% dos 500 cenários de teste.
+5. **`CA-05` (Controle de Acesso RBAC):** *Dado que* um usuário com perfil `ATENDENTE` ou `CLIENTE` tenta acessar rotas administrativas (`/admin/*` ou `/api/admin/*`), *então* o middleware deve interceptar e retornar `HTTP 403 Forbidden`.
+6. **`CA-06` (Criptografia de CPF e Anonimização LGPD):** *Dado que* um CPF é fornecido na compra ou cadastro, *então* jamais deve ser salvo em texto puro, sendo persistido como `HMAC-SHA256` e `AES-256-GCM`, permitindo anonimização irreversível *in-place* (Art. 18 da LGPD) sem apagar o registro contábil do ingresso.
+7. **`CA-07` (Cálculo Preciso de Taxa de Ocupação):** *Dado que* uma sessão possui assentos vendidos e reservados, *quando* o `GERENTE` consulta o painel de ocupação, *então* o sistema deve exibir os percentuais exatos sobre a capacidade total da sala.
+8. **`CA-08` (Validação Descritiva e Anti-Choque de Sessões):** *Dado que* o `GERENTE` tenta agendar uma sessão em horário sobreposto na mesma sala, *então* o sistema deve rejeitar com erro descritivo (`HTTP 422`).
+9. **`CA-09` (Reserva Online com Antecedência de 60 min):** *Dado que* faltam mais de 60 minutos para a sessão, *quando* o espectador seleciona até 5 assentos livres no portal, *então* o sistema deve criar a reserva com status `PENDING` e bloquear os assentos como `RESERVED`.
+10. **`CA-10` (Cadastro e Login de Espectador com LGPD):** *Dado que* um espectador preenche nome, e-mail, senha, CPF válido (Módulo 11) e aceite LGPD, *então* o sistema deve autenticar sua sessão com perfil `CLIENTE`.
+11. **`CA-11` (Emissão de Voucher e Disparo de E-mail Transacional):** *Dado que* uma reserva web é concluída, *então* o sistema deve gerar o código localizador (`CD-XXXX`), acionar o serviço de notificação e gravar o timestamp `email_sent_at`.
+12. **`CA-12` (Cancelamento Voluntário pelo Espectador):** *Dado que* o cliente possui uma reserva `PENDING` dentro do prazo, *quando* solicita o cancelamento em *"Minhas Reservas"*, *então* o status muda para `CANCELLED` e os assentos voltam imediatamente para `AVAILABLE`.
+13. **`CA-13` (Baixa Presencial de Reserva no Balcão):** *Dado que* o cliente apresenta o código localizador ou CPF na bilheteria até 60 min antes da sessão, *quando* o atendente confirma o pagamento, *então* a reserva muda para `CONFIRMED` e os assentos para `SOLD`.
+14. **`CA-14` (Expiração Just-in-Time a 60 min da Sessão):** *Dado que* uma reserva `PENDING` não foi paga e faltam menos de 60 minutos para o início do filme, *quando* a sessão é consultada, *então* a reserva expira dinamicamente (`EXPIRED`) e as poltronas são liberadas para venda imediata no balcão.
+
+---
 
 ### 5.1.4 Registro de stakeholders e necessidades elicitadas
-Mapeamento formal dos interesses de proprietários e patrocinadores (`STK-01`, `NEC-01`), gerentes de cinema (`STK-02`, `NEC-02`), atendentes de bilheteria (`STK-03`, `NEC-03`), espectadores finais (`STK-04`, `NEC-05` a `NEC-08`) e encarregados de conformidade LGPD (`STK-05`, `NEC-04`).
+
+O levantamento de requisitos combinou quatro técnicas complementares de engenharia de requisitos: (1) **Entrevistas estruturadas** com gestores de salas independentes, (2) **Observação de campo** do fluxo de fila em bilheterias físicas, (3) **Prototipação iterativa de alta fidelidade** para validação da experiência mobile/desktop e (4) **Análise regulatória** do texto da LGPD e do Código de Defesa do Consumidor.
+
+| Código | Stakeholder (Parte Interessada) | Técnica de Elicitação Aplicada | Necessidades Capturadas (`NEC`) |
+| :---: | :--- | :--- | :--- |
+| **STK-01** | **Proprietários e Diretores de Redes de Cinema (Clientes B2B)** | Entrevistas de negócio e análise de TCO | `NEC-01`: Eliminar vendas duplas de poltronas, reduzir ociosidade por *no-show* e operar em modelo SaaS com isolamento total dos dados da empresa. |
+| **STK-02** | **Gerentes Operacionais de Cinema (`GERENTE`)** | Entrevistas e workshops de fluxo administrativo | `NEC-02`: Configurar facilmente salas (Clássica, IMAX, VIP), grade de filmes/sessões, equipe de atendentes e acompanhar a lotação em tempo real. |
+| **STK-03** | **Atendentes de Bilheteria Física (`ATENDENTE`)** | Observação de operação de guichê e prototipação | `NEC-03` e `NEC-08`: Vender ingressos em poucos cliques no mapa visual, localizar reservas web pelo código ou CPF rapidamente e cancelar com segurança. |
+| **STK-04** | **Espectadores / Clientes Finais (`CLIENTE` B2C)** | Prototipação mobile/desktop e testes de usabilidade | `NEC-05`, `NEC-06` e `NEC-07`: Consultar horários pelo celular ou computador, escolher poltronas exatas no mapa da sala, receber voucher e cancelar online se necessário. |
+| **STK-05** | **Encarregado de Dados (DPO) e Auditoria Jurídica** | Análise normativa (LGPD Lei 13.709/2018 e ISO 27701) | `NEC-04`: Garantir criptografia forte de CPF, consentimento explícito, direito à anonimização (Art. 18) e trilha de auditoria imutável por 365 dias. |
+
+---
 
 ## 5.2 Arquitetura e Design
 
 ### 5.2.1 Documento de arquitetura do sistema
-Arquitetura Monólito Modular em Next.js 14 (App Router) organizada em Clean Architecture com fatias verticais de funcionalidades (`src/features/*`) e camadas lógicas estritas (Controller-Service-Repository):
-1. **Camada de Apresentação:** React Server Components para o catálogo público e Client Components reativos para o mapa interativo de assentos (polling a 2s), painéis gerenciais e checkout de reserva.
-2. **Camada de Aplicação / Controllers:** Route Handlers tipados em TypeScript (`src/app/api/**/route.ts`) atuando como Controllers finos para transporte HTTP e validação de schemas Zod.
-3. **Camada de Serviços de Aplicação:** Orquestração de regras de negócio e casos de uso (`FilmService`, `SessionService`, `CounterService`, `ReservationService`, `NotificationService`, `CryptoService`).
-4. **Camada de Domínio e Repositórios:** Interfaces de domínio e implementações de repositório (`PrismaFilmRepository`, `PrismaSessionRepository`, `PrismaCounterRepository`, `PrismaReservationRepository`) garantindo inversão de dependência e desacoplamento do ORM.
-5. **Camada de Acesso a Dados e Tenancy:** Prisma Client integrado ao Neon PostgreSQL com extensão de contexto para injeção global de filtro `WHERE tenant_id`.
+
+O **CineDoom** adota a arquitetura de **Monólito Modular em Next.js 14 (App Router)** fundamentada nos princípios de *Clean Architecture* (`ADR-001`), estruturada em cinco camadas lógicas com inversão de dependência e isolamento vertical por domínio (`src/features/*` e `src/modules/*`):
+
+1. **Camada de Apresentação e UI Reativa (`src/app/`, `src/components/`):** Combina *React Server Components* para carregamento rápido do catálogo e *Client Components* interativos para o fluxo de reserva em 4 etapas, mapa bidimensional de poltronas (`SeatingGrid` com polling de 2s) e painéis administrativos.
+2. **Camada de Controladores HTTP (`src/app/api/**/route.ts`):** Route Handlers tipados que extraem o contexto de sessão/tenant, validam payloads de entrada com schemas `Zod` e traduzem exceções de domínio em códigos HTTP semânticos (`200`, `201`, `400`, `401`, `403`, `404`, `409`, `422`).
+3. **Camada de Serviços de Aplicação (`Application Services`):** Orquestra os casos de uso e transações de negócio (`SaleService`, `CancellationService`, `ReservationService`, `TemporaryHoldService`, `CounterService`, `UserService`, `AnonymizationService`, `NotificationService`).
+4. **Camada de Domínio e Segurança (`Domain & Security`):** Contém as entidades, invariantes de negócio (antecedência de 60 min, expiração JIT, validação Módulo 11 de CPF) e o `CryptoService` (`HMAC-SHA256` e `AES-256-GCM`).
+5. **Camada de Infraestrutura e Persistência Multi-Tenant (`src/shared/db/prisma.ts`):** Implementa os repositórios Prisma sobre PostgreSQL com extensão automática de contexto (`AsyncLocalStorage`) que injeta a cláusula `WHERE tenant_id` em todas as consultas e gerencia a conexão via pooler transacional.
+
+---
 
 ### 5.2.2 Diagramas de design
-O design formal do sistema é documentado por meio do conjunto de modelos arquiteturais e diagramas UML/C4:
-- **Diagrama C4 Nível 2 (Contêineres):** Demonstra a integração entre o navegador do espectador (Portal do Cliente), o terminal do atendente (Bilheteria), a aplicação Next.js na Vercel, o serviço transacional de e-mails e o banco de dados Neon Serverless.
-- **Diagrama de Classes UML (Modelo de Domínio):** Estrutura as classes de domínio (`User`, `Tenant`, `Movie`, `Room`, `Seat`, `Session`, `SessionSeat`, `Reservation`, `Ticket`), evidenciando atributos tipados, métodos operacionais e cardinalidades de associação.
-- **Diagrama de Sequência UML (Reserva Atômica e Baixa Presencial):** Ilustra a troca temporal de mensagens entre cliente, servidor Next.js e banco relacional com transação ACID (`SELECT FOR UPDATE`), disparo de voucher e confirmação no balcão.
-- **Diagrama de Casos de Uso UML:** Mapeia os atores do sistema (*Espectador*, *Atendente*, *Gerente*) e suas respectivas interações com as funcionalidades do sistema.
-- **Diagrama de Estados UML (Ciclo de Vida do Assento):** Mapeia a máquina de estados do assento na sessão: `AVAILABLE` $\to$ `RESERVED` (com expiração JIT) $\to$ `SOLD` (baixa presencial) ou reversão para `AVAILABLE` em caso de cancelamento.
-- **Diagrama Entidade-Relacionamento (DER / Modelo de Dados):** Especificação visual do esquema relacional de tabelas, chaves primárias/estrangeiras e índices do banco PostgreSQL.
+
+Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **seis diagramas formais de arquitetura e design** do CineDoom.
+
+#### 1. Diagrama C4 — Nível 2 (Diagrama de Contêineres)
+
+O Diagrama de Contêineres ilustra a interação entre os três perfis de usuários (Espectador, Atendente e Gerente), a aplicação web e API serverless hospedada na Vercel, o banco de dados relacional PostgreSQL e os serviços externos de e-mail transacional (Resend) e observabilidade (Axiom):
+
+```mermaid
+flowchart TB
+    subgraph Usuarios["Atores e Dispositivos Clientes"]
+        Esp["Espectador (Cliente B2C)\n[Browser Mobile / Desktop]"]
+        Atd["Atendente de Guichê\n[Terminal Web Bilheteria]"]
+        Ger["Gerente do Cinema\n[Browser Back-office]"]
+    end
+
+    subgraph Vercel["Plataforma Cloud Vercel (Next.js 14 Monólito Modular)"]
+        UI_Portal["Portal do Cliente & Catálogo\n[React Server & Client Components]"]
+        UI_Bilh["Módulo de Bilheteria & Painel Admin\n[React Client Components / Polling 2s]"]
+        API["Camada de API & Application Services\n[Next.js Route Handlers + Zod + NextAuth JWT]"]
+        Tenancy["Prisma Tenancy Extension & CryptoService\n[AsyncLocalStorage + AES-256-GCM / HMAC]"]
+    end
+
+    subgraph Externos["Infraestrutura de Dados e Serviços SaaS"]
+        DB[("PostgreSQL Gerenciado\n(Supabase / Neon DB)\nPooler 6543 + Triggers ACID")]
+        Resend["Resend API\n[Serviço de E-mail Transacional]"]
+        Axiom["Axiom Cloud Log Drain\n[Retenção de Auditoria 365 Dias]"]
+    end
+
+    Esp -->|"HTTPS / JSON"| UI_Portal
+    Atd -->|"HTTPS / Polling 2s"| UI_Bilh
+    Ger -->|"HTTPS / JSON"| UI_Bilh
+
+    UI_Portal --> API
+    UI_Bilh --> API
+    API --> Tenancy
+    Tenancy -->|"TLS / SQL (SELECT FOR UPDATE)"| DB
+    API -->|"HTTPS REST (Voucher)"| Resend
+    API -->|"JSON Structured Logs"| Axiom
+```
+
+#### 2. Diagrama de Classes UML (Modelo de Domínio)
+
+O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (`Tenant`):
+
+```mermaid
+classDiagram
+    class Tenant {
+        +UUID id
+        +String name
+        +String slug
+        +Boolean active
+    }
+
+    class User {
+        +UUID id
+        +UUID tenantId
+        +String name
+        +String email
+        +String passwordHash
+        +Role role
+        +String cpfHash
+        +String cpfEncrypted
+        +Boolean active
+    }
+
+    class Film {
+        +UUID id
+        +UUID tenantId
+        +String title
+        +String synopsis
+        +String genre
+        +Int duration
+        +String classification
+        +String posterUrl
+    }
+
+    class Room {
+        +UUID id
+        +UUID tenantId
+        +String name
+        +Int rows
+        +Int columns
+        +Int capacity
+    }
+
+    class Seat {
+        +UUID id
+        +UUID roomId
+        +String rowLabel
+        +Int number
+        +String seatCode
+    }
+
+    class Session {
+        +UUID id
+        +UUID tenantId
+        +UUID filmId
+        +UUID roomId
+        +DateTime startsAt
+        +Decimal price
+    }
+
+    class SessionSeat {
+        +UUID id
+        +UUID sessionId
+        +UUID seatId
+        +SessionSeatStatus status
+        +UUID reservationId
+    }
+
+    class Reservation {
+        +UUID id
+        +String code
+        +UUID tenantId
+        +UUID sessionId
+        +UUID userId
+        +ReservationStatus status
+        +Decimal totalPrice
+        +DateTime expiresAt
+        +DateTime emailSentAt
+    }
+
+    class Ticket {
+        +UUID id
+        +UUID tenantId
+        +UUID sessionSeatId
+        +UUID operatorId
+        +TicketStatus status
+        +Decimal pricePaid
+        +String buyerCpfHash
+    }
+
+    Tenant "1" --> "*" User : possui
+    Tenant "1" --> "*" Film : mantém
+    Tenant "1" --> "*" Room : gerencia
+    Room "1" *-- "*" Seat : contém
+    Film "1" --> "*" Session : exibido em
+    Room "1" --> "*" Session : sedia
+    Session "1" *-- "*" SessionSeat : pré-popula
+    Seat "1" --> "*" SessionSeat : referencia
+    Reservation "1" --> "1..5" SessionSeat : bloqueia
+    SessionSeat "1" --> "0..1" Ticket : gera
+```
+
+#### 3. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
+
+O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (`SELECT FOR UPDATE`), a emissão do voucher transacional e a posterior conversão em ingresso vendido (`SOLD`) no guichê físico:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Esp as Espectador (Portal Web)
+    participant API as Next.js Route Handler / ReservationService
+    participant DB as PostgreSQL (Transação ACID)
+    participant Mail as NotificationService (Resend)
+    actor Atd as Atendente (Guichê Físico)
+
+    Esp->>API: POST /api/portal/reservas (sessionId, seatIds, buyer)
+    activate API
+    API->>API: Valida antecedência (>= 60 min) e ordena seatIds
+    API->>DB: BEGIN TRANSACTION
+    API->>DB: SELECT * FROM session_seats WHERE id IN (...) FOR UPDATE
+    alt Algum assento não está AVAILABLE (e não expirado JIT)
+        DB-->>API: Retorna status != AVAILABLE
+        API->>DB: ROLLBACK
+        API-->>Esp: HTTP 409 Conflict (Poltrona indisponível)
+    else Todos os assentos disponíveis
+        API->>DB: INSERT INTO reservations (code: CD-XXXX, status: PENDING, expiresAt)
+        API->>DB: UPDATE session_seats SET status = 'RESERVED', reservation_id = id
+        API->>DB: COMMIT
+        API->>Mail: sendReservationVoucher(reservationId)
+        Mail->>DB: UPDATE reservations SET email_sent_at = NOW()
+        API-->>Esp: HTTP 201 Created (Voucher CD-XXXX)
+    end
+    deactivate API
+
+    Note over Esp,Atd: Espectador comparece à bilheteria até 60 min antes da sessão
+
+    Atd->>API: POST /api/bilheteria/reservas/confirmar (code: CD-XXXX)
+    activate API
+    API->>DB: BEGIN TRANSACTION + SELECT reservation FOR UPDATE
+    API->>DB: Verifica se NOW() <= expiresAt (Regra JIT 60 min)
+    API->>DB: UPDATE reservations SET status = 'CONFIRMED', confirmed_at = NOW()
+    API->>DB: UPDATE session_seats SET status = 'SOLD'
+    API->>DB: INSERT INTO tickets (status: 'SOLD', operator_id)
+    API->>DB: COMMIT
+    API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
+    deactivate API
+```
+
+#### 4. Diagrama de Casos de Uso UML
+
+O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
+
+```mermaid
+flowchart LR
+    Esp(["👤 Espectador\n(Cliente Final)"])
+    Atd(["🎫 Atendente\n(Guichê Físico)"])
+    Ger(["👔 Gerente\n(Back-office)"])
+
+    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
+        UC1("Consultar Catálogo, Horários e Mapa 2D")
+        UC2("Cadastrar Conta e Consentimento LGPD")
+        UC3("Reservar Assentos Online e Emitir Voucher")
+        UC4("Cancelar Reserva Voluntariamente (Web)")
+        UC5("Vender Ingressos no Balcão (ACID)")
+        UC6("Localizar Reserva (Código/CPF) e Dar Baixa")
+        UC7("Cancelar Ingresso com Auditoria Imutável")
+        UC8("Gerenciar Filmes, Salas e Grade de Sessões")
+        UC9("Gerenciar Atendentes e Monitorar Ocupação")
+        UC10("Executar Anonimização de Titular (LGPD Art. 18)")
+    end
+
+    Esp --> UC1
+    Esp --> UC2
+    Esp --> UC3
+    Esp --> UC4
+
+    Atd --> UC1
+    Atd --> UC5
+    Atd --> UC6
+    Atd --> UC7
+
+    Ger --> UC8
+    Ger --> UC9
+    Ger --> UC10
+```
+
+#### 5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)
+
+O Diagrama de Estados formaliza todas as transições válidas de uma poltrona (`SessionSeat`) desde a criação da sessão até o encerramento:
+
+```mermaid
+stateDiagram-v2
+    [*] --> AVAILABLE : Criação da Sessão (Pré-população)
+
+    AVAILABLE --> RESERVED : Reserva Web Confirmada (>= 60 min antes)\nou Bloqueio Temporário (10 min)
+    AVAILABLE --> SOLD : Venda Direta no Balcão Presencial\n(SELECT FOR UPDATE)
+
+    RESERVED --> SOLD : Baixa Presencial no Balcão\n(Pagamento Confirmado pelo Atendente)
+    RESERVED --> AVAILABLE : Cancelamento Voluntário pelo Cliente\nou Expiração Just-in-Time (< 60 min da sessão)
+
+    SOLD --> AVAILABLE : Cancelamento Síncrono no Guichê\n(Grava Trilha em cancellation_audits)
+```
+
+#### 6. Diagrama Entidade-Relacionamento (DER — Modelo Relacional PostgreSQL)
+
+O DER especifica a estrutura física das tabelas relacionais, chaves primárias (`PK`), chaves estrangeiras (`FK`) e restrições de unicidade no PostgreSQL:
+
+```mermaid
+erDiagram
+    TENANTS ||--o{ USERS : "tenant_id"
+    TENANTS ||--o{ FILMS : "tenant_id"
+    TENANTS ||--o{ ROOMS : "tenant_id"
+    TENANTS ||--o{ SESSIONS : "tenant_id"
+    TENANTS ||--o{ RESERVATIONS : "tenant_id"
+    TENANTS ||--o{ TICKETS : "tenant_id"
+
+    ROOMS ||--|{ SEATS : "room_id"
+    FILMS ||--o{ SESSIONS : "film_id"
+    ROOMS ||--o{ SESSIONS : "room_id"
+
+    SESSIONS ||--|{ SESSION_SEATS : "session_id"
+    SEATS ||--o{ SESSION_SEATS : "seat_id"
+
+    USERS ||--o{ RESERVATIONS : "user_id"
+    SESSIONS ||--o{ RESERVATIONS : "session_id"
+    RESERVATIONS ||--|{ SESSION_SEATS : "reservation_id"
+
+    SESSION_SEATS ||--o| TICKETS : "session_seat_id"
+    USERS ||--o{ TICKETS : "operator_id"
+    TICKETS ||--o| CANCELLATION_AUDITS : "ticket_id"
+
+    TENANTS {
+        uuid id PK
+        varchar name
+        varchar slug UK
+        boolean active
+    }
+    USERS {
+        uuid id PK
+        uuid tenant_id FK
+        varchar email
+        varchar password_hash
+        enum role
+        varchar cpf_hash
+        text cpf_encrypted
+    }
+    SESSIONS {
+        uuid id PK
+        uuid tenant_id FK
+        uuid film_id FK
+        uuid room_id FK
+        timestamptz starts_at
+        numeric price
+    }
+    SESSION_SEATS {
+        uuid id PK
+        uuid session_id FK
+        uuid seat_id FK
+        enum status
+        uuid reservation_id FK
+    }
+    RESERVATIONS {
+        uuid id PK
+        varchar code UK
+        uuid tenant_id FK
+        uuid session_id FK
+        enum status
+        timestamptz expires_at
+        timestamptz email_sent_at
+    }
+    CANCELLATION_AUDITS {
+        uuid id PK
+        uuid tenant_id FK
+        uuid ticket_id FK
+        uuid operator_id FK
+        text reason
+        timestamptz cancelled_at
+    }
+```
+
+---
 
 ### 5.2.3 Justificativa das escolhas tecnológicas
-A combinação de Next.js 14, Prisma ORM e Neon PostgreSQL viabiliza o desenvolvimento integral dos três módulos dentro do prazo de 21 dias por uma equipe de 4 desenvolvedores, assegurando conformidade ACID nativa e custo de infraestrutura zero no nível de entrada.
+
+O stack tecnológico foi selecionado para maximizar a segurança transacional, a ergonomia de desenvolvimento e a eficiência operacional em nuvem:
+- **Next.js 14 (App Router) + React 18 + Tailwind CSS:** Permite renderizar o catálogo público na borda com baixíssima latência e manter componentes clientes altamente reativos para o mapa de poltronas em smartphones e terminais de guichê.
+- **TypeScript Estrito + Zod:** Garante contratos estáticos fim a fim e validação determinística na fronteira HTTP, eliminando classes inteiras de erros de runtime.
+- **PostgreSQL + Prisma ORM:** Bancos NoSQL não oferecem a semântica de bloqueio pessimista de linha (`SELECT ... FOR UPDATE`) indispensável para impedir vendas duplas em bilheterias de alta concorrência. O PostgreSQL aliado ao Prisma entrega migrações seguras, triggers nativas de auditoria e performance relacional superior.
 
 ### 5.2.4 Estratégia de gestão de mídias e desacoplamento de storage
-A persistência de imagens de filmes adota o padrão de desacoplamento de storage: o PostgreSQL registra apenas a URL no campo `poster_url` (`VARCHAR(500)`), eliminando o armazenamento de binários pesados (BLOBs) no banco relacional. No MVP, as imagens são distribuídas pela CDN Edge da Vercel (`/public/posters/`) ou links de CDNs públicas de cinema. Para escala corporativa (cenário não-mockado), a arquitetura define o padrão *Direct-to-Storage* com *Pre-signed URLs* (AWS S3/Cloudflare R2/Vercel Blob), evitando o limite de payload de 4.5 MB das funções serverless, ou integração com a API pública do The Movie Database (TMDB).
+
+O banco relacional armazena exclusivamente a referência textual (`poster_url VARCHAR(500)`), mantendo os backups leves e as queries rápidas. Na Macroentrega 1, os pôsteres são servidos via CDN global da Vercel; nas Macroentregas 2 e 3, o upload gerencial utiliza o padrão *Direct-to-Storage* com *Pre-signed URLs* (Vercel Blob / Cloudflare R2).
+
+---
 
 ## 5.3 Implementação e Integração
 
 ### 5.3.1 Padrões de codificação adotados
-Guia estrito de TypeScript (`strict: true`), ESLint configurado contra ciclos de importação (`import/no-cycle`) e Prettier para padronização de formatação em toda a base de código.
+- **Estruturação Modular:** Organização em fatias de domínio (`src/features/{bilheteria,catalogo,governanca-lgpd,identidade,reserva,salas,sessoes}`) e utilitários compartilhados (`src/shared/`).
+- **Convenções de Nomenclatura:** Arquivos em `kebab-case.ts`, componentes e classes em `PascalCase`, métodos e variáveis em `camelCase` e constantes globais em `UPPER_SNAKE_CASE`.
+- **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle: error`).
 
-### 5.3.2 Plano de integração entre componentes
-A integração entre o Portal do Cliente e o Módulo de Bilheteria opera sobre o mesmo schema relacional PostgreSQL. Conflitos de seleção entre um cliente web e um atendente físico são resolvidos deterministicamente pela trava `SELECT FOR UPDATE` na linha de `session_seats`, retornando `HTTP 409 Conflict` em caso de disputa.
+### 5.3.2 Plano de integração entre componentes (CI/CD)
+A integração contínua é executada automaticamente pelo **GitHub Actions** (`.github/workflows/ci.yml` e `deploy.yml`) a cada push ou Pull Request:
+1. Instalação determinística de dependências com `pnpm install --frozen-lockfile`.
+2. Geração do cliente tipado do ORM (`pnpm prisma generate`).
+3. Verificação estática de tipos (`pnpm tsc --noEmit`) e regras de arquitetura (`pnpm eslint`).
+4. Execução integral da bateria de testes automatizados (`pnpm test`).
+5. Compilação de produção (`pnpm build`) e promoção automática para a Vercel.
 
 ### 5.3.3 Registro de testes unitários e de integração
-Suíte automatizada com **Vitest** e **Playwright**:
-- **Testes Unitários:** Validação de hashing HMAC-SHA256 e cifra AES-256-GCM no `CryptoService`, cálculo de expiração temporal e validação de schemas Zod.
-- **Testes de Integração Concorrente:** Simulação de 50 requisições simultâneas disputando o mesmo assento entre reserva web e venda de balcão (`reserva-atomica.test.ts` e `venda-atomica-acid.test.ts`), confirmando zero inconsistências.
-- **Testes de Expiração Just-in-Time:** Validação de liberação dinâmica de assento expirado após a barreira de 1 hora (`expiracao-reserva-jit.test.ts`).
-- **Testes E2E:** Jornada completa do cliente (cadastro $\to$ escolha de assento $\to$ reserva $\to$ voucher) e atendimento presencial de baixa no balcão.
+A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizando **26 arquivos de teste e 770 testes automatizados passando com 100% de sucesso** em ~4,9 segundos:
+- **Segurança e Isolamento Multi-Tenant (`security-cross-tenant-suite.test.ts` e `tenancy-isolation.test.ts`):** 509 testes verificando que nenhum tenant consegue ler, alterar ou apagar registros de outro cinema.
+- **Concorrência ACID com 50 Threads (`concurrency-acid-50-threads.test.ts`, `venda-atomica.test.ts` e `reserva-atomica.test.ts`):** Simulação de 50 requisições paralelas disputando o mesmo assento entre portal web e balcão, comprovando exatamente 1 aprovação e 49 rejeições `HTTP 409`.
+- **Criptografia e Conformidade LGPD (`cryptoservice.test.ts` e `compliance-anonymization.test.ts`):** 40 testes validando cifragem `AES-256-GCM`, busca `HMAC-SHA256`, validação Módulo 11 de CPF e expurgo irreversível *in-place*.
+- **Fluxos de Negócio e Interface (`booking-flow.test.ts`, `seating-grid.test.ts`, `users-management.test.ts`, `cancelamento-auditavel.test.ts`):** Validação completa de reservas, mapa 2D de poltronas, RBAC e triggers de auditoria.
 
 ### 5.3.4 Rastreabilidade entre código e requisitos
-Todas as rotas de API, use cases e suites de teste incluem anotações explícitas de rastreabilidade (ex.: `// Requisito: RF-13 | AC-9 | ADR-012`).
+Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos normativos (ex.: `feat(auth): adicionar gerador aleatorio de CPF valido (Modulo 11)` e comentários `// Requisito: RF-07 | CA-01 | ADR-007`), permitindo auditoria imediata no histórico do Git.
+
+---
 
 ## 5.4 Verificação, Validação e Transição
 
 ### 5.4.1 Plano de verificação e validação
-- **Verificação Contínua:** Pipeline automatizado no GitHub Actions disparado a cada Pull Request (verificação de tipagem TypeScript, linting, testes unitários e integração).
-- **Validação com Dados de Caso Real:** Simulação de grade de exibição e carga de espectadores reais para validação perante a banca examinadora da UFG/INF.
+
+A CineSoft Solutions distingue e aplica complementarmente as atividades de **Verificação** e **Validação** (Cláusulas 6.4.9 e 6.4.11 da ISO 12207):
+
+| Critério de Comparação | Verificação (*Verification*) | Validação (*Validation*) |
+| :--- | :--- | :--- |
+| **Pergunta Central** | *"Estamos construindo o produto corretamente?"* | *"Estamos construindo o produto certo?"* |
+| **Foco Principal** | Conformidade técnica com as especificações, ADRs e regras de código | Adequação funcional e de usabilidade às reais necessidades dos cinemas e espectadores |
+| **Quando Ocorre** | Continuamente em cada commit e Pull Request | Ao final de cada Sprint e na homologação em produção com usuários reais |
+| **Quem Realiza** | Equipe de engenharia da CineSoft e pipeline automatizado (GitHub Actions) | Stakeholders, operadores de cinema-piloto e espectadores finais reais |
+| **Exemplos Aplicados no CineDoom** | Compilação TypeScript (`tsc`), linter `no-cycle` e execução dos **770 testes no Vitest** | Testes de aceitação (*UAT*) no ambiente `cinedoom.vercel.app` com cadastros e reservas reais |
+
+#### Critérios Formais de Entrada e Saída de V&V (*Entry & Exit Criteria*)
+
+| Fase de V&V | Critérios de Entrada (*Entry Criteria*) | Critérios de Saída (*Exit Criteria*) |
+| :--- | :--- | :--- |
+| **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 770 testes passando, zero erros de linter/tipagem e cobertura de 100% nas regras críticas. |
+| **2. Homologação em Staging** | Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. | Fluxos ponta a ponta (cadastro $\to$ reserva $\to$ baixa no balcão $\to$ painel gerencial) executados sem falhas. |
+| **3. Validação e Aceite em Produção (*UAT*)** | Ambiente de produção sincronizado na branch `main` com banco PostgreSQL ativo. | Operação validada por usuários externos reais sem ocorrência de *double-booking* ou erros HTTP 500. |
 
 ### 5.4.2 Critérios de aceitação por stakeholder
-- **Espectador:** Facilidade para escolher poltrona, agilidade no recebimento do e-mail com voucher e autonomia para cancelar reservas.
-- **Atendente:** Agilidade na localização da reserva pelo código na bilheteria física.
-- **Gerente:** Visualização clara das poltronas reservadas versus vendidas no painel de ocupação.
+- **Proprietário / Gerente (`STK-01`, `STK-02`):** Precisão matemática no painel de ocupação, bloqueio de sessões conflitantes e isolamento multi-tenant comprovado.
+- **Atendente de Bilheteria (`STK-03`):** Venda direta ou localização/baixa de reserva web por código ou CPF concluída em menos de 15 segundos de operação no guichê.
+- **Espectador (`STK-04`):** Experiência fluida em dispositivos móveis e desktop para filtrar filmes, visualizar todas as colunas do mapa da sala, reservar poltronas e consultar o voucher em *"Minhas Reservas"*.
 
-### 5.4.3 Relatório de testes de aceitação
-Documentação formal dos testes executados com evidências de aprovação dos cenários de concorrência e conformidade regulatória.
+### 5.4.3 Relatório de testes de aceitação (Homologação e Produção)
 
-### 5.4.4 Plano de transição/implantação do sistema
-Deploy contínuo automatizado na Vercel para branches aprovadas, com migrações de banco executadas via `prisma migrate deploy` sobre branches dedicadas do banco Neon.
+Todos os cenários de aceitação da Macroentrega 1 (`v1.0.0`) foram executados e homologados com usuários reais no ambiente de produção (`https://cinedoom.vercel.app/`):
+
+| ID Cenário | Critério(s) | Descrição do Cenário Homologado | Evidência Observada em Produção | Status |
+| :---: | :---: | :--- | :--- | :---: |
+| **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco Supabase. | **Aprovado** |
+| **UAT-02** | `CA-09`, `CA-11` | Seleção de poltronas no mapa 2D (mobile e desktop), reserva atômica e geração de voucher. | 11 reservas confirmadas (múltiplos ingressos de R$ 30 a R$ 75) sem falhas de layout. | **Aprovado** |
+| **UAT-03** | `CA-01`, `CA-02` | Disputa simultânea de assentos e atualização visual do mapa por polling. | 20 assentos vendidos (`SOLD`) e 10 reservados (`RESERVED`) com zero venda dupla. | **Aprovado** |
+| **UAT-04** | `CA-12` | Consulta de histórico em *"Minhas Reservas"* e cancelamento voluntário pelo cliente. | Liberação imediata das poltronas para `AVAILABLE` após cancelamento web. | **Aprovado** |
+| **UAT-05** | `CA-13`, `CA-14` | Busca de reserva no balcão por código/CPF, baixa para `SOLD` e expiração JIT a 60 min. | Conversão instantânea de reserva em ingresso emitido e liberação de vencidas. | **Aprovado** |
+| **UAT-06** | `CA-03`, `CA-06` | Cancelamento de ingresso no guichê com justificativa e anonimização LGPD Art. 18. | Trigger PostgreSQL bloqueando deleção da auditoria e PII anonimizado *in-place*. | **Aprovado** |
+
+### 5.4.4 Plano de transição/implantação do sistema e procedimento de rollback
+
+A transição para produção segue um protocolo automatizado e seguro:
+1. **Pré-Deploy e Migração:** Execução da pipeline no GitHub Actions validando `prisma migrate deploy` e os 770 testes antes de autorizar o build na Vercel.
+2. **Smoke Test Pós-Implantação:** Verificação imediata da rota de saúde (`/api/health`), carregamento do catálogo público e teste de autenticação em produção.
+3. **Procedimento Formal de Rollback (Tempo de Recuperação $< 5\text{ min}$):**
+   - *Camada de Aplicação:* Caso qualquer anomalia P1 seja detectada após o deploy, o líder de DevOps aciona o recurso **Instant Rollback** no painel da Vercel (ou reverte o commit em `main`), restaurando o build imutável anterior em menos de 30 segundos sem tempo de inatividade (*zero-downtime*).
+   - *Camada de Banco de Dados:* Todas as migrações da Macroentrega 1 são retrocompatíveis (*expand-and-contract*). Em caso de corrupção crítica, aciona-se a restauração *Point-in-Time (PITR)* do PostgreSQL gerenciado.
+
+---
 
 ## 5.5 Operação, Manutenção e Descontinuação
 
 ### 5.5.1 Procedimentos de operação e monitoramento
-Monitoramento contínuo de latência, taxa de erro HTTP e integridade transacional via Axiom Log Drain e painel analítico da Vercel.
+A operação em produção é monitorada continuamente por meio de:
+- **Telemetria e Logs Estruturados (Axiom):** Registro em JSON de todas as vendas, reservas, cancelamentos e falhas de autenticação, com mascaramento automático de dados sensíveis e retenção de 365 dias.
+- **Monitoramento de Banco e Conexões:** Acompanhamento da saúde do pooler transacional (`porta 6543`), uso de memória e latência de queries no painel do Supabase/Neon.
 
-### 5.5.2 Plano de manutenção (corretiva, preventiva, adaptativa)
-Fluxo ágil de tratamento de incidentes operacionais via issues categorizadas por severidade no GitHub Projects da organização.
+### 5.5.2 Plano de manutenção
+A CineSoft Solutions classifica e executa a manutenção contínua da plataforma nas quatro categorias normativas da ISO 12207:
+1. **Manutenção Corretiva:** Correção prioritária de defeitos reportados por usuários ou detectados via logs (ex.: ajuste de alinhamento horizontal da coluna 1 no mapa de assentos em telas estreitas).
+2. **Manutenção Adaptativa:** Adequação do sistema a atualizações de navegadores, novas versões do Node.js/Next.js ou mudanças nas regras estaduais de emissão fiscal.
+3. **Manutenção Perfectiva (Evolutiva):** Implementação de melhorias de usabilidade, performance e entrega dos novos módulos planejados nas **Macroentregas 2 e 3**.
+4. **Manutenção Preventiva:** Otimização periódica de índices SQL, rotação programada de chaves criptográficas (`NEXTAUTH_SECRET`, `CINEDOOM_CPF_KEY`) e atualização de dependências de segurança.
 
-### 5.5.3 Estratégia de descontinuação e privacidade de dados
-Procedimento de encerramento seguro de tenant com geração de dump completo em SQL e expurgo de dados pessoais conforme os princípios de finalidade, necessidade e segurança da LGPD (Art. 6º e Art. 18).
+### 5.5.3 Estratégia de descontinuação e migração de dados
+Caso um cinema cliente encerre seu contrato SaaS ou o produto seja descontinuado no futuro, o processo de encerramento (Cláusula 6.4.14) assegura conformidade legal estrita:
+1. **Notificação Prévia e Exportação Portável:** Comunicação formal com 60 dias de antecedência e entrega de arquivo criptografado (JSON/CSV e dump SQL filtrado por `tenant_id`) contendo todo o histórico operacional e contábil do cinema.
+2. **Expurgo e Anonimização LGPD:** Execução em lote do `AnonymizationService` para expurgar permanentemente todos os dados pessoais identificáveis (nomes, e-mails e CPFs cifrados) dos espectadores daquele tenant, preservando apenas estatísticas agregadas não identificáveis até a desativação definitiva da instância.
+
+---

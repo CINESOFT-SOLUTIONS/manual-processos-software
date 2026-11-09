@@ -10,7 +10,7 @@ O CineDoom é uma plataforma web integrada, no modelo **SaaS multi-tenant**, de 
 2. **Módulo do Gerente (Back-office e Gestão):** Configuração de salas, catálogo de filmes, agendamento de sessões, gestão de operadores e acompanhamento de indicadores de ocupação.
 3. **Portal do Cliente (Espectador Final Web):** Canal público e autenticado no qual o público consulta a programação, cadastra-se com proteção de dados LGPD, seleciona assentos no mapa interativo, solicita reservas com emissão de voucher transacional e gerencia suas reservas via web.
 
-A CineSoft Solutions é a organização desenvolvedora (fictícia) do CineDoom, composta pela equipe acadêmica identificada na capa deste manual. O produto posiciona-se como uma solução única para unificar o atendimento digital e a operação física de bilheteria sob o mesmo motor transacional, com isolamento multi-tenant e conformidade com a LGPD. O sistema é desenvolvido como estudo de caso estruturante para a aplicação formal dos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
+A **CineSoft Solutions** é uma empresa de engenharia de software B2B especializada em soluções transacionais para o setor de entretenimento e exibição cinematográfica. O **CineDoom** posiciona-se como seu produto principal para unificar o atendimento digital (B2C) e a operação física de bilheteria (B2B) sob um único motor relacional, com isolamento multi-tenant estrito e conformidade nativa com a LGPD. O ciclo de evolução comercial do produto é organizado em **três Macroentregas** (Macroentrega 1: MVP Operacional implantado; Macroentrega 2: Pagamentos Online, Mensageria Dedicada e Escala Cloud; Macroentrega 3: Emissão Fiscal NFC-e, Bomboniere e Billing Self-Service), regido pelos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
 
 ## 1.2 Qual é o software? O que ele faz? Qual problema resolve?
 
@@ -108,16 +108,13 @@ A Figura 3 apresenta o painel gerencial do back-office, com a programação de s
 
 *Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação das salas*
 
-### Fora do escopo imediato
+### Fora do escopo imediato da Macroentrega 1 (Planejados nas Macroentregas 2 e 3)
 
-- Gateway de pagamento online (PIX ou cartão) e checkout financeiro web.
-- Emissão fiscal (NFC-e) e integração contábil.
-- Programa de fidelidade, cupons e gestão de bomboniere/estoque.
-- Aplicativo nativo para iOS ou Android; o acesso é feito por navegador web responsivo.
-- Streaming de vídeo e produção de conteúdo promocional audiovisual.
-- Console administrativo de tenants e faturamento SaaS (perfil Administrador da plataforma).
-- Integrações com distribuidoras, e-commerce externo e marketplaces.
-- Relatórios financeiros avançados e BI; o painel de ocupação é operacional.
+Os seguintes módulos não compõem o escopo da **Macroentrega 1 (`Release 1.0 — MVP Operacional`)**, estando formalmente alocados no roadmap comercial subsequente da CineSoft Solutions:
+
+- **Macroentrega 2 (`Release 2.0`):** Gateway de pagamento online (PIX com QR Code dinâmico e cartão de crédito via Stripe/Pagar.me), despacho de e-mails transacionais em larga escala com domínio corporativo próprio (`Resend Pro`) e escalonamento para banco de dados dedicado com alta disponibilidade (`Supabase/Neon Pro`).
+- **Macroentrega 3 (`Release 3.0`):** Emissão fiscal automatizada (NFC-e / SAT integrada à SEFAZ), gestão de bomboniere e estoque, programa de fidelidade/cupons, console administrativo global de tenants com faturamento SaaS recorrente (*Self-Service Billing*) e BI financeiro avançado.
+- **Fora do escopo global do produto web:** Aplicativos nativos nas lojas iOS/Android (o acesso ocorre integralmente via aplicação web responsiva) e produção ou streaming de conteúdo audiovisual.
 
 ## 1.6 Restrições e premissas
 

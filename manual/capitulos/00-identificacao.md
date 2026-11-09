@@ -39,6 +39,7 @@
 | 17/10/2026 | 1.5 | Reestruturação da capa e padronização do histórico de versões conforme diretrizes docentes. |
 | 22/10/2026 | 1.6 | Padronização formal da estrutura em Capítulos 1 a 5 e incorporação das diretrizes de `referencias/diretrizes/estrutura-minima-manual.md`. |
 | 23/10/2026 | 1.7 | Incorporação do Portal do Cliente (3º módulo), autenticação de cliente LGPD, reserva ACID, e-mail transacional e cancelamento web (ADR-012). |
+| 09/11/2026 | 2.0 | Consolidação corporativa da CineSoft Solutions em 3 Macroentregas evolutivas, inclusão das matrizes Make-or-Buy, Pugh Matrix, EAP, diagramas UML/C4/DER e Capítulo 6 (Avaliação e Melhoria MPS.BR). |
 
 ---
 
@@ -46,9 +47,9 @@
 
 ## Documentos de Referência e Controle
 
-- **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`referencias/normas/iso-12207/abnt-iso-iec-12207-2021.pdf`](referencias/normas/iso-12207/abnt-iso-iec-12207-2021.pdf) e transcrição em [`referencias/normas/iso-12207/abnt-iso-iec-12207-2021.md`](referencias/normas/iso-12207/abnt-iso-iec-12207-2021.md)).
+- **Base Normativa:** ABNT NBR ISO/IEC/IEEE 12207:2021 (referência local: [`referencias/normas/iso-12207/abnt-iso-iec-12207-2021.pdf`](referencias/normas/iso-12207/abnt-iso-iec-12207-2021.pdf) e transcrição em [`referencias/normas/iso-12207/abnt-iso-iec-12207-2021.md`](referencias/normas/iso-12207/abnt-iso-iec-12207-2021.md)) e Guia Geral MPS de Software (MR-MPS-SW:2024 — SOFTEX).
 - **Fonte de Decisões Técnicas:** Especificações Formais de Engenharia e Catálogo de Decisões de Arquitetura (ADRs, disponíveis em [`specs/`](specs/)).
-- **Diretrizes Pedagógicas:** [`referencias/diretrizes/instrucoes-disciplina.md`](referencias/diretrizes/instrucoes-disciplina.md) e [`referencias/diretrizes/estrutura-minima-manual.md`](referencias/diretrizes/estrutura-minima-manual.md) — Regras, estrutura temática de Capítulos 1 a 5 e critérios de avaliação da Profa. Dra. Juliana Pereira de Souza Zinader.
+- **Diretrizes Estruturais:** [`referencias/diretrizes/instrucoes-disciplina.md`](referencias/diretrizes/instrucoes-disciplina.md) e [`referencias/diretrizes/estrutura-minima-manual.md`](referencias/diretrizes/estrutura-minima-manual.md).
 
 ---
 
@@ -84,35 +85,42 @@
   - [5.3 Implementação e Integração](#53-implementação-e-integração)
   - [5.4 Verificação, Validação e Transição](#54-verificação-validação-e-transição)
   - [5.5 Operação, Manutenção e Descontinuação](#55-operação-manutenção-e-descontinuação)
+- [Capítulo 6 – Avaliação e melhoria dos processos de software](#capítulo-6--avaliação-e-melhoria-dos-processos-de-software)
+  - [6.1 Referencial e recorte](#61-referencial-e-recorte)
+  - [6.2 Diagnóstico do manual](#62-diagnóstico-do-manual)
+  - [6.3 Plano de uma melhoria](#63-plano-de-uma-melhoria)
+  - [6.4 Atualização e verificação](#64-atualização-e-verificação)
+  - [6.5 Acompanhamento da execução](#65-acompanhamento-da-execução)
 
 ---
 
-## Índice de aderência à ISO/IEC/IEEE 12207:2021
+## Índice de aderência à ISO/IEC/IEEE 12207:2021 e MPS.BR
 
-Este índice relaciona cada capítulo do manual ao processo normativo correspondente da ABNT NBR ISO/IEC/IEEE 12207:2021:
+Este índice relaciona cada capítulo do manual ao processo normativo correspondente da ABNT NBR ISO/IEC/IEEE 12207:2021 e do MR-MPS-SW:2024:
 
-| Capítulo do manual | Processo da ISO/IEC/IEEE 12207:2021 | Cláusula |
+| Capítulo do manual | Processo Normativo de Referência | Cláusula / Processo |
 |---|---|---|
-| **Capítulo 1** | Insumo de Negócio e Elicitação de Stakeholders | 6.4.1 e 6.4.2 |
-| **Capítulo 2.1** | Acquisition Process (Processo de Aquisição) | 6.1.1 |
-| **Capítulo 2.2** | Supply Process (Processo de Fornecimento) | 6.1.2 |
-| **Capítulo 2.3** | Supplier and Partner Management | 6.1.1 e 6.1.2 |
-| **Capítulo 3.1** | Life Cycle Model Management (Gestão do Modelo de Ciclo de Vida) | 6.2.1 |
-| **Capítulo 3.2** | Infrastructure Management (Gestão de Infraestrutura) | 6.2.2 |
-| **Capítulo 3.3** | Portfolio Management (Gestão de Portfólio e Viabilidade) | 6.2.3 |
-| **Capítulo 3.4** | Human Resource Management (Gestão de Recursos Humanos e RACI) | 6.2.4 |
-| **Capítulo 3.5** | Quality Management (Gestão da Qualidade) | 6.2.5 |
-| **Capítulo 3.6** | Knowledge Management (Gestão do Conhecimento) | 6.2.6 |
-| **Capítulo 4.1** | Project Planning Process (Planejamento do Projeto) | 6.3.1 |
-| **Capítulo 4.2** | Risk Management Process (Gestão de Riscos) | 6.3.4 |
-| **Capítulo 4.3** | Configuration Management Process (Gestão de Configuração) | 6.3.5 |
-| **Capítulo 4.4** | Decision Management Process (Gestão de Decisões / ADRs) | 6.3.3 |
-| **Capítulo 4.5** | Project Assessment and Control Process (Medição e Avaliação) | 6.3.2 |
-| **Capítulo 5.1** | Stakeholder & System Requirements Definition (Requisitos) | 6.4.2 e 6.4.3 |
-| **Capítulo 5.2** | Architecture Definition & Design Definition (Arquitetura e Design) | 6.4.4 e 6.4.5 |
-| **Capítulo 5.3** | Implementation & Integration Processes (Implementação e Integração) | 7.1 e 6.4.8 |
-| **Capítulo 5.4** | Verification, Validation and Transition (V&V e Transição) | 6.4.9, 6.4.11 e 6.4.10 |
-| **Capítulo 5.5** | Operation, Maintenance and Disposal (Operação, Manutenção e Descontinuação) | 6.4.12, 6.4.13 e 6.4.14 |
+| **Capítulo 1** | Insumo de Negócio e Elicitação de Stakeholders | ISO 12207 — 6.4.1 e 6.4.2 |
+| **Capítulo 2.1** | Acquisition Process (Processo de Aquisição) | ISO 12207 — 6.1.1 |
+| **Capítulo 2.2** | Supply Process (Processo de Fornecimento) | ISO 12207 — 6.1.2 |
+| **Capítulo 2.3** | Supplier and Partner Management | ISO 12207 — 6.1.1 e 6.1.2 |
+| **Capítulo 3.1** | Life Cycle Model Management (Gestão do Modelo de Ciclo de Vida) | ISO 12207 — 6.2.1 |
+| **Capítulo 3.2** | Infrastructure Management (Gestão de Infraestrutura) | ISO 12207 — 6.2.2 |
+| **Capítulo 3.3** | Portfolio Management (Gestão de Portfólio e Viabilidade) | ISO 12207 — 6.2.3 |
+| **Capítulo 3.4** | Human Resource Management (Gestão de Recursos Humanos e RACI) | ISO 12207 — 6.2.4 |
+| **Capítulo 3.5** | Quality Management (Gestão da Qualidade) | ISO 12207 — 6.2.5 |
+| **Capítulo 3.6** | Knowledge Management (Gestão do Conhecimento) | ISO 12207 — 6.2.6 |
+| **Capítulo 4.1** | Project Planning Process (Planejamento do Projeto) | ISO 12207 — 6.3.1 |
+| **Capítulo 4.2** | Risk Management Process (Gestão de Riscos) | ISO 12207 — 6.3.4 |
+| **Capítulo 4.3** | Configuration Management Process (Gestão de Configuração) | ISO 12207 — 6.3.5 |
+| **Capítulo 4.4** | Decision Management Process (Gestão de Decisões / ADRs) | ISO 12207 — 6.3.3 |
+| **Capítulo 4.5** | Project Assessment and Control Process (Medição e Avaliação) | ISO 12207 — 6.3.2 |
+| **Capítulo 5.1** | Stakeholder & System Requirements Definition (Requisitos) | ISO 12207 — 6.4.2 e 6.4.3 |
+| **Capítulo 5.2** | Architecture Definition & Design Definition (Arquitetura e Design) | ISO 12207 — 6.4.4 e 6.4.5 |
+| **Capítulo 5.3** | Implementation & Integration Processes (Implementação e Integração) | ISO 12207 — 6.4.7 e 6.4.8 |
+| **Capítulo 5.4** | Verification, Validation and Transition (V&V e Transição) | ISO 12207 — 6.4.9, 6.4.10 e 6.4.11 |
+| **Capítulo 5.5** | Operation, Maintenance and Disposal (Operação, Manutenção e Descontinuação) | ISO 12207 — 6.4.12, 6.4.13 e 6.4.14 |
+| **Capítulo 6** | Avaliação e Melhoria de Processos (Gerência de Projetos) | MR-MPS-SW:2024 — GPR |
 
 ---
 
@@ -122,11 +130,11 @@ Para garantir consistência interna e rigor normativo conforme a ISO/IEC/IEEE 12
 
 | Termo | Significado |
 |---|---|
-| **Cliente** | Organização proprietária ou administradora de cinema que contrata o CineDoom (adquirente). |
-| **Usuário** | Funcionário autorizado do cliente que opera o sistema (perfis Administrador, Gerente e Atendente). |
-| **Espectador** | Consumidor final que adquire ingresso na bilheteria. Não opera diretamente o sistema na primeira versão. |
-| **CineSoft Solutions** | Organização responsável pelo desenvolvimento, implantação e suporte do CineDoom. |
-| **Produto** | Plataforma web CineDoom fornecida no modelo SaaS. |
-| **Fornecedor** | Provedor que presta infraestrutura ou serviços especializados à CineSoft (ex.: Vercel, Neon, Stripe). |
+| **Cliente (Tenant B2B)** | Organização proprietária ou administradora de cinema que contrata o CineDoom sob assinatura SaaS (adquirente). |
+| **Operador Interno** | Funcionário autorizado do cinema cliente que opera o back-office ou guichê físico (perfis `GERENTE` e `ATENDENTE`). |
+| **Espectador (`CLIENTE` B2C)** | Consumidor final que utiliza o Portal do Cliente para consultar sessões, reservar assentos online ou adquirir ingressos na bilheteria. |
+| **CineSoft Solutions** | Empresa de engenharia de software responsável pelo desenvolvimento, evolução em macroentregas, hospedagem gerenciada e suporte do CineDoom. |
+| **Produto** | Plataforma web multi-tenant CineDoom fornecida no modelo SaaS B2B2C. |
+| **Fornecedor** | Provedor externo contratado pela CineSoft Solutions para infraestrutura em nuvem, banco de dados ou APIs especializadas (ex.: Vercel, Supabase/Neon, Resend, Axiom, Stripe). |
 
 ---
