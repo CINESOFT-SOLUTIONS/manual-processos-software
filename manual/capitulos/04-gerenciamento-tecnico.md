@@ -54,6 +54,20 @@ A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenh
 | **Sprint 2 — Back-office, Salas e Bilheteria ACID** | Design System e mapa interativo 2D (`#17`), CRUDs de filmes, salas e sessões com pré-população (`#6`, `#7`, `#8`), polling a 2s (`#9`), venda atômica com `SELECT FOR UPDATE` (`#10`) e gestão de atendentes (`#13`). | **Gabriel Lourenço** & **Carlos Eduardo** (QA: **Kayque Vicente**) | 30/10/2026 | 04/11/2026 | **100% Concluído** |
 | **Sprint 3 — Portal do Cliente, Governança LGPD e QA** | Portal público e reserva web com expiração JIT (`#21`), autenticação de espectador e *"Minhas Reservas"* (`#22`), `NotificationService` e baixa de reserva no balcão (`#23`), cancelamento auditado (`#11`), painel de ocupação (`#12`), anonimização Art. 18 (`#14`) e suíte de 770 testes / 500 cenários *cross-tenant* (`#18`, `#19`). | **Gabriel Lourenço**, **Carlos Eduardo**, **Kayque Vicente** & **Yury Nogueira** | 05/11/2026 | 09/11/2026 | **100% Concluído** |
 
+### Recursos
+
+| Recurso / Serviço | Plano na Macroentrega 1 | Plano nas Macroentregas 2 e 3 | Finalidade no Projeto | Custo Estimado |
+| :--- | :--- | :--- | :--- | ---: |
+| **Vercel** (PaaS / Edge CDN) | Hobby (*free tier*) | Pro | Hospedagem do Next.js 14, CDN e ambientes de *Preview* e Produção | US$ 20/mês |
+| **Neon / Supabase** (DBaaS PostgreSQL) | Free | Pro (PITR e réplicas) | Persistência ACID, *connection pooler* e migrações Prisma | US$ 25/mês |
+| **Resend** (e-mail transacional) | Free (console de teste) | Pro (50 mil e-mails/mês) | Envio de vouchers e confirmações com DKIM/SPF | US$ 20/mês |
+| **Axiom** (observabilidade) | Free | Cloud (1 TB/mês, 365 dias) | *Log drain* estruturado e retenção legal (LGPD) | US$ 25/mês |
+| **GitHub** (código e CI/CD) | Free | Team | Repositórios, Projects, Actions e branches protegidas | US$ 4/usuário |
+| **Focus NFe** (mensageria fiscal) | Não utilizado | Empresarial | Emissão e transmissão de NFC-e à SEFAZ | R$ 149/mês |
+| **Stripe / Pagar.me** (gateway financeiro) | Não utilizado | Taxa transacional | Checkout PIX e cartão no Portal do Cliente | 3,99% + R$ 0,39 |
+| **Total fixo estimado (M2 e M3)** | — | — | Vercel + Neon + Resend + Axiom | **US$ 90/mês** |
+
+
 ### Rotina de Acompanhamento e Tratamento de Desvios e Atrasos
 
 Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle:

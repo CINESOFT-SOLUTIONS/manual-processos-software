@@ -65,6 +65,10 @@ Status
 \end{tabularx}\end{center}
 
 
+\subsubsecao{Recursos}
+
+\input{../../../assets/capitulo-04/tabelas/planos-recursos.tex}
+
 \subsubsecao{Rotina de Acompanhamento e Tratamento de Desvios e Atrasos}
 
 Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle: 1. \textbf{Monitoramento Diário no Quadro Kanban (GitHub Projects):} Todo cartão de tarefa deve conter obrigatoriamente \textbf{responsável nominal}, \textbf{data-limite (deadline)}, \textbf{estimativa} e \textbf{critério de aceite}. Tarefas paradas na coluna \emph{In Progress} por mais de \textbf{48 horas} sem commits ou atualização de status acionam um alerta automático de impedimento (\emph{blocker}). 2. \textbf{Revisão Semanal de Sprint e Burndown:} Ao final de cada semana, o Gerente de Projeto (\textbf{Kayque Vicente}) e o Tech Lead (\textbf{Gabriel Lourenço}) auditam o percentual de pacotes concluídos versus planejados. 3. \textbf{Protocolo de Tratamento de Desvios e Atrasos:} - \textbf{Desvio Leve (atraso ≤ 24h em tarefa não crítica):} Realocação de par técnico (\emph{pair programming}) entre os desenvolvedores de backend e frontend para destravar a entrega dentro da mesma Sprint. - \textbf{Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):} Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos \emph{Must Have} de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
