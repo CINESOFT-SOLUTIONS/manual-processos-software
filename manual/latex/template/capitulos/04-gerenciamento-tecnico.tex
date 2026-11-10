@@ -69,6 +69,8 @@ Status
 
 \input{../../../assets/capitulo-04/tabelas/planos-recursos.tex}
 
+O plano é viável com os recursos disponíveis: a equipe de \textbf{4 engenheiros} atua em dedicação integral, a infraestrutura é \emph{serverless} com cobrança \emph{pay-as-you-go} (planos gratuitos na Macroentrega 1, com \textbf{US\$ 0 de custo fixo} e cobrança apenas por uso excedente) e o custo operacional estimado dos serviços base --- \textbf{US\$ 90/mês} (aproximadamente R\$ 480/mês) nas Macroentregas 2 e 3 --- é integralmente coberto pela receita do primeiro contrato B2B, cujo ticket médio estimado é de \textbf{R\$ 590 a R\$ 1.290/mês} por complexo exibidor (Cap. 3.3, Viabilidade Econômica e Financeira).
+
 \subsubsecao{Rotina de Acompanhamento e Tratamento de Desvios e Atrasos}
 
 Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle: 1. \textbf{Monitoramento Diário no Quadro Kanban (GitHub Projects):} Todo cartão de tarefa deve conter obrigatoriamente \textbf{responsável nominal}, \textbf{data-limite (deadline)}, \textbf{estimativa} e \textbf{critério de aceite}. Tarefas paradas na coluna \emph{In Progress} por mais de \textbf{48 horas} sem commits ou atualização de status acionam um alerta automático de impedimento (\emph{blocker}). 2. \textbf{Revisão Semanal de Sprint e Burndown:} Ao final de cada semana, o Gerente de Projeto (\textbf{Kayque Vicente}) e o Tech Lead (\textbf{Gabriel Lourenço}) auditam o percentual de pacotes concluídos versus planejados. 3. \textbf{Protocolo de Tratamento de Desvios e Atrasos:} - \textbf{Desvio Leve (atraso ≤ 24h em tarefa não crítica):} Realocação de par técnico (\emph{pair programming}) entre os desenvolvedores de backend e frontend para destravar a entrega dentro da mesma Sprint. - \textbf{Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):} Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos \emph{Must Have} de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
@@ -223,26 +225,21 @@ Consequências e Trade-offs
 
 \subsecao{4.5 Métricas de acompanhamento do projeto}
 
-O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI e do Vitest para monitorar a saúde técnica da entrega:
+O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI, do Vitest e dos painéis de \emph{billing} dos provedores de nuvem para monitorar a saúde técnica e financeira da entrega:
 
 \begin{center}\small\begin{tabularx}{\textwidth}{X X X X X}
 
 \toprule
-Categoria de Métrica
-Indicador Objetivo
-Meta Organizacional
-Resultado Aferido na Macroentrega 1 (\texttt{v1.0.0})
-Como é Monitorado e Ação em Caso de Desvio
- \\
+\textbf{Categoria de Métrica} & \textbf{Indicador Objetivo} & \textbf{Meta Organizacional} & \textbf{Resultado Aferido na Macroentrega 1 (\texttt{v1.0.0})} & \textbf{Como é Monitorado e Ação em Caso de Desvio} \\
 \midrule
-
-\bottomrule
 
 \textbf{Métrica de Fluxo} & \textbf{Lead Time de Issues e PRs} (tempo entre abertura da tarefa e merge em \texttt{main}) & ≤ 48\text{ horas} por pacote de trabalho & Média de \textbf{18 a 32 horas} por issue & Monitorado via GitHub Projects. Se exceder 48h, o GP aciona pareamento técnico imediato. \\
 \textbf{Métrica de Fluxo} & \textbf{Work in Progress (WIP Limit)} por engenheiro & Máximo de \textbf{2 tarefas} simultâneas em \emph{In Progress} & Respeitado (≤ 2 por membro) & Conferido na revisão diária do quadro Kanban para evitar gargalos de troca de contexto. \\
 \textbf{Métrica de Qualidade} & \textbf{Suíte de Testes Automatizados e Cobertura Crítica} & \textbf{100\% de aprovação} e 100\% nos serviços críticos & \textbf{26 suítes / 770 testes passando (100\%)} em \textasciitilde4,9s & Bloqueio automático no GitHub Actions; PRs com qualquer teste quebrado são impedidos de merge. \\
 \textbf{Métrica de Qualidade} & \textbf{Densidade de Defeitos em Produção} (bugs críticos pós-deploy) & \textbf{0 defeitos críticos} (venda dupla ou perda de dados) & \textbf{0 defeitos críticos} (ajustes apenas cosméticos/mobile) & Monitorado via telemetria e testes de usuários reais; defeitos P1 acionam rollback em \textless{} 5 min. \\
 \textbf{Métrica de Progresso} & \textbf{Cumprimento do Escopo da Macroentrega (Throughput)} & \textbf{100\% dos requisitos \texttt{RF-01} a \texttt{RF-18}} entregues no marco & \textbf{18/18 RFs (100\%)} e \textbf{14/14 Critérios de Aceite} concluídos & Auditado ao final de cada Sprint na Matriz de Rastreabilidade (Capítulo 5.1.2). \\
+\textbf{Métrica de Custo} & \textbf{Custo Operacional dos Serviços Base (OPEX mensal)} & \textbf{≤ US\$ 90/mês nas Macroentregas 2 e 3} (US\$ 0 na M1 em \emph{free tier}) & \textbf{US\$ 0 na Macroentrega 1} (planos gratuitos/Hobby) & Monitorado nos painéis de \emph{billing} de Vercel, Neon, Resend e Axiom, com revisão mensal do líder de DevOps; GitHub Team (US\$ 4/usuário × 4 assentos) e Focus NFe (R\$ 149/mês, somente M3) são controlados à parte, por terem base de cobrança distinta (assento e emissão). Desvio acima de 10\% sobre o teto aciona revisão de planos e otimização de recursos. \\
+\bottomrule
 \end{tabularx}\end{center}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
