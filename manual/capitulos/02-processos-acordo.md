@@ -2,7 +2,7 @@
 
 ## 2.1 Descrição do processo de aquisição
 
-O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** para decidir entre desenvolver internamente (*Make*) ou contratar/adquirir de terceiros (*Buy*) os componentes, bibliotecas, APIs e serviços de infraestrutura que sustentam o produto **CineDoom** ao longo de suas três Macroentregas.
+O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** para decidir entre desenvolver internamente ou contratar/adquirir de terceiros os componentes, bibliotecas, APIs e serviços de infraestrutura que sustentam o produto **CineDoom** ao longo de suas três Macroentregas.
 
 ### Fronteira e Justificativa de Aquisição
 
