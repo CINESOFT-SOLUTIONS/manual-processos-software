@@ -7,11 +7,16 @@
 \usepackage{etoolbox}
 
 % -----------------------------------------------------------------------------
-% 1. MARCADOR DISCRETO DE SEÇÃO (BARRA VERTICAL FINA / FILETE)
+% 1. MARCADORES DISCRETOS DE SEÇÃO E SUBSEÇÃO (DESIGN EDITORIAL CINEDOOM)
 % -----------------------------------------------------------------------------
-% Substitui ícones desenhados por marcadores tipográficos minimalistas
+% Barra vertical em BrandCrimson para Seções Principais (Nível 1)
 \newcommand{\editorialBarIcon}{%
   \textcolor{BrandCrimson}{\rule[-0.2ex]{2.2pt}{1.15em}}%
+}
+
+% Triângulo apontador em BrandCrimson (#E94560) para Subseções Não Numeradas (Nível 3)
+\newcommand{\editorialTriangleIcon}{%
+  \raisebox{0.12ex}{\tikz[baseline=-0.3ex]{\fill[BrandCrimson] (0,-0.32ex) -- (0.75ex,0) -- (0,0.32ex) -- cycle;}}%
 }
 
 % -----------------------------------------------------------------------------
@@ -41,10 +46,10 @@
   {0pt}
   {}
 
-% Nível 3: Subseção em tom cinza-escuro com peso médio
+% Nível 3: Subseção com triângulo apontador BrandCrimson e tipografia BrandNavy
 \titleformat{\subsubsection}
-  {\normalfont\fontsize{10.5pt}{14pt}\fontSemiBold\color{BrandGrayDark}}
-  {}
+  {\normalfont\fontsize{10.5pt}{14pt}\fontSemiBold\color{BrandNavy}}
+  {\editorialTriangleIcon\hspace{6pt}}
   {0pt}
   {}
 
