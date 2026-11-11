@@ -107,3 +107,4 @@ Todos os scripts estão localizados em `manual-processos/scripts/`:
 - **NUNCA altere a ordem dos elementos pré-textuais da ABNT.**
 - **NUNCA edite `manual-processos-software.md` diretamente.** Sempre edite os módulos individuais em `manual/capitulos/` e rode o script de montagem.
 - **NUNCA remova a sincronia entre Markdown e LaTeX.** Sempre mantenha ambos em estrita paridade.
+
