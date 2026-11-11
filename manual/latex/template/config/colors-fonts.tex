@@ -129,8 +129,20 @@
       BoldItalicFont = * Demi Bold Italic
     ]
   }{
-    \setmainfont{Helvetica Neue}
-    \setsansfont{Helvetica Neue}
+    \IfFontExistsTF{Helvetica Neue}{
+      \setmainfont{Helvetica Neue}
+      \setsansfont{Helvetica Neue}
+    }{
+      \IfFontExistsTF{Liberation Sans}{
+        \setmainfont{Liberation Sans}
+        \setsansfont{Liberation Sans}
+      }{
+        \IfFontExistsTF{DejaVu Sans}{
+          \setmainfont{DejaVu Sans}
+          \setsansfont{DejaVu Sans}
+        }{}
+      }
+    }
   }
 }
 
@@ -140,7 +152,19 @@
   \IfFontExistsTF{Georgia}{
     \newfontfamily\footnoteSerifFont{Georgia}[Scale=0.90]
   }{
-    \newfontfamily\footnoteSerifFont{Times New Roman}[Scale=0.95]
+    \IfFontExistsTF{Times New Roman}{
+      \newfontfamily\footnoteSerifFont{Times New Roman}[Scale=0.95]
+    }{
+      \IfFontExistsTF{Liberation Serif}{
+        \newfontfamily\footnoteSerifFont{Liberation Serif}[Scale=0.95]
+      }{
+        \IfFontExistsTF{DejaVu Serif}{
+          \newfontfamily\footnoteSerifFont{DejaVu Serif}[Scale=0.95]
+        }{
+          \newcommand{\footnoteSerifFont}{\rmfamily}
+        }
+      }
+    }
   }
 }
 
@@ -148,8 +172,22 @@
   \setmonofont{Menlo}[Scale=0.86]
   \newfontfamily\codeMonoFont{Menlo}[Scale=0.84]
 }{
-  \setmonofont{Courier New}[Scale=0.90]
-  \newfontfamily\codeMonoFont{Courier New}[Scale=0.88]
+  \IfFontExistsTF{Courier New}{
+    \setmonofont{Courier New}[Scale=0.90]
+    \newfontfamily\codeMonoFont{Courier New}[Scale=0.88]
+  }{
+    \IfFontExistsTF{Liberation Mono}{
+      \setmonofont{Liberation Mono}[Scale=0.86]
+      \newfontfamily\codeMonoFont{Liberation Mono}[Scale=0.84]
+    }{
+      \IfFontExistsTF{DejaVu Sans Mono}{
+        \setmonofont{DejaVu Sans Mono}[Scale=0.86]
+        \newfontfamily\codeMonoFont{DejaVu Sans Mono}[Scale=0.84]
+      }{
+        \newcommand{\codeMonoFont}{\ttfamily}
+      }
+    }
+  }
 }
 
 \newcommand{\fontLight}{\fontseries{l}\selectfont}
