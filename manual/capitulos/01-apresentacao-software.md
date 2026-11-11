@@ -1,65 +1,60 @@
-# Capítulo 1 – Apresentação do software
+# Capítulo 1 – Apresentação do Software
 
-## 1.1 Nome e descrição do software
+## 1.1 Nome e Descrição do Software
 
-**Nome do software:** CineDoom.
+**Nome do Software:** CineDoom.  
+**Organização desenvolvedora:** CineSoft Solutions.
 
-O CineDoom é uma plataforma web integrada, no modelo **SaaS multi-tenant**, de gerenciamento operacional, bilheteria presencial e portal do cliente, voltada para **cinemas de rua, circuitos independentes e redes de pequeno e médio porte**. O sistema permite que os cinemas informatizem seus processos com três módulos centrais:
+O **CineDoom** é uma plataforma web de gerenciamento operacional e bilheteria para cinemas, desenvolvida no modelo **Software as a Service (SaaS) multi-tenant**. Sua arquitetura permite que diferentes cinemas utilizem o mesmo sistema em nuvem, mantendo os dados, configurações e operações de cada estabelecimento totalmente separados.
 
-1. **Módulo do Atendente (Bilheteria Presencial):** Operação ágil de guichê físico, emissão direta de ingressos com trava atômica anti-double-booking e baixa presencial de reservas originadas na web.
-2. **Módulo do Gerente (Back-office e Gestão):** Configuração de salas, catálogo de filmes, agendamento de sessões, gestão de operadores e acompanhamento de indicadores de ocupação.
-3. **Portal do Cliente (Espectador Final Web):** Canal público e autenticado no qual o público consulta a programação, cadastra-se com proteção de dados LGPD, seleciona assentos no mapa interativo, solicita reservas com emissão de voucher transacional e gerencia suas reservas via web.
+O produto é desenvolvido pela **CineSoft Solutions**, empresa de tecnologia focada em soluções para o mercado de exibição cinematográfica. O CineDoom foi concebido para atender cinemas de rua, circuitos independentes e redes de pequeno e médio porte, integrando a administração do estabelecimento, a bilheteria física e o atendimento digital aos espectadores em um sistema único.
 
-A **CineSoft Solutions** é uma empresa de engenharia de software B2B especializada em soluções transacionais para o setor de entretenimento e exibição cinematográfica. O **CineDoom** posiciona-se como seu produto principal para unificar o atendimento digital (B2C) e a operação física de bilheteria (B2B) sob um único motor relacional, com isolamento multi-tenant estrito e conformidade nativa com a LGPD. O ciclo de evolução comercial do produto é organizado em **três Macroentregas** (Macroentrega 1: MVP Operacional implantado; Macroentrega 2: Pagamentos Online, Mensageria Dedicada e Escala Cloud; Macroentrega 3: Emissão Fiscal NFC-e, Bomboniere e Billing Self-Service), regido pelos processos da norma ABNT NBR ISO/IEC/IEEE 12207:2021.
+## 1.2 Qual é o Software? O que ele faz? Qual problema resolve?
 
-## 1.2 Qual é o software? O que ele faz? Qual problema resolve?
-
-O CineDoom é um sistema SaaS multi-tenant que integra a operação de bilheteria, o back-office do cinema e o portal do espectador em uma única plataforma transacional.
+O **CineDoom** é uma plataforma SaaS multi-tenant que unifica a gestão operacional, o atendimento presencial e os serviços digitais de cinemas em uma única base transacional.
 
 ### O que ele faz?
 
-O CineDoom centraliza e sincroniza todas as etapas da cadeia de atendimento cinematográfico em uma interface web moderna e unificada:
+A plataforma integra as três vertentes operacionais do cinema:
 
-- Mantém o catálogo de filmes em cartaz e suas especificações técnicas.
-- Controla a infraestrutura física de salas e layouts bidimensionais de assentos.
-- Agenda e disponibiliza sessões cinematográficas com prevenção automática de choques de grade.
-- Garante reservas online no Portal do Cliente com bloqueio atômico de assento e expiração lógica Just-in-Time (JIT).
-- Despacha vouchers transacionais de reserva por e-mail com instruções para pagamento presencial.
-- Permite o cancelamento voluntário de reservas pendentes pelo próprio cliente via web antes do limite de tolerância.
-- Opera a venda e a baixa presencial de ingressos na bilheteria com trava atômica ACID (*SELECT FOR UPDATE*), eliminando riscos de venda dupla (*double-booking*).
-- Apresenta métricas gerenciais consolidadas sob demanda sobre a taxa de ocupação das salas e a distribuição de assentos vendidos e reservados.
+1. **Gestão e Back-office:** permite cadastrar filmes, configurar salas com layouts de assentos, programar sessões com preços específicos e acompanhar taxas de ocupação em tempo real.
+2. **Bilheteria Presencial:** disponibiliza terminais de guichê para consulta de sessões, seleção de poltronas em mapa interativo, emissão de ingressos e baixa de reservas originadas na web.
+3. **Portal do Espectador:** disponibiliza ao público a consulta da programação, escolha de assentos e aquisição ou reserva antecipada com emissão de comprovante digital.
+
+O sistema mantém o mapa de assentos sincronizado entre a bilheteria e a web, garantindo que uma poltrona vendida ou reservada em um canal fique indisponível nos demais de forma imediata.
 
 ### Qual problema resolve?
 
-Cinemas independentes frequentemente operam com sistemas legados fragmentados ou controles manuais, resultando em:
+Cinemas independentes frequentemente operam com sistemas de ponto de venda legados, planilhas ou controles em papel que não se comunicam com a internet. 
 
-1. **Conflito de assentos:** Risco crítico de venda simultânea da mesma poltrona em sessões concorridas.
-2. **Inacessibilidade para o público:** Dificuldade do espectador em consultar a grade de horários e planejar sua ida ao cinema com antecedência.
-3. **Assentos ociosos por no-show:** Falta de regras claras para liberação de lugares não confirmados.
-4. **Ausência de rastreabilidade e compliance:** Descumprimento das exigências da LGPD no manuseio de dados de compradores e ausência de trilha auditável de cancelamentos.
+Essa fragmentação gera três problemas críticos:
+1. **Conflito de assentos (*double-booking*):** risco permanente de vender a mesma poltrona no balcão e na web para a mesma sessão.
+2. **Inacessibilidade para o público:** dependência exclusiva de filas físicas, impedindo o espectador de consultar horários e garantir lugares com antecedência.
+3. **Decisões sem visibilidade de dados:** ausência de métricas consolidadas sobre ocupação real das salas e horários de maior demanda.
 
-O CineDoom elimina esses problemas ao unificar o canal digital do cliente e a bilheteria presencial sob o mesmo motor relacional transacional e auditável.
+O CineDoom elimina esses problemas ao unificar o inventário de assentos e as vendas em um banco relacional compartilhado, substituindo controles paralelos por uma operação única e auditável.
 
 ### Proposta de valor
 
-O CineDoom entrega um único motor transacional e auditável para os canais físico e digital. Na prática, isso reduz o risco de venda dupla, libera assentos não confirmados para reaproveitamento, diminui a dependência de controles manuais e trata os dados pessoais dos compradores conforme a LGPD.
+Para o cinema, o CineDoom entrega redução de custos operacionais, segurança contra vendas duplas e visibilidade da ocupação em tempo real. Para o espectador, proporciona comodidade na consulta da programação e autonomia para escolher suas poltronas com antecedência.
 
-## 1.3 Público-alvo e contexto de uso
+## 1.3 Público-alvo e Contexto de Uso
 
-O público-alvo é composto por:
+O público-alvo do CineDoom é estruturado em três segmentos principais:
 
-- **Público de negócio (B2B):** cinemas de rua, circuitos independentes e redes de pequeno e médio porte que precisam informatizar a bilheteria, a programação e a gestão de salas.
-- **Público final (B2C):** espectadores que utilizam o Portal do Cliente para consultar filmes, reservar seus assentos preferidos e gerenciar seus comprovantes antes de comparecer à sessão.
-- **Público operacional (usuários diretos):** gerentes e atendentes que operam o back-office e a bilheteria no dia a dia do cinema.
-- **Público indireto:** equipe de suporte e operação da CineSoft Solutions e provedores de infraestrutura que sustentam a plataforma.
+* **Clientes Corporativos (B2B):** Cinemas de rua, circuitos independentes, cineclubes e redes exibidoras de pequeno e médio porte. São organizações que necessitam modernizar sua bilheteria e gestão operacional, mas que não dispõem de equipes internas de TI ou recursos para investir em soluções corporativas proprietárias de alto custo.
+* **Consumidores Finais (B2C):** Espectadores de cinema que utilizam navegadores em smartphones, tablets ou computadores para consultar a programação em cartaz, verificar horários, escolher assentos em mapas visuais e garantir ingressos ou reservas com comodidade antes de se deslocarem ao local.
+* **Usuários Operacionais Locais:** Funcionários do próprio cinema (gerentes e atendentes de guichê) responsáveis pela operação diária das salas, atendimento ao público presencial e administração das sessões.
 
-O contexto de uso abrange:
+### Contextos de uso típicos
 
-- **Portal do Cliente (web desktop e mobile):** acesso pelo espectador para consulta de horários, cadastro pessoal e reserva antecipada com voucher digital.
-- **Ambiente de bilheteria física:** atendimento presencial ágil para venda direta ou localização e baixa de reservas prévias pelo atendente. Os indicadores de desempenho desse ambiente são definidos e verificados no Capítulo 5.
-- **Ambiente administrativo:** planejamento semanal de exibições, cadastro de acervo e monitoramento de lotação pela gerência.
+O sistema opera de forma integrada em três cenários de uso distintos:
 
-A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes em cartaz e o mapa interativo de assentos utilizado pelo espectador.
+1. **Canal Web do Espectador (Acesso Remoto):** Utilizado pelo público externo em trânsito ou no domicílio, com foco em facilidade de navegação em telas móveis e desktop para tomada rápida de decisão e reserva antecipada de assentos.
+2. **Ambiente de Bilheteria Presencial (Ponto de Venda Físico):** Terminais de guichê operados pelos atendentes no saguão do cinema. O contexto de uso exige interface ágil e tempo mínimo de resposta por transação para dar vazão rápida ao fluxo de clientes em horários de pico pré-sessão.
+3. **Ambiente Administrativo de Back-office (Escritório do Cinema):** Utilizado pela gerência para o planejamento estratégico semanal, parametrização do catálogo de filmes, agendamento de horários na grade e monitoramento em tempo real dos indicadores de ocupação das salas.
+
+A Figura 1 ilustra a interface do Portal do Cliente, apresentando o catálogo de filmes em cartaz e o mapa interativo de assentos disponível para o espectador.
 
 ![Figura 1 – Portal do Cliente: catálogo de filmes e mapa interativo de assentos](../../assets/capitulo-01/prints/print-portal-cliente.png)
 
@@ -67,19 +62,32 @@ A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes e
 
 ## 1.4 Quem vai usar? Em que situação? Qual o ambiente de operação esperado?
 
-### Perfis de Usuários
+### Perfis de Usuários e Situações de Uso
 
-- **Espectador / Cliente Final:** Acessa o Portal do Cliente para consultar a programação, efetuar cadastro/login com credenciais seguras, selecionar assentos no mapa interativo, reservar ingressos com expiração Just-in-Time, receber comprovante por e-mail transacional, acompanhar seu histórico pessoal em "Minhas Reservas" e cancelar reservas antes do prazo limite.
-- **Atendente:** Opera o guichê presencial. Consulta sessões, seleciona assentos, localiza reservas web por código ou CPF, confirma o recebimento presencial, emite ingressos e executa cancelamentos justificados.
-- **Gerente:** Administra o back-office (salas, acervo de filmes, sessões de exibição), acompanha os painéis de ocupação e gerencia os usuários com perfil ATENDENTE.
-- **Administrador da plataforma (perfil previsto, não disponível no MVP):** Responsável pela parametrização global, auditoria de logs e gestão de tenants. Na versão atual, essas atividades são conduzidas pela operação técnica da CineSoft Solutions; o produto entregue contempla os perfis Gerente, Atendente e Cliente.
+* **Espectador (Cliente B2C):**
+  * *Quem é:* O público consumidor que busca lazer e entretenimento cinematográfico.
+  * *Em que situação atua:* Acessa o Portal do Cliente pelo smartphone ou computador pessoal em momentos de lazer para consultar filmes em cartaz, verificar horários, escolher assentos em mapas visuais, efetuar reservas antecipadas e consultar seus vouchers digitais ao comparecer ao cinema.
+* **Atendente de Bilheteria (Operador de Guichê):**
+  * *Quem é:* O funcionário responsável pela operação física de venda e recepção no cinema.
+  * *Em que situação atua:* Atua nos pontos de venda presenciais do saguão durante os horários de funcionamento, especialmente nos momentos de pico pré-sessão, realizando vendas rápidas no balcão, localizando reservas digitais por código ou CPF para confirmação de pagamento e emitindo ingressos físicos.
+* **Gerente do Cinema (Gestor Operacional):**
+  * *Quem é:* O administrador local responsável pelas salas, programação e equipe.
+  * *Em que situação atua:* Atua no back-office administrativo (rotina semanal e diária) para cadastrar acervo de filmes, configurar o layout de salas e poltronas, agendar a grade de sessões com seus respectivos valores, gerenciar as contas dos atendentes e analisar relatórios de ocupação das salas.
+* **Administrador da Plataforma (Operação Técnica CineSoft):**
+  * *Quem é:* A equipe técnica de sustentação da desenvolvedora.
+  * *Em que situação atua:* Atua na ativação e configuração inicial de novos cinemas (*onboarding* de *tenants*), monitoramento de telemetria, análise de logs de auditoria e suporte aos gestores dos estabelecimentos.
 
 ### Ambiente de Operação Esperado
 
-- **Hardware:** Computadores e tablets nos pontos de venda físicos; smartphones, notebooks e desktops pessoais para os espectadores no Portal do Cliente.
-- **Software:** Navegadores web modernos com suporte a ECMAScript atual (Google Chrome, Mozilla Firefox, Safari, Microsoft Edge).
-- **Conectividade:** Conexão estável com a internet, uma vez que a operação é realizada em navegador e o processamento ocorre em nuvem.
-- **Pagamento das Reservas:** O pagamento de ingressos reservados via web é concluído exclusivamente de forma presencial no balcão da bilheteria até 1 hora antes da sessão, eliminando a dependência de gateway financeiro online e reduzindo a superfície de fraude em transações digitais.
+O CineDoom é uma aplicação 100% web operada em nuvem, eliminando a necessidade de instalação de softwares locais:
+
+* **Dispositivos de Hardware:**
+  * *Bilheteria Física:* Computadores desktop, notebooks ou tablets com teclado, mouse ou tela sensível ao toque nos guichês de atendimento.
+  * *Acesso do Espectador:* Smartphones (iOS e Android), tablets, notebooks e computadores pessoais.
+  * *Administração:* Computadores de escritório convencionais.
+* **Navegadores Homologados:** Principais navegadores web modernos com suporte a padrões ECMAScript atuais (Google Chrome, Mozilla Firefox, Safari e Microsoft Edge).
+* **Conectividade:** Conexão estável com a internet (banda larga fixa ou rede móvel 4G/5G), necessária para a sincronização contínua dos assentos e processamento das transações em nuvem.
+* **Responsividade e Telas:** Interface adaptativa homologada para operar desde telas móveis compactas (a partir de 320px de largura) até monitores desktop de alta resolução (Full HD e superiores).
 
 A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atendente para a venda direta de ingressos e a baixa de reservas originadas no portal.
 
@@ -89,50 +97,54 @@ A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atende
 
 ## 1.5 Escopo e principais funcionalidades
 
-### Escopo Central e Módulos do Sistema
+O CineDoom é desenvolvido em entregas incrementais. O escopo atual compreende o núcleo operacional do produto (**Macroentrega 1 — Release 1.0**), enquanto funcionalidades complementares estão alocadas no roadmap futuro.
 
-1. **Módulo de Filmes:** Acervo com título, sinopse, classificação indicativa, duração e material promocional.
-2. **Módulo de Salas e Assentos:** Mapeamento bidimensional flexível (fileiras e colunas) e controle de capacidade física.
-3. **Módulo de Sessões:** Composição de Filme + Sala + Horário + Preço, com validação de conflitos de horário.
-4. **Módulo de Bilheteria Presencial:** Venda atômica direta, cancelamento auditável com trilha append-only protegida por trigger PostgreSQL e baixa presencial de reservas.
-5. **Portal do Cliente:** Consulta de sessões, autenticação com proteção de dados LGPD, mapa interativo de assentos com reserva temporária, despacho de e-mail transacional, painel de reservas e cancelamento voluntário web.
-6. **Módulo de Ocupação:** Painel consolidado sob demanda da taxa de lotação por sessão.
-7. **Módulo de Autenticação e Controle de Acesso:** Login com sessão JWT de 8 horas, RBAC para os perfis Gerente, Atendente e Cliente e revogação imediata do acesso de usuário inativado.
-8. **Módulo de Gestão de Usuários:** Criação, atualização e inativação de atendentes pelo gerente, com e-mail único por tenant.
-9. **Módulo de Conformidade e Privacidade (LGPD):** Consentimento explícito, criptografia de CPF, anonimização do titular e auditoria de cancelamentos.
-10. **Módulo de Notificações Transacionais:** Envio de voucher de reserva por e-mail, com provedor configurável conforme o ambiente.
+### Funcionalidades Incluídas (Escopo Atual)
 
-A Figura 3 apresenta o painel gerencial do back-office, com a programação de sessões e os indicadores de ocupação acompanhados pela gerência.
+O núcleo operacional entregue pela equipe contempla quatro grupos de funcionalidades:
+
+* **Gestão e Programação (Back-office):** Cadastro de filmes em cartaz, montagem de salas com layouts de assentos, agendamento de sessões com prevenção de choques de horário e painel com taxas de ocupação em tempo real.
+* **Bilheteria Presencial (Ponto de Venda):** Consulta rápida de sessões, seleção visual de poltronas, venda de ingressos com trava contra assentos duplicados (*anti-double-booking*), baixa de reservas web e cancelamento auditado.
+* **Portal do Espectador (Canal Digital):** Consulta da programação, seleção de assentos no mapa interativo, reserva antecipada, emissão de voucher por e-mail e cancelamento voluntário pelo cliente.
+* **Segurança e Governança:** Controle de acesso por perfis (`GERENTE`, `ATENDENTE` e `CLIENTE`), isolamento multi-tenant de dados e proteção de CPF com suporte a anonimização (LGPD).
+
+A Figura 3 apresenta a interface do back-office, utilizada pela gerência para acompanhar a programação e a ocupação das salas.
 
 ![Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação](../../assets/capitulo-01/prints/print-painel-gerencial.png)
 
-*Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação das salas*
+*Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação das salas.*
 
-### Fora do escopo imediato da Macroentrega 1 (Planejados nas Macroentregas 2 e 3)
+### Fora do Escopo Imediato
 
-Os seguintes módulos não compõem o escopo da **Macroentrega 1 (`Release 1.0 — MVP Operacional`)**, estando formalmente alocados no roadmap comercial subsequente da CineSoft Solutions:
+Em conformidade com as boas práticas de engenharia de software e gestão de produto, delimita-se expressamente o que não faz parte da entrega atual:
 
-- **Macroentrega 2 (`Release 2.0`):** Gateway de pagamento online (PIX com QR Code dinâmico e cartão de crédito via Stripe/Pagar.me), despacho de e-mails transacionais em larga escala com domínio corporativo próprio (`Resend Pro`) e escalonamento para banco de dados dedicado com alta disponibilidade (`Supabase/Neon Pro`).
-- **Macroentrega 3 (`Release 3.0`):** Emissão fiscal automatizada (NFC-e / SAT integrada à SEFAZ), gestão de bomboniere e estoque, programa de fidelidade/cupons, console administrativo global de tenants com faturamento SaaS recorrente (*Self-Service Billing*) e BI financeiro avançado.
-- **Fora do escopo global do produto web:** Aplicativos nativos nas lojas iOS/Android (o acesso ocorre integralmente via aplicação web responsiva) e produção ou streaming de conteúdo audiovisual.
+#### A. Funcionalidades Planejadas no Roadmap Evolutivo (Macroentregas 2 e 3)
+* **Macroentrega 2 (Escala e Pagamentos Digitais):** Integração de gateway de pagamento online para checkout web (PIX com QR Code dinâmico e cartão de crédito), serviço de mensageria em larga escala (`Resend Pro`) e migração para banco de dados dedicado com alta disponibilidade.
+* **Macroentrega 3 (Enterprise e Fiscal):** Módulo de emissão fiscal automatizada de cupons (NFC-e / SAT integrada à SEFAZ), ponto de venda integrado para bomboniere (gestão de pipoca, bebidas e estoque), faturamento recorrente automatizado de assinaturas SaaS (*Billing*) e programas de fidelidade.
+
+#### B. Funcionalidades Fora do Escopo Global da Plataforma
+* **Aplicativos Móveis Nativos:** O CineDoom não prevê publicação de instaladores em lojas (App Store / Google Play); a experiência é provida integralmente por aplicação web responsiva moderna.
+* **Streaming e Distribuição Audiovisual:** A plataforma destina-se exclusivamente à gestão de exibição cinematográfica física, não realizando transmissão ou streaming de arquivos de vídeo.
 
 ## 1.6 Restrições e premissas
 
-### Restrições
+### Restrições do Projeto
 
-- **Pagamento Presencial Exclusivo:** O sistema não integra gateway de pagamento online (cartão/PIX web); as reservas efetuadas no portal são pagas presencialmente no guichê do cinema até 1 hora antes do início da sessão.
-- **Operação Conectada:** O sistema opera na nuvem sob arquitetura serverless (Vercel + Neon PostgreSQL), exigindo conectividade ativa.
-- **Isolamento Multi-tenant Lógico:** O compartilhamento de infraestrutura é controlado por meio do `tenant_id`, aplicado por uma extensão de tenancy do Prisma Client com `AsyncLocalStorage`. O produto não utiliza `ROW LEVEL SECURITY` nativo do PostgreSQL.
-- **Sem Aplicativo Nativo:** Acesso via navegador web desktop e mobile responsivo, sem empacotamento para lojas de aplicativos.
-- **Conformidade LGPD:** O tratamento de dados pessoais exige consentimento explícito, criptografia de CPF (AES-256-GCM + HMAC-SHA256), minimização, anonimização do titular (Art. 18) e retenção de trilha de auditoria. O CPF não é armazenado em texto puro.
-- **Limites de Layout Físico:** As salas suportam até 26 fileiras (A–Z) e 50 assentos por fileira.
-- **Trilha de Auditoria Imutável:** Os registros de cancelamento são append-only; a proteção depende da aplicação da trigger `trg_protect_cancellation_audits` no PostgreSQL.
-- **Dependência de Provedor de E-mail:** O envio do voucher transacional depende de um provedor configurado; em desenvolvimento, o envio é registrado no console.
-- **Funcionalidades Descartadas do MVP:** Streaming de vídeo, emissão fiscal externa (NFC-e), fidelidade por pontos e gestão de bomboniere, conforme detalhado na seção 1.5.
+As seguintes imposições legais, regulatórias e arquiteturais delimitam o projeto global do CineDoom:
 
-### Premissas
+* **Conformidade com a LGPD (Lei 13.709/2018):** Exige consentimento explícito, proteção criptográfica de identificadores (CPF cifrado com `AES-256-GCM` e indexado via `HMAC-SHA256`) e mecanismos para anonimização irreversível dos dados a pedido do titular (Art. 18), preservando registros fiscais e contábeis do cinema.
+* **Segurança em Pagamentos Digitais (PCI-DSS e Bacen):** O processamento de pagamentos online deve ser delegado a gateways homologados. É vedado à plataforma armazenar dados sensíveis de cartões (*PAN* e *CVV*), operando exclusivamente por tokenização e webhooks seguros.
+* **Operação Exclusiva em Nuvem (Sem Modo Offline):** Para manter a sincronização dos assentos em tempo real e eliminar o risco de venda duplicada (*double-booking*), o sistema opera 100% em nuvem, exigindo conectividade contínua com a internet.
+* **Isolamento de Dados em Arquitetura Multi-Tenant:** Em infraestrutura compartilhada, a camada de dados é estritamente condicionada à segregação lógica por cinema (`tenant_id`), sendo inadmissível qualquer vazamento de informações entre clientes.
+* **Regulação Cinematográfica (Ancine):** A exibição de catálogo e sessões deve atender às normas regulatórias do setor, como a exibição obrigatória da classificação indicativa e o controle de cotas de tela nacionais.
+* **Dependência de Serviços Gerenciados em Nuvem:** A disponibilidade da plataforma está sujeita aos acordos de nível de serviço (SLA) e limites de uso dos provedores de nuvem parceiros (banco gerenciado e serviço de mensageria).
 
-- **Concorrência de Assentos:** A trava pessimista `SELECT FOR UPDATE`, a ordenação prévia dos IDs de assento e a checagem Just-in-Time impedem, por design, conflitos de assentos entre clientes web e atendentes físicos.
-- **Antecedência Mínima:** As reservas online realizadas com menos de 1 hora de antecedência em relação ao início da sessão são bloqueadas pelo sistema, reservando o inventário restante para o balcão.
-- **Expiração Lógica:** As reservas não quitadas presencialmente até 60 minutos antes do início do filme deixam de ser confirmáveis e seus assentos passam a ser elegíveis para reaproveitamento. A expiração é lógica/Just-in-Time, sem job de varredura automática.
-- **Contexto de Tenant:** O tenant é resolvido a partir da sessão autenticada e todas as operações de dados são filtradas por `tenant_id`.
+### Premissas Adotadas
+
+As seguintes condições foram assumidas como verdadeiras para viabilizar as regras e a operação da plataforma:
+
+* **Infraestrutura Local nos Cinemas:** Assume-se que os estabelecimentos clientes dispõem de computadores ou tablets funcionais nos guichês e conexão estável à internet durante todo o horário de exibição.
+* **Acesso Digital dos Espectadores:** Assume-se que o público-alvo possui dispositivos conectados (smartphones ou computadores) para consultar horários e garantir ingressos ou reservas pela web.
+* **Atomicidade Transacional por Banco Relacional:** Assume-se que o mecanismo de bloqueio pessimista do banco relacional (PostgreSQL) é suficiente para serializar tentativas de compra simultânea, impedindo conflito de assentos em picos de demanda.
+* **Política Operacional de Desistências (*No-Show*):** Assume-se que reservas web não confirmadas dentro do prazo limite programado configuram desistência, permitindo ao sistema liberar essas poltronas para nova comercialização.
+* **Confiabilidade de Provedores Externos:** Assume-se que as APIs integradas de nuvem, mensageria e pagamentos manterão índices de disponibilidade superiores a 99% e contratos de integração estáveis.
