@@ -474,12 +474,36 @@ O processo de fornecimento (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.2
 
 Além da oferta integral da plataforma, a arquitetura modular da CineSoft Solutions permite o fornecimento autônomo de subsistemas de alto valor agregado para diferentes perfis de adquirentes:
 
+**Tabela 4 – Perspectiva de Fornecimento e Ativos Comercializáveis**
+
 | Elemento com potencial | Possível adquirente | Modelo de acordo |
 | :--- | :--- | :--- |
 | **Plataforma Integrada CineDoom (Bilheteria + Back-office + Portal Web)** | Cinemas de rua, circuitos independentes, centros culturais e redes exibidoras de pequeno e médio porte | **Assinatura SaaS B2B** (mensalidade base por complexo + faixa variável por sala ativa, incluindo hospedagem e suporte) |
 | **Engine de Mapa Bidimensional e Trava Atômica de Assentos (API)** | Produtoras de teatro, casas de espetáculos, auditórios universitários e plataformas regionais de eventos | **Licenciamento de API Transacional** (cobrança *pay-as-you-go* por assento reservado/emitido via REST) |
 | **Módulo de Governança, Criptografia de CPF e Anonimização LGPD** | Software houses parceiras de varejo e entretenimento que necessitam adequar sistemas legados ao Art. 18 da LGPD | **Licenciamento de Biblioteca / SDK Corporativo** (taxa anual de licença + consultoria de integração) |
 | **Portal White-Label de Reserva Antecipada com Expiração JIT** | Redes de cinemas que já possuem ERP fiscal próprio de balcão, mas carecem de canal digital moderno para espectadores | **Fornecimento de Módulo SaaS Integrado** (mensalidade fixa com customização de identidade visual *white-label*) |
+
+*Fonte: CineSoft Solutions (2026).*
+
+### As Cinco Atividades do Processo de Fornecimento (ISO/IEC/IEEE 12207:2017)
+
+A CineSoft Solutions conduz o ciclo comercial e operacional de atendimento ao cliente por meio das cinco atividades normativas:
+
+1. **Preparação do Fornecimento:**
+   - *Descrição:* A equipe de negócios e arquitetura mapeia os perfis de exibidores adquirentes, definindo a estratégia de monetização SaaS, matriz de precificação por sala e modelos de licenciamento de APIs desacopladas.
+   - *Saídas:* Matriz de Planos Comerciais e Catálogo de Ativos Licenciáveis.
+2. **Resposta à Solicitação:**
+   - *Descrição:* Ao receber solicitações de cotação ou RFPs de exibidores, a CineSoft avalia a viabilidade técnica e arquitetural da rede (quantidade de salas e integração fiscal), gerando proposta com cronograma e escopo de setup.
+   - *Saídas:* Proposta Técnica de Implantação e Proposta Comercial de Fornecimento.
+3. **Estabelecimento e Manutenção do Acordo:**
+   - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,9%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
+   - *Saídas:* Contrato de Prestação de Serviço (SaaS) e Aditivo de Privacidade e DPA.
+4. **Execução do Acordo:**
+   - *Descrição:* Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 770 testes automatizados.
+   - *Saídas:* Ambiente de Produção Provisionado e Relatório de Validação de CI/CD.
+5. **Entrega e Suporte:**
+   - *Descrição:* Condução da homologação assistida (*UAT*), assinatura do Termo de Aceite de Implantação (TAI) após comprovação de zero *double-booking* e ativação do suporte técnico contínuo estruturado nos 4 níveis de SLA.
+   - *Saídas:* Termo de Aceite de Implantação (TAI) e Relatório Mensal de Cumprimento de SLA.
 
 ### Termos do Acordo, Entregáveis e Evolução por Macroentregas
 
@@ -505,6 +529,8 @@ A entrega de cada implantação ou macroentrega é considerada formalmente aceit
 
 A CineSoft Solutions assegura disponibilidade mensal mínima de **99,9%** da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
 
+**Tabela 5 – Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega**
+
 | Severidade / Modalidade | Descrição do Cenário | Tempo de 1ª Resposta | Meta de Resolução / Contorno |
 | :--- | :--- | :---: | :---: |
 | **Crítica (P1 — Corretiva Urgente)** | Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. | Até **15 minutos** | Até **2 horas** (rollback imediato em < 5 min) |
@@ -512,11 +538,15 @@ A CineSoft Solutions assegura disponibilidade mensal mínima de **99,9%** da pla
 | **Normal (P3 — Adaptativa / Preventiva)** | Ajustes de compatibilidade de navegador, dúvidas operacionais ou otimização preventiva de índices. | Até **4 horas úteis** | Até **24 horas úteis** |
 | **Evolutiva (P4 — Perfectiva)** | Solicitação de novos relatórios, filtros ou melhorias de usabilidade no Portal do Cliente. | Até **2 dias úteis** | Planejada na próxima *Sprint / Release* |
 
+*Fonte: CineSoft Solutions (2026).*
+
 ---
 
 ## 2.3 Identificação dos fornecedores e parceiros relevantes
 
 A operação contínua e comercial da plataforma CineDoom apoia-se em provedores de tecnologia de primeira linha. A tabela abaixo detalha cada fornecedor crítico, seu papel arquitetural, a estrutura de contratação escalonada entre a validação inicial (Macroentrega 1) e a operação comercial plena (Macroentregas 2 e 3), bem como os impactos em disponibilidade, custo e segurança:
+
+**Tabela 6 – Identificação dos Fornecedores e Parceiros Relevantes**
 
 | Fornecedor / Parceiro | Categoria e Serviço Prestado | Plano e Estrutura de Custo Comercial | Impacto Operacional, Disponibilidade e Mitigação de Riscos |
 | :--- | :--- | :--- | :--- |
@@ -527,6 +557,8 @@ A operação contínua e comercial da plataforma CineDoom apoia-se em provedores
 | **GitHub Inc.** | **Engenharia e CI/CD:** Repositórios Git privados, gestão de backlog (GitHub Projects) e esteira automatizada (GitHub Actions). | **GitHub Team** (`US$ 4/usuário/mês`; 3.000 minutos de Actions, branches protegidas e *Codeowners*). | **Qualidade e Governança:** Sustenta a integração contínua e o bloqueio de código defeituoso. Baixo impacto em tempo de execução de produção. |
 | **Stripe Inc. / Pagar.me** *(Macroentrega 2)* | **Gateway Financeiro PCI-DSS:** Processamento de pagamentos online via PIX dinâmico e cartões de crédito no Portal do Cliente. | **Taxa Variável Transacional** (`3,99% + R$ 0,39` por cartão aprovado; `0,99%` no PIX, sem mensalidade fixa). | **Segurança Financeira:** Elimina o tráfego de dados sensíveis de cartão nos servidores da CineSoft. Mitigação: webhooks idempotentes e fallback de pagamento presencial no balcão. |
 | **Focus NFe / PlugNotas** *(Macroentrega 3)* | **Mensageria Fiscal (SaaS):** Emissão, assinatura digital e transmissão de NFC-e junto às SEFAZ estaduais. | **Plano Empresarial** (`R$ 149/mês` por CNPJ emissor para até 2.000 notas fiscais, com fila de contingência offline). | **Conformidade Tributária:** Desacopla a CineSoft das variações técnicas de cada estado brasileiro, garantindo emissão assíncrona sem travar a fila física da bilheteria. |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ---
 
