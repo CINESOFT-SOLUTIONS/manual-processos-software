@@ -209,7 +209,7 @@ O contexto de uso abrange:
 
 A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes em cartaz e o mapa interativo de assentos utilizado pelo espectador.
 
-![Figura 1 – Portal do Cliente: catálogo de filmes e mapa interativo de assentos](../assets/prints/print-portal-cliente.png)
+![Figura 1 – Portal do Cliente: catálogo de filmes e mapa interativo de assentos](../assets/capitulo-01/prints/print-portal-cliente.png)
 
 *Figura 1 – Portal do Cliente: catálogo de filmes em cartaz e mapa interativo de assentos*
 
@@ -231,7 +231,7 @@ A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes e
 
 A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atendente para a venda direta de ingressos e a baixa de reservas originadas no portal.
 
-![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](../assets/prints/print-bilheteria-atendente.png)
+![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](../assets/capitulo-01/prints/print-bilheteria-atendente.png)
 
 *Figura 2 – Bilheteria presencial: mapa de assentos, venda direta e baixa de reservas pelo atendente.*
 
@@ -252,7 +252,7 @@ A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atende
 
 A Figura 3 apresenta o painel gerencial do back-office, com a programação de sessões e os indicadores de ocupação acompanhados pela gerência.
 
-![Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação](../assets/prints/print-painel-gerencial.png)
+![Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação](../assets/capitulo-01/prints/print-painel-gerencial.png)
 
 *Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação das salas*
 
