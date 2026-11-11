@@ -1,13 +1,33 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{p{2.8cm} l p{2.5cm} X}
-\toprule
-\textbf{Componente} & \textbf{Decisão} & \textbf{Solução Adotada} & \textbf{Justificativa Técnica e Econômica} \\
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} c X p{3.2cm}}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Elemento do Sistema} & \textbf{Adquirir?} & \textbf{Justificativa Técnica e Estratégica} & \textbf{Provedor / Abordagem} \\
 \midrule
-Core de Reservas & Make & Domínio CineDoom & Lógica central e diferenciação competitiva crítica. \\
-Autenticação & Buy / SaaS & NextAuth / Auth.js & Criptografia robusta, OAuth2 e conformidade LGPD. \\
-Banco de Dados & Buy / DBaaS & Neon PostgreSQL & Serverless escalável com branching de dados nativo. \\
-Processamento Pix & Buy / Gateway & Mercado Pago API & Liquidação instantânea e alta disponibilidade financeira. \\
-\bottomrule
+\arrayrulecolor{BrandGrayRule}
+Motor de Bilheteria e Reserva Atômica ACID & \textbf{Não} & Regra de negócio central e diferencial competitivo; exige controle estrito sobre locks de linha (\texttt{SELECT FOR UPDATE}), ordenação anti-deadlock e expiração \emph{Just-in-Time}. & Desenvolvimento interno (CineSoft Solutions) \\
+\midrule
+Isolamento Multi-Tenant e Governança de Dados & \textbf{Não} & Núcleo arquitetural do modelo SaaS B2B; requer injeção determinística de \texttt{tenantId} em todas as queries e proteção contra vazamento \emph{cross-tenant}. & Desenvolvimento interno sobre Prisma Client Extensions \\
+\midrule
+Módulo de Criptografia e Anonimização LGPD & \textbf{Não} & Requisito legal crítico (Art.~18 e Art.~46 da LGPD) acoplado ao domínio fiscal de ingressos; combina \texttt{HMAC-SHA256} e \texttt{AES-256-GCM} nativos. & Desenvolvimento interno (\texttt{Node.js crypto}) \\
+\midrule
+Autenticação, Sessão JWT e Controle RBAC & \textbf{Parcial} & A gestão de tokens e cookies HTTP-only utiliza biblioteca consolidada, mas a política RBAC (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}), escopo por tenant e revogação são próprios. & \texttt{NextAuth.js} + Middleware proprietário CineSoft \\
+\midrule
+Interface Gráfica e Mapa Interativo de Salas & \textbf{Parcial} & Primitivas de estilo e ícones são acelerados por mercado, porém a matriz 2D reativa de poltronas e o fluxo de guichê são proprietários. & \texttt{Tailwind CSS}, \texttt{Lucide Icons} + Componentes CineSoft \\
+\midrule
+ORM e Validação de Schemas de Entrada & \textbf{Sim} & Bibliotecas de padrão industrial com alta segurança de tipos e prevenção nativa de \emph{SQL Injection}, cujo desenvolvimento próprio seria antieconômico. & \texttt{Prisma ORM} e \texttt{Zod} (Open Source / MIT) \\
+\midrule
+Banco de Dados Relacional Gerenciado (DBaaS) & \textbf{Sim} & Commodity de infraestrutura crítica; contratar DBaaS garante backups automatizados \emph{Point-in-Time (PITR)}, pooling (\texttt{Supavisor}) e alta disponibilidade. & \textbf{Supabase Pro / Neon PostgreSQL} \\
+\midrule
+Plataforma de Hospedagem Serverless e CDN & \textbf{Sim} & Elimina custos de administração Linux, provendo deploy atômico, proteção DDoS, SSL automático e distribuição global na borda (\emph{Edge Network}). & \textbf{Vercel Pro} (Cloud PaaS) \\
+\midrule
+Serviço de Disparo de E-mails Transacionais & \textbf{Sim} & Servidores SMTP próprios acarretam alto risco de bloqueio em spam; API especializada assegura entregabilidade (DKIM/SPF) para os vouchers. & \textbf{Resend} (SaaS de E-mail Transacional) \\
+\midrule
+Observabilidade e Retenção Legal de Logs & \textbf{Sim} & A retenção imutável de telemetria por 365 dias (Marco Civil e LGPD) exige armazenamento colunar externo de baixo custo e busca rápida. & \textbf{Axiom Cloud} (Log Drain SaaS) \\
+\midrule
+Gateway de Pagamento Online (Macroentrega 2) & \textbf{Sim} & Processar cartões e PIX exige certificação internacional PCI-DSS Nível 1 e antifraude dedicado, inviáveis para internalização. & \textbf{Stripe / Pagar.me} \\
+\midrule
+Motor de Mensageria Fiscal NFC-e (Macroentrega 3) & \textbf{Sim} & A comunicação com webservices da SEFAZ sofre constantes mudanças tributárias; API terceirizada abstrai contingência e certificado A1. & \textbf{Focus NFe / PlugNotas} \\
+\arrayrulecolor{BrandNavy}\bottomrule
 \end{tabularx}
-\end{center}
+}

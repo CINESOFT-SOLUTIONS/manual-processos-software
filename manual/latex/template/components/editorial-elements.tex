@@ -134,19 +134,23 @@
 }
 
 \newcommand{\tabelaabnt}[4]{%
-  \par\vspace{10pt}%
+  \par\vspace{8pt}%
   \noindent\begin{minipage}{\textwidth}
     \refstepcounter{editorialtabela}%
     \label{#3}%
     \addcontentsline{lot}{table}{\protect\numberline{\theeditorialtabela}#1}%
     \centering
-    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Tabela \theeditorialtabela} -- #1}\par
-    \vspace{6pt}%
-    #4\par
-    \vspace{4pt}%
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandNavy}{\textbf{Tabela \theeditorialtabela}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #1}}\par
+    \vspace{5pt}%
+    \begingroup
+      \renewcommand{\arraystretch}{1.32}%
+      \setlength{\tabcolsep}{5pt}%
+      #4\par
+    \endgroup
+    \vspace{3pt}%
     {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #2\par}%
   \end{minipage}%
-  \par\vspace{10pt}%
+  \par\vspace{8pt}%
 }
 
 \newcommand{\tabelaeditorial}[5]{%

@@ -95,50 +95,53 @@ A entrega de cada implantação ou macroentrega é considerada formalmente aceit
 
 A CineSoft Solutions assegura disponibilidade mensal mínima de \textbf{99,9\%} da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X}
-
-\toprule
-Severidade / Modalidade
-Descrição do Cenário
-Tempo de 1ª Resposta
-Meta de Resolução / Contorno
- \\
+\tabelaabnt{Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega}{CineSoft Solutions (2026)}{tab:sla_suporte}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} X p{2.2cm} p{2.8cm}}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Severidade / Modalidade} & \textbf{Descrição do Cenário} & \textbf{1ª Resposta} & \textbf{Meta de Resolução} \\
 \midrule
-
-\bottomrule
-
-\textbf{Crítica (P1 --- Corretiva Urgente)} & Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. & Até \textbf{15 minutos} & Até \textbf{2 horas} (rollback imediato em \textless{} 5 min) \\
-\textbf{Alta (P2 --- Corretiva Prioritária)} & Degradação no painel gerencial, falha no envio de voucher por e-mail ou lentidão acima do SLA. & Até \textbf{1 hora} & Até \textbf{8 horas} \\
-\textbf{Normal (P3 --- Adaptativa / Preventiva)} & Ajustes de compatibilidade de navegador, dúvidas operacionais ou otimização preventiva de índices. & Até \textbf{4 horas úteis} & Até \textbf{24 horas úteis} \\
-\textbf{Evolutiva (P4 --- Perfectiva)} & Solicitação de novos relatórios, filtros ou melhorias de usabilidade no Portal do Cliente. & Até \textbf{2 dias úteis} & Planejada na próxima \emph{Sprint / Release} \\
-\end{tabularx}\end{center}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\arrayrulecolor{BrandGrayRule}
+Crítica (P1 --- Corretiva Urgente) & Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. & Até \textbf{15 min} & Até \textbf{2 horas} (rollback imediato em \textless{} 5 min) \\
+\midrule
+Alta (P2 --- Corretiva Prioritária) & Degradação no painel gerencial, falha no envio de voucher por e-mail ou lentidão acima do SLA. & Até \textbf{1 hora} & Até \textbf{8 horas} \\
+\midrule
+Normal (P3 --- Adaptativa / Preventiva) & Ajustes de compatibilidade de navegador, dúvidas operacionais ou otimização preventiva de índices. & Até \textbf{4h úteis} & Até \textbf{24 horas úteis} \\
+\midrule
+Evolutiva (P4 --- Perfectiva) & Solicitação de novos relatórios, filtros ou melhorias de usabilidade no Portal do Cliente. & Até \textbf{2 dias úteis} & Planejada na próxima \emph{Sprint / Release} \\
+\arrayrulecolor{BrandNavy}\bottomrule
+\end{tabularx}%
+}
+}
 
 
 \subsecao{2.3 Identificação dos fornecedores e parceiros relevantes}
 
 A operação contínua e comercial da plataforma CineDoom apoia-se em provedores de tecnologia de primeira linha. A tabela abaixo detalha cada fornecedor crítico, seu papel arquitetural, a estrutura de contratação escalonada entre a validação inicial (Macroentrega 1) e a operação comercial plena (Macroentregas 2 e 3), bem como os impactos em disponibilidade, custo e segurança:
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X}
-
-\toprule
-Fornecedor / Parceiro
-Categoria e Serviço Prestado
-Plano e Estrutura de Custo Comercial
-Impacto Operacional, Disponibilidade e Mitigação de Riscos
- \\
+\tabelaabnt{Identificação dos Fornecedores e Parceiros Relevantes}{CineSoft Solutions (2026)}{tab:fornecedores_parceiros}{%
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.6cm} p{3.2cm} p{3.2cm} X}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Fornecedor / Parceiro} & \textbf{Categoria e Serviço} & \textbf{Plano e Custo Comercial} & \textbf{Impacto e Mitigação de Riscos} \\
 \midrule
-
-\bottomrule
-
-\textbf{Vercel Inc.} & \textbf{PaaS \& Edge CDN:} Hospedagem da aplicação Next.js 14, execução de funções serverless e distribuição global de ativos estáticos. & \textbf{Vercel Pro} (\texttt{US\ 20/mês} por membro de engenharia; 1 TB de banda e execução concorrente expandida). \emph{Piloto inicial em Hobby Tier.} & \textbf{Disponibilidade e Performance:} SLA de 99,99\% na borda. Impacta diretamente o acesso ao portal e à bilheteria. Mitigação: build determinístico e rollback instantâneo de release em 1 clique. \\
-\textbf{Supabase Inc.~/ Neon Tech} & \textbf{DBaaS PostgreSQL:} Persistência relacional ACID, gerenciamento de conexões via \emph{Supavisor} (porta \texttt{6543}) e triggers de auditoria. & \textbf{Plano Pro Comercial} (\texttt{US\ 25\ a\ US\ 69/mês}; compute dedicado, 8 GB+ de disco SSD, backups diários e \emph{Point-in-Time Recovery --- PITR}). & \textbf{Segurança e Integridade:} Crítico para evitar perda de vendas e garantir locks \texttt{SELECT\ FOR\ UPDATE}. Mitigação: replicação automática, conexões TLS obrigatórias e scripts de migração versionados no Prisma. \\
-\textbf{Resend Technologies} & \textbf{Comunicação Transacional (SaaS):} API REST para entrega de vouchers de reserva e confirmações de ingresso com autenticação DKIM/SPF. & \textbf{Resend Pro} (\texttt{US\ 20/mês} para 50.000 e-mails/mês, domínios corporativos verificados \texttt{@cinedoom.com.br} e sem limite diário). & \textbf{Experiência do Cliente:} Impacta o recebimento do comprovante por e-mail (\texttt{CA-11}). Mitigação: desacoplamento via interface \texttt{EmailProvider} e exibição imediata do voucher na tela e na área \emph{``Minhas Reservas''}. \\
-\textbf{Axiom Inc.} & \textbf{Observabilidade e Log Drain:} Ingestão contínua de logs estruturados JSON e retenção de longo prazo para auditoria. & \textbf{Axiom Cloud Plan} (\texttt{US\ 25/mês} com ingestão de até 1 TB/mês e retenção estendida de 365 dias). & \textbf{Conformidade Legal (LGPD):} Essencial para rastreabilidade forense e retenção de 1 ano sem onerar o banco transacional. Mitigação: mascaramento prévio de PII antes do envio do log. \\
-\textbf{GitHub Inc.} & \textbf{Engenharia e CI/CD:} Repositórios Git privados, gestão de backlog (GitHub Projects) e esteira automatizada (GitHub Actions). & \textbf{GitHub Team} (\texttt{US\ 4/usuário/mês}; 3.000 minutos de Actions, branches protegidas e \emph{Codeowners}). & \textbf{Qualidade e Governança:} Sustenta a integração contínua e o bloqueio de código defeituoso. Baixo impacto em tempo de execução de produção. \\
-\textbf{Stripe Inc.~/ Pagar.me} \emph{(Macroentrega 2)} & \textbf{Gateway Financeiro PCI-DSS:} Processamento de pagamentos online via PIX dinâmico e cartões de crédito no Portal do Cliente. & \textbf{Taxa Variável Transacional} (\texttt{3,99\%\ +\ R\ 0,39} por cartão aprovado; \texttt{0,99\%} no PIX, sem mensalidade fixa). & \textbf{Segurança Financeira:} Elimina o tráfego de dados sensíveis de cartão nos servidores da CineSoft. Mitigação: webhooks idempotentes e fallback de pagamento presencial no balcão. \\
-\textbf{Focus NFe / PlugNotas} \emph{(Macroentrega 3)} & \textbf{Mensageria Fiscal (SaaS):} Emissão, assinatura digital e transmissão de NFC-e junto às SEFAZ estaduais. & \textbf{Plano Empresarial} (\texttt{R\ 149/mês} por CNPJ emissor para até 2.000 notas fiscais, com fila de contingência offline). & \textbf{Conformidade Tributária:} Desacopla a CineSoft das variações técnicas de cada estado brasileiro, garantindo emissão assíncrona sem travar a fila física da bilheteria. \\
-\end{tabularx}\end{center}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\arrayrulecolor{BrandGrayRule}
+Vercel Inc. & \textbf{PaaS \& Edge CDN:} Hospedagem da aplicação Next.js 14, rotas serverless e CDN global. & \textbf{Vercel Pro} (\texttt{US\ 20/mês} por membro; 1 TB banda). \emph{Piloto em Hobby Tier.} & \textbf{Disponibilidade:} SLA de 99,99\% na borda. Mitigação: build determinístico e rollback instantâneo em 1 clique. \\
+\midrule
+Supabase Inc. / Neon Tech & \textbf{DBaaS PostgreSQL:} Persistência ACID, pooler de conexões \emph{Supavisor} e triggers SQL. & \textbf{Plano Pro} (\texttt{US\ 25\ a\ US\ 69/mês}; backups PITR, 8 GB+ SSD e réplicas). & \textbf{Integridade:} Crítico para evitar perda de vendas e locks concorrentes. Mitigação: conexões TLS e migrações Prisma versionadas. \\
+\midrule
+Resend Technologies & \textbf{Comunicação Transacional:} API REST para envio de vouchers e ingressos (DKIM/SPF). & \textbf{Resend Pro} (\texttt{US\ 20/mês} para 50k e-mails/mês, domínio próprio). & \textbf{Experiência:} Recebimento do comprovante (\texttt{CA-11}). Mitigação: desacoplamento de provider e voucher em tela e histórico. \\
+\midrule
+Axiom Inc. & \textbf{Observabilidade \& Log Drain:} Ingestão de logs JSON e retenção legal para auditoria. & \textbf{Axiom Cloud} (\texttt{US\ 25/mês}; até 1 TB/mês e retenção de 365 dias). & \textbf{Conformidade LGPD:} Rastreabilidade forense sem onerar o banco relacional. Mitigação: mascaramento prévio de PII no logger. \\
+\midrule
+GitHub Inc. & \textbf{Engenharia \& CI/CD:} Repositórios Git privados, Kanban Projects e GitHub Actions. & \textbf{GitHub Team} (\texttt{US\ 4/usuário/mês}; 3.000 min Actions, branches protegidas). & \textbf{Qualidade:} Sustenta a integração contínua e o bloqueio de PRs defeituosos. Baixo impacto em produção. \\
+\midrule
+Stripe / Pagar.me \emph{(Macroentrega 2)} & \textbf{Gateway Financeiro PCI-DSS:} Pagamentos online via PIX dinâmico e cartão de crédito. & \textbf{Taxa Transacional} (\texttt{3,99\%\ +\ R\ 0,39} cartão; \texttt{0,99\%} PIX, sem mensalidade). & \textbf{Segurança:} Elimina tráfego de dados sensíveis de cartão na CineSoft. Mitigação: webhooks idempotentes e pagamento balcão. \\
+\midrule
+Focus NFe / PlugNotas \emph{(Macroentrega 3)} & \textbf{Mensageria Fiscal SaaS:} Emissão, assinatura e transmissão de NFC-e à SEFAZ. & \textbf{Plano Empresarial} (\texttt{R\ 149/mês} por CNPJ para 2.000 notas, com contingência). & \textbf{Conformidade Fiscal:} Abstrai variações das SEFAZ estaduais, garantindo emissão assíncrona sem travar bilheteria. \\
+\arrayrulecolor{BrandNavy}\bottomrule
+\end{tabularx}%
+}
+}

@@ -1,13 +1,17 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{p{3.5cm} X}
-\toprule
-\textbf{Questão de Diagnóstico} & \textbf{Diagnóstico no Ciclo CineDoom} \\
+{\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.8cm} c X}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Pergunta de Avaliação} & \textbf{Seção} & \textbf{Situação e Evidência (Diagnóstico Inicial --- v1.7)} \\
 \midrule
-1. O que foi executado com excelência? & Adoção de arquitetura modular limpa e 100\% de testes Vitest automatizados com cobertura superior a 85\%. \\
-2. O que causou atrito ou retrabalho? & Especificações de requisitos textuais sem diagramas formais de sequência causavam dúvidas em integrações. \\
-3. Qual processo MPS.BR foi priorizado? & Processo de Gerência de Projetos (GPR) e Garantia da Qualidade (GQA) no Nível G. \\
-4. Qual a lição aprendida consolidada? & A documentação viva baseada em código e diagramas declarativos previne desvios de release. \\
-\bottomrule
-\end{tabularx}
-\end{center}
+\arrayrulecolor{BrandGrayRule}
+1. O escopo e as entregas do projeto estão claros? & \texttt{4.1} & \textbf{Parcialmente Descrito.} Listava 5 incrementos internos, mas sem EAP/WBS e sem estruturar o ciclo comercial nas **3 Macroentregas** (\texttt{v1.0}, \texttt{v2.0} e \texttt{v3.0}). \\
+\midrule
+2. As atividades possuem responsáveis e prazos? & \texttt{4.1} & \textbf{Parcialmente Descrito.} O cronograma tinha janelas gerais, mas **não atribuía nominalmente os responsáveis diretos** por pacote/Sprint, misturando tarefas acadêmicas. \\
+\midrule
+3. Os riscos e suas respostas estão definidos? & \texttt{4.2} & \textbf{Parcialmente Descrito.} Tabela continha 5 itens sem coluna de Prioridade, sem critérios formais e com riscos escolares em vez de riscos reais do SaaS. \\
+\midrule
+4. Está definido como acompanhar andamento e desvios? & \texttt{4.5 / 4.1} & \textbf{Não Descrito.} A seção 4.5 listava indicadores sem metas nem valores aferidos, e a 4.1 **não definia a rotina prática de acompanhamento nem tratamento de atrasos**. \\
+\arrayrulecolor{BrandNavy}\bottomrule
+\end{tabularx}%
+}

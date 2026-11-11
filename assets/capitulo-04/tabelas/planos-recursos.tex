@@ -1,18 +1,26 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{p{2.9cm} p{2.6cm} p{2.6cm} X r}
-\toprule
-\textbf{Recurso / Serviço} & \textbf{Plano na Macroentrega 1} & \textbf{Plano nas Macroentregas 2 e 3} & \textbf{Finalidade no Projeto} & \textbf{Custo Estimado} \\
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.0cm} p{2.6cm} p{2.6cm} X r}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Recurso / Serviço} & \textbf{Plano M1} & \textbf{Plano M2/M3} & \textbf{Finalidade no Projeto} & \textbf{Custo Estimado} \\
 \midrule
-\textbf{Vercel} (PaaS / Edge CDN) & Hobby (\emph{free tier}) & Pro (1 assento de \emph{deploy}) & Hospedagem do Next.js 14, CDN e ambientes de \emph{Preview} e Produção & US\$ 20/mês \\
-\textbf{Neon / Supabase} (DBaaS PostgreSQL) & Free & Pro (PITR e réplicas) & Persistência ACID, \emph{connection pooler} e migrações Prisma & US\$ 25/mês \\
-\textbf{Resend} (e-mail transacional) & Free (console de teste) & Pro (50 mil e-mails/mês) & Envio de vouchers e confirmações com DKIM/SPF & US\$ 20/mês \\
-\textbf{Axiom} (observabilidade) & Free & Cloud (1 TB/mês, 365 dias) & \emph{Log drain} estruturado e retenção legal (LGPD) & US\$ 25/mês \\
-\textbf{GitHub} (código e CI/CD) & Free & Team (4 assentos) & Repositórios, Projects, Actions e branches protegidas & US\$ 4/usuário \\
-\textbf{Focus NFe} (mensageria fiscal) & Não utilizado & Empresarial (somente M3) & Emissão e transmissão de NFC-e à SEFAZ & R\$ 149/mês \\
-\textbf{Stripe / Pagar.me} (gateway financeiro) & Não utilizado & Taxa transacional (somente M2) & Checkout PIX e cartão no Portal do Cliente & 3,99\% + R\$ 0,39 \\
+\arrayrulecolor{BrandGrayRule}
+Vercel (PaaS / Edge CDN) & Hobby (\emph{free tier}) & Pro (1 assento \emph{deploy}) & Hospedagem Next.js 14, CDN e ambientes Preview/Produção & US\$ 20/mês \\
 \midrule
-\textbf{Total estimado dos serviços base (M2 e M3)} & --- & --- & Vercel + Neon + Resend + Axiom & \textbf{US\$ 90/mês} \\
-\bottomrule
-\end{tabularx}
-\end{center}
+Neon / Supabase (DBaaS) & Free & Pro (PITR e réplicas) & Persistência ACID, pooler \emph{Supavisor} e migrações & US\$ 25/mês \\
+\midrule
+Resend (E-mail transacional) & Free (console teste) & Pro (50k e-mails/mês) & Envio de vouchers e confirmações com DKIM/SPF & US\$ 20/mês \\
+\midrule
+Axiom (Observabilidade) & Free & Cloud (1 TB/mês, 365d) & \emph{Log drain} estruturado e retenção legal LGPD & US\$ 25/mês \\
+\midrule
+GitHub (Código e CI/CD) & Free & Team (4 assentos) & Repositórios, Projects, Actions e branches protegidas & US\$ 4/usuário \\
+\midrule
+Focus NFe (Mensageria fiscal) & Não utilizado & Empresarial (M3) & Emissão e transmissão de NFC-e à SEFAZ & R\$ 149/mês \\
+\midrule
+Stripe / Pagar.me (Gateway) & Não utilizado & Taxa transacional (M2) & Checkout PIX e cartão no Portal do Cliente & 3,99\% + R\$ 0,39 \\
+\midrule
+\rowcolor{BrandTableHeader}
+\textbf{Total serviços base (M2/M3)} & --- & --- & Vercel + Neon + Resend + Axiom & \textbf{US\$ 90/mês} \\
+\arrayrulecolor{BrandNavy}\bottomrule
+\end{tabularx}%
+}

@@ -1,14 +1,23 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{l p{2.8cm} c c X}
-\toprule
-\textbf{ID} & \textbf{Risco Identificado} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Estratégia de Mitigação} \\
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.4cm} p{3.2cm} c c c X}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ID} & \textbf{Risco Identificado} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Prior.} & \textbf{Estratégia de Mitigação e Resposta} \\
 \midrule
-RSK-01 & Concorrência em assentos disputados & Média & Alto & Locks otimistas e transações ACID no Postgres. \\
-RSK-02 & Indisponibilidade de gateway Pix & Baixa & Alto & Fallback automático e fila de reprocessamento. \\
-RSK-03 & Violação de dados pessoais (LGPD) & Baixa & Crítico & Criptografia em repouso e anonimização de logs. \\
-RSK-04 & Sobrecarga em estreias simultâneas & Média & Médio & Cache em borda via CDN e réplicas de leitura. \\
-RSK-05 & Débito técnico acumulado em sprints & Média & Médio & Gate obrigatório de cobertura Vitest $\ge 80\%$. \\
-\bottomrule
-\end{tabularx}
-\end{center}
+\arrayrulecolor{BrandGrayRule}
+\textbf{R-01} & Concorrência e Venda Dupla (\emph{Double-Booking}) & Alta & Alto & \textbf{Crítico} & Bloqueio pessimista \texttt{SELECT ... FOR UPDATE}, ordenação determinística de assentos e 50 threads de concorrência no Vitest (\texttt{CA-01}). \\
+\midrule
+\textbf{R-02} & Vazamento de Dados (CPF) e Sanções LGPD & Média & Alto & \textbf{Crítico} & Cifra em repouso (\texttt{AES-256-GCM}), indexação cega (\texttt{HMAC-SHA256}), mascaramento de logs e anonimização \emph{in-place} (Art.~18 / \texttt{CA-06}). \\
+\midrule
+\textbf{R-03} & Falhas de Conexão no Guichê Presencial & Média & Alto & \textbf{Alto} & Transações atômicas curtas, expiração de reservas JIT e fila de retry transacional na bilheteria. \\
+\midrule
+\textbf{R-04} & Sobrecarga do Banco em Abertura de Vendas & Alta & Médio & \textbf{Alto} & \emph{Connection pooler} dedicado (\emph{Supavisor} porta 6543) com timeout de 10s e cache estático na borda (Vercel CDN). \\
+\midrule
+\textbf{R-05} & Divergência de Escopo entre Sprints & Média & Médio & \textbf{Médio} & Gestão de backlog no GitHub Projects com critérios de aceite explícitos (\texttt{CA-01} a \texttt{CA-14}) e revisão semanal. \\
+\midrule
+\textbf{R-06} & Indisponibilidade do Provedor de E-mail & Baixa & Médio & \textbf{Médio} & Desacoplamento via interface \texttt{EmailProvider}, persistência do voucher no banco e fallback para \texttt{ConsoleLogger}. \\
+\midrule
+\textbf{R-07} & Dependência de Gateway de Pagamento Online & Alta & Alto & \textbf{Alto} & Na M1, pagamento presencial no balcão; na M2, Stripe/Pagar.me com webhooks idempotentes. \\
+\arrayrulecolor{BrandNavy}\bottomrule
+\end{tabularx}%
+}

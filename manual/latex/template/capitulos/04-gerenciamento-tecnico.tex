@@ -20,24 +20,23 @@ O diagrama abaixo decompõe o produto \textbf{CineDoom} em três níveis hierár
 
 A estratégia de produto da CineSoft Solutions divide o ciclo de vida do CineDoom em três grandes marcos contratuais de entrega:
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X X X X}
-
-\toprule
-Marco (Milestone)
-Versão Alvo
-Escopo Funcional e Infraestrutura Associada
-Responsável Geral
-Prazo / Janela
-Status
- \\
+\tabelaabnt{Escopo e Marcos Comerciais por Macroentrega (Milestones)}{CineSoft Solutions (2026)}{tab:marcos_macroentregas}{%
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} c X p{2.2cm} p{1.8cm} p{2.0cm}}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Marco (Milestone)} & \textbf{Versão} & \textbf{Escopo Funcional e Infraestrutura} & \textbf{Responsável} & \textbf{Prazo} & \textbf{Status} \\
 \midrule
-
-\bottomrule
-
-\textbf{Macroentrega 1 (MVP Operacional)} & \texttt{v1.0.0} & Núcleo Multi-tenant, RBAC (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}), criptografia CPF (\texttt{HMAC-SHA256} + \texttt{AES-256-GCM}), CRUDs de filmes/salas/sessões, bilheteria presencial atômica, portal de reservas web com expiração JIT, painel de ocupação, anonimização LGPD e deploy em produção (\texttt{RF-01} a \texttt{RF-18}). & \textbf{Gabriel Lourenço} & Out/2026 -- Nov/2026 & \textbf{Concluído (Em Produção)} \\
-\textbf{Macroentrega 2 (Escala \& Pagamentos)} & \texttt{v2.0.0} & Integração de gateway financeiro online (PIX QR Code dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do \textbf{Resend Pro} com domínio corporativo próprio (\texttt{@cinedoom.com.br}), upgrade para \textbf{Supabase/Neon Pro} (backups PITR e réplicas) e \textbf{Vercel Pro}. & \textbf{Carlos Eduardo} & Dez/2026 -- Jan/2027 & \textbf{Planejado (Próxima Fase)} \\
-\textbf{Macroentrega 3 (Enterprise \& Fiscal)} & \texttt{v3.0.0} & Emissão fiscal eletrônica automatizada (\textbf{NFC-e / SAT} via API Focus NFe integrada à SEFAZ), módulo de bomboniere e estoque, programa de fidelidade, \textbf{Console Global de Administração de Tenants} (\emph{Self-Service Billing}) e BI financeiro avançado. & \textbf{Kayque Vicente \& Yury Nogueira} & Fev/2027 -- Abr/2027 & \textbf{Backlog Evolutivo} \\
-\end{tabularx}\end{center}
+\arrayrulecolor{BrandGrayRule}
+Macroentrega 1 (MVP Operacional) & \texttt{v1.0.0} & Núcleo Multi-tenant, RBAC (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}), criptografia CPF (\texttt{HMAC} + \texttt{AES}), CRUDs de filmes/salas/sessões, bilheteria ACID, portal de reservas, expiração JIT, anonimização LGPD e deploy (\texttt{RF-01} a \texttt{RF-18}). & \textbf{Gabriel Lourenço} & Out/2026 -- Nov/2026 & \textbf{Concluído (Produção)} \\
+\midrule
+Macroentrega 2 (Escala \& Pagamentos) & \texttt{v2.0.0} & Gateway financeiro online (PIX dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do \textbf{Resend Pro} (\texttt{@cinedoom.com.br}), upgrade para \textbf{Supabase Pro} (PITR e réplicas) e \textbf{Vercel Pro}. & \textbf{Carlos Eduardo} & Dez/2026 -- Jan/2027 & \textbf{Planejado (Próxima Fase)} \\
+\midrule
+Macroentrega 3 (Enterprise \& Fiscal) & \texttt{v3.0.0} & Emissão fiscal eletrônica automatizada (\textbf{NFC-e / SAT} via Focus NFe / SEFAZ), bomboniere e estoque, fidelidade, \textbf{Console Global de Tenants} e BI financeiro. & \textbf{Kayque V. \& Yury N.} & Fev/2027 -- Abr/2027 & \textbf{Backlog Evolutivo} \\
+\arrayrulecolor{BrandNavy}\bottomrule
+\end{tabularx}%
+}
+}
 
 
 \subsubsecao{\texorpdfstring{Cronograma Detalhado de Execução da Macroentrega 1 (\texttt{v1.0.0})}{Cronograma Detalhado de Execução da Macroentrega 1 (v1.0.0)}}
@@ -45,16 +44,21 @@ Status
 A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenharia com pacotes de trabalho atribuídos nominalmente aos engenheiros da CineSoft Solutions:
 
 \tabelaabnt{Cronograma Executivo e Pacotes de Trabalho por Sprint}{CineSoft Solutions (2026)}{tab:cronograma_sprints}{%
-\small
+{\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.0cm} X >{\fontSemiBold}p{2.6cm} p{1.5cm} p{1.5cm}}
-\toprule
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
 \textbf{Sprint / Iteração} & \textbf{Pacotes de Trabalho e Requisitos Entregues} & \textbf{Responsáveis} & \textbf{Início} & \textbf{Término} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 Sprint 1 --- Fundação, Arquitetura e Segurança & Setup Next.js 14/TypeScript (\texttt{\#1}), modelagem Prisma/PostgreSQL e trigger append-only (\texttt{\#2}), extensão Multi-tenant (\texttt{\#3}), autenticação NextAuth/RBAC (\texttt{\#4}), criptografia PII de CPF (\texttt{\#5}), Log Drain Axiom (\texttt{\#15}) e pipeline CI/CD (\texttt{\#16}). & \textbf{Gabriel L.} \& \textbf{Carlos E.} (Apoio: \textbf{Yury N.}) & 23/10/2026 & 29/10/2026 \\
+\midrule
 Sprint 2 --- Back-office, Salas e Bilheteria ACID & Design System e mapa interativo 2D (\texttt{\#17}), CRUDs de filmes, salas e sessões com pré-população (\texttt{\#6}, \texttt{\#7}, \texttt{\#8}), polling a 2s (\texttt{\#9}), venda atômica com \texttt{SELECT\ FOR\ UPDATE} (\texttt{\#10}) e gestão de atendentes (\texttt{\#13}). & \textbf{Gabriel L.} \& \textbf{Carlos E.} (QA: \textbf{Kayque V.}) & 30/10/2026 & 04/11/2026 \\
+\midrule
 Sprint 3 --- Portal do Cliente, LGPD e QA & Portal público e reserva web com expiração JIT (\texttt{\#21}), autenticação de espectador (\texttt{\#22}), \texttt{NotificationService} (\texttt{\#23}), cancelamento auditado (\texttt{\#11}), painel de ocupação (\texttt{\#12}), anonimização (\texttt{\#14}) e suíte de 770 testes (\texttt{\#18}, \texttt{\#19}). & \textbf{Gabriel, Carlos, Kayque \& Yury} & 05/11/2026 & 09/11/2026 \\
-\bottomrule
+\arrayrulecolor{BrandNavy}\bottomrule
 \end{tabularx}%
+}
 }
 
 
@@ -158,20 +162,28 @@ O processo de gestão de decisões (Cláusula 6.3.3) fundamenta as escolhas arqu
 Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions avaliou três alternativas tecnológicas contra cinco critérios ponderados de negócio e engenharia (escala de \texttt{1} a \texttt{5}, onde \texttt{5} é a melhor aderência):
 
 \tabelaabnt{Matriz de Decisão Ponderada (Pugh Matrix) — Arquitetura Base}{CineSoft Solutions (2026)}{tab:pugh_arquitetura}{%
-\small
+{\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.8cm} c X X X}
-\toprule
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
 \textbf{Critério de Avaliação} & \textbf{Peso} & \textbf{Alt. A: Monólito (Adotado)} & \textbf{Alt. B: Microsserviços} & \textbf{Alt. C: SPA + Backend VM} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 1. Atomicidade Transacional (Anti-Double-Booking) & 30\% & \textbf{5} (Transação ACID única no banco relacional) & \textbf{2} (Consistência eventual complexa) & \textbf{5} (Transação ACID direta em banco único) \\
+\midrule
 2. Produtividade da Equipe (4 Engenheiros) & 25\% & \textbf{5} (Repositório único e tipagem ponta a ponta) & \textbf{1} (Alta sobrecarga de orquestração) & \textbf{3} (Duplicação de DTOs e dois pipelines) \\
+\midrule
 3. Custo Operacional (TCO Inicial e Escala SaaS) & 20\% & \textbf{5} (Serverless pay-as-you-go sem ociosidade) & \textbf{2} (Custo fixo elevado de clusters 24/7) & \textbf{3} (Custo fixo de VMs dedicadas) \\
+\midrule
 4. Isolamento Lógico Multi-Tenant e LGPD & 15\% & \textbf{5} (Middleware + Prisma Extension centralizado) & \textbf{3} (Propagação de tenant em N serviços) & \textbf{4} (Isolamento backend, gestão de CORS) \\
+\midrule
 5. Desempenho de Borda e SEO do Catálogo & 10\% & \textbf{5} (Server Components + Edge CDN nativos) & \textbf{4} (Requer API Gateway na borda) & \textbf{2} (CSR puro prejudica primeira carga) \\
 \midrule
+\rowcolor{BrandTableHeader}
 \textbf{Pontuação Ponderada Final} & \textbf{100\%} & \textbf{5,00 (Vencedora — Adotada)} & \textbf{2,10 (Descartada)} & \textbf{3,65 (Descartada)} \\
-\bottomrule
+\arrayrulecolor{BrandNavy}\bottomrule
 \end{tabularx}%
+}
 }
 
 
@@ -180,25 +192,39 @@ Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions 
 Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralmente em \texttt{specs/adrs/} e sintetizadas abaixo com seus cinco elementos formais:
 
 \tabelaabnt{Quadro Sinóptico de Decisões de Arquitetura (ADR-001 a ADR-012)}{CineSoft Solutions (2026)}{tab:adrs_sinopse}{%
-\footnotesize
+{\footnotesize
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.8cm} p{1.4cm} X X X}
-\toprule
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
 \textbf{Decisão (ADR)} & \textbf{Status} & \textbf{Contexto do Problema} & \textbf{Solução Adotada} & \textbf{Consequências / Trade-offs} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 \textbf{ADR-001:} Monólito Modular em Next.js 14 & Aprovada & Integração Portal, Bilheteria e Back-office com time enxuto. & Monólito Modular com fatias verticais (\texttt{src/features/*}) e ESLint \texttt{no-cycle}. & (+) Transações ACID simples e tipagem unificada; (-) Exige disciplina de linter. \\
+\midrule
 \textbf{ADR-002:} Interface Reativa Tailwind CSS & Aprovada & Construção do mapa 2D de assentos responsivo desktop/mobile. & Tailwind CSS com tema escuro cinematográfico (\emph{Dark UI}). & (+) Bundle leve e alta performance; (-) Classes utilitárias extensas no JSX. \\
+\midrule
 \textbf{ADR-003:} Backend Route Handlers TS & Aprovada & Validação rigorosa de payloads e contratos cliente-servidor. & Route Handlers RESTful tipados com validação por schemas \texttt{Zod}. & (+) Zero divergência de tipos e serverless nativo; (-) Acoplado ao framework. \\
+\midrule
 \textbf{ADR-004:} Banco PostgreSQL com Prisma ORM & Aprovada & Venda/reserva exige integridade relacional e lock pessimista. & PostgreSQL gerenciado com Prisma ORM e transações interativas. & (+) Conformidade ACID plena e migrações seguras; (-) \texttt{queryRaw} para locks. \\
+\midrule
 \textbf{ADR-005:} Cloud Serverless Vercel + DBaaS & Aprovada & Alta disponibilidade do piloto à escala com TCO enxuto. & Vercel na borda, PostgreSQL gerenciado com pooler e GitHub Actions. & (+) Deploy atômico e zero manutenção de SO; (-) Exige pooler de conexões. \\
+\midrule
 \textbf{ADR-006:} API RESTful e Polling 2s no Mapa & Aprovada & Manter mapa de assentos sincronizado em arquitetura serverless. & Polling RESTful leve a cada 2s na rota de assentos da sessão. & (+) Sem conexões ociosas em serverless; (-) Latência máxima de 2s na visualização. \\
+\midrule
 \textbf{ADR-007:} Pré-população e \texttt{FOR UPDATE} & Aprovada & Impedir venda dupla de assentos sob concorrência simultânea. & Pré-popular \texttt{SessionSeat} e aplicar \texttt{SELECT FOR UPDATE} ordenado por ID. & (+) Elimina \emph{phantom reads} e concorrência; (-) Mais linhas por sessão. \\
+\midrule
 \textbf{ADR-008:} Criptografia PII de CPF & Aprovada & Proteger CPF de compradores (LGPD Art. 46) com busca no balcão. & Hash \texttt{HMAC-SHA256} para busca e cifra \texttt{AES-256-GCM} para leitura. & (+) Imune a \emph{rainbow tables} e seguro; (-) Não permite busca parcial. \\
+\midrule
 \textbf{ADR-009:} Anonimização In-Place (Art. 18) & Aprovada & Atender direito de eliminação LGPD sem violar registros contábeis. & Sobrescrita \emph{in-place} de dados pessoais preservando os registros contábeis. & (+) Concilia LGPD e integridade contábil; (-) Operação irreversível para o titular. \\
+\midrule
 \textbf{ADR-010:} Auditoria Append-Only no PostgreSQL & Aprovada & Proteger registros de cancelamento contra exclusão ou alteração. & Trigger PostgreSQL que aborta qualquer \texttt{UPDATE} ou \texttt{DELETE} na auditoria. & (+) Imutabilidade garantida no SGBD a custo zero; (-) Exige migração SQL bruta. \\
+\midrule
 \textbf{ADR-011:} Log Drain Axiom (365 Dias) & Aprovada & Retenção legal de logs de acesso por 1 ano fora do limite efêmero. & Exportação de logs estruturados em JSON para Axiom com retenção de 1 ano. & (+) Conformidade legal sem inflar o banco; (-) Dependência de telemetria externa. \\
+\midrule
 \textbf{ADR-012:} Portal com Expiração JIT & Aprovada & Reservas online sem gateway de pagamento e sem assentos travados. & Expiração \emph{Just-in-Time} na leitura e transação balcão (limite 60 min). & (+) Precisão imediata sem cronjobs externos; (-) Verificação embutida nas queries. \\
-\bottomrule
+\arrayrulecolor{BrandNavy}\bottomrule
 \end{tabularx}%
+}
 }
 
 
@@ -207,17 +233,25 @@ Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralment
 O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI, do Vitest e dos painéis de \emph{billing} dos provedores de nuvem para monitorar a saúde técnica e financeira da entrega:
 
 \tabelaabnt{Indicadores e Métricas de Monitoramento do Projeto}{CineSoft Solutions (2026)}{tab:metricas_projeto}{%
-\small
+{\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.8cm} p{3.2cm} p{2.2cm} p{2.4cm} X}
-\toprule
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
 \textbf{Categoria} & \textbf{Indicador Objetivo} & \textbf{Meta} & \textbf{Resultado (M1)} & \textbf{Ação / Monitoramento} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 Métrica de Fluxo & Lead Time de Issues e PRs & $\le$ 48 horas por tarefa & Média de 18 a 32 horas & Monitorado no GitHub Projects. Pareamento se exceder 48h. \\
+\midrule
 Métrica de Fluxo & WIP Limit por engenheiro & Máximo de 2 tarefas & Respeitado ($\le$ 2 por membro) & Revisão diária no Kanban para evitar gargalos. \\
+\midrule
 Métrica de Qualidade & Suíte de Testes Automatizados & 100\% de aprovação & 26 suítes / 770 testes (100\%) & Bloqueio automático no GitHub Actions. \\
+\midrule
 Métrica de Qualidade & Densidade de Defeitos & 0 defeitos críticos & 0 defeitos críticos em prod & Telemetria contínua; defeito P1 aciona rollback rápido. \\
+\midrule
 Métrica de Progresso & Cumprimento de Escopo (M1) & 100\% dos RF-01 a RF-18 & 18/18 RFs e 14/14 ACs & Auditado na Matriz de Rastreabilidade. \\
+\midrule
 Métrica de Custo & OPEX Mensal dos Serviços Base & $\le$ US\$ 90/mês (M2/M3) & US\$ 0 na Macroentrega 1 & Revisão mensal de faturas de Vercel, Neon e Axiom. \\
-\bottomrule
+\arrayrulecolor{BrandNavy}\bottomrule
 \end{tabularx}%
+}
 }

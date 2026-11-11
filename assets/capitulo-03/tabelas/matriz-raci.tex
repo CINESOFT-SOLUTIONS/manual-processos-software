@@ -1,13 +1,29 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{X c c c c}
-\toprule
-\textbf{Atividade do Processo} & \textbf{PO} & \textbf{Tech Lead} & \textbf{Dev Team} & \textbf{QA} \\
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}X c c c c}
+\arrayrulecolor{BrandNavy}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Macroatividade / Entregável do Ciclo de Vida} & \textbf{Gabriel L.} & \textbf{Carlos E.} & \textbf{Kayque V.} & \textbf{Yury N.} \\
 \midrule
-Definição de Requisitos e Backlog & \textbf{A / R} & C & I & C \\
-Desenvolvimento e Testes Unitários & I & \textbf{A} & \textbf{R} & C \\
-Execução de Testes E2E e Aceite & C & C & I & \textbf{A / R} \\
-Aprovação de Release em Produção & \textbf{A} & \textbf{R} & I & C \\
-\bottomrule
-\end{tabularx}
-\end{center}
+\arrayrulecolor{BrandGrayRule}
+1. Planejamento do Projeto, Cronograma e Gestão de Riscos & C & C & \textbf{A / R} & C \\
+\midrule
+2. Elicitação de Requisitos, Histórias e Rastreabilidade & C & I & C & \textbf{A / R} \\
+\midrule
+3. Arquitetura de Software, Modelagem C4/UML e ADRs & \textbf{A / R} & C & I & R \\
+\midrule
+4. Modelagem de Banco, Multi-Tenancy e Triggers SQL & \textbf{A / R} & R & I & C \\
+\midrule
+5. Criptografia PII (CPF), Anonimização LGPD e STRIDE & A & \textbf{R} & C & \textbf{R} \\
+\midrule
+6. Motor ACID de Bilheteria, Salas e Portal Web & \textbf{A / R} & R & C & I \\
+\midrule
+7. Integração Resend, Observabilidade e CI/CD & A & \textbf{R} & C & I \\
+\midrule
+8. Suíte de Testes (Vitest), Concorrência e V\&V & R & C & \textbf{A / R} & C \\
+\midrule
+9. Auditoria de Qualidade e Melhoria Contínua (MPS.BR) & C & I & \textbf{A / R} & R \\
+\arrayrulecolor{BrandNavy}\bottomrule
+\end{tabularx}%
+\par\vspace{3pt}%
+{\scriptsize\raggedright\textbf{Legenda:} \textbf{R} = Responsável (\emph{Responsible}); \textbf{A} = Aprovador (\emph{Accountable}); \textbf{C} = Consultado (\emph{Consulted}); \textbf{I} = Informado (\emph{Informed}).\par}
+}
