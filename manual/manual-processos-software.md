@@ -406,32 +406,43 @@ As seguintes condições foram assumidas como verdadeiras para viabilizar as reg
 
 ## 2.1 Descrição do processo de aquisição
 
-O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** para decidir entre desenvolver internamente ou contratar/adquirir de terceiros os componentes, bibliotecas, APIs e serviços de infraestrutura que sustentam o produto **CineDoom** ao longo de suas três Macroentregas.
+O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** no papel de organização adquirente, definindo o que desenvolver internamente e o que contratar de terceiros para sustentar o produto **CineDoom**.
 
 ### Fronteira e Justificativa de Aquisição
 
-A estratégia de engenharia da CineSoft Solutions concentra o esforço de desenvolvimento interno estritamente nos ativos que constituem o **núcleo de valor e diferencial competitivo** do CineDoom: o motor transacional de bilheteria e reservas com bloqueio pessimista ACID (*SELECT FOR UPDATE*), a máquina de estados de assentos com expiração *Just-in-Time*, o isolamento lógico multi-tenant e a camada de conformidade e anonimização da LGPD.
+A estratégia de engenharia da CineSoft Solutions concentra o desenvolvimento interno nos componentes que formam o **núcleo de valor e diferencial competitivo** da plataforma: o motor de bilheteria e reservas com trava atômica (`SELECT FOR UPDATE`), a máquina de estados de assentos com expiração *Just-in-Time*, o isolamento multi-tenant e o módulo de proteção de dados (LGPD).
 
-Em contrapartida, serviços de infraestrutura em nuvem, bancos de dados gerenciados, entrega de e-mails transacionais, retenção externa de logs, processamento financeiro PCI-DSS e mensageria fiscal SEFAZ são adquiridos de provedores especializados para reduzir o *time-to-market*, otimizar o Custo Total de Propriedade (TCO) e garantir Acordos de Nível de Serviço (SLA $\ge 99,9\%$).
+Em contrapartida, serviços de infraestrutura em nuvem, bancos de dados gerenciados, disparo de e-mails transacionais, retenção de logs, processamento de pagamentos e mensageria fiscal são adquiridos de provedores especializados para reduzir o tempo de desenvolvimento, diminuir custos operacionais e garantir alta disponibilidade (SLA $\ge 99,9\%$).
 
 ### Tabela de Análise de Aquisição (*Make or Buy*)
 
-A tabela a seguir consolida a decisão formal para cada elemento arquitetural do sistema, classificando a aquisição em **Sim** (solução madura/commodity adquirida pronta), **Não** (regra de negócio central desenvolvida internamente) ou **Parcial** (engine ou biblioteca externa combinada com regras de domínio proprietárias da CineSoft):
+A governança de aquisição da CineSoft Solutions consolida a decisão formal para cada elemento arquitetural do sistema, classificando a abordagem em **Sim** (solução madura/commodity adquirida pronta), **Não** (regra de negócio central desenvolvida internamente) ou **Parcial** (engine ou biblioteca externa combinada com regras de domínio proprietárias):
+
+**Tabela 2 – Análise de Aquisição: Componentes de Software e Domínio (Make or Buy)**
 
 | Elemento do sistema | Adquirir pronto? | Justificativa | Possível fornecedor |
 | :--- | :---: | :--- | :--- |
-| **Motor de Bilheteria e Reserva Atômica ACID** | **Não** | Regra de negócio central e diferencial competitivo; exige controle estrito sobre locks de linha (`SELECT FOR UPDATE`), ordenação anti-deadlock e expiração *Just-in-Time*. | Desenvolvimento interno (CineSoft Solutions) |
-| **Isolamento Multi-Tenant e Governança de Dados** | **Não** | Núcleo arquitetural do modelo SaaS B2B; requer injeção determinística de `tenant_id` em todas as queries e proteção contra vazamento *cross-tenant*. | Desenvolvimento interno sobre Prisma Client Extensions |
-| **Módulo de Criptografia e Anonimização LGPD** | **Não** | Requisito legal crítico (Art. 18 e Art. 46 da LGPD) acoplado ao domínio fiscal de ingressos; combina `HMAC-SHA256` e `AES-256-GCM` nativos. | Desenvolvimento interno (`Node.js crypto`) |
-| **Autenticação, Sessão JWT e Controle RBAC** | **Parcial** | A gestão de tokens criptográficos e cookies HTTP-only utiliza biblioteca consolidada, mas a política RBAC (`GERENTE`, `ATENDENTE`, `CLIENTE`), escopo por tenant e revogação são próprios. | `NextAuth.js` + Middleware proprietário CineSoft |
-| **Interface Gráfica e Mapa Interativo de Salas** | **Parcial** | Primitivas estilísticas e ícones são acelerados por bibliotecas de mercado, porém a matriz bidimensional reativa de poltronas e o fluxo de guichê são proprietários. | `Tailwind CSS`, `Lucide Icons` + Componentes CineSoft |
-| **ORM e Validação de Schemas de Entrada** | **Sim** | Bibliotecas de padrão industrial com alta segurança de tipos e prevenção nativa de *SQL Injection*, cujo desenvolvimento próprio seria antieconômico. | `Prisma ORM` e `Zod` (Open Source / MIT) |
-| **Banco de Dados Relacional Gerenciado (DBaaS)** | **Sim** | Commodity de infraestrutura crítica; contratar DBaaS garante backups automatizados *Point-in-Time (PITR)*, connection pooling (`Supavisor`/`PgBouncer`) e alta disponibilidade. | **Supabase Pro / Neon PostgreSQL** |
-| **Plataforma de Hospedagem Serverless e CDN** | **Sim** | Elimina custos de administração de servidores Linux, provendo deploy atômico, proteção DDoS, SSL automático e distribuição global na borda (*Edge Network*). | **Vercel Pro** (Cloud PaaS) |
-| **Serviço de Disparo de E-mails Transacionais** | **Sim** | Manter servidores SMTP próprios acarreta alto risco de bloqueio em listas de spam; API especializada assegura entregabilidade (DKIM/SPF) para os vouchers de reserva. | **Resend** (SaaS de E-mail Transacional) |
-| **Observabilidade e Retenção Legal de Logs** | **Sim** | A retenção imutável de telemetria por 365 dias (Marco Civil e LGPD) exige armazenamento colunar externo de baixo custo e busca rápida. | **Axiom Cloud** (Log Drain SaaS) |
-| **Gateway de Pagamento Online (Macroentrega 2)** | **Sim** | Processar cartões e PIX exige certificação internacional PCI-DSS Nível 1 e antifraude dedicado, inviáveis para internalização em uma software house B2B. | **Stripe / Pagar.me** |
-| **Motor de Mensageria Fiscal NFC-e (Macroentrega 3)** | **Sim** | A comunicação direta com webservices estaduais da SEFAZ sofre constantes mudanças normativas e tributárias; API terceirizada abstrai contingência e assinatura A1. | **Focus NFe / PlugNotas** |
+| **Motor de Bilheteria e Reserva Atômica ACID** | **Não** | Diferencial competitivo central. Exige controle estrito sobre locks pessimistas (`SELECT FOR UPDATE`) para impedir venda dupla entre web e guichê físico. | Desenvolvimento interno (CineSoft Solutions) |
+| **Isolamento Multi-Tenant e Governança de Dados** | **Não** | Núcleo do modelo SaaS B2B. A injeção automática de `tenant_id` via Prisma Client Extensions garante isolamento seguro na mesma base relacional com baixo custo. | Desenvolvimento interno sobre Prisma Extensions |
+| **Módulo de Criptografia e Anonimização LGPD** | **Não** | Requisito legal (LGPD Art. 18 e 46). Exige anonimização irreversível sob demanda sem corromper o histórico fiscal de ingressos vendidos pelo cinema. | Desenvolvimento interno (`Node.js crypto`) |
+| **Autenticação, Sessão JWT e Controle RBAC** | **Parcial** | Adota biblioteca madura (`NextAuth.js`) para gerenciar sessões e cookies seguros, desenvolvendo internamente a matriz de perfis (`RBAC`) e o vínculo por cinema. | `NextAuth.js` + Middleware proprietário CineSoft |
+| **Interface Gráfica e Mapa Interativo de Salas** | **Parcial** | Aproveita bibliotecas de mercado (`Tailwind`, `Lucide`) para primitivas visuais, desenvolvendo sob medida a matriz reativa de poltronas e o fluxo do guichê. | `Tailwind CSS`, `Lucide Icons` + Componentes CineSoft |
+| **ORM e Validação de Schemas de Entrada** | **Sim** | Padrão de mercado que provê tipagem estrita (*type-safety*) e proteção nativa contra *SQL Injection*, sendo antieconômico construir do zero. | `Prisma ORM` e `Zod` (Open Source / MIT) |
+
+*Fonte: CineSoft Solutions (2026).*
+
+**Tabela 3 – Análise de Aquisição: Infraestrutura Cloud e Serviços Gerenciados (Make or Buy)**
+
+| Elemento do sistema | Adquirir pronto? | Justificativa | Possível fornecedor |
+| :--- | :---: | :--- | :--- |
+| **Banco de Dados Relacional Gerenciado (DBaaS)** | **Sim** | Elimina custos de DBA, provendo restauração pontual automatizada (PITR), *connection pooling* para serverless e alta disponibilidade ($\ge 99,9\%$). | **Supabase Pro / Neon PostgreSQL** |
+| **Plataforma de Hospedagem Serverless e CDN** | **Sim** | Elimina a manutenção de servidores dedicados, entregando deploys atômicos com *rollback* instantâneo, proteção DDoS e distribuição global na borda. | **Vercel Pro** (Cloud PaaS) |
+| **Serviço de Disparo de E-mails Transacionais** | **Sim** | Evita que vouchers caiam em caixas de spam; a API especializada assegura entrega em milissegundos com autenticação SPF, DKIM e DMARC. | **Resend** (SaaS de E-mail Transacional) |
+| **Observabilidade e Retenção Legal de Logs** | **Sim** | Cumpre a retenção legal de logs por 1 ano (Marco Civil e LGPD) sem sobrecarregar o armazenamento do banco relacional, com busca indexada rápida. | **Axiom Cloud** (Log Drain SaaS) |
+| **Gateway de Pagamento Online (Macroentrega 2)** | **Sim** | Transfere a complexidade regulatória da certificação PCI-DSS Nível 1 e antifraude, automatizando a liquidação de PIX dinâmico e cartões. | **Stripe / Pagar.me** |
+| **Motor de Mensageria Fiscal NFC-e (Macroentrega 3)** | **Sim** | Abstrai as constantes mudanças tributárias estaduais da SEFAZ, contingência offline e assinatura digital com certificado A1, evitando passivos fiscais. | **Focus NFe / PlugNotas** |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ### As Cinco Atividades do Processo de Aquisição (ISO 12207)
 

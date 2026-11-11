@@ -1,22 +1,21 @@
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} C{1.8cm} Y >{\arraybackslash}m{3.4cm}}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}L{3.2cm} C{1.8cm} Y >{\arraybackslash}L{3.2cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Elemento do Sistema} & \textbf{Adquirir?} & \textbf{Justificativa Técnica e Estratégica} & \textbf{Provedor / Abordagem} \\
+\textbf{Elemento do sistema} & \textbf{Adquirir pronto?} & \textbf{Justificativa} & \textbf{Possível fornecedor} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Banco de Dados Relacional Gerenciado (DBaaS) & \textbf{Sim} & Commodity de infraestrutura crítica; contratar DBaaS garante backups automatizados \emph{Point-in-Time (PITR)}, pooling (\texttt{Supavisor}) e alta disponibilidade. & \textbf{Supabase Pro / Neon PostgreSQL} \\
+Banco de Dados Relacional Gerenciado (DBaaS) & \textbf{Sim} & Elimina custos de DBA, provendo restauração pontual automatizada (PITR), \emph{connection pooling} para serverless e alta disponibilidade ($\ge 99,9\%$). & \textbf{Supabase Pro / Neon PostgreSQL} \\
 \midrule
-Plataforma de Hospedagem Serverless e CDN & \textbf{Sim} & Elimina custos de administração Linux, provendo deploy atômico, proteção DDoS, SSL automático e distribuição global na borda (\emph{Edge Network}). & \textbf{Vercel Pro} (Cloud PaaS) \\
+Plataforma de Hospedagem Serverless e CDN & \textbf{Sim} & Elimina a manutenção de servidores dedicados, entregando deploys atômicos com \emph{rollback} instantâneo, proteção DDoS e distribuição global na borda. & \textbf{Vercel Pro} (Cloud PaaS) \\
 \midrule
-Serviço de Disparo de E-mails Transacionais & \textbf{Sim} & Servidores SMTP próprios acarretam alto risco de bloqueio em spam; API especializada assegura entregabilidade (DKIM/SPF) para os vouchers. & \textbf{Resend} (SaaS de E-mail Transacional) \\
+Serviço de Disparo de E-mails Transacionais & \textbf{Sim} & Evita que vouchers caiam em caixas de spam; a API especializada assegura entrega em milissegundos com autenticação SPF, DKIM e DMARC. & \textbf{Resend} (SaaS de E-mail Transacional) \\
 \midrule
-Observabilidade e Retenção Legal de Logs & \textbf{Sim} & A retenção imutável de telemetria por 365 dias (Marco Civil e LGPD) exige armazenamento colunar externo de baixo custo e busca rápida. & \textbf{Axiom Cloud} (Log Drain SaaS) \\
+Observabilidade e Retenção Legal de Logs & \textbf{Sim} & Cumpre a retenção legal de logs por 1 ano (Marco Civil e LGPD) sem sobrecarregar o armazenamento do banco relacional, com busca indexada rápida. & \textbf{Axiom Cloud} (Log Drain SaaS) \\
 \midrule
-Gateway de Pagamento Online (Macroentrega 2) & \textbf{Sim} & Processar cartões e PIX exige certificação internacional PCI-DSS Nível 1 e antifraude dedicado, inviáveis para internalização. & \textbf{Stripe / Pagar.me} \\
+Gateway de Pagamento Online (Macroentrega 2) & \textbf{Sim} & Transfere a complexidade regulatória da certificação PCI-DSS Nível 1 e antifraude, automatizando a liquidação de PIX dinâmico e cartões. & \textbf{Stripe / Pagar.me} \\
 \midrule
-Motor de Mensageria Fiscal NFC-e (Macroentrega 3) & \textbf{Sim} & A comunicação com webservices da SEFAZ sofre constantes mudanças tributárias; API terceirizada abstrai contingência e certificado A1. & \textbf{Focus NFe / PlugNotas} \\
+Motor de Mensageria Fiscal NFC-e (Macroentrega 3) & \textbf{Sim} & Abstrai as constantes mudanças tributárias estaduais da SEFAZ, contingência offline e assinatura digital com certificado A1, evitando passivos fiscais. & \textbf{Focus NFe / PlugNotas} \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}
 }
-
