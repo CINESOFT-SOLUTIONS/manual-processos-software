@@ -14,11 +14,11 @@
 A especificação formal de requisitos da plataforma \textbf{CineDoom} (\href{../../specs/cinedoom-spec.md}{\texttt{specs/cinedoom-spec.md}}) estrutura os requisitos funcionais (\texttt{RF}), não funcionais (\texttt{RNF}, segundo a norma ISO/IEC 25010), regras de negócio (\texttt{RN}) e restrições arquiteturais (\texttt{RES}), priorizados pelo método \textbf{MoSCoW}.
 
 
-\tabelaabnt{Catálogo Formal de Requisitos Funcionais (RF-01 a RF-18)}{CineSoft Solutions (2026)}{tab:req_funcionais}{%
-{\fontsize{6.8pt}{8.1pt}\selectfont
-\renewcommand{\arraystretch}{0.96}%
-\setlength{\tabcolsep}{2.8pt}%
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{0.9cm} >{\fontSemiBold}p{2.4cm} X p{1.5cm} p{2.1cm}}
+\tabelaabnt{Catálogo Formal de Requisitos Funcionais: Domínio e Bilheteria (RF-01 a RF-09)}{CineSoft Solutions (2026)}{tab:req_funcionais_core}{%
+{\fontsize{8pt}{10.2pt}\selectfont
+\renewcommand{\arraystretch}{1.08}%
+\setlength{\tabcolsep}{3.5pt}%
+\begin{tabularx}{\textwidth}{C{1.2cm} >{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.5cm} Y C{1.6cm} C{2.2cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{ID} & \textbf{Módulo} & \textbf{Requisito Funcional} & \textbf{Prioridade} & \textbf{Entrega} \\
@@ -41,7 +41,21 @@ A especificação formal de requisitos da plataforma \textbf{CineDoom} (\href{..
 \textbf{RF-08} & Bilheteria ACID & Emitir comprovante operacional de ingresso contendo código identificador único, filme, sala, horário, poltronas e valor pago. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
 \midrule
 \textbf{RF-09} & Auditoria \& Guichê & Realizar o cancelamento síncrono de ingresso vendido na bilheteria mediante justificativa obrigatória, gravando trilha \emph{append-only} protegida por trigger SQL. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
+
+\tabelaabnt{Catálogo Formal de Requisitos Funcionais: Governança, Portal e Notificações (RF-10 a RF-18)}{CineSoft Solutions (2026)}{tab:req_funcionais_portal}{%
+{\fontsize{8pt}{10.2pt}\selectfont
+\renewcommand{\arraystretch}{1.08}%
+\setlength{\tabcolsep}{3.5pt}%
+\begin{tabularx}{\textwidth}{C{1.2cm} >{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.5cm} Y C{1.6cm} C{2.2cm}}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ID} & \textbf{Módulo} & \textbf{Requisito Funcional} & \textbf{Prioridade} & \textbf{Entrega} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 \textbf{RF-10} & Governança LGPD & Proteger o CPF de compradores e clientes por indexação cega \texttt{HMAC-SHA256} e criptografia autenticada \texttt{AES-256-GCM}, permitindo anonimização \emph{in-place} (Art. 18). & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
 \midrule
 \textbf{RF-11} & Ocupação \& Logs & Apresentar painel gerencial com cálculo em tempo real da taxa de ocupação (vendidos, reservados e livres) por sessão/sala e exportar logs para o Axiom. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
@@ -67,7 +81,7 @@ A especificação formal de requisitos da plataforma \textbf{CineDoom} (\href{..
 
 \tabelaabnt{Catálogo Formal de Requisitos Não Funcionais (ISO/IEC 25010)}{CineSoft Solutions (2026)}{tab:req_nao_funcionais}{%
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.6cm} >{\fontSemiBold}p{3.6cm} X}
+\begin{tabularx}{\textwidth}{C{1.6cm} >{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.6cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{ID} & \textbf{Característica ISO 25010} & \textbf{Especificação e Métrica Objetiva} \\
@@ -96,10 +110,10 @@ A especificação formal de requisitos da plataforma \textbf{CineDoom} (\href{..
 A integridade da engenharia de software da CineSoft Solutions é garantida por uma matriz de rastreabilidade bidirecional que conecta cada stakeholder e requisito de negócio diretamente à implementação no código-fonte e à suíte de testes automatizados:
 
 \tabelaabnt{Matriz de Rastreabilidade Bidirecional de Requisitos}{CineSoft Solutions (2026)}{tab:matriz_rastreabilidade}{%
-{\fontsize{7.5pt}{9.2pt}\selectfont
-\renewcommand{\arraystretch}{1.05}%
+{\fontsize{8pt}{10.2pt}\selectfont
+\renewcommand{\arraystretch}{1.08}%
 \setlength{\tabcolsep}{3.5pt}%
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.6cm} p{2.2cm} p{1.6cm} X X}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.8cm} C{1.8cm} C{1.5cm} Y Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Stakeholder / Nec.} & \textbf{Requisitos} & \textbf{Aceite} & \textbf{Módulo no Código-Fonte} & \textbf{Suíte de Teste (Vitest)} \\
@@ -176,7 +190,7 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 
 \tabelaabnt{Mapeamento de Stakeholders e Técnicas de Elicitação}{CineSoft Solutions (2026)}{tab:stakeholders_elicitacao}{%
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.5cm} >{\fontSemiBold}p{3.6cm} p{3.2cm} X}
+\begin{tabularx}{\textwidth}{C{1.6cm} >{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.6cm} >{\arraybackslash}m{3.4cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Código} & \textbf{Parte Interessada} & \textbf{Técnica Aplicada} & \textbf{Necessidades Capturadas (NEC)} \\
@@ -320,7 +334,7 @@ A CineSoft Solutions distingue e aplica complementarmente as atividades de \text
 
 \tabelaabnt{Distinção Conceitual entre Verificação e Validação}{CineSoft Solutions (2026)}{tab:distincao_vv}{%
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.0cm} X X}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.0cm} Y Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Critério de Comparação} & \textbf{Verificação (Verification)} & \textbf{Validação (Validation)} \\
@@ -343,7 +357,7 @@ Exemplos Aplicados & Compilação TypeScript (\texttt{tsc}), linter \texttt{no-c
 
 \tabelaabnt{Critérios Formais de Entrada e Saída de V\&V}{CineSoft Solutions (2026)}{tab:criterios_vv}{%
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} X X}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} Y Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Fase de V\&V} & \textbf{Critérios de Entrada (Entry Criteria)} & \textbf{Critérios de Saída (Exit Criteria)} \\
@@ -379,7 +393,7 @@ Todos os cenários de aceitação da Macroentrega 1 (\texttt{v1.0.0}) foram exec
 
 \tabelaabnt{Relatório de Testes de Aceitação e Homologação em Produção}{CineSoft Solutions (2026)}{tab:relatorio_uat}{%
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.6cm} p{1.6cm} X X c}
+\begin{tabularx}{\textwidth}{C{1.6cm} C{1.6cm} Y Y C{1.8cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Cenário} & \textbf{Critério} & \textbf{Descrição do Cenário} & \textbf{Evidência em Produção} & \textbf{Status} \\

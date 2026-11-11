@@ -1,0 +1,21 @@
+{\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} C{1.8cm} Y >{\arraybackslash}m{3.4cm}}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Elemento do Sistema} & \textbf{Adquirir?} & \textbf{Justificativa Técnica e Estratégica} & \textbf{Provedor / Abordagem} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Motor de Bilheteria e Reserva Atômica ACID & \textbf{Não} & Regra de negócio central e diferencial competitivo; exige controle estrito sobre locks de linha (\texttt{SELECT FOR UPDATE}), ordenação anti-deadlock e expiração \emph{Just-in-Time}. & Desenvolvimento interno (CineSoft Solutions) \\
+\midrule
+Isolamento Multi-Tenant e Governança de Dados & \textbf{Não} & Núcleo arquitetural do modelo SaaS B2B; requer injeção determinística de \texttt{tenantId} em todas as queries e proteção contra vazamento \emph{cross-tenant}. & Desenvolvimento interno sobre Prisma Client Extensions \\
+\midrule
+Módulo de Criptografia e Anonimização LGPD & \textbf{Não} & Requisito legal crítico (Art.~18 e Art.~46 da LGPD) acoplado ao domínio fiscal de ingressos; combina \texttt{HMAC-SHA256} e \texttt{AES-256-GCM} nativos. & Desenvolvimento interno (\texttt{Node.js crypto}) \\
+\midrule
+Autenticação, Sessão JWT e Controle RBAC & \textbf{Parcial} & A gestão de tokens e cookies HTTP-only utiliza biblioteca consolidada, mas a política RBAC (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}), escopo por tenant e revogação são próprios. & \texttt{NextAuth.js} + Middleware proprietário CineSoft \\
+\midrule
+Interface Gráfica e Mapa Interativo de Salas & \textbf{Parcial} & Primitivas de estilo e ícones são acelerados por mercado, porém a matriz 2D reativa de poltronas e o fluxo de guichê são proprietários. & \texttt{Tailwind CSS}, \texttt{Lucide Icons} + Componentes CineSoft \\
+\midrule
+ORM e Validação de Schemas de Entrada & \textbf{Sim} & Bibliotecas de padrão industrial com alta segurança de tipos e prevenção nativa de \emph{SQL Injection}, cujo desenvolvimento próprio seria antieconômico. & \texttt{Prisma ORM} e \texttt{Zod} (Open Source / MIT) \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}
+}

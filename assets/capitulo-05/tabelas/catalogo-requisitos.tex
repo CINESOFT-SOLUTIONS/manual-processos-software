@@ -1,14 +1,20 @@
 \begin{center}
 \small
-\begin{tabularx}{\textwidth}{l p{3.2cm} c X}
-\toprule
+\begin{tabularx}{\textwidth}{C{1.6cm} >{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.6cm} C{2.2cm} Y}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
 \textbf{ID} & \textbf{Nome do Requisito} & \textbf{Tipo} & \textbf{Descrição e Regra Central} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 RF-01 & Reserva Atômica de Poltrona & Funcional & Bloqueio temporário (10 min) prevenindo duplicidade. \\
+\midrule
 RF-02 & Emissão e Baixa de Ingressos & Funcional & Geração de QR Code criptográfico para catraca/guichê. \\
+\midrule
 RF-03 & Venda no Balcão (PDV Rápido) & Funcional & Operação simplificada para atendente em menos de 30s. \\
+\midrule
 RNF-01 & Tempo de Resposta em Checkout & Não Func. & P95 inferior a 300ms sob carga de 50 req/s. \\
+\midrule
 RNF-02 & Conformidade de Segurança & Não Func. & Sanitização Zod e isolamento total de tenants. \\
-\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}
 \end{center}

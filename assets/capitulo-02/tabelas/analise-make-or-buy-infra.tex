@@ -1,0 +1,21 @@
+{\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} C{1.8cm} Y >{\arraybackslash}m{3.4cm}}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Elemento do Sistema} & \textbf{Adquirir?} & \textbf{Justificativa Técnica e Estratégica} & \textbf{Provedor / Abordagem} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Banco de Dados Relacional Gerenciado (DBaaS) & \textbf{Sim} & Commodity de infraestrutura crítica; contratar DBaaS garante backups automatizados \emph{Point-in-Time (PITR)}, pooling (\texttt{Supavisor}) e alta disponibilidade. & \textbf{Supabase Pro / Neon PostgreSQL} \\
+\midrule
+Plataforma de Hospedagem Serverless e CDN & \textbf{Sim} & Elimina custos de administração Linux, provendo deploy atômico, proteção DDoS, SSL automático e distribuição global na borda (\emph{Edge Network}). & \textbf{Vercel Pro} (Cloud PaaS) \\
+\midrule
+Serviço de Disparo de E-mails Transacionais & \textbf{Sim} & Servidores SMTP próprios acarretam alto risco de bloqueio em spam; API especializada assegura entregabilidade (DKIM/SPF) para os vouchers. & \textbf{Resend} (SaaS de E-mail Transacional) \\
+\midrule
+Observabilidade e Retenção Legal de Logs & \textbf{Sim} & A retenção imutável de telemetria por 365 dias (Marco Civil e LGPD) exige armazenamento colunar externo de baixo custo e busca rápida. & \textbf{Axiom Cloud} (Log Drain SaaS) \\
+\midrule
+Gateway de Pagamento Online (Macroentrega 2) & \textbf{Sim} & Processar cartões e PIX exige certificação internacional PCI-DSS Nível 1 e antifraude dedicado, inviáveis para internalização. & \textbf{Stripe / Pagar.me} \\
+\midrule
+Motor de Mensageria Fiscal NFC-e (Macroentrega 3) & \textbf{Sim} & A comunicação com webservices da SEFAZ sofre constantes mudanças tributárias; API terceirizada abstrai contingência e certificado A1. & \textbf{Focus NFe / PlugNotas} \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}
+}

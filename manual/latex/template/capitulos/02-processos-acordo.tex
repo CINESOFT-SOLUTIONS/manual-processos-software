@@ -20,9 +20,11 @@ Em contrapartida, serviços de infraestrutura em nuvem, bancos de dados gerencia
 
 \subsubsecao{\texorpdfstring{Análise de Aquisição (\emph{Make or Buy})}{Análise de Aquisição (Make or Buy)}}
 
-A tabela a seguir consolida a decisão formal para cada elemento arquitetural do sistema, classificando a aquisição em \textbf{Sim} (solução madura/commodity adquirida pronta), \textbf{Não} (regra de negócio central desenvolvida internamente) ou \textbf{Parcial} (engine ou biblioteca externa combinada com regras de domínio proprietárias da CineSoft):
+A governança de aquisição da CineSoft Solutions consolida a decisão formal para cada elemento arquitetural do sistema, classificando a abordagem em \textbf{Sim} (solução madura/commodity adquirida pronta), \textbf{Não} (regra de negócio central desenvolvida internamente) ou \textbf{Parcial} (engine ou biblioteca externa combinada com regras de domínio proprietárias):
 
-\tabelaabnt{Análise de Aquisição de Componentes (Make or Buy)}{CineSoft Solutions (2026)}{tab:make_or_buy}{\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy.tex}}
+\tabelaabnt{Análise de Aquisição: Componentes de Software e Domínio (\emph{Make or Buy})}{CineSoft Solutions (2026)}{tab:make_or_buy_core}{\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy-core.tex}}
+
+\tabelaabnt{Análise de Aquisição: Infraestrutura Cloud e Serviços Gerenciados (\emph{Make or Buy})}{CineSoft Solutions (2026)}{tab:make_or_buy_infra}{\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy-infra.tex}}
 
 
 \subsubsecao{As Cinco Atividades do Processo de Aquisição (ISO 12207)}
@@ -95,7 +97,7 @@ A CineSoft Solutions assegura disponibilidade mensal mínima de \textbf{99,9\%} 
 
 \tabelaabnt{Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega}{CineSoft Solutions (2026)}{tab:sla_suporte}{%
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} X p{2.2cm} p{2.8cm}}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} Y C{2.2cm} >{\arraybackslash}m{3.0cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Severidade / Modalidade} & \textbf{Descrição do Cenário} & \textbf{1ª Resposta} & \textbf{Meta de Resolução} \\
@@ -120,7 +122,7 @@ A operação contínua e comercial da plataforma CineDoom apoia-se em provedores
 
 \tabelaabnt{Identificação dos Fornecedores e Parceiros Relevantes}{CineSoft Solutions (2026)}{tab:fornecedores_parceiros}{%
 {\footnotesize
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.6cm} p{3.2cm} p{3.2cm} X}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.6cm} >{\arraybackslash}m{3.4cm} >{\arraybackslash}m{3.4cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Fornecedor / Parceiro} & \textbf{Categoria e Serviço} & \textbf{Plano e Custo Comercial} & \textbf{Impacto e Mitigação de Riscos} \\

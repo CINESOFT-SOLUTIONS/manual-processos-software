@@ -1,12 +1,16 @@
 \begin{center}
 \small
-\begin{tabularx}{\textwidth}{p{3cm} X X}
-\toprule
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} Y Y}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
 \textbf{Dimensão} & \textbf{Verificação (Construir Certo)} & \textbf{Validação (Construir a Coisa Certa)} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 \textbf{Foco Central} & O software atende às especificações técnicas e regras de arquitetura? & O software resolve a necessidade real da bilheteria e do cliente final? \\
+\midrule
 \textbf{Técnicas} & Testes unitários Vitest, linting ESLint, checagem estática de tipos TypeScript. & Testes de usabilidade com atendentes reais, homologação UAT e pilotos. \\
+\midrule
 \textbf{Critério de Sucesso} & 748 testes unitários passando e zero erros de tipo no build. & Atendente fecha venda em menos de 30s e índice de erro nulo em guichê. \\
-\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}
 \end{center}

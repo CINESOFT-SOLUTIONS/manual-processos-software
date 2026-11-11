@@ -1,13 +1,18 @@
 \begin{center}
 \small
-\begin{tabularx}{\textwidth}{l p{3cm} p{3.2cm} X}
-\toprule
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.6cm} >{\arraybackslash}m{3.0cm} >{\arraybackslash}m{3.2cm} Y}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
 \textbf{Requisito} & \textbf{Módulo / Serviço} & \textbf{Suíte de Testes (Vitest)} & \textbf{Critério de Aceite Verificado} \\
 \midrule
+\arrayrulecolor{BrandGrayRule}
 RF-01 (Catálogo) & \texttt{catalog.service.ts} & \texttt{catalog.test.ts} & Listagem sem choque de salas e horários. \\
+\midrule
 RF-02 (Trava Assento) & \texttt{booking.service.ts} & \texttt{concurrency.test.ts} & Zero venda dupla em 100 requisições simultâneas. \\
+\midrule
 RF-03 (Baixa Bilheteria) & \texttt{pos.service.ts} & \texttt{pos.test.ts} & Tempo de fechamento no guichê inferior a 30s. \\
+\midrule
 RF-04 (Voucher E-mail) & \texttt{notification.service.ts} & \texttt{email.test.ts} & Payload entregue à API Resend com token QR. \\
-\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}
 \end{center}
