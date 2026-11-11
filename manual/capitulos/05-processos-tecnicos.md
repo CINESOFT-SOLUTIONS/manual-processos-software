@@ -520,7 +520,7 @@ A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizand
 - **Criptografia e Conformidade LGPD (`cryptoservice.test.ts` e `compliance-anonymization.test.ts`):** 40 testes validando cifragem `AES-256-GCM`, busca `HMAC-SHA256`, validação Módulo 11 de CPF e expurgo irreversível *in-place*.
 - **Fluxos de Negócio e Interface (`booking-flow.test.ts`, `seating-grid.test.ts`, `users-management.test.ts`, `cancelamento-auditavel.test.ts`):** Validação completa de reservas, mapa 2D de poltronas, RBAC e triggers de auditoria.
 
-### 5.3.4 Rastreabilidade entre código e requisitos
+### ~~5.3.4 Rastreabilidade entre código e requisitos~~
 Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos normativos (ex.: `feat(auth): adicionar gerador aleatorio de CPF valido (Modulo 11)` e comentários `// Requisito: RF-07 | CA-01 | ADR-007`), permitindo auditoria imediata no histórico do Git.
 
 ---
