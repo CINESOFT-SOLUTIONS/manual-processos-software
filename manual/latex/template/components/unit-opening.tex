@@ -1,78 +1,21 @@
 % =============================================================================
 % COMPONENTE 1: CAPA EDITORIAL, ABERTURA DE CAPÍTULO E CONTRACAPA (CINESOFT / CINEDOOM)
-% Padrão: 100% Profissional, Estrutura Fiel ao Template Original + Logos Oficiais
+% Padrão: 100% Profissional, Capas em PDF Vetorial e Abertura com Texto Dinâmico
 % Design System: Midnight Navy (#1A1A2E), Deep Sapphire (#0F3460), Crimson (#E94560), Cyan (#00D4FF)
 % =============================================================================
 
 \usepackage{graphicx}
 
 % -----------------------------------------------------------------------------
+% 1. CAPA PRINCIPAL DO MANUAL (FULL-BLEED A4 VIA PDF FINAL)
 % -----------------------------------------------------------------------------
-% 1. CAPA PRINCIPAL DO MANUAL (FULL-BLEED A4 COM CORES E LOGOS CINEDOOM)
-% -----------------------------------------------------------------------------
-\newcommand{\capamanual}[1][capas/capa-manual.png]{%
+\newcommand{\capamanual}[1][capas/capa-frente.pdf]{%
   \clearpage
   \thispagestyle{empty}%
   \global\showcontentbgfalse
   \begin{tikzpicture}[remember picture, overlay]
-    \IfFileExists{#1}{%
-      % Renderiza arte da capa tratada com as cores CineDoom (#1A1A2E / #0F3460 / #E94560)
-      \node[inner sep=0pt, outer sep=0pt] at (current page.center) {%
-        \includegraphics[width=\paperwidth, height=\paperheight]{#1}%
-      };
-    }{%
-      % Fundo vetorial CineDoom de contingência caso a imagem não exista
-      \fill[RefDarkBg] (current page.south west) rectangle (current page.north east);
-    }%
-
-    % Topo: Logos Oficiais CineSoft e CineDoom com barra divisória
-    \begin{scope}[shift={($(current page.north) + (0, -2.8cm)$)}]
-      \node[inner sep=0pt, anchor=center] at (-3.4cm, 0) {
-        \includegraphics[height=1.25cm]{logos/cinesoft-logo-horizontal-white.png}
-      };
-      \draw[white!40, line width=0.8pt] (0, 0.65cm) -- (0, -0.65cm);
-      \node[inner sep=0pt, anchor=center] at (3.4cm, 0) {
-        \includegraphics[height=1.25cm]{logos/cinedoom-logo-horizontal-white.png}
-      };
-    \end{scope}
-
-    % Título Centralizado do Manual (Conforme estrutura da capa original adaptada)
-    \node[
-      anchor=center,
-      inner sep=0pt
-    ] at ($(current page.center) + (0, 2.5cm)$) {%
-      \parbox{16.0cm}{\centering
-        {\fontsize{13pt}{17pt}\fontSemiBold\color{RefNeonCyan}\MakeUppercase{Manual Corporativo de Engenharia de Software}\par}\vspace{12pt}
-        {\fontsize{28pt}{34pt}\fontExtraBold\color{white} PROCESSOS DE CICLO DE VIDA\par}\vspace{6pt}
-        {\fontsize{23pt}{29pt}\fontLight\color{BrandCrimson} PLATAFORMA CINEDOOM\par}\vspace{14pt}
-        {\fontsize{10.5pt}{14pt}\fontRegular\color{white!85} Conformidade Estrita com a Norma ABNT NBR ISO/IEC/IEEE 12207:2021\par}%
-      }%
-    };
-
-    % Bloco Institucional / Autoria (Estrutura original adaptada)
-    \node[
-      anchor=center,
-      inner sep=0pt
-    ] at ($(current page.center) + (0, -3.2cm)$) {%
-      \parbox{14.0cm}{\centering
-        {\fontsize{9pt}{12pt}\fontExtraBold\color{BrandCrimson}\MakeUppercase{Desenvolvimento Tecnológico e Autoria}\par}\vspace{5pt}
-        {\fontsize{11pt}{15pt}\fontSemiBold\color{white} CineSoft Solutions • Equipe Doomscoders\par}\vspace{12pt}
-        {\fontsize{8.5pt}{11pt}\fontExtraBold\color{RefNeonCyan}\MakeUppercase{Autores}\par}\vspace{4pt}
-        {\fontsize{9.5pt}{13.5pt}\fontRegular\color{white!90}%
-          Carlos Eduardo Freire da Silva • Gabriel Henrique Lourenço Dias\par\vspace{2pt}
-          Kayque Vicente Silva • Yury Nogueira de Oliveira Silva\par}%
-      }%
-    };
-
-    % Rodapé: Instituição Acadêmica e Ano
-    \node[
-      anchor=south,
-      align=center,
-      text width=14.0cm
-    ] at ($(current page.south) + (0, 1.6cm)$) {%
-      {\fontsize{8pt}{11pt}\fontMedium\color{white!70}%
-        Universidade Federal de Goiás (UFG) • Instituto de Informática (INF)\\[2pt]
-        Bacharelado em Engenharia de Software • Goiânia — GO, 2026}%
+    \node[inner sep=0pt, outer sep=0pt] at (current page.center) {%
+      \includegraphics[width=\paperwidth, height=\paperheight]{#1}%
     };
   \end{tikzpicture}%
   \mbox{}%
@@ -81,136 +24,35 @@
 }
 
 % Alias retrocompatível
-\newcommand{\fazerCapaOficial}{\capamanual[capas/capa-manual.png]}
+\newcommand{\fazerCapaOficial}{\capamanual[capas/capa-frente.pdf]}
 
 % -----------------------------------------------------------------------------
-% 2. ABERTURA DE CAPÍTULO (ESTRUTURA ORIGINAL COM LOGOS OFICIAIS E TIPOGRAFIA PRECISA)
-% -----------------------------------------------------------------------------
-% - Fundo escuro total (#05060D / RefDarkBg) sangrado
-% - Pontos sutis (halftone) no canto superior direito
-% - Cabeçalho com as LOGOS OFICIAIS CineSoft e CineDoom em vetor branco
-% - Fita dupla curvada e Poliedro 3D wireframe estilizado
-% - Identificador do Capítulo e Título em tipografia geométrica precisa (sem aglutinação)
-% - Malha de ondas neon suaves no rodapé
+% 2. ABERTURA DE CAPÍTULO (FUNDO EM PDF + TEXTO DINÂMICO CENTRALIZADO)
+% Formato: "Capítulo X \n Nome do Capítulo"
+% - "Capítulo X" menor e em cor suave e elegante (white!80 / RefLavender)
+% - "Nome do Capítulo" em destaque branco (\fontExtraBold)
 % -----------------------------------------------------------------------------
 \newcommand{\aberturaunidade}[2]{%
   \clearpage
   \thispagestyle{empty}%
   \global\showcontentbgfalse
   \begin{tikzpicture}[remember picture, overlay]
-    % 1. Fundo escuro total (Full-bleed)
-    \fill[RefDarkBg] (current page.south west) rectangle (current page.north east);
-
-    % 2. Pontos sutis (halftone) no canto superior direito da página escura
-    \foreach \r in {0,...,7} {
-      \foreach \c in {0,...,12} {
-        \pgfmathsetmacro{\xx}{0.6 + \c*0.42}
-        \pgfmathsetmacro{\yy}{0.5 + \r*0.32 + 0.18*sin(\c*25)}
-        \pgfmathsetmacro{\op}{max(0.04, 0.28 - \r*0.03 - \c*0.012)}
-        \fill[RefNeonPurple!60!white, opacity=\op]
-          ($(current page.north east) + (-\xx cm, -\yy cm)$) circle (0.042cm);
-      }
-    }
-
-    % 3. Cabeçalho Institucional no topo com Logos Oficiais CineSoft & CineDoom
-    \begin{scope}[shift={($(current page.north west) + (2.5cm, -2.4cm)$)}]
-      % Logo CineSoft horizontal branca
-      \node[inner sep=0pt, anchor=west] at (0, 0) {
-        \includegraphics[height=0.95cm]{logos/cinesoft-logo-horizontal-white.png}
-      };
-
-      % Barra vertical divisória branca
-      \draw[white!40, line width=0.8pt] (5.6, 0.45) -- (5.6, -0.45);
-
-      % Logo CineDoom horizontal branca ao lado
-      \node[inner sep=0pt, anchor=west] at (6.0, 0) {
-        \includegraphics[height=0.95cm]{logos/cinedoom-logo-horizontal-white.png}
-      };
-
-      % Barra vertical divisória sutil
-      \draw[white!25, line width=0.6pt] (11.5, 0.45) -- (11.5, -0.45);
-
-      % Rótulo técnico institucional à direita
-      \node[anchor=west, text=white!85, font=\fontsize{8pt}{10.5pt}\fontRegular, align=left]
-        at (11.8, 0) {%
-          {\fontSemiBold\color{white}Manual de Processos}\\[1pt]
-          {\color{RefNeonCyan}ISO/IEC/IEEE 12207}%
-        };
-    \end{scope}
-
-    % 4. Fita curva dupla e Poliedro 3D wireframe na zona central
-    \begin{scope}[shift={($(current page.west) + (2.6cm, 2.5cm)$)}]
-      \filldraw[fill=RefDarkBg, draw=white!85, line width=0.8pt]
-        (0.22,-0.32) .. controls (0.72,-0.05) and (1.22,-0.55) .. (1.82,-0.20)
-        -- (1.62,0.30) .. controls (1.05,-0.05) and (0.55,0.42) .. (0.04,0.16) -- cycle;
-      \filldraw[fill=RefPurple!90, draw=RefLavender, line width=0.8pt]
-        (0,0.08) .. controls (0.52,0.38) and (1.02,-0.15) .. (1.62,0.20)
-        -- (1.42,0.72) .. controls (0.88,0.38) and (0.38,0.85) .. (-0.18,0.56) -- cycle;
-    \end{scope}
-
-    % Poliedro 3D wireframe à direita do título
-    \begin{scope}[shift={($(current page.east) + (-4.2cm, 0.3cm)$)}, scale=1.55]
-      \begin{scope}[shift={(-1.1, 1.35)}, scale=0.45]
-        \filldraw[fill=RefLavender, draw=white, line width=0.5pt]
-          (0,0.8) -- (0.7,0.4) -- (0,0) -- (-0.7,0.4) -- cycle;
-        \filldraw[fill=RefPurple, draw=white, line width=0.5pt]
-          (-0.7,0.4) -- (0,0) -- (0,-0.8) -- (-0.7,-0.4) -- cycle;
-        \filldraw[fill=RefPurpleDark, draw=white, line width=0.5pt]
-          (0,0) -- (0.7,0.4) -- (0.7,-0.4) -- (0,-0.8) -- cycle;
-      \end{scope}
-      \coordinate (P1) at (0, 1.45);
-      \coordinate (P2) at (1.25, 0.75);
-      \coordinate (P3) at (1.35, -0.55);
-      \coordinate (P4) at (0.15, -1.40);
-      \coordinate (P5) at (-1.15, -0.70);
-      \coordinate (P6) at (-1.20, 0.65);
-      \coordinate (C1) at (0.20, 0.35);
-      \coordinate (C2) at (0.55, -0.45);
-      \coordinate (C3) at (-0.45, -0.20);
-      \draw[white!28, line width=0.65pt]
-        (P1)--(P2)--(P3)--(P4)--(P5)--(P6)--cycle
-        (P1)--(C1)--(P2) (P2)--(C2)--(P3) (P3)--(C2)--(P4)
-        (P4)--(C3)--(P5) (P5)--(C3)--(P6) (P6)--(C1)--(P1)
-        (C1)--(C2)--(C3)--cycle;
-      \foreach \pt in {P1,P2,P3,P4,P5,P6,C1,C2,C3} {
-        \fill[RefLavender!60, opacity=0.55] (\pt) circle (0.04cm);
-      }
-    \end{scope}
-
-    % 5. Tipografia Central de Abertura (com espaçamento impecável entre palavras)
-    \node[
-      anchor=north west,
-      inner sep=0pt
-    ] at ($(current page.west) + (2.5cm, 1.8cm)$) {%
-      \parbox{15.0cm}{%
-        {\fontsize{24pt}{29pt}\fontLight\color{RefLavender} #1\par}\vspace{14pt}
-        {\fontsize{28pt}{34pt}\fontExtraBold\color{white} #2\par}%
-      }%
+    % 1. Fundo artístico da divisória de capítulo (Full-bleed A4)
+    \node[inner sep=0pt, outer sep=0pt] at (current page.center) {%
+      \includegraphics[width=\paperwidth, height=\paperheight]{capas/abertura-capitulo.pdf}%
     };
 
-    % 6. Malha de Ondas Wireframe Neon (Azul / Ciano / Roxo) no rodapé
-    \begin{scope}[shift={(current page.south west)}]
-      \foreach \i in {1,...,22} {
-        \pgfmathsetmacro{\phase}{\i*6.5}
-        \pgfmathsetmacro{\ampA}{1.8 + \i*0.14}
-        \pgfmathsetmacro{\ampB}{0.9 + \i*0.11}
-        \pgfmathsetmacro{\ybase}{1.2 + \i*0.24}
-        \pgfmathsetmacro{\mix}{min(100, \i*4.5)}
-        \draw[RefNeonBlue!\mix!RefNeonPurple, line width=0.55pt, opacity=0.48]
-          plot[domain=0:21, samples=60, smooth]
-          (\x, {\ybase + 1.35*sin(\x*16 + \phase) + 0.65*cos(\x*24 - \phase*0.7)});
-      }
-      \foreach \xgrid in {1.2, 2.8, 4.5, 6.2, 8.0, 9.8, 11.6, 13.5, 15.4, 17.2, 19.2} {
-        \pgfmathsetmacro{\ytop}{3.8 + 1.35*sin(\xgrid*16 + 110) + 0.65*cos(\xgrid*24 - 75)}
-        \pgfmathsetmacro{\ymid}{2.6 + 1.35*sin(\xgrid*16 + 65) + 0.65*cos(\xgrid*24 - 45)}
-        \pgfmathsetmacro{\ybot}{1.5 + 1.35*sin(\xgrid*16 + 20) + 0.65*cos(\xgrid*24 - 15)}
-        \draw[RefNeonCyan!70!white, line width=0.4pt, opacity=0.35]
-          (\xgrid, \ybot) -- (\xgrid+0.4, \ymid) -- (\xgrid-0.2, \ytop);
-        \fill[RefNeonCyan, opacity=0.75] (\xgrid, \ybot) circle (0.06cm);
-        \fill[white, opacity=0.90] (\xgrid+0.4, \ymid) circle (0.05cm);
-        \fill[RefNeonPurple!60!white, opacity=0.80] (\xgrid-0.2, \ytop) circle (0.055cm);
-      }
-    \end{scope}
+    % 2. Bloco Central de Título Dinâmico (Perfeitamente centralizado ao meio do PDF)
+    \node[
+      anchor=center,
+      inner sep=0pt,
+      align=center
+    ] at ($(current page.center) + (0, -0.6cm)$) {%
+      \parbox{16.0cm}{\centering
+        {\fontsize{18pt}{22pt}\fontSemiBold\color{white!80}\MakeUppercase{#1}\par}\vspace{14pt}
+        {\fontsize{30pt}{38pt}\fontExtraBold\color{white} #2\par}%
+      }%
+    };
   \end{tikzpicture}%
   \mbox{}%
   \clearpage
@@ -225,75 +67,15 @@
 \newcommand{\aberturacapitulo}[2]{\aberturaunidade{#1}{#2}}
 
 % -----------------------------------------------------------------------------
-% 3. CONTRACAPA / COLOFÃO INSTITUCIONAL (COM AS LOGOS OFICIAIS)
+% 3. CONTRACAPA OFICIAL (FULL-BLEED A4 VIA PDF FINAL)
 % -----------------------------------------------------------------------------
-\newcommand{\contracapamanual}{%
+\newcommand{\contracapamanual}[1][capas/contracapa-final.pdf]{%
   \clearpage
   \thispagestyle{empty}%
   \global\showcontentbgfalse
   \begin{tikzpicture}[remember picture, overlay]
-    % Fundo escuro total
-    \fill[RefDarkBg] (current page.south west) rectangle (current page.north east);
-
-    % Malha de ondas neon no topo da contracapa
-    \begin{scope}[shift={(current page.north west)}]
-      \foreach \i in {1,...,18} {
-        \pgfmathsetmacro{\phase}{\i*7.0}
-        \pgfmathsetmacro{\ybase}{-1.0 - \i*0.26}
-        \pgfmathsetmacro{\mix}{min(100, \i*5.5)}
-        \draw[RefNeonPurple!\mix!RefNeonBlue, line width=0.55pt, opacity=0.45]
-          plot[domain=0:21, samples=60, smooth]
-          (\x, {\ybase - 1.15*sin(\x*15 + \phase) - 0.55*cos(\x*22 - \phase*0.6)});
-      }
-    \end{scope}
-
-    % Logos Oficiais CineSoft e CineDoom no topo-centro da contracapa
-    \begin{scope}[shift={($(current page.north) + (0, -4.5cm)$)}]
-      \node[inner sep=0pt, anchor=center] at (-3.2cm, 0) {
-        \includegraphics[height=1.2cm]{logos/cinesoft-logo-horizontal-white.png}
-      };
-      \draw[white!40, line width=0.8pt] (0, 0.6cm) -- (0, -0.6cm);
-      \node[inner sep=0pt, anchor=center] at (3.2cm, 0) {
-        \includegraphics[height=1.2cm]{logos/cinedoom-logo-horizontal-white.png}
-      };
-    \end{scope}
-
-    % Poliedro 3D wireframe ao centro-direita
-    \begin{scope}[shift={($(current page.center) + (3.2cm, -1.0cm)$)}, scale=1.7]
-      \coordinate (Q1) at (0, 1.4);
-      \coordinate (Q2) at (1.2, 0.7);
-      \coordinate (Q3) at (1.3, -0.6);
-      \coordinate (Q4) at (0.1, -1.4);
-      \coordinate (Q5) at (-1.1, -0.7);
-      \coordinate (Q6) at (-1.2, 0.6);
-      \coordinate (M1) at (0.15, 0.3);
-      \coordinate (M2) at (0.5, -0.45);
-      \coordinate (M3) at (-0.45, -0.2);
-      \draw[white!25, line width=0.6pt]
-        (Q1)--(Q2)--(Q3)--(Q4)--(Q5)--(Q6)--cycle
-        (Q1)--(M1)--(Q2) (Q2)--(M2)--(Q3) (Q3)--(M2)--(Q4)
-        (Q4)--(M3)--(Q5) (Q5)--(M3)--(Q6) (Q6)--(M1)--(Q1)
-        (M1)--(M2)--(M3)--cycle;
-    \end{scope}
-
-    % Colofão Tipográfico e Institucional no canto inferior esquerdo
-    \node[
-      anchor=south west,
-      text=white!85,
-      align=left,
-      text width=12.5cm,
-      font=\fontsize{9pt}{13pt}\fontLight
-    ] at ($(current page.south west) + (2.5cm, 2.4cm)$) {%
-      {\fontsize{11pt}{15pt}\fontExtraBold\color{white}CINESOFT SOLUTIONS • EQUIPE DOOMSCODERS}\\[4pt]
-      Universidade Federal de Goiás (UFG) — Instituto de Informática (INF)\\
-      Bacharelado em Engenharia de Software • Processos de Software\\[10pt]
-      \textcolor{RefNeonCyan}{\rule{5.5cm}{0.5pt}}\\[8pt]
-      \textbf{Tipografia e Diagramação Editorial:}\\
-      Composto em família tipográfica geométrica sem serifa (\textit{Montserrat / Avenir Next})
-      nas variações \textit{Light, Regular, Medium, SemiBold, Bold} e \textit{Italic}, combinada com
-      \textit{PT Serif / Georgia} para notas de rodapé e \textit{Menlo} para listagens de código.\\
-      Diagramado em \LaTeX\ (XeLaTeX / Tectonic) em formato A4 ($210 \times 297\text{ mm}$).\\[6pt]
-      {\fontsize{8pt}{11pt}\color{white!60}Goiânia — GO • 2026 • Todos os direitos reservados à CineSoft Solutions.}
+    \node[inner sep=0pt, outer sep=0pt] at (current page.center) {%
+      \includegraphics[width=\paperwidth, height=\paperheight]{#1}%
     };
   \end{tikzpicture}%
   \mbox{}%
