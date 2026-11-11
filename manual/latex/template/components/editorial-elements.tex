@@ -69,7 +69,7 @@
     \vspace{6pt}%
     \includegraphics[width=#2]{#1}\par
     \vspace{5pt}%
-    {\fontsize{8.5pt}{11pt}\fontRegular\color{BrandGrayMed}Fonte: #4}\par
+    {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #4}\par
   \end{minipage}%
   \par\vspace{10pt}%
 }
@@ -85,7 +85,7 @@
     \vspace{6pt}%
     #4\par
     \vspace{5pt}%
-    {\fontsize{8.5pt}{11pt}\fontRegular\color{BrandGrayMed}Fonte: #2}\par
+    {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #2}\par
   \end{minipage}%
   \par\vspace{10pt}%
 }
@@ -127,6 +127,27 @@
 
 \newcounter{editorialtabela}
 \setcounter{editorialtabela}{0}
+
+\newcommand{\fonte}[1]{%
+  \par\vspace{3pt}%
+  {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #1\par}%
+}
+
+\newcommand{\tabelaabnt}[4]{%
+  \par\vspace{10pt}%
+  \noindent\begin{minipage}{\textwidth}
+    \refstepcounter{editorialtabela}%
+    \label{#3}%
+    \addcontentsline{lot}{table}{\protect\numberline{\theeditorialtabela}#1}%
+    \centering
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Tabela \theeditorialtabela} -- #1}\par
+    \vspace{6pt}%
+    #4\par
+    \vspace{4pt}%
+    {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #2\par}%
+  \end{minipage}%
+  \par\vspace{10pt}%
+}
 
 \newcommand{\tabelaeditorial}[5]{%
   \par\vspace{10pt}%

@@ -1,6 +1,6 @@
 % =============================================================================
-% ELEMENTOS PRÉ-TEXTUAIS COM AS LOGOS OFICIAIS CINESOFT E CINEDOOM
-% Projeto: Template Editorial — Manual de Processos de Software (CineSoft)
+% ELEMENTOS PRÉ-TEXTUAIS (CONFORME ABNT NBR 14724 E DIRETRIZES DA DISCIPLINA)
+% Projeto: Manual de Processos de Software — CineSoft Solutions & CineDoom
 % =============================================================================
 
 % 1. CAPA OFICIAL (PÁGINA 1)
@@ -9,100 +9,72 @@
 % 1.1 FOLHA DE ROSTO (PÁGINA 2)
 \folhaderosto[capas/folha-de-rosto.pdf]
 
-% 2. LISTA DE ABREVIATURAS E SIGLAS (PÁGINA 3)
-\tituloSecaoPrincipal{Lista de Abreviaturas e Siglas}
+% 1.2 HISTÓRICO DE VERSÕES DO DOCUMENTO (PÁGINA 3)
+\tituloSecaoPrincipal{Histórico de Versões do Documento}
 
 \noindent
-{\fontsize{7.8pt}{9.8pt}\selectfont
-\begin{minipage}[t]{0.48\textwidth}
-\begin{tabularx}{\linewidth}{@{}>{\fontExtraBold\color{BrandNavy}}p{1.6cm} X@{}}
-  ABNT      & Associação Brasileira de Normas Técnicas \\
-  ADR       & \textit{Architecture Decision Record} \\
-  API       & \textit{Application Programming Interface} \\
-  B2B/B2C   & \textit{Business-to-Business / Consumer} \\
-  CI/CD     & \textit{Continuous Integration / Deployment} \\
-  DoD / DoR & \textit{Definition of Done / Ready} \\
-  GPP       & Gerência de Portfólio de Projetos \\
-  GPR       & Gerência de Projetos (MPS.BR — G) \\
-  GQM       & \textit{Goal-Question-Metric} \\
-  GQA       & Garantia da Qualidade (MPS.BR — F) \\
-  GCO       & Gerência de Configuração (Nível F) \\
-  IEC       & \textit{Intl. Electrotechnical Commission} \\
-  IEEE      & \textit{Inst. of Electrical and Electronics Eng.} \\
-  ISO       & \textit{Intl. Organization for Standardization} \\
-  JWT       & \textit{JSON Web Token} (RFC 7519) \\
-  LGPD      & Lei Geral de Proteção de Dados \\
-  MED       & Medição (MPS.BR — Nível F) \\
+\begin{minipage}{\textwidth}
+{\fontsize{8.5pt}{12pt}\selectfont
+\begin{tabularx}{\linewidth}{@{}>{\fontExtraBold\color{BrandNavy}}p{1.4cm} >{\fontSemiBold}p{1.8cm} >{\fontSemiBold}p{1.3cm} X@{}}
+  \toprule
+  \textbf{Data} & \textbf{Versão} & \textbf{Autor} & \textbf{Descrição Sucinta da Alteração} \\
+  \midrule
+  10/09/2026 & Versão 1.0 & Equipe & Criação do documento, identificação da equipe e elaboração da capa. \\
+  16/09/2026 & Versão 1.1 & Equipe & Elaboração dos itens do Capítulo 1 (Apresentação do Software). \\
+  24/09/2026 & Versão 1.2 & Equipe & Alinhamento dos Capítulos 1, 2 e 3 à norma ISO/IEC/IEEE 12207:2021. \\
+  24/09/2026 & Versão 1.3 & Equipe & Revisão técnica: correção de contradições e justificativas de aquisição. \\
+  08/10/2026 & Versão 1.4 & Equipe & Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento). \\
+  17/10/2026 & Versão 1.5 & Equipe & Reestruturação da capa e padronização do controle documental. \\
+  22/10/2026 & Versão 1.6 & Equipe & Padronização formal da estrutura editorial dos Capítulos 1 a 5. \\
+  23/10/2026 & Versão 1.7 & Equipe & Incorporação do Portal do Cliente, reserva ACID, e-mail e LGPD (ADR-012). \\
+  09/11/2026 & Versão 2.0 & Equipe & Consolidação em 3 Macroentregas, matrizes Make-or-Buy, Pugh, EAP e Cap. 6 (MPS.BR). \\
+  \bottomrule
 \end{tabularx}
-\end{minipage}\hfill
-\begin{minipage}[t]{0.48\textwidth}
-\begin{tabularx}{\linewidth}{@{}>{\fontExtraBold\color{BrandNavy}}p{1.6cm} X@{}}
-  MPS.BR    & Melhoria de Processo do Software \\
-  MTTR      & \textit{Mean Time To Recovery} \\
-  MVP       & \textit{Minimum Viable Product} \\
-  NFC-e     & Nota Fiscal de Consumidor Eletrônica \\
-  ORM       & \textit{Object-Relational Mapping} \\
-  PaaS      & \textit{Platform as a Service} \\
-  PIX       & Pagamento Instantâneo Brasileiro \\
-  PMP       & Plano de Melhoria de Processo \\
-  PPR       & Processo Padrão de Requisitos \\
-  QA        & \textit{Quality Assurance} \\
-  RBAC      & \textit{Role-Based Access Control} \\
-  SaaS      & \textit{Software as a Service} \\
-  SLA / SLO & \textit{Service Level Agreement / Objective} \\
-  SPICE     & ISO/IEC 15504 Process Improvement \\
-  UFG       & Universidade Federal de Goiás \\
-  UI / UX   & \textit{User Interface / User Experience} \\
-  V\&V      & Verificação e Validação \\
-  WBS / EAP & \textit{Work Breakdown Structure} \\
-\end{tabularx}
-\end{minipage}
 }
+\par\vspace{5pt}
+{\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} Elaborado pelos autores (2026).}
+\end{minipage}
 \clearpage
 
-% 4. LISTA DE FIGURAS
+% 2. LISTA DE FIGURAS (PÁGINA 4)
+\renewcommand{\listfigurename}{Lista de Figuras}
 \listoffigures
 \clearpage
 
-% 5. LISTA DE TABELAS
+% 3. LISTA DE TABELAS (PÁGINA 5)
+\renewcommand{\listtablename}{Lista de Tabelas}
 \listoftables
 \clearpage
 
-% 6. SUMÁRIO
-\tableofcontents
+% 4. LISTA DE ABREVIATURAS E SIGLAS (PÁGINA 6)
+\tituloSecaoPrincipal{Lista de Abreviaturas e Siglas}
+
+\noindent
+{\fontsize{8.5pt}{12.5pt}\selectfont
+\begin{tabularx}{\textwidth}{@{}>{\fontExtraBold\color{BrandNavy}}p{1.7cm} X @{\hspace{1.0cm}} >{\fontExtraBold\color{BrandNavy}}p{1.7cm} X@{}}
+  ABNT      & Associação Brasileira de Normas Técnicas        & MPS.BR    & Melhoria de Processo do Software \\
+  ADR       & \textit{Architecture Decision Record}          & MTTR      & \textit{Mean Time To Recovery} \\
+  API       & \textit{Application Programming Interface}     & MVP       & \textit{Minimum Viable Product} \\
+  B2B/B2C   & \textit{Business-to-Business / Consumer}       & NFC-e     & Nota Fiscal de Consumidor Eletrônica \\
+  CI/CD     & \textit{Continuous Integration / Deployment}   & ORM       & \textit{Object-Relational Mapping} \\
+  DoD / DoR & \textit{Definition of Done / Ready}            & PaaS      & \textit{Platform as a Service} \\
+  GPP       & Gerência de Portfólio de Projetos              & PIX       & Pagamento Instantâneo Brasileiro \\
+  GPR       & Gerência de Projetos (MPS.BR — G)              & PMP       & Plano de Melhoria de Processo \\
+  GQM       & \textit{Goal-Question-Metric}                   & PPR       & Processo Padrão de Requisitos \\
+  GQA       & Garantia da Qualidade (MPS.BR — F)             & QA        & \textit{Quality Assurance} \\
+  GCO       & Gerência de Configuração (Nível F)             & RBAC      & \textit{Role-Based Access Control} \\
+  IEC       & \textit{Intl. Electrotechnical Commission}     & SaaS      & \textit{Software as a Service} \\
+  IEEE      & \textit{Inst. of Electrical and Electronics}   & SLA / SLO & \textit{Service Level Agreement / Objective} \\
+  ISO       & \textit{Intl. Organization for Standardization} & SPICE    & ISO/IEC 15504 Process Improvement \\
+  JWT       & \textit{JSON Web Token} (RFC 7519)             & UFG       & Universidade Federal de Goiás \\
+  LGPD      & Lei Geral de Proteção de Dados                 & UI / UX   & \textit{User Interface / User Experience} \\
+  MED       & Medição (MPS.BR — Nível F)                     & V\&V      & Verificação e Validação \\
+            &                                                & WBS / EAP & \textit{Work Breakdown Structure} \\
+\end{tabularx}%
+}
 \clearpage
 
-% 7. APRESENTAÇÃO INSTITUCIONAL
-\tituloSecaoPrincipal{Apresentação}
-
-\noindent
-Prezado(a) leitor(a), avaliador(a) e engenheiro(a),
-
-\vspace{8pt}
-\noindent
-Seja bem-vindo(a) ao \textbf{Manual Corporativo de Processos de Ciclo de Vida de Software} da \textbf{CineSoft Solutions}, documento técnico que regulamenta formalmente todas as práticas de engenharia, governança e gestão da qualidade aplicadas ao ciclo de vida da plataforma \textbf{CineDoom}.
-
-\vspace{8pt}
-\noindent
-Este manual foi concebido em estrito alinhamento com os padrões internacionais da \textbf{ABNT NBR ISO/IEC/IEEE 12207:2021} (Processos de Ciclo de Vida de Software) e com o modelo de referência \textbf{MPS.BR} (\textit{Melhoria de Processo do Software Brasileiro}), cobrindo integralmente as áreas de processo dos \textbf{Níveis G e F} da modalidade de software da SOFTEX.
-
-\vspace{8pt}
-\noindent
-A engenharia de processos documentada neste manual reflete uma abordagem contemporânea de engenharia de software transacional, integrando:
-
-\begin{itemize}[leftmargin=18pt, itemsep=4pt, topsep=4pt]
-  \item \textbf{Arquitetura e Requisitos:} Especificação formal de requisitos baseada em casos de uso e modelo C4, orientada a microserviços e componentes Serverless na stack Next.js 16 (App Router) e PostgreSQL;
-  \item \textbf{Governança de Código e CI/CD:} Automação de pipelines com GitHub Actions para linting, validação de schema Prisma e cobertura de testes automatizados;
-  \item \textbf{Gestão de Qualidade e Medição:} Monitoramento baseado no paradigma GQM (\textit{Goal-Question-Metric}), assegurando rastreabilidade ponta a ponta desde os requisitos até o deploy em produção na Vercel Cloud;
-  \item \textbf{Melhoria Contínua:} Avaliação sistemática de processos com plano de melhoria contínua (PMP) documentado com base nos achados e lições aprendidas de cada macroentrega.
-\end{itemize}
-
-\vspace{8pt}
-\noindent
-Esperamos que este manual sirva não apenas como instrumento de auditoria e conformidade acadêmica perante a Universidade Federal de Goiás (UFG), mas como patrimônio de engenharia vivo e auditável para toda a equipe.
-
-\vspace{18pt}
-\noindent
-\textbf{Equipe Doomscoders / CineSoft Solutions}\\
-Goiânia — GO, 2026
+% 5. SUMÁRIO (PÁGINA 7)
+\renewcommand{\contentsname}{Sumário}
+\tableofcontents
 \clearpage

@@ -39,27 +39,22 @@ As cerimônias operacionais da equipe compreendem: 1. \textbf{Sprint Planning:} 
 
 A gestão de infraestrutura (Cláusula 6.2.2) assegura que a CineSoft Solutions disponha de ferramentas padronizadas e ambientes resilientes para desenvolver, testar, implantar e operar o CineDoom:
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X}
-
+\tabelaabnt{Inventário de Infraestrutura e Ferramentas}{CineSoft Solutions (2026)}{tab:infra_ferramentas}{%
+\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} >{\fontSemiBold}p{4.0cm} X}
 \toprule
-Categoria
-Ferramenta / Infraestrutura
-Finalidade no Projeto
- \\
+\textbf{Categoria} & \textbf{Ferramenta / Infraestrutura} & \textbf{Finalidade no Projeto} \\
 \midrule
-
+Gestão e Código & GitHub \& GitHub Projects v2 & Hospedagem do código-fonte (Git), controle de branches protegidas, gestão do quadro Kanban, issues, milestones e revisão de Pull Requests. \\
+CI/CD e Automação & GitHub Actions & Pipeline automatizada de integração e entrega contínua (validação de schema Prisma, TypeScript \texttt{tsc}, ESLint \texttt{no-cycle}, 770 testes e build). \\
+Hospedagem e Computação & Vercel Serverless \& Edge Network & Execução das rotas de API e Server Components do Next.js 14, distribuição global de assets na borda (CDN) e ambientes isolados de \emph{Preview} e \emph{Production}. \\
+Banco de Dados e ORM & Supabase / Neon PostgreSQL + Prisma & Persistência relacional ACID em nuvem, pooler de conexões transacional (\emph{Supavisor} porta \texttt{6543}), migrações versionadas e triggers de auditoria imutável. \\
+Design e Prototipação & Figma + Tailwind CSS + Lucide & Prototipação de alta fidelidade, construção do Design System escuro (\emph{Dark Cinema UI}) e componentes responsivos acessíveis (WCAG 2.1 AA). \\
+Testes e Qualidade & Vitest + ESLint + TypeScript 5 & Execução rápida de testes unitários, de integração e de concorrência (50 threads simultâneas), análise estática de código e prevenção de dependências circulares. \\
+Observabilidade e Mensageria & Axiom Cloud + Resend API & Ingestão contínua de logs estruturados com retenção legal de 365 dias (LGPD) e despacho transacional de vouchers de reserva por e-mail. \\
 \bottomrule
-
-\textbf{Gestão e Código} & \textbf{GitHub \& GitHub Projects v2} & Hospedagem do código-fonte (Git), controle de branches protegidas, gestão do quadro Kanban, issues, milestones e revisão de Pull Requests. \\
-\textbf{CI/CD e Automação} & \textbf{GitHub Actions} & Pipeline automatizada de integração e entrega contínua (validação de schema Prisma, TypeScript \texttt{tsc}, ESLint \texttt{no-cycle}, 770 testes e build). \\
-\textbf{Hospedagem e Computação} & \textbf{Vercel Serverless \& Edge Network} & Execução das rotas de API e Server Components do Next.js 14, distribuição global de assets na borda (CDN) e ambientes isolados de \emph{Preview} e \emph{Production}. \\
-\textbf{Banco de Dados e ORM} & \textbf{Supabase / Neon PostgreSQL + Prisma ORM} & Persistência relacional ACID em nuvem, pooler de conexões transacional (\emph{Supavisor} porta \texttt{6543}), migrações versionadas e triggers de auditoria imutável. \\
-\textbf{Design e Prototipação} & \textbf{Figma + Tailwind CSS + Lucide} & Prototipação de alta fidelidade, construção do Design System escuro (\emph{Dark Cinema UI}) e componentes responsivos acessíveis (WCAG 2.1 AA). \\
-\textbf{Testes e Qualidade} & \textbf{Vitest + ESLint + TypeScript 5} & Execução rápida de testes unitários, de integração e de concorrência (50 threads simultâneas), análise estática de código e prevenção de dependências circulares. \\
-\textbf{Observabilidade e Mensageria} & \textbf{Axiom Cloud + Resend API} & Ingestão contínua de logs estruturados com retenção legal de 365 dias (LGPD) e despacho transacional de vouchers de reserva por e-mail. \\
-\end{tabularx}\end{center}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\end{tabularx}%
+}
 
 
 \subsecao{3.3 Justificativa estratégica e viabilidade do projeto}
@@ -118,7 +113,7 @@ Competências Técnicas Exigidas no Stack
 
 Conforme as diretrizes de governança organizacional, a tabela abaixo relaciona diretamente cada membro da CineSoft Solutions às macroatividades do ciclo de vida do CineDoom:
 
-\input{../../../assets/capitulo-03/tabelas/matriz-raci.tex}
+\tabelaabnt{Matriz RACI de Responsabilidades por Membro da Equipe}{CineSoft Solutions (2026)}{tab:matriz_raci}{\input{../../../assets/capitulo-03/tabelas/matriz-raci.tex}}
 
 \emph{Legenda:} \textbf{R} = Responsável pela execução (\emph{Responsible}); \textbf{A} = Aprovador final / Dono da conta (\emph{Accountable}); \textbf{C} = Consultado (\emph{Consulted}); \textbf{I} = Informado (\emph{Informed}).
 

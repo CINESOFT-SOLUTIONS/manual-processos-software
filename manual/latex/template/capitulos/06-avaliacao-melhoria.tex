@@ -18,40 +18,39 @@ Para avaliar e aprimorar continuamente a qualidade de sua governança de engenha
 
 Antes da execução do ciclo de melhoria (sobre a linha de base documental da versão \texttt{1.7} do manual), a equipe realizou uma auditoria interna examinando as seções \textbf{4.1, 4.2 e 4.5} frente às quatro questões de diagnóstico. Cada item foi classificado como \textbf{Descrito} (informação explícita e suficiente), \textbf{Parcialmente Descrito} (informação existente, porém incompleta) ou \textbf{Não Descrito} (informação ausente):
 
-\input{../../../assets/capitulo-06/tabelas/diagnostico-processo.tex}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\tabelaabnt{Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7)}{CineSoft Solutions (2026)}{tab:diagnostico_inicial}{\input{../../../assets/capitulo-06/tabelas/diagnostico-processo.tex}}
 
 
 \subsecao{6.3 Plano de uma melhoria}
 
 Com base nas lacunas identificadas no diagnóstico da seção 6.2 --- especialmente a ausência de atribuição nominal de responsáveis por entrega/Sprint, a falta de um protocolo claro para monitoramento e tratamento de atrasos e a incompletude da matriz de riscos ---, a equipe estruturou e executou o seguinte plano de ação:
 
-\input{../../../assets/capitulo-06/tabelas/plano-melhoria-pmp.tex}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+\tabelaabnt{Plano de Melhoria de Processo de Software (PMP)}{CineSoft Solutions (2026)}{tab:plano_pmp}{\input{../../../assets/capitulo-06/tabelas/plano-melhoria-pmp.tex}}
 
 
 \subsecao{6.4 Atualização e verificação}
 
-A melhoria planejada foi efetivamente aplicada no Capítulo 4 deste manual. O quadro comparativo a seguir confronta diretamente o trecho que constava antes (Versão \texttt{1.7}) com a nova redação implementada (Versão \texttt{2.0}):
+A melhoria planejada foi efetivamente aplicada no Capítulo 4 deste manual. A tabela a seguir confronta diretamente o trecho que constava antes (Versão \texttt{1.7}) com a nova redação implementada (Versão \texttt{2.0}):
 
-
-\subsubsecao{Quadro Comparativo: Antes vs.~Depois da Revisão (Seções 4.1, 4.2 e 4.5)}
-
-```diff --- a/manual/capitulos/04-gerenciamento-tecnico.md (Versão 1.7 - Antes da Melhoria) +++ b/manual/capitulos/04-gerenciamento-tecnico.md (Versão 2.0 - Após a Melhoria) @@ Seção 4.1: Escopo, Cronograma e Rotina de Acompanhamento @@ - \#\#\# Cronograma de Execução - - 22/10 a 24/10: Congelamento do escopo do MVP, modelagem do Prisma e configuração do CI. - - 25/10 a 31/10: Implementação das rotas de filmes, salas, sessões e do mapa de assentos. - - 05/11 a 08/11: Integração total na Vercel e congelamento da release v1.0.0-mvp. - (Sem EAP, sem divisão em Macroentregas, sem responsáveis nominais nas entregas e sem rotina de tratamento de atrasos) + \#\#\# Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis) e Roadmap em 3 Macroentregas + - Macroentrega 1 (v1.0.0 - MVP Operacional): Gabriel Lourenço \textbar{} Out--Nov/2026 \textbar{} Concluído + - Macroentrega 2 (v2.0.0 - Escala \& Pagamentos Stripe/Resend Pro): Carlos Eduardo \textbar{} Dez/2026--Jan/2027 + - Macroentrega 3 (v3.0.0 - Enterprise, Fiscal NFC-e \& Billing SaaS): Kayque Vicente \& Yury Nogueira \textbar{} Fev--Abr/2027 + - Cronograma por Sprint (Sprints 1, 2 e 3) com Responsáveis Diretos nominais e datas de início/término. + \#\#\# Rotina de Acompanhamento e Tratamento de Desvios e Atrasos + - Monitoramento diário no GitHub Projects (responsável, deadline e critério de aceite obrigatórios). + - Gatilho de 48h para tarefas sem avanço: realocação em Pair Programming (desvio leve \textless= 24h) + ou fatiamento MoSCoW protegendo os requisitos Must Have (desvio crítico).
-
-
-\subsecao{@@ Seção 4.2 e 4.5: Risk Register e Métricas Quantitativas @@}
-
-\input{../../../assets/capitulo-04/tabelas/registro-riscos.tex}
-
+\tabelaabnt{Quadro Comparativo: Antes vs.~Depois da Revisão de Processos}{CineSoft Solutions (2026)}{tab:comparativo_melhoria}{%
+\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} X X}
+\toprule
+\textbf{Seção / Dimensão} & \textbf{Versão 1.7 (Antes da Melhoria)} & \textbf{Versão 2.0 (Após a Melhoria)} \\
+\midrule
+Seção 4.1: Escopo e Cronograma & Cronograma empírico sem divisão formal de entregas e sem responsáveis nominais. & EAP em 3 níveis, 3 Macroentregas definidas e responsáveis nominais por Sprint. \\
+Seção 4.1: Tratamento de Desvios & Sem procedimento documentado para acompanhamento e contingência de atrasos. & Protocolo claro de 48h no GitHub Projects com pareamento técnico ou fatiamento MoSCoW. \\
+Seção 4.2: Matriz de Riscos & Registro de riscos resumido, sem severidade quantitativa (P×I) e sem ações reativas. & Risk Register com 6 macro-riscos quantificados, mitigação preventiva e contingência. \\
+Seção 4.5: Métricas de Projeto & Ausência de tabela formal de indicadores, metas e ações corretivas de desvio. & 6 métricas objetivas (Lead Time, WIP, testes, taxa de defeitos, escopo e custos). \\
+\bottomrule
+\end{tabularx}%
+}
 
 \subsubsecao{Reavaliação Pós-Melhoria (Verificação da Eficácia Documental)}
 
 Reavaliando as seções \textbf{4.1, 4.2 e 4.5} sob as mesmas quatro questões do diagnóstico inicial, comprova-se a superação integral das lacunas:
 
-\input{../../../assets/capitulo-06/tabelas/diagnostico-processo.tex}
+\tabelaabnt{Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0)}{CineSoft Solutions (2026)}{tab:diagnostico_final}{\input{../../../assets/capitulo-06/tabelas/diagnostico-processo.tex}}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 

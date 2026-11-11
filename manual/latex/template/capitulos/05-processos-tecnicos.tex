@@ -17,18 +17,12 @@ A especificação formal de requisitos da plataforma \textbf{CineDoom} (\href{..
 
 \paragraph{\texorpdfstring{Catálogo Formal de Requisitos Funcionais (\texttt{RF-01} a \texttt{RF-18})}{Catálogo Formal de Requisitos Funcionais (RF-01 a RF-18)}}
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X X}
-
+\tabelaabnt{Catálogo Formal de Requisitos Funcionais (RF-01 a RF-18)}{CineSoft Solutions (2026)}{tab:req_funcionais}{%
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.3cm} >{\fontSemiBold}p{2.6cm} X c p{1.6cm}}
 \toprule
-ID
-Módulo
-Requisito Funcional
-Prioridade
-Macroentrega
- \\
+\textbf{ID} & \textbf{Módulo} & \textbf{Requisito Funcional} & \textbf{Prioridade} & \textbf{Entrega} \\
 \midrule
-
-\bottomrule
 
 \textbf{RF-01} & Identidade \& RBAC & Autenticar usuários via credenciais seguras (\texttt{bcrypt} cost 12) e sessão JWT contendo \texttt{userId}, \texttt{role} (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}) e \texttt{tenantId}. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
 \textbf{RF-02} & Gestão de Operadores & Permitir ao \texttt{GERENTE} criar, listar, atualizar e inativar operadores com perfil \texttt{ATENDENTE} vinculados ao seu cinema (\emph{tenant}), revogando sessões ativas. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
@@ -48,21 +42,19 @@ Macroentrega
 \textbf{RF-16} & Portal do Cliente & Disponibilizar área autenticada \emph{``Minhas Reservas''} permitindo ao espectador consultar seus vouchers e realizar o cancelamento voluntário de reservas pendentes. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
 \textbf{RF-17} & Bilheteria Híbrida & Permitir ao \texttt{ATENDENTE} localizar reservas web no balcão por código localizador (\texttt{CD-XXXX}) ou CPF e confirmar o pagamento presencial, convertendo em \texttt{SOLD}. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
 \textbf{RF-18} & Expiração JIT & Invalidar automaticamente reservas pendentes não pagas quando faltarem menos de 60 minutos para o início da sessão, liberando os assentos em tempo real. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
-\end{tabularx}\end{center}
+\bottomrule
+\end{tabularx}%
+}
 
 
 \paragraph{\texorpdfstring{Catálogo Formal de Requisitos Não Funcionais (\texttt{RNF-01} a \texttt{RNF-06} --- ISO/IEC 25010)}{Catálogo Formal de Requisitos Não Funcionais (RNF-01 a RNF-06 --- ISO/IEC 25010)}}
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X}
-
+\tabelaabnt{Catálogo Formal de Requisitos Não Funcionais (ISO/IEC 25010)}{CineSoft Solutions (2026)}{tab:req_nao_funcionais}{%
+\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.6cm} >{\fontSemiBold}p{3.6cm} X}
 \toprule
-ID
-Característica ISO 25010
-Especificação e Métrica Objetiva
- \\
+\textbf{ID} & \textbf{Característica ISO 25010} & \textbf{Especificação e Métrica Objetiva} \\
 \midrule
-
-\bottomrule
 
 \textbf{RNF-01} & \textbf{Eficiência de Desempenho} & Latência HTTP p95 \textless{} 800\text{ ms} e p99 \textless{} 1.500\text{ ms} nas transações de venda e reserva; sincronização visual do mapa de assentos por polling a cada 2\text{ s}. \\
 \textbf{RNF-02} & \textbf{Confiabilidade e Atomicidade} & Zero ocorrências de venda ou reserva dupla (\emph{double-booking}) sob carga concorrente de 50 threads simultâneas disputando a mesma poltrona. \\
@@ -70,27 +62,22 @@ Especificação e Métrica Objetiva
 \textbf{RNF-04} & \textbf{Usabilidade e Responsividade} & Interface adaptativa para smartphones (a partir de \texttt{320px}) e terminais desktop de bilheteria (\texttt{1024x768+}), aderente às diretrizes WCAG 2.1 Nível AA. \\
 \textbf{RNF-05} & \textbf{Compatibilidade} & Operação integral via navegadores modernos (Chrome, Safari, Edge, Firefox) sem exigência de plugins locais ou aplicativos nativos. \\
 \textbf{RNF-06} & \textbf{Manutenibilidade} & Arquitetura limpa orientada a módulos com tipagem estática estrita (\texttt{tsc\ -\/-noEmit}) e zero dependências circulares (\texttt{ESLint\ import/no-cycle}). \\
-\end{tabularx}\end{center}
+\bottomrule
+\end{tabularx}%
+}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsubsecao{5.1.2 Rastreabilidade de requisitos}
 
 A integridade da engenharia de software da CineSoft Solutions é garantida por uma matriz de rastreabilidade bidirecional que conecta cada stakeholder e requisito de negócio diretamente à implementação no código-fonte e à suíte de testes automatizados:
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X}
-
+\tabelaabnt{Matriz de Rastreabilidade Bidirecional de Requisitos}{CineSoft Solutions (2026)}{tab:matriz_rastreabilidade}{%
+\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.6cm} p{2.2cm} p{1.6cm} X X}
 \toprule
-Necessidade / Stakeholder
-Requisito(s)
-Critério de Aceite
-Caso de Uso / Módulo no Código-Fonte (\texttt{src/})
-Suíte de Teste Automatizado (\texttt{tests/})
- \\
+\textbf{Stakeholder / Nec.} & \textbf{Requisitos} & \textbf{Aceite} & \textbf{Módulo no Código-Fonte} & \textbf{Suíte de Teste (Vitest)} \\
 \midrule
-
-\bottomrule
 
 \texttt{STK-02} / \texttt{NEC-02} (Controle de Acesso e Equipe) & \texttt{RF-01}, \texttt{RF-02}, \texttt{RNF-03} & \texttt{CA-05} (\texttt{AC-5}) & \texttt{src/lib/auth.ts}, \texttt{src/middleware.ts}, \texttt{src/features/identidade/} & \texttt{tests/unit/auth-rbac.test.ts}, \texttt{tests/unit/users-management.test.ts} \\
 \texttt{STK-02} / \texttt{NEC-02} (Gestão de Acervo e Salas) & \texttt{RF-03}, \texttt{RF-04}, \texttt{RF-05} & \texttt{CA-08} (\texttt{AC-8}) & \texttt{src/features/catalogo/}, \texttt{src/features/salas/}, \texttt{src/features/sessoes/} & \texttt{tests/unit/catalog-filmes.test.ts}, \texttt{tests/unit/rooms-layout.test.ts}, \texttt{tests/unit/sessions-prepopulation.test.ts} \\
@@ -102,9 +89,10 @@ Suíte de Teste Automatizado (\texttt{tests/})
 \texttt{STK-02} / \texttt{NEC-02} (Painel de Ocupação e Logs) & \texttt{RF-11} & \texttt{CA-07} (\texttt{AC-7}) & \texttt{src/app/admin/ocupacao/}, \texttt{src/shared/observability/logger.ts} & \texttt{tests/unit/observability-logger.test.ts}, \texttt{tests/unit/attendant-sales-counter.test.ts} \\
 \texttt{STK-04} / \texttt{NEC-05}, \texttt{NEC-06} (Portal e Reserva Web) & \texttt{RF-12}, \texttt{RF-13}, \texttt{RF-14} & \texttt{CA-09}, \texttt{CA-10} & \texttt{src/components/booking/booking-flow.tsx}, \texttt{src/features/reserva/} & \texttt{tests/unit/booking-flow.test.ts}, \texttt{tests/integration/reserva-atomica.test.ts} \\
 \texttt{STK-04}, \texttt{STK-03} / \texttt{NEC-07}, \texttt{NEC-08} (Voucher, Cancelamento Web, Baixa e JIT) & \texttt{RF-15}, \texttt{RF-16}, \texttt{RF-17}, \texttt{RF-18} & \texttt{CA-11} a \texttt{CA-14} & \texttt{src/modules/notificacoes/notification-service.ts}, \texttt{src/app/api/portal/reservas/}, \texttt{src/app/api/bilheteria/reservas/} & \texttt{tests/integration/reserva-atomica.test.ts}, \texttt{tests/unit/film-modal-sessions.test.ts} \\
-\end{tabularx}\end{center}
+\bottomrule
+\end{tabularx}%
+}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsubsecao{\texorpdfstring{5.1.3 Critérios de aceitação (\texttt{CA-01} a \texttt{CA-14})}{5.1.3 Critérios de aceitação (CA-01 a CA-14)}}
@@ -144,33 +132,28 @@ Os 14 critérios de aceitação foram definidos em formato comportamental BDD (\
   \textbf{\texttt{CA-14} (Expiração Just-in-Time a 60 min da Sessão):} \emph{Dado que} uma reserva \texttt{PENDING} não foi paga e faltam menos de 60 minutos para o início do filme, \emph{quando} a sessão é consultada, \emph{então} a reserva expira dinamicamente (\texttt{EXPIRED}) e as poltronas são liberadas para venda imediata no balcão.
 \end{enumerate}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsubsecao{5.1.4 Registro de stakeholders e necessidades elicitadas}
 
 O levantamento de requisitos combinou quatro técnicas complementares de engenharia de requisitos: (1) \textbf{Entrevistas estruturadas} com gestores de salas independentes, (2) \textbf{Observação de campo} do fluxo de fila em bilheterias físicas, (3) \textbf{Prototipação iterativa de alta fidelidade} para validação da experiência mobile/desktop e (4) \textbf{Análise regulatória} do texto da LGPD e do Código de Defesa do Consumidor.
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X}
-
+\tabelaabnt{Mapeamento de Stakeholders e Técnicas de Elicitação}{CineSoft Solutions (2026)}{tab:stakeholders_elicitacao}{%
+\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.5cm} >{\fontSemiBold}p{3.6cm} p{3.2cm} X}
 \toprule
-Código
-Stakeholder (Parte Interessada)
-Técnica de Elicitação Aplicada
-Necessidades Capturadas (\texttt{NEC})
- \\
+\textbf{Código} & \textbf{Parte Interessada} & \textbf{Técnica Aplicada} & \textbf{Necessidades Capturadas (NEC)} \\
 \midrule
-
-\bottomrule
 
 \textbf{STK-01} & \textbf{Proprietários e Diretores de Redes de Cinema (Clientes B2B)} & Entrevistas de negócio e análise de TCO & \texttt{NEC-01}: Eliminar vendas duplas de poltronas, reduzir ociosidade por \emph{no-show} e operar em modelo SaaS com isolamento total dos dados da empresa. \\
 \textbf{STK-02} & \textbf{Gerentes Operacionais de Cinema (\texttt{GERENTE})} & Entrevistas e workshops de fluxo administrativo & \texttt{NEC-02}: Configurar facilmente salas (Clássica, IMAX, VIP), grade de filmes/sessões, equipe de atendentes e acompanhar a lotação em tempo real. \\
 \textbf{STK-03} & \textbf{Atendentes de Bilheteria Física (\texttt{ATENDENTE})} & Observação de operação de guichê e prototipação & \texttt{NEC-03} e \texttt{NEC-08}: Vender ingressos em poucos cliques no mapa visual, localizar reservas web pelo código ou CPF rapidamente e cancelar com segurança. \\
 \textbf{STK-04} & \textbf{Espectadores / Clientes Finais (\texttt{CLIENTE} B2C)} & Prototipação mobile/desktop e testes de usabilidade & \texttt{NEC-05}, \texttt{NEC-06} e \texttt{NEC-07}: Consultar horários pelo celular ou computador, escolher poltronas exatas no mapa da sala, receber voucher e cancelar online se necessário. \\
 \textbf{STK-05} & \textbf{Encarregado de Dados (DPO) e Auditoria Jurídica} & Análise normativa (LGPD Lei 13.709/2018 e ISO 27701) & \texttt{NEC-04}: Garantir criptografia forte de CPF, consentimento explícito, direito à anonimização (Art. 18) e trilha de auditoria imutável por 365 dias. \\
-\end{tabularx}\end{center}
+\bottomrule
+\end{tabularx}%
+}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsecao{5.2 Arquitetura e Design}
@@ -195,7 +178,6 @@ O \textbf{CineDoom} adota a arquitetura de \textbf{Monólito Modular em Next.js 
   \textbf{Camada de Infraestrutura e Persistência Multi-Tenant (\texttt{src/shared/db/prisma.ts}):} Implementa os repositórios Prisma sobre PostgreSQL com extensão automática de contexto (\texttt{AsyncLocalStorage}) que injeta a cláusula \texttt{WHERE\ tenant\_id} em todas as consultas e gerencia a conexão via pooler transacional.
 \end{enumerate}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsubsecao{5.2.2 Diagramas de design}
@@ -242,7 +224,6 @@ O DER especifica a estrutura física das tabelas relacionais, chaves primárias 
 
 \figuracomfonte{capitulo-05/diagramas/diagrama-er-banco.pdf}{0.96\textwidth}{Diagrama Entidade-Relacionamento (DER) do Banco PostgreSQL}{CineSoft Solutions (2026)}{fig:der_banco}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsubsecao{5.2.3 Justificativa das escolhas tecnológicas}
@@ -254,7 +235,6 @@ O stack tecnológico foi selecionado para maximizar a segurança transacional, a
 
 O banco relacional armazena exclusivamente a referência textual (\texttt{poster\_url\ VARCHAR(500)}), mantendo os backups leves e as queries rápidas. Na Macroentrega 1, os pôsteres são servidos via CDN global da Vercel; nas Macroentregas 2 e 3, o upload gerencial utiliza o padrão \emph{Direct-to-Storage} com \emph{Pre-signed URLs} (Vercel Blob / Cloudflare R2).
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsecao{5.3 Implementação e Integração}
@@ -287,7 +267,6 @@ A aplicação conta com uma suíte robusta executada pelo \textbf{Vitest}, total
 
 Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos normativos (ex.: \texttt{feat(auth):\ adicionar\ gerador\ aleatorio\ de\ CPF\ valido\ (Modulo\ 11)} e comentários \texttt{//\ Requisito:\ RF-07\ \textbar{}\ CA-01\ \textbar{}\ ADR-007}), permitindo auditoria imediata no histórico do Git.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsecao{5.4 Verificação, Validação e Transição}
@@ -297,42 +276,38 @@ Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos
 
 A CineSoft Solutions distingue e aplica complementarmente as atividades de \textbf{Verificação} e \textbf{Validação} (Cláusulas 6.4.9 e 6.4.11 da ISO 12207):
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X}
-
+\tabelaabnt{Distinção Conceitual entre Verificação e Validação}{CineSoft Solutions (2026)}{tab:distincao_vv}{%
+\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.0cm} X X}
 \toprule
-Critério de Comparação
-Verificação (\emph{Verification})
-Validação (\emph{Validation})
- \\
+\textbf{Critério de Comparação} & \textbf{Verificação (Verification)} & \textbf{Validação (Validation)} \\
 \midrule
-
-\bottomrule
 
 \textbf{Pergunta Central} & \emph{``Estamos construindo o produto corretamente?''} & \emph{``Estamos construindo o produto certo?''} \\
 \textbf{Foco Principal} & Conformidade técnica com as especificações, ADRs e regras de código & Adequação funcional e de usabilidade às reais necessidades dos cinemas e espectadores \\
 \textbf{Quando Ocorre} & Continuamente em cada commit e Pull Request & Ao final de cada Sprint e na homologação em produção com usuários reais \\
 \textbf{Quem Realiza} & Equipe de engenharia da CineSoft e pipeline automatizado (GitHub Actions) & Stakeholders, operadores de cinema-piloto e espectadores finais reais \\
 \textbf{Exemplos Aplicados no CineDoom} & Compilação TypeScript (\texttt{tsc}), linter \texttt{no-cycle} e execução dos \textbf{770 testes no Vitest} & Testes de aceitação (\emph{UAT}) no ambiente \texttt{cinedoom.vercel.app} com cadastros e reservas reais \\
-\end{tabularx}\end{center}
+\bottomrule
+\end{tabularx}%
+}
 
 
 \paragraph{\texorpdfstring{Critérios Formais de Entrada e Saída de V\&V (\emph{Entry \& Exit Criteria})}{Critérios Formais de Entrada e Saída de V\&V (Entry \& Exit Criteria)}}
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X}
-
+\tabelaabnt{Critérios Formais de Entrada e Saída de V\&V}{CineSoft Solutions (2026)}{tab:criterios_vv}{%
+\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} X X}
 \toprule
-Fase de V\&V
-Critérios de Entrada (\emph{Entry Criteria})
-Critérios de Saída (\emph{Exit Criteria})
- \\
+\textbf{Fase de V\&V} & \textbf{Critérios de Entrada (Entry Criteria)} & \textbf{Critérios de Saída (Exit Criteria)} \\
 \midrule
-
-\bottomrule
 
 \textbf{1. Testes Unitários e de Integração (CI)} & Código implementado em branch de feature e schema Prisma atualizado. & 100\% dos 770 testes passando, zero erros de linter/tipagem e cobertura de 100\% nas regras críticas. \\
 \textbf{2. Homologação em Staging} & Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. & Fluxos ponta a ponta (cadastro → reserva → baixa no balcão → painel gerencial) executados sem falhas. \\
 \textbf{3. Validação e Aceite em Produção (\emph{UAT})} & Ambiente de produção sincronizado na branch \texttt{main} com banco PostgreSQL ativo. & Operação validada por usuários externos reais sem ocorrência de \emph{double-booking} ou erros HTTP 500. \\
-\end{tabularx}\end{center}
+\bottomrule
+\end{tabularx}%
+}
 
 
 \subsubsecao{5.4.2 Critérios de aceitação por stakeholder}
@@ -352,18 +327,12 @@ Critérios de Saída (\emph{Exit Criteria})
 
 Todos os cenários de aceitação da Macroentrega 1 (\texttt{v1.0.0}) foram executados e homologados com usuários reais no ambiente de produção (\texttt{https://cinedoom.vercel.app/}):
 
-\begin{center}\small\begin{tabularx}{\textwidth}{X X X X X}
-
+\tabelaabnt{Relatório de Testes de Aceitação e Homologação em Produção}{CineSoft Solutions (2026)}{tab:relatorio_uat}{%
+\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.6cm} p{1.6cm} X X c}
 \toprule
-ID Cenário
-Critério(s)
-Descrição do Cenário Homologado
-Evidência Observada em Produção
-Status
- \\
+\textbf{Cenário} & \textbf{Critério} & \textbf{Descrição do Cenário} & \textbf{Evidência em Produção} & \textbf{Status} \\
 \midrule
-
-\bottomrule
 
 \textbf{UAT-01} & \texttt{CA-10} & Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. & 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco Supabase. & \textbf{Aprovado} \\
 \textbf{UAT-02} & \texttt{CA-09}, \texttt{CA-11} & Seleção de poltronas no mapa 2D (mobile e desktop), reserva atômica e geração de voucher. & 11 reservas confirmadas (múltiplos ingressos de R 30 a R 75) sem falhas de layout. & \textbf{Aprovado} \\
@@ -371,14 +340,15 @@ Status
 \textbf{UAT-04} & \texttt{CA-12} & Consulta de histórico em \emph{``Minhas Reservas''} e cancelamento voluntário pelo cliente. & Liberação imediata das poltronas para \texttt{AVAILABLE} após cancelamento web. & \textbf{Aprovado} \\
 \textbf{UAT-05} & \texttt{CA-13}, \texttt{CA-14} & Busca de reserva no balcão por código/CPF, baixa para \texttt{SOLD} e expiração JIT a 60 min. & Conversão instantânea de reserva em ingresso emitido e liberação de vencidas. & \textbf{Aprovado} \\
 \textbf{UAT-06} & \texttt{CA-03}, \texttt{CA-06} & Cancelamento de ingresso no guichê com justificativa e anonimização LGPD Art. 18. & Trigger PostgreSQL bloqueando deleção da auditoria e PII anonimizado \emph{in-place}. & \textbf{Aprovado} \\
-\end{tabularx}\end{center}
+\bottomrule
+\end{tabularx}%
+}
 
 
 \subsubsecao{5.4.4 Plano de transição/implantação do sistema e procedimento de rollback}
 
 A transição para produção segue um protocolo automatizado e seguro: 1. \textbf{Pré-Deploy e Migração:} Execução da pipeline no GitHub Actions validando \texttt{prisma\ migrate\ deploy} e os 770 testes antes de autorizar o build na Vercel. 2. \textbf{Smoke Test Pós-Implantação:} Verificação imediata da rota de saúde (\texttt{/api/health}), carregamento do catálogo público e teste de autenticação em produção. 3. \textbf{Procedimento Formal de Rollback (Tempo de Recuperação \textless{} 5\text{ min}):} - \emph{Camada de Aplicação:} Caso qualquer anomalia P1 seja detectada após o deploy, o líder de DevOps aciona o recurso \textbf{Instant Rollback} no painel da Vercel (ou reverte o commit em \texttt{main}), restaurando o build imutável anterior em menos de 30 segundos sem tempo de inatividade (\emph{zero-downtime}). - \emph{Camada de Banco de Dados:} Todas as migrações da Macroentrega 1 são retrocompatíveis (\emph{expand-and-contract}). Em caso de corrupção crítica, aciona-se a restauração \emph{Point-in-Time (PITR)} do PostgreSQL gerenciado.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsecao{5.5 Operação, Manutenção e Descontinuação}
@@ -398,4 +368,3 @@ A CineSoft Solutions classifica e executa a manutenção contínua da plataforma
 
 Caso um cinema cliente encerre seu contrato SaaS ou o produto seja descontinuado no futuro, o processo de encerramento (Cláusula 6.4.14) assegura conformidade legal estrita: 1. \textbf{Notificação Prévia e Exportação Portável:} Comunicação formal com 60 dias de antecedência e entrega de arquivo criptografado (JSON/CSV e dump SQL filtrado por \texttt{tenant\_id}) contendo todo o histórico operacional e contábil do cinema. 2. \textbf{Expurgo e Anonimização LGPD:} Execução em lote do \texttt{AnonymizationService} para expurgar permanentemente todos os dados pessoais identificáveis (nomes, e-mails e CPFs cifrados) dos espectadores daquele tenant, preservando apenas estatísticas agregadas não identificáveis até a desativação definitiva da instância.
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
