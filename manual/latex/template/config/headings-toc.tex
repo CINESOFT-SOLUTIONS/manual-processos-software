@@ -69,6 +69,22 @@
   \vspace{12pt}%
 }
 
+% Padronização dos Títulos Pré-Textuais nativos (Figuras, Tabelas e Sumário)
+\makeatletter
+\renewcommand{\listoffigures}{%
+  \tituloSecaoPrincipal{\listfigurename}%
+  \@starttoc{lof}%
+}
+\renewcommand{\listoftables}{%
+  \tituloSecaoPrincipal{\listtablename}%
+  \@starttoc{lot}%
+}
+\renewcommand{\tableofcontents}{%
+  \tituloSecaoPrincipal{\contentsname}%
+  \@starttoc{toc}%
+}
+\makeatother
+
 % -----------------------------------------------------------------------------
 % 4. ESTILO DO SUMÁRIO (SÓBRIO COM LINHA FINA CONTÍNUA)
 % -----------------------------------------------------------------------------

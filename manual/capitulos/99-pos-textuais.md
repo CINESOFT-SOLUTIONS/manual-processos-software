@@ -22,3 +22,4 @@
 - **NEON INC.** *Database Architecture and Serverless Postgres*. Disponível em: <https://neon.tech>. Acesso em: 09 nov. 2026.
 - **RESEND INC.** *Email API for Developers and Transactional Workflows*. Disponível em: <https://resend.com>. Acesso em: 09 nov. 2026.
 - **PRISMA DATA INC.** *Prisma ORM Schema Reference and Concurrency*. Disponível em: <https://prisma.io>. Acesso em: 09 nov. 2026.
+
