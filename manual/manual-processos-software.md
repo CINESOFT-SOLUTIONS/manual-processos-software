@@ -548,15 +548,15 @@ A operação contínua e comercial da plataforma CineDoom apoia-se em provedores
 
 **Tabela 6 – Identificação dos Fornecedores e Parceiros Relevantes**
 
-| Fornecedor / Parceiro | Categoria e Serviço Prestado | Plano e Estrutura de Custo Comercial | Impacto Operacional, Disponibilidade e Mitigação de Riscos |
+| Fornecedor | Categoria e serviço | Plano e custo comercial | Impacto e mitigação de riscos |
 | :--- | :--- | :--- | :--- |
-| **Vercel Inc.** | **PaaS & CDN Edge:** Next.js 14 e execução serverless | **Vercel Pro:** **US$ 20/mês** por dev (1 TB banda; piloto Hobby grátis) | SLA 99,99% na borda. Mitigação: build determinístico e rollback instantâneo em 1 clique. |
-| **Supabase / Neon** | **DBaaS PostgreSQL:** Persistência ACID e connection pooling | **Plano Pro:** **US$ 25 a US$ 69/mês** (compute dedicado e backups PITR) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma versionadas. |
-| **Resend Technologies** | **E-mail Transacional:** API de entrega de vouchers (DKIM/SPF) | **Resend Pro:** **US$ 20/mês** (franquia de 50.000 e-mails/mês) | Impacta recebimento de voucher (`CA-11`). Mitigação: exibição imediata em tela e histórico. |
-| **Axiom Inc.** | **Log Drain:** Observabilidade e retenção legal para auditoria | **Axiom Cloud:** **US$ 25/mês** (1 TB/mês; retenção de 365 dias) | Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII no logger. |
-| **GitHub Inc.** | **CI/CD & Git:** Repositórios privados e GitHub Actions | **GitHub Team:** **US$ 4/usuário/mês** (3.000 min Actions e branch rules) | Sustenta testes automatizados. Mitigação: bloqueio de merge sem aprovação na esteira. |
-| **Stripe / Pagar.me** *(M2)* | **Gateway Financeiro:** Checkout online PIX e cartão PCI-DSS | **Taxa Transacional:** **0,99% (PIX) / 3,99% + R$ 0,39** por cartão | Certificação PCI-DSS. Mitigação: webhooks idempotentes e fallback presencial no balcão. |
-| **Focus NFe** *(M3)* | **Mensageria Fiscal:** Emissão de NFC-e junto às SEFAZ | **Plano Empresarial:** **R$ 149/mês** (até 2.000 notas fiscais/mês) | Conformidade tributária. Mitigação: fila assíncrona com contingência offline. |
+| **Vercel Inc.** | **PaaS & CDN Edge:** Next.js 14 e serverless | **US$ 20/mês** por dev (Vercel Pro; piloto Hobby grátis) | SLA 99,99% na borda. Mitigação: build determinístico e rollback instantâneo. |
+| **Supabase / Neon** | **DBaaS PostgreSQL:** Persistência ACID e pooling | **US$ 25 a US$ 69/mês** (Plano Pro compute dedicado) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma. |
+| **Resend** | **E-mail transacional:** API de vouchers (DKIM/SPF) | **US$ 20/mês** (franquia de 50.000 e-mails/mês) | Impacta envio de voucher (`CA-11`). Mitigação: exibição imediata em tela. |
+| **Axiom Inc.** | **Log drain:** Observabilidade e auditoria LGPD | **US$ 25/mês** (1 TB/mês; retenção de 365 dias) | Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII. |
+| **GitHub Inc.** | **CI/CD & Git:** Repositórios e GitHub Actions | **US$ 4/usuário/mês** (Plano Team e branch rules) | Sustenta testes automatizados. Mitigação: bloqueio de merge sem testes. |
+| **Stripe / Pagar.me** *(M2)* | **Gateway financeiro:** Checkout PIX e cartão | **0,99% PIX / 3,99% + R$ 0,39 Cartão** (sem mensalidade) | Certificação PCI-DSS. Mitigação: webhooks idempotentes e balcão físico. |
+| **Focus NFe** *(M3)* | **Mensageria fiscal:** Emissão de NFC-e SEFAZ | **R$ 149/mês** (até 2.000 notas fiscais/mês) | Conformidade tributária. Mitigação: fila assíncrona com contingência offline. |
 
 *Fonte: CineSoft Solutions (2026).*
 
