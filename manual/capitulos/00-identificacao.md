@@ -1,30 +1,18 @@
 # Manual de Processos de Software
 
-### Estudo de Caso: Sistema CineDoom (Plataforma de Gestão Operacional de Cinemas)
+## Capa
 
----
+**Manual de Processos de Software**
 
-## 1. Identificação da Equipe e Instituição (Capa e Folha de Rosto)
+**Grupo:** Doomscoders
 
-**Empresa / Equipe:** CineSoft Solutions  
-**Produto:** CineDoom — Plataforma de Gestão Operacional e Bilheteria de Cinemas  
+- Carlos Eduardo Freire da Silva
+- Gabriel Henrique Lourenço Dias
+- Kayque Vicente Silva
+- Yury Nogueira de Oliveira Silva
 
-**Membros da Equipe (Engenheiros de Software):**
-- **Carlos Eduardo Freire da Silva** — Engenheiro de Backend, Segurança & DevOps
-- **Gabriel Henrique Lourenço Dias** — Tech Lead & Arquiteto de Software
-- **Kayque Vicente Silva** — Engenheiro de Qualidade (QA) & Gerente de Projetos
-- **Yury Nogueira de Oliveira Silva** — Engenheiro de Requisitos, UX & Compliance
-
-**Identificação Acadêmica e Institucional:**
-- **Instituição:** Universidade Federal de Goiás (UFG) — Instituto de Informática (INF)
-- **Curso:** Bacharelado em Engenharia de Software
-- **Disciplina:** Processos de Engenharia de Software
-- **Docente Orientadora:** Profa. Dra. Juliana Pereira de Souza Zinader
-- **Período Letivo:** 2026/2
-- **Local e Data:** Goiânia, Novembro de 2026
-
-**Natureza do Trabalho Acadêmico:**  
-*Manual de Processos de Software apresentado à disciplina de Processos de Engenharia de Software do curso de Bacharelado em Engenharia de Software da Universidade Federal de Goiás (UFG), como requisito de avaliação para a obtenção da nota final integral da disciplina, referente ao Projeto Integrador.*
+**Orientadora:** Profa. Dra. Juliana Pereira de Souza Zinader  
+**Referência:** ISO 12207:2017
 
 ---
 
@@ -32,9 +20,27 @@
 
 ---
 
-## 2. Histórico de Versões do Documento
+## Folha de Rosto
 
-> **Documento Controlado:** Qualquer alteração neste manual deve ser formalmente registrada nesta tabela e, quando impactar definições de negócio, arquitetura ou escopo, refletida no catálogo de decisões de arquitetura e especificações do projeto (`specs/`).
+- Carlos Eduardo Freire da Silva
+- Gabriel Henrique Lourenço Dias
+- Kayque Vicente Silva
+- Yury Nogueira de Oliveira Silva
+
+**Manual de Processos de Software**
+
+Manual de Processos de Software apresentado à disciplina de Processos de Engenharia de Software do curso de Bacharelado em Engenharia de Software da Universidade Federal de Goiás (UFG), como requisito de avaliação para a obtenção da nota final integral da disciplina, referente ao Projeto Integrador.
+
+**Orientadora:** Profª. Dra. Juliana Pereira de Souza Zinader  
+**Local e Ano:** Goiânia, 2026
+
+---
+
+<div style="page-break-after: always;"></div>
+
+---
+
+## Histórico de Versões do Documento
 
 | Data | Versão | Descrição Sucinta da Alteração |
 | :---: | :---: | :--- |
@@ -42,7 +48,7 @@
 | 16/09/2026 | Versão 1.1 | Elaboração dos itens do Capítulo 1 (Apresentação do Software). |
 | 24/09/2026 | Versão 1.2 | Alinhamento dos Capítulos 1, 2 e 3 à norma ISO/IEC/IEEE 12207:2021. |
 | 24/09/2026 | Versão 1.3 | Revisão técnica: correção de contradições e justificativas de aquisição. |
-| 08/10/2026 | Versão 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento Técnico). |
+| 08/10/2026 | Versão 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento). |
 | 17/10/2026 | Versão 1.5 | Reestruturação da capa e padronização do controle documental. |
 | 22/10/2026 | Versão 1.6 | Padronização formal da estrutura editorial dos Capítulos 1 a 5. |
 | 23/10/2026 | Versão 1.7 | Incorporação do Portal do Cliente, reserva ACID, e-mail e LGPD (ADR-012). |
@@ -56,7 +62,7 @@
 
 ---
 
-## 3. Lista de Figuras
+## Lista de Figuras
 
 | Identificador | Título da Figura |
 | :---: | :--- |
@@ -75,7 +81,7 @@
 
 ---
 
-## 4. Lista de Tabelas
+## Lista de Tabelas
 
 | Identificador | Título da Tabela |
 | :---: | :--- |
@@ -115,7 +121,7 @@
 
 ---
 
-## 5. Lista de Abreviaturas e Siglas
+## Lista de Abreviaturas e Siglas
 
 | Sigla | Significado Completo | Sigla | Significado Completo |
 | :---: | :--- | :---: | :--- |
@@ -144,7 +150,7 @@
 
 ---
 
-## 6. Sumário
+## Sumário
 
 - [Capítulo 1 – Apresentação do software](#capítulo-1--apresentação-do-software)
   - [1.1 Nome e descrição do software](#11-nome-e-descrição-do-software)
