@@ -1,8 +1,8 @@
 {\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}L{3.2cm} C{1.8cm} Y >{\arraybackslash}L{3.2cm}}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\raggedright\arraybackslash}m{3.4cm} >{\centering\arraybackslash}m{2.0cm} Y >{\raggedright\arraybackslash}m{3.2cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Elemento do sistema} & \textbf{Adquirir pronto?} & \textbf{Justificativa} & \textbf{Possível fornecedor} \\
+\textbf{Elemento do Sistema} & \textbf{Adquirir Pronto?} & \textbf{Justificativa Arquitetural} & \textbf{Possível Fornecedor} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
 Motor de Bilheteria e Reserva Atômica ACID & \textbf{Não} & Diferencial competitivo central. Exige controle estrito sobre locks pessimistas (\texttt{SELECT FOR UPDATE}) para impedir venda dupla entre web e guichê físico. & Desenvolvimento interno (CineSoft Solutions) \\
