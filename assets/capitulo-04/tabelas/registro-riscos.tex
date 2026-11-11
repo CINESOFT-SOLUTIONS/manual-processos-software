@@ -1,6 +1,6 @@
 {\footnotesize
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{1.4cm} p{3.2cm} c c c X}
-\arrayrulecolor{BrandNavy}\toprule
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{ID} & \textbf{Risco Identificado} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Prior.} & \textbf{Estratégia de Mitigação e Resposta} \\
 \midrule
@@ -18,6 +18,6 @@
 \textbf{R-06} & Indisponibilidade do Provedor de E-mail & Baixa & Médio & \textbf{Médio} & Desacoplamento via interface \texttt{EmailProvider}, persistência do voucher no banco e fallback para \texttt{ConsoleLogger}. \\
 \midrule
 \textbf{R-07} & Dependência de Gateway de Pagamento Online & Alta & Alto & \textbf{Alto} & Na M1, pagamento presencial no balcão; na M2, Stripe/Pagar.me com webhooks idempotentes. \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }

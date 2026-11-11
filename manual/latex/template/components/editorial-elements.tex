@@ -10,6 +10,7 @@
 \usepackage{colortbl}
 \usepackage{array}
 \usepackage{float}
+\usepackage[export]{adjustbox}
 
 % Marcador de lista limpo para as caixas temáticas
 \newcommand{\itemcaixa}[1]{%
@@ -59,19 +60,19 @@
 \setcounter{editorialfig}{0}
 
 \newcommand{\figuracomfonte}[5]{%
-  \par\vspace{10pt}%
+  \par\vspace{8pt}%
   \noindent\begin{minipage}{\textwidth}
     \refstepcounter{editorialfig}%
     \label{#5}%
     \addcontentsline{lof}{figure}{\protect\numberline{\theeditorialfig}#3}%
     \centering
-    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandBodyText}{\fontExtraBold Figura \theeditorialfig} -- #3}\par
-    \vspace{6pt}%
-    \includegraphics[width=#2]{#1}\par
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandNavy}{\textbf{Figura \theeditorialfig}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #3}}\par
     \vspace{5pt}%
-    {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #4}\par
+    \includegraphics[max width=#2, max height=0.38\textheight, keepaspectratio]{#1}\par
+    \vspace{4pt}%
+    {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #4\par}%
   \end{minipage}%
-  \par\vspace{10pt}%
+  \par\vspace{8pt}%
 }
 
 \newcommand{\figuratikz}[4]{%
@@ -134,17 +135,17 @@
 }
 
 \newcommand{\tabelaabnt}[4]{%
-  \par\vspace{8pt}%
+  \par\vspace{6pt}%
   \noindent\begin{minipage}{\textwidth}
     \refstepcounter{editorialtabela}%
     \label{#3}%
     \addcontentsline{lot}{table}{\protect\numberline{\theeditorialtabela}#1}%
     \centering
-    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandNavy}{\textbf{Tabela \theeditorialtabela}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #1}}\par
-    \vspace{5pt}%
+    {\fontsize{9.5pt}{12pt}\selectfont\textcolor{BrandNavy}{\textbf{Tabela \theeditorialtabela}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #1}}\par
+    \vspace{4pt}%
     \begingroup
-      \renewcommand{\arraystretch}{1.32}%
-      \setlength{\tabcolsep}{5pt}%
+      \renewcommand{\arraystretch}{1.18}%
+      \setlength{\tabcolsep}{4.5pt}%
       #4\par
     \endgroup
     \vspace{3pt}%

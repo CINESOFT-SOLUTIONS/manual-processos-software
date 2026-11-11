@@ -23,7 +23,7 @@ A estratégia de produto da CineSoft Solutions divide o ciclo de vida do CineDoo
 \tabelaabnt{Escopo e Marcos Comerciais por Macroentrega (Milestones)}{CineSoft Solutions (2026)}{tab:marcos_macroentregas}{%
 {\footnotesize
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} c X p{2.2cm} p{1.8cm} p{2.0cm}}
-\arrayrulecolor{BrandNavy}\toprule
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Marco (Milestone)} & \textbf{Versão} & \textbf{Escopo Funcional e Infraestrutura} & \textbf{Responsável} & \textbf{Prazo} & \textbf{Status} \\
 \midrule
@@ -33,7 +33,7 @@ Macroentrega 1 (MVP Operacional) & \texttt{v1.0.0} & Núcleo Multi-tenant, RBAC 
 Macroentrega 2 (Escala \& Pagamentos) & \texttt{v2.0.0} & Gateway financeiro online (PIX dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do \textbf{Resend Pro} (\texttt{@cinedoom.com.br}), upgrade para \textbf{Supabase Pro} (PITR e réplicas) e \textbf{Vercel Pro}. & \textbf{Carlos Eduardo} & Dez/2026 -- Jan/2027 & \textbf{Planejado (Próxima Fase)} \\
 \midrule
 Macroentrega 3 (Enterprise \& Fiscal) & \texttt{v3.0.0} & Emissão fiscal eletrônica automatizada (\textbf{NFC-e / SAT} via Focus NFe / SEFAZ), bomboniere e estoque, fidelidade, \textbf{Console Global de Tenants} e BI financeiro. & \textbf{Kayque V. \& Yury N.} & Fev/2027 -- Abr/2027 & \textbf{Backlog Evolutivo} \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
@@ -46,7 +46,7 @@ A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenh
 \tabelaabnt{Cronograma Executivo e Pacotes de Trabalho por Sprint}{CineSoft Solutions (2026)}{tab:cronograma_sprints}{%
 {\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.0cm} X >{\fontSemiBold}p{2.6cm} p{1.5cm} p{1.5cm}}
-\arrayrulecolor{BrandNavy}\toprule
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Sprint / Iteração} & \textbf{Pacotes de Trabalho e Requisitos Entregues} & \textbf{Responsáveis} & \textbf{Início} & \textbf{Término} \\
 \midrule
@@ -56,7 +56,7 @@ Sprint 1 --- Fundação, Arquitetura e Segurança & Setup Next.js 14/TypeScript 
 Sprint 2 --- Back-office, Salas e Bilheteria ACID & Design System e mapa interativo 2D (\texttt{\#17}), CRUDs de filmes, salas e sessões com pré-população (\texttt{\#6}, \texttt{\#7}, \texttt{\#8}), polling a 2s (\texttt{\#9}), venda atômica com \texttt{SELECT\ FOR\ UPDATE} (\texttt{\#10}) e gestão de atendentes (\texttt{\#13}). & \textbf{Gabriel L.} \& \textbf{Carlos E.} (QA: \textbf{Kayque V.}) & 30/10/2026 & 04/11/2026 \\
 \midrule
 Sprint 3 --- Portal do Cliente, LGPD e QA & Portal público e reserva web com expiração JIT (\texttt{\#21}), autenticação de espectador (\texttt{\#22}), \texttt{NotificationService} (\texttt{\#23}), cancelamento auditado (\texttt{\#11}), painel de ocupação (\texttt{\#12}), anonimização (\texttt{\#14}) e suíte de 770 testes (\texttt{\#18}, \texttt{\#19}). & \textbf{Gabriel, Carlos, Kayque \& Yury} & 05/11/2026 & 09/11/2026 \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
@@ -71,8 +71,6 @@ O plano é viável com os recursos disponíveis: a equipe de \textbf{4 engenheir
 \subsubsecao{Rotina de Acompanhamento e Tratamento de Desvios e Atrasos}
 
 Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle: 1. \textbf{Monitoramento Diário no Quadro Kanban (GitHub Projects):} Todo cartão de tarefa deve conter obrigatoriamente \textbf{responsável nominal}, \textbf{data-limite (deadline)}, \textbf{estimativa} e \textbf{critério de aceite}. Tarefas paradas na coluna \emph{In Progress} por mais de \textbf{48 horas} sem commits ou atualização de status acionam um alerta automático de impedimento (\emph{blocker}). 2. \textbf{Revisão Semanal de Sprint e Burndown:} Ao final de cada semana, o Gerente de Projeto (\textbf{Kayque Vicente}) e o Tech Lead (\textbf{Gabriel Lourenço}) auditam o percentual de pacotes concluídos versus planejados. 3. \textbf{Protocolo de Tratamento de Desvios e Atrasos:} - \textbf{Desvio Leve (atraso ≤ 24h em tarefa não crítica):} Realocação de par técnico (\emph{pair programming}) entre os desenvolvedores de backend e frontend para destravar a entrega dentro da mesma Sprint. - \textbf{Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):} Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos \emph{Must Have} de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsecao{4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas}
@@ -149,8 +147,6 @@ A CineSoft Solutions adota um fluxo estruturado em três branches permanentes (\
   \textbf{Conventional Commits:} Mensagens padronizadas no formato \texttt{\textless{}tipo\textgreater{}(\textless{}escopo\textgreater{}):\ \textless{}descrição\ concisa\textgreater{}} (tipos permitidos: \texttt{feat}, \texttt{fix}, \texttt{refactor}, \texttt{test}, \texttt{docs}, \texttt{chore}, \texttt{ci}), garantindo geração automatizada de \emph{changelogs} e rastreabilidade direta com as issues.
 \end{itemize}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
 
 \subsecao{4.4 Registro de decisões técnicas relevantes (ADRs)}
 
@@ -164,7 +160,7 @@ Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions 
 \tabelaabnt{Matriz de Decisão Ponderada (Pugh Matrix) — Arquitetura Base}{CineSoft Solutions (2026)}{tab:pugh_arquitetura}{%
 {\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.8cm} c X X X}
-\arrayrulecolor{BrandNavy}\toprule
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Critério de Avaliação} & \textbf{Peso} & \textbf{Alt. A: Monólito (Adotado)} & \textbf{Alt. B: Microsserviços} & \textbf{Alt. C: SPA + Backend VM} \\
 \midrule
@@ -181,7 +177,7 @@ Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions 
 \midrule
 \rowcolor{BrandTableHeader}
 \textbf{Pontuação Ponderada Final} & \textbf{100\%} & \textbf{5,00 (Vencedora — Adotada)} & \textbf{2,10 (Descartada)} & \textbf{3,65 (Descartada)} \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
@@ -192,9 +188,11 @@ Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions 
 Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralmente em \texttt{specs/adrs/} e sintetizadas abaixo com seus cinco elementos formais:
 
 \tabelaabnt{Quadro Sinóptico de Decisões de Arquitetura (ADR-001 a ADR-012)}{CineSoft Solutions (2026)}{tab:adrs_sinopse}{%
-{\footnotesize
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.8cm} p{1.4cm} X X X}
-\arrayrulecolor{BrandNavy}\toprule
+{\fontsize{7.5pt}{9.2pt}\selectfont
+\renewcommand{\arraystretch}{1.05}%
+\setlength{\tabcolsep}{3.5pt}%
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.6cm} p{1.3cm} X X X}
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Decisão (ADR)} & \textbf{Status} & \textbf{Contexto do Problema} & \textbf{Solução Adotada} & \textbf{Consequências / Trade-offs} \\
 \midrule
@@ -222,7 +220,7 @@ Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralment
 \textbf{ADR-011:} Log Drain Axiom (365 Dias) & Aprovada & Retenção legal de logs de acesso por 1 ano fora do limite efêmero. & Exportação de logs estruturados em JSON para Axiom com retenção de 1 ano. & (+) Conformidade legal sem inflar o banco; (-) Dependência de telemetria externa. \\
 \midrule
 \textbf{ADR-012:} Portal com Expiração JIT & Aprovada & Reservas online sem gateway de pagamento e sem assentos travados. & Expiração \emph{Just-in-Time} na leitura e transação balcão (limite 60 min). & (+) Precisão imediata sem cronjobs externos; (-) Verificação embutida nas queries. \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
@@ -235,7 +233,7 @@ O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quan
 \tabelaabnt{Indicadores e Métricas de Monitoramento do Projeto}{CineSoft Solutions (2026)}{tab:metricas_projeto}{%
 {\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{2.8cm} p{3.2cm} p{2.2cm} p{2.4cm} X}
-\arrayrulecolor{BrandNavy}\toprule
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Categoria} & \textbf{Indicador Objetivo} & \textbf{Meta} & \textbf{Resultado (M1)} & \textbf{Ação / Monitoramento} \\
 \midrule
@@ -251,7 +249,7 @@ Métrica de Qualidade & Densidade de Defeitos & 0 defeitos críticos & 0 defeito
 Métrica de Progresso & Cumprimento de Escopo (M1) & 100\% dos RF-01 a RF-18 & 18/18 RFs e 14/14 ACs & Auditado na Matriz de Rastreabilidade. \\
 \midrule
 Métrica de Custo & OPEX Mensal dos Serviços Base & $\le$ US\$ 90/mês (M2/M3) & US\$ 0 na Macroentrega 1 & Revisão mensal de faturas de Vercel, Neon e Axiom. \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }

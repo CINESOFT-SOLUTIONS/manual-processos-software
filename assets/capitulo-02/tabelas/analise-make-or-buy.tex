@@ -1,6 +1,8 @@
-{\footnotesize
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} c X p{3.2cm}}
-\arrayrulecolor{BrandNavy}\toprule
+{\fontsize{7.5pt}{9.2pt}\selectfont
+\renewcommand{\arraystretch}{1.05}%
+\setlength{\tabcolsep}{3.5pt}%
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.0cm} c X p{3.0cm}}
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Elemento do Sistema} & \textbf{Adquirir?} & \textbf{Justificativa Técnica e Estratégica} & \textbf{Provedor / Abordagem} \\
 \midrule
@@ -28,6 +30,6 @@ Observabilidade e Retenção Legal de Logs & \textbf{Sim} & A retenção imutáv
 Gateway de Pagamento Online (Macroentrega 2) & \textbf{Sim} & Processar cartões e PIX exige certificação internacional PCI-DSS Nível 1 e antifraude dedicado, inviáveis para internalização. & \textbf{Stripe / Pagar.me} \\
 \midrule
 Motor de Mensageria Fiscal NFC-e (Macroentrega 3) & \textbf{Sim} & A comunicação com webservices da SEFAZ sofre constantes mudanças tributárias; API terceirizada abstrai contingência e certificado A1. & \textbf{Focus NFe / PlugNotas} \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}
 }

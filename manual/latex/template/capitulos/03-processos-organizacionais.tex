@@ -31,8 +31,6 @@ As cerimônias operacionais da equipe compreendem: 1. \textbf{Sprint Planning:} 
   \textbf{Adaptabilidade a Mudanças Regulatórias e de Mercado:} A abordagem iterativa permite incorporar ajustes de usabilidade mobile, políticas de privacidade da LGPD e novos modelos de salas (IMAX, VIP) sem retrabalho arquitetural.
 \end{enumerate}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
 
 \subsecao{3.2 Inventário de infraestrutura e ferramentas necessárias}
 
@@ -41,7 +39,7 @@ A gestão de infraestrutura (Cláusula 6.2.2) assegura que a CineSoft Solutions 
 \tabelaabnt{Inventário de Infraestrutura e Ferramentas}{CineSoft Solutions (2026)}{tab:infra_ferramentas}{%
 {\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.2cm} >{\fontSemiBold}p{4.0cm} X}
-\arrayrulecolor{BrandNavy}\toprule
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Categoria} & \textbf{Ferramenta / Infraestrutura} & \textbf{Finalidade no Projeto} \\
 \midrule
@@ -59,7 +57,7 @@ Design e Prototipação & Figma + Tailwind CSS + Lucide & Prototipação de alta
 Testes e Qualidade & Vitest + ESLint + TypeScript 5 & Execução rápida de testes unitários, de integração e de concorrência (50 threads simultâneas), análise estática de código e prevenção de dependências circulares. \\
 \midrule
 Observabilidade e Mensageria & Axiom Cloud + Resend API & Ingestão contínua de logs estruturados com retenção legal de 365 dias (LGPD) e despacho transacional de vouchers de reserva por e-mail. \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
@@ -89,8 +87,6 @@ A gestão de portfólio (Cláusula 6.2.3) avalia o alinhamento do \textbf{CineDo
   \end{itemize}
 \end{itemize}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
 
 \subsecao{3.4 Papéis, competências e plano de capacitação (RACI)}
 
@@ -102,7 +98,7 @@ A gestão de recursos humanos (Cláusula 6.2.4) estrutura os papéis técnicos d
 \tabelaabnt{Composição da Equipe e Competências Técnicas Requeridas}{CineSoft Solutions (2026)}{tab:equipe_competencias}{%
 {\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}}p{3.8cm} p{3.8cm} X}
-\arrayrulecolor{BrandNavy}\toprule
+\arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Integrante} & \textbf{Cargo na CineSoft} & \textbf{Competências Técnicas no Stack} \\
 \midrule
@@ -114,7 +110,7 @@ Carlos Eduardo Freire da Silva & \textbf{Engenheiro de Backend, Segurança \& De
 Kayque Vicente Silva & \textbf{Engenheiro de Qualidade (QA) \& GP} & Gestão ágil de projetos (ISO 12207 / MPS.BR), análise de riscos, automação de testes no Vitest, verificação e validação (V\&V). \\
 \midrule
 Yury Nogueira de Oliveira Silva & \textbf{Engenheiro de Requisitos, UX \& Compliance} & Engenharia de requisitos (MoSCoW, BDD), modelagem C4/UML, modelagem STRIDE, UI/UX e auditoria de processos. \\
-\arrayrulecolor{BrandNavy}\bottomrule
+\arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
@@ -132,8 +128,6 @@ Conforme as diretrizes de governança organizacional, a tabela abaixo relaciona 
 \subsubsecao{Plano de Capacitação Técnica Contínua}
 
 Para suprir lacunas técnicas e manter a alta produtividade ao longo das três Macroentregas, a CineSoft Solutions executa trilhas internas de capacitação prática (\emph{hands-on workshops}): 1. \textbf{Concorrência e Isolamento em Bancos Relacionais:} Treinamento em bloqueios pessimistas (\texttt{SELECT\ ...\ FOR\ UPDATE}), prevenção de \emph{deadlocks} por ordenação determinística de chaves e configuração de \emph{connection pooling} com Supavisor/PgBouncer. 2. \textbf{Segurança Aplicada e Engenharia de Privacidade (LGPD):} Capacitação em criptografia simétrica autenticada (\texttt{AES-256-GCM}), indexação cega por \texttt{HMAC-SHA256} e técnicas de anonimização irreversível \emph{in-place}. 3. \textbf{Arquitetura Serverless e Testes Automatizados de Alta Carga:} Práticas de desenvolvimento em Next.js App Router, isolamento de contexto com \texttt{AsyncLocalStorage} e simulação de baterias de estresse concorrente no Vitest. 4. \textbf{Integrações Financeiras e Fiscais (Preparação Macroentregas 2 e 3):} Estudo técnico de webhooks idempotentes do Stripe (PCI-DSS) e mensageria assíncrona de notas fiscais eletrônicas (NFC-e/SEFAZ).
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
 
 \subsecao{3.5 Plano de qualidade com critérios e métricas}
@@ -181,8 +175,6 @@ A gestão da qualidade organizacional (Cláusula 6.2.5) define padrões objetivo
   \end{itemize}
 \end{enumerate}
 
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
 
 \subsecao{3.6 Estratégia de gestão do conhecimento}
 
@@ -199,5 +191,3 @@ A gestão do conhecimento (Cláusula 6.2.6) garante que o capital intelectual da
 \item
   \textbf{Base de Lições Aprendidas e Runbooks Operacionais:} Ao término de cada Sprint e Macroentrega, incidentes técnicos resolvidos (como ajustes de connection pooling, alinhamento responsivo de mapas de sala e otimizações de queries) são documentados em \emph{runbooks} para acelerar diagnósticos futuros pela equipe de suporte.
 \end{itemize}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
