@@ -75,7 +75,7 @@ Além da oferta integral da plataforma, a arquitetura modular da CineSoft Soluti
 | Elemento com potencial | Possível adquirente | Modelo de acordo |
 | :--- | :--- | :--- |
 | **Plataforma CineDoom (Completa)** | Cinemas de rua, circuitos independentes e redes de médio porte | **Assinatura SaaS B2B:** **R$ 790/mês** base + **R$ 120/mês** por sala ativa (+ R$ 1.500 setup). |
-| **Engine de Trava Atômica (API)** | Teatros, casas de espetáculos e plataformas de eventos | **API Transacional:** **R$ 0,08** por assento emitido (franquia mínima de R$ 200/mês com SLA 99,9%). |
+| **Engine de Trava Atômica (API)** | Teatros, casas de espetáculos e plataformas de eventos | **API Transacional:** **R$ 0,08** por assento emitido (franquia mínima de R$ 200/mês com SLA 99,5%). |
 | **Módulo de Governança LGPD (SDK)** | Software houses de varejo e entretenimento | **Licença de SDK:** **R$ 8.900/ano** (ou **R$ 16.000** perpétua com 10h de consultoria inclusas). |
 | **Portal White-Label de Reservas** | Cinemas com ERP fiscal próprio de balcão | **Módulo SaaS White-Label:** **R$ 490/mês** por exibidor (domínio próprio e SSL inclusos; R$ 800 setup). |
 
@@ -92,7 +92,7 @@ A CineSoft Solutions conduz o ciclo comercial e operacional de atendimento ao cl
    - *Descrição:* Ao receber solicitações de cotação ou RFPs de exibidores, a CineSoft avalia a viabilidade técnica e arquitetural da rede (quantidade de salas e integração fiscal), gerando proposta com cronograma e escopo de setup.
    - *Saídas:* Proposta Técnica de Implantação e Proposta Comercial de Fornecimento.
 3. **Estabelecimento e Manutenção do Acordo:**
-   - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,9%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
+   - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,5%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
    - *Saídas:* Contrato de Prestação de Serviço (SaaS) e Aditivo de Privacidade e DPA.
 4. **Execução do Acordo:**
    - *Descrição:* Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 770 testes automatizados.
@@ -123,7 +123,7 @@ A entrega de cada implantação ou macroentrega é considerada formalmente aceit
 
 ### Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega
 
-A CineSoft Solutions assegura disponibilidade mensal mínima de **99,9%** da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
+A CineSoft Solutions assegura disponibilidade mensal mínima de **99,5%** da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
 
 **Tabela 5 – Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega**
 
