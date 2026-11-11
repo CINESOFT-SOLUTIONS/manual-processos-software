@@ -444,15 +444,25 @@ A governança de aquisição da CineSoft Solutions consolida a decisão formal p
 
 *Fonte: CineSoft Solutions (2026).*
 
-### As Cinco Atividades do Processo de Aquisição (ISO 12207)
+### As Cinco Atividades do Processo de Aquisição (ISO/IEC/IEEE 12207:2017)
 
-A CineSoft Solutions executa a contratação e governança de fornecedores externos por meio das cinco atividades normativas:
+A CineSoft Solutions conduz a contratação e a governança de serviços e componentes especializados por meio das cinco atividades normativas da norma:
 
-1. **Preparação da Aquisição:** O Arquiteto de Software especifica os requisitos técnicos, operacionais, de segurança (conformidade LGPD, criptografia em trânsito TLS 1.3 e em repouso AES-256) e de capacidade para o componente a ser adquirido.
-2. **Divulgação e Seleção de Fornecedores:** Levantamento de pelo menos duas alternativas de mercado para cada categoria (ex.: Supabase vs. Neon; Resend vs. AWS SES; Vercel vs. AWS Amplify), avaliadas segundo custo escalonado, SLA ($\ge 99,9\%$), latência na região das Américas e maturidade do SDK TypeScript.
-3. **Estabelecimento do Acordo:** Formalização da assinatura comercial (Termos de Serviço Corporativos e *Data Processing Addendum — DPA* para proteção de dados pessoais), configuração de cotas de faturamento e provisionamento de chaves de API em cofre seguro.
-4. **Monitoramento do Acordo:** Acompanhamento contínuo pelo líder de DevOps por meio de páginas de status dos provedores, alertas de latência p95/p99, consumo de conexões do pooler e auditoria mensal de faturas frente ao volume de ingressos emitidos.
-5. **Aceitação do Serviço/Produto Adquirido:** Execução de testes de integração automatizados na pipeline de CI/CD e validação de homologação (*smoke tests*) antes da liberação do componente para o tráfego de produção.
+1. **Preparação para a Aquisição:**
+   - *Descrição:* O Arquiteto de Software e a equipe técnica especificam as necessidades do sistema, volumetria estimada de transações e requisitos de segurança (TLS 1.3, criptografia de dados e conformidade com a LGPD).
+   - *Saídas:* Especificação Técnica de Aquisição e Matriz de Critérios de Seleção.
+2. **Divulgação e Seleção de Fornecedores:**
+   - *Descrição:* A equipe levanta e compara soluções consolidadas para cada categoria (ex.: Neon vs. Supabase; Resend vs. AWS SES; Vercel vs. AWS Amplify), pontuando maturidade do SDK, latência na América do Sul e custo escalonado.
+   - *Saídas:* Parecer Comparativo de Fornecedores e Registro de Seleção.
+3. **Estabelecimento e Manutenção do Acordo:**
+   - *Descrição:* Formalização contratual via Termos de Serviço Corporativos e Aditivo de Tratamento de Dados (*DPA* para a LGPD), assegurando SLA $\ge 99,9\%$, limites de requisição (*rate-limiting*) e portabilidade de dados.
+   - *Saídas:* Contrato de Serviço de Nuvem (DPA) e Registro de Credenciais em Cofre Seguro.
+4. **Monitoramento do Acordo:**
+   - *Descrição:* Integrado ao Controle de Projeto (Capítulo 4), acompanha-se a disponibilidade dos serviços via telemetria (latência p95/p99 e conexões do pooler), páginas públicas de status e conciliação mensal de consumo.
+   - *Saídas:* Relatório Mensal de SLA/Consumo e Registro de Incidentes do Provedor.
+5. **Aceitação do Produto ou Serviço:**
+   - *Descrição:* O serviço é validado em ambiente de homologação (*sandbox*) e integrado à esteira de CI/CD, exigindo aprovação em testes de estabilidade antes da liberação em produção acompanhada de plano de contingência (*rollback plan*).
+   - *Saídas:* Relatório de Testes em Sandbox e Termo de Liberação em Produção (*Go-Live*).
 
 ---
 
