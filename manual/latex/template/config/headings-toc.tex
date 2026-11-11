@@ -16,7 +16,7 @@
 
 % Triângulo apontador em BrandCrimson (#E94560) para Subseções Não Numeradas (Nível 3)
 \newcommand{\editorialTriangleIcon}{%
-  \raisebox{0.12ex}{\tikz[baseline=-0.3ex]{\fill[BrandCrimson] (0,-0.32ex) -- (0.75ex,0) -- (0,0.32ex) -- cycle;}}%
+  \raisebox{0.15ex}{\tikz[baseline=-0.35ex]{\fill[BrandCrimson, rounded corners=0.5pt] (0,-0.62ex) -- (1.20ex,0) -- (0,0.62ex) -- cycle;}}%
 }
 
 % -----------------------------------------------------------------------------
@@ -35,9 +35,9 @@
 % Nível 1: Barra vertical fina em Crimson + Título Midnight Navy #1A1A2E
 \titleformat{\section}
   {\normalfont\fontsize{13pt}{16pt}\fontExtraBold\color{BrandNavy}}
-  {\editorialBarIcon\hspace{7pt}}
-  {0pt}
   {}
+  {0pt}
+  {\editorialBarIcon\hspace{7pt}}
 
 % Nível 2: Título Deep Sapphire #0F3460
 \titleformat{\subsection}
@@ -49,9 +49,15 @@
 % Nível 3: Subseção com triângulo apontador BrandCrimson e tipografia BrandNavy
 \titleformat{\subsubsection}
   {\normalfont\fontsize{10.5pt}{14pt}\fontSemiBold\color{BrandNavy}}
-  {\editorialTriangleIcon\hspace{6pt}}
-  {0pt}
   {}
+  {0pt}
+  {\editorialTriangleIcon\hspace{6pt}}
+
+\titleformat{name=\subsubsection,numberless}
+  {\normalfont\fontsize{10.5pt}{14pt}\fontSemiBold\color{BrandNavy}}
+  {}
+  {0pt}
+  {\editorialTriangleIcon\hspace{6pt}}
 
 \titleformat{\paragraph}[block]
   {\normalfont\fontsize{10pt}{13.5pt}\fontExtraBold\color{BrandCrimsonMuted}}
