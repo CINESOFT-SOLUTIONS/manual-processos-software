@@ -51,4 +51,14 @@ Em um sistema de reserva de salas, o requisito RF01 Reservar sala pode estar lig
 • Revisem os 13 critérios e localizem no manual a evidência de cada um.  
 • Selecionem exemplos do próprio projeto e deixem os arquivos necessários acessíveis.  
 • Dividam a apresentação para que todos expliquem uma parte relevante.  
-• Ensaiem a exposição e confiram se ela cabe em 20 a 30 minutos.  
+• Ensaiem a exposição e confiram se ela cabe em 20 a 30 minutos.
+
+---
+
+### Informações e Cronograma de Apresentação
+
+- **Duração:** Cada grupo terá de 20 a 30 minutos de apresentação. Todos os membros do grupo deverão apresentar.
+- **Datas das apresentações:**
+  - **12/11/2026:** Apresentação dos trabalhos: G1 a G4
+  - **19/11/2026:** Apresentação dos trabalhos: G5 a G8
+  - **26/11/2026:** Apresentação dos trabalhos: G9 a G12 (Data almejada pela CineSoft Solutions)
