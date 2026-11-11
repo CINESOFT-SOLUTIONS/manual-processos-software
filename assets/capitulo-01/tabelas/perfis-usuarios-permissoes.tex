@@ -1,17 +1,17 @@
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.0cm} >{\arraybackslash}m{4.2cm} Y}
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}L{2.4cm} >{\arraybackslash}L{3.0cm} >{\arraybackslash}L{3.0cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Perfil} & \textbf{Módulo de Acesso} & \textbf{Responsabilidades e Permissões} \\
+\textbf{Perfil (RBAC)} & \textbf{Canal de Acesso} & \textbf{Escopo de Dados} & \textbf{Permissões e Operações no Domínio} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Cliente Final & Portal Web Responsivo & Consulta de catálogo, seleção de poltronas, checkout e ingressos. \\
+Espectador \newline\texttt{\scriptsize CLIENTE} & Portal do Espectador \newline\emph{\scriptsize Web Responsivo} & Dados pessoais e reservas do titular (\emph{\scriptsize LGPD Art. 18}) & Consultar catálogo e sessões; selecionar poltronas em mapa interativo; solicitar reserva com bloqueio atômico; emitir voucher transacional; cancelar reserva dentro do prazo. \\
 \midrule
-Atendente & Bilheteria / PDV & Venda balcão, cancelamento assistido, emissão de cortesias. \\
+Atendente \newline\texttt{\scriptsize ATENDENTE} & Bilheteria Presencial \newline\emph{\scriptsize PDV Guichê Físico} & Sessões, assentos e vendas do cinema (\texttt{\scriptsize tenant\_id}) & Venda direta no balcão com trava anti-\emph{double-booking}; busca de reservas web por CPF ou código; baixa presencial com emissão de ingressos; cancelamento assistido auditado. \\
 \midrule
-Gerente & Painel Administrativo & Gestão de salas, precificação dinâmica, relatórios de ocupação. \\
+Gerente \newline\texttt{\scriptsize GERENTE} & Painel Gerencial \newline\emph{\scriptsize Back-office Administrativo} & Gestão operacional do cinema local (\texttt{\scriptsize tenant\_id}) & Cadastrar filmes; configurar salas e matrizes de poltronas; agendar grade de sessões com valores de ingresso; gerenciar operadores de guichê; acompanhar relatórios de ocupação. \\
 \midrule
-Administrador & Configurações Globais & Gestão de tenants SaaS, auditoria de segurança e integrações. \\
+Administrador \newline\texttt{\scriptsize ADMIN} & Console de Operações \newline\emph{\scriptsize Plataforma CineSoft} & Infraestrutura e cinemas clientes (\emph{\scriptsize cross-tenant}) & Ativação de novos cinemas (\emph{onboarding} de \emph{tenants}); auditoria de segurança e integridade de dados; monitoramento de telemetria; suporte técnico à operação. \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}
 }

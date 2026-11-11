@@ -77,16 +77,16 @@ A Figura 1 ilustra a interface do Portal do Cliente, apresentando o catálogo de
   * *Quem é:* A equipe técnica de sustentação da desenvolvedora.
   * *Em que situação atua:* Atua na ativação e configuração inicial de novos cinemas (*onboarding* de *tenants*), monitoramento de telemetria, análise de logs de auditoria e suporte aos gestores dos estabelecimentos.
 
-A Tabela 1 sintetiza a matriz de perfis de usuários, seus respectivos módulos de acesso e permissões na plataforma:
+A Tabela 1 sintetiza a matriz de perfis de usuários, seus respectivos canais de acesso, escopos de isolamento e permissões na plataforma:
 
 **Tabela 1 – Matriz de Perfis de Usuários e Permissões de Acesso**
 
-| Perfil | Módulo de Acesso | Responsabilidades e Permissões |
-| :--- | :--- | :--- |
-| **Cliente Final** | Portal Web Responsivo | Consulta de catálogo, seleção de poltronas, checkout e ingressos. |
-| **Atendente** | Bilheteria / PDV | Venda balcão, cancelamento assistido, emissão de cortesias. |
-| **Gerente** | Painel Administrativo | Gestão de salas, precificação dinâmica, relatórios de ocupação. |
-| **Administrador** | Configurações Globais | Gestão de tenants SaaS, auditoria de segurança e integrações. |
+| Perfil (RBAC) | Canal de Acesso | Escopo de Dados | Permissões e Operações no Domínio |
+| :--- | :--- | :--- | :--- |
+| **Espectador** (`CLIENTE`) | Portal do Espectador *(Web Responsivo)* | Dados pessoais e reservas do titular *(LGPD Art. 18)* | Consultar catálogo e sessões; selecionar poltronas em mapa interativo; solicitar reserva com bloqueio atômico; emitir voucher transacional; cancelar reserva dentro do prazo. |
+| **Atendente** (`ATENDENTE`) | Bilheteria Presencial *(PDV Guichê Físico)* | Sessões, assentos e vendas do cinema local (`tenant_id`) | Venda direta no balcão com trava anti-*double-booking*; busca de reservas web por CPF ou código; baixa presencial com emissão de ingressos; cancelamento assistido auditado. |
+| **Gerente** (`GERENTE`) | Painel Gerencial *(Back-office Administrativo)* | Gestão operacional do cinema local (`tenant_id`) | Cadastrar filmes; configurar salas e matrizes de poltronas; agendar grade de sessões com valores de ingresso; gerenciar operadores de guichê; acompanhar relatórios de ocupação. |
+| **Administrador** (`ADMIN`) | Console de Operações *(Plataforma CineSoft)* | Infraestrutura e cinemas clientes *(cross-tenant)* | Ativação de novos cinemas (*onboarding* de *tenants*); auditoria de segurança e integridade de dados; monitoramento de telemetria; suporte técnico à operação. |
 
 *Fonte: CineSoft Solutions (2026).*
 
