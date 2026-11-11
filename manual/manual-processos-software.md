@@ -316,6 +316,19 @@ A Figura 1 ilustra a interface do Portal do Cliente, apresentando o catálogo de
   * *Quem é:* A equipe técnica de sustentação da desenvolvedora.
   * *Em que situação atua:* Atua na ativação e configuração inicial de novos cinemas (*onboarding* de *tenants*), monitoramento de telemetria, análise de logs de auditoria e suporte aos gestores dos estabelecimentos.
 
+A Tabela 1 sintetiza a matriz de perfis de usuários, seus respectivos módulos de acesso e permissões na plataforma:
+
+**Tabela 1 – Matriz de Perfis de Usuários e Permissões de Acesso**
+
+| Perfil | Módulo de Acesso | Responsabilidades e Permissões |
+| :--- | :--- | :--- |
+| **Cliente Final** | Portal Web Responsivo | Consulta de catálogo, seleção de poltronas, checkout e ingressos. |
+| **Atendente** | Bilheteria / PDV | Venda balcão, cancelamento assistido, emissão de cortesias. |
+| **Gerente** | Painel Administrativo | Gestão de salas, precificação dinâmica, relatórios de ocupação. |
+| **Administrador** | Configurações Globais | Gestão de tenants SaaS, auditoria de segurança e integrações. |
+
+*Fonte: CineSoft Solutions (2026).*
+
 ### Ambiente de Operação Esperado
 
 O CineDoom é uma aplicação 100% web operada em nuvem, eliminando a necessidade de instalação de softwares locais:
