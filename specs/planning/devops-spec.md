@@ -10,11 +10,11 @@ title: "Especificação de DevOps, Infraestrutura, Observabilidade e SLOs — Ci
 # Especificação de DevOps, Infraestrutura, Observabilidade e SLOs — CineDoom
 
 > **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
-> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-08`, `RF-11`, `RNF-01` a `RNF-06`, `CA-01` a `CA-14`, `RES-01` a `RES-06`) e [`ADR-002`](../adr/ADR-002-neon-postgresql-serverless.md) / [`ADR-010`](../adr/ADR-010-observabilidade-axiom-cicd-vercel.md).
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-08`, `RF-11`, `RNF-01` a `RNF-06`, `CA-01` a `CA-14`, `RES-01` a `RES-06`), [`ADR-004`](../adrs/ADR-004-banco-postgresql-prisma-orm.md), [`ADR-005`](../adrs/ADR-005-hospedagem-vercel-supabase-github-actions.md) e [`ADR-011`](../adrs/ADR-011-log-drain-gerenciado-axiom-retencao-365-dias.md).
 
 ## Resumo Executivo
 
-Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraestrutura para o **CineDoom**. Define a topologia de implantação em **Vercel + Neon PostgreSQL Serverless**, os Objetivos e Indicadores de Nível de Serviço (**SLOs** e **SLIs**) de disponibilidade, latência, integridade ACID e isolamento multi-tenant, a especificação de observabilidade com logs estruturados no **Axiom** e os procedimentos operacionais padrão (*runbooks*) para resposta a incidentes.
+Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraestrutura para o **CineDoom**. Define a topologia de implantação em **Vercel + Supabase PostgreSQL (com pooler Supavisor)**, os Objetivos e Indicadores de Nível de Serviço (**SLOs** e **SLIs**) de disponibilidade, latência, integridade ACID e isolamento multi-tenant, a especificação de observabilidade com logs estruturados no **Axiom** e os procedimentos operacionais padrão (*runbooks*) para resposta a incidentes.
 
 ---
 
@@ -22,24 +22,24 @@ Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraes
 
 ### 1.1 Ambiente de Desenvolvimento (`dev`)
 - Aplicação Next.js 14 executando localmente via `pnpm dev`.
-- Branch dedicado por desenvolvedor no Neon Serverless (ou fallback local resiliente).
+- Instância ou projeto de banco dedicado no Supabase (ou fallback local Docker/PostgreSQL resiliente).
 - Variáveis de ambiente carregadas via `.env.local` (baseado em `.env.example` documentado).
 - Seed automatizado de dados de demonstração via `npx prisma db seed`.
 
 ### 1.2 Ambiente de Homologação por Pull Request (`preview` / staging)
 - Ambientes *Vercel Preview* provisionados automaticamente para cada Pull Request / branch.
-- Branch efêmero e isolado do banco Neon criado via integração nativa Vercel-Neon, populado exclusivamente com dados sintéticos.
+- Ambiente de pré-visualização isolado da Vercel conectado a banco de testes dedicado/isolado no Supabase, populado exclusivamente com dados sintéticos.
 - Domínio efêmero: `cinedoom-<branch>.vercel.app`.
-- O pipeline de CI no GitHub Actions executa verificação de tipos (`tsc --noEmit`), linting (`ESLint import/no-cycle`), os **748 testes unitários/integração (Vitest)** e a suíte E2E (**Playwright** em Chromium e Firefox) como *gate* obrigatório antes do merge.
+- O pipeline de CI no GitHub Actions executa verificação de tipos (`tsc --noEmit`), linting (`ESLint import/no-cycle`), os **770 testes automatizados (Vitest)** e a suíte E2E (**Playwright** em Chromium e Firefox) como *gate* obrigatório antes do merge.
 
 ### 1.3 Ambiente de Produção (`prod`)
 - **Hospedagem:** Vercel Production (região primária de execução: `gru1` — São Paulo via Vercel Edge Network).
-- **Banco de Dados:** Neon Serverless PostgreSQL — pool de conexões gerenciado via PgBouncer (`DATABASE_URL`) para leituras/polling e conexão direta (`DATABASE_URL_UNPOOLED`) para migrações e transações ACID.
+- **Banco de Dados:** PostgreSQL 16 gerenciado no Supabase — pool de conexões gerenciado via Supavisor na porta 6543 (`DATABASE_URL`, com `pgbouncer=true`) para leituras/polling e conexão direta na porta 5432 (`DIRECT_URL`) para migrações Prisma e transações ACID.
 - **CDN:** Vercel Edge Network global para distribuição de assets estáticos e cartazes (`poster_url`).
-- **Gestão de Segredos:** *Vercel Environment Variables* cifradas em repouso (`DATABASE_URL`, `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY`, `CINEDOOM_CPF_HMAC_KEY`, `RESEND_API_KEY`, `NEXTAUTH_URL`).
+- **Gestão de Segredos:** *Vercel Environment Variables* cifradas em repouso (`DATABASE_URL`, `DIRECT_URL`, `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY`, `CINEDOOM_CPF_HMAC_KEY`, `RESEND_API_KEY`, `NEXTAUTH_URL`).
 - **Migrações de Esquema:** `prisma migrate deploy` executado como etapa bloqueante no pipeline de CI/CD antes da promoção do deploy.
 - **Implantação Zero-Downtime e Rollback:** Deploys atômicos na Vercel com capacidade de *rollback* instantâneo para a versão estável anterior via painel ou CLI.
-- **Backups e Recuperação:** *Point-in-Time Recovery* (PITR) nativo do Neon + snapshots periódicos da tabela imutável `cancellation_audits`.
+- **Backups e Recuperação:** *Point-in-Time Recovery* (PITR) e backups físicos diários nativos do Supabase + snapshots periódicos da tabela imutável `cancellation_audits`.
 - **Retenção de Logs (`RF-11`):** Drenagem via *Vercel Log Drains* para o **Axiom** com retenção de **365 dias** para trilhas de auditoria LGPD e cancelamentos (`CA-03`).
 
 ---
@@ -110,7 +110,7 @@ Todo registro de log emitido pela aplicação deve conter obrigatoriamente:
 | `PollingLatencyHigh` | `p95` do polling de assentos $> 500\text{ ms}$ por 5 minutos | **P2** | Slack `#cinedoom-alerts` |
 | `DoubleBookingDetected` | Qualquer violação de unicidade de assento vendido | **P0** | PagerDuty + Slack `#cinedoom-p0` |
 | `CrossTenantLeakDetected` | `cross_tenant_query_attempt > 0` em produção | **P0** | PagerDuty + Slack `#cinedoom-p0` + DPO LGPD |
-| `NeonPoolExhausted` | Erros de conexão ao PostgreSQL $> 10/\text{min}$ | **P1** | Slack `#cinedoom-alerts` |
+| `DatabasePoolExhausted` | Erros de conexão ao pool do Supabase/Supavisor $> 10/\text{min}$ | **P1** | Slack `#cinedoom-alerts` |
 
 ---
 
@@ -129,9 +129,9 @@ Todo registro de log emitido pela aplicação deve conter obrigatoriamente:
 
 ## 6. Procedimentos Operacionais Padrão (Runbooks)
 
-1. **Pico de Erros `HTTP 5xx`:** Inspecionar os logs no Axiom filtrando por `status_code >= 500` $\to$ identificar a rota afetada $\to$ verificar o painel de conexões do Neon PostgreSQL $\to$ se o pool estiver saturado, ajustar `connection_limit` na string do PgBouncer ou executar *rollback* imediato na Vercel caso decorra de deploy recente.
+1. **Pico de Erros `HTTP 5xx`:** Inspecionar os logs no Axiom filtrando por `status_code >= 500` $\to$ identificar a rota afetada $\to$ verificar o painel de conexões do Supabase $\to$ se o pool do Supavisor estiver saturado, ajustar `connection_limit` no pooler ou executar *rollback* imediato na Vercel caso decorra de deploy recente.
 2. **Latência Elevada na Venda/Reserva (`> 800ms p95`):** Inspecionar o span `prisma.transaction.seat_lock` $\to$ verificar se há contenção excessiva de `SELECT FOR UPDATE` na mesma sessão de estreia $\to$ validar se o erro `HTTP 409` está sendo retornado rapidamente sem espera em fila longa.
-3. **Polling do Mapa de Assentos Lento (`> 300ms p95`):** Verificar o plano de execução (`EXPLAIN ANALYZE`) da consulta em `session_seats` $\to$ confirmar uso do índice composto `idx_session_seats_session_status` $\to$ verificar se o endpoint está roteando pelo *Neon Connection Pooler*.
+3. **Polling do Mapa de Assentos Lento (`> 300ms p95`):** Verificar o plano de execução (`EXPLAIN ANALYZE`) da consulta em `session_seats` $\to$ confirmar uso do índice composto `idx_session_seats_session_status` $\to$ verificar se o endpoint está roteando pelo pooler Supavisor do Supabase (porta 6543).
 4. **Suspeita de Violação Cross-Tenant (P0):** Rotacionar imediatamente `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` e `CINEDOOM_CPF_HMAC_KEY` na Vercel $\to$ auditar os registros do span `prisma.extension.tenant_filter` no Axiom $\to$ aplicar correção emergencial, executar a bateria de 500 cenários (`security-cross-tenant-suite.test.ts`) e acionar o DPO conforme o plano de resposta a incidentes.
 5. **Rotação Anual da Chave `CPF_ENCRYPTION_KEY` (`ADR-008`):** Gerar nova chave AES-256-GCM de 32 bytes $\to$ executar script autenticado de re-cifragem em lote sobre `Buyer.cpf_encrypted` e `Reservation.buyer_cpf_encrypted` $\to$ atualizar a variável no cofre da Vercel e validar a integridade em staging antes de produção.
 6. **Atendimento a Solicitação de Anonimização LGPD (Art. 18 — `ADR-009`):** Executar chamada autenticada com perfil `GERENTE` ao endpoint `POST /api/titulares/anonimizar` informando o CPF do titular solicitante $\to$ verificar o retorno de confirmação da anonimização *in-place* $\to$ registrar o protocolo de atendimento e responder formalmente ao titular em até 15 dias.

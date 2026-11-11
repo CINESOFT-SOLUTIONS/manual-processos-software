@@ -4,7 +4,7 @@
 
 - **Issue:** #17 — `[CHORE(CI)] CI/CD Pipeline - GitHub Actions com typecheck, ESLint no-cycle e preview Vercel`
 - **Task TechLead:** TASK-16
-- **ADR Vinculada:** ADR-005 (Hospedagem na Vercel com Neon Serverless e GitHub Actions)
+- **ADR Vinculada:** ADR-005 (Hospedagem na Vercel com Supabase PostgreSQL e GitHub Actions)
 - **Normas de Referência:**
   - ABNT NBR ISO/IEC/IEEE 12207:2021 — Processo de Integração de Software (6.4.8) e Processo de Garantia da Qualidade (7.2.3).
   - SLSA (Supply-chain Levels for Software Artifacts) — Nível de integridade de compilação automatizada.
@@ -57,7 +57,7 @@ Qualquer ciclo de importação gera código de saída não-zero e interrompe o p
 
 ---
 
-## 4. Integração de Ambientes de Preview na Vercel e Neon DB Branching
+## 4. Integração de Ambientes de Preview na Vercel e Isolamento de Banco
 
 Conforme estabelecido na **ADR-005**, cada Pull Request gera um ambiente de pré-visualização efêmero e isolado.
 
@@ -69,11 +69,10 @@ Conforme estabelecido na **ADR-005**, cada Pull Request gera um ambiente de pré
   - `framework`: `"nextjs"`
 - **Domínio Efêmero:** Cada PR recebe uma URL exclusiva no formato `https://cinedoom-app-git-<branch>-cinesoft-solutions.vercel.app`.
 
-### 4.2 Neon Database Branching (Isolamento de Dados por PR)
-- O PostgreSQL do CineDoom é provisionado no **Neon Serverless**.
-- A integração Vercel-Neon provisiona automaticamente um branch de banco de dados copy-on-write para cada deployment de Preview.
-- O branch isolado contém o estado do banco do branch principal sem impactar os dados de produção.
-- Ao aprovar e realizar o merge do PR, o branch do Neon é destruído automaticamente, mantendo custo zero e total isolamento.
+### 4.2 Isolamento de Dados em Ambientes de Preview
+- O PostgreSQL do CineDoom em produção é provisionado no **Supabase** (PostgreSQL 16 com connection pooling *Supavisor* na porta 6543 e conexões diretas de migração na porta 5432).
+- Os deployments de Preview na Vercel operam sobre schemas e instâncias isoladas populadas exclusivamente com dados sintéticos de *seed*, garantindo custo zero e total isolamento frente aos dados de produção.
+- Ao aprovar e realizar o merge do PR em `main`, a versão estável é promovida para o ambiente oficial de produção.
 
 ---
 
