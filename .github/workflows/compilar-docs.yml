@@ -24,7 +24,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y fonts-montserrat fonts-liberation fonts-dejavu-core
-          fc-cache -fv
+          sudo find /usr/share/fonts -type f -name "*.woff*" -delete
+          sudo rm -rf /usr/share/fonts/woff*
+          sudo fc-cache -fv
 
       - name: Instalar Tectonic (Typesetting Engine)
         run: |
