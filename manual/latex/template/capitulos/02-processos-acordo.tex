@@ -186,26 +186,26 @@ Evolutiva (P4 --- Perfectiva) & Solicitação de novos relatórios, filtros ou m
 A operação contínua e comercial da plataforma CineDoom apoia-se em provedores de tecnologia de primeira linha. A tabela abaixo detalha cada fornecedor crítico, seu papel arquitetural, a estrutura de contratação escalonada entre a validação inicial (Macroentrega 1) e a operação comercial plena (Macroentregas 2 e 3), bem como os impactos em disponibilidade, custo e segurança:
 
 \tabelaabnt{Identificação dos Fornecedores e Parceiros Relevantes}{CineSoft Solutions (2026)}{tab:fornecedores_parceiros}{%
-{\footnotesize
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\raggedright\arraybackslash}m{2.8cm} >{\raggedright\arraybackslash}m{3.4cm} >{\raggedright\arraybackslash}m{4.1cm} Y}
+{\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\raggedright\arraybackslash}m{2.6cm} >{\raggedright\arraybackslash}m{3.2cm} >{\raggedright\arraybackslash}m{3.6cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
 \textbf{Fornecedor / Parceiro} & \textbf{Categoria e Serviço} & \textbf{Plano e Custo Comercial} & \textbf{Impacto e Mitigação de Riscos} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Vercel Inc. & \textbf{PaaS \& Edge CDN:} Hospedagem da aplicação Next.js 14, rotas serverless e CDN global. & \textbf{Vercel Pro:}\\[2pt]{\small\bfseries\color{BrandCrimson} US\$\ 20,00 / mês}\\\textnormal{\scriptsize por desenvolvedor (1 TB banda; piloto Hobby)} & \textbf{Disponibilidade:} SLA de 99,99\% na borda. Mitigação: build determinístico e rollback instantâneo em 1 clique. \\
+Vercel Inc. & \textbf{PaaS \& CDN Edge:}\\Next.js 14 e serverless & \textbf{Vercel Pro:}\\\textbf{US\$\ 20/mês} por dev\\\scriptsize (1 TB banda; piloto Hobby grátis) & SLA 99,99\% na borda. Mitigação: build determinístico e rollback em 1 clique. \\
 \midrule
-Supabase Inc. / Neon Tech & \textbf{DBaaS PostgreSQL:} Persistência ACID, pooler de conexões \emph{Supavisor} e triggers SQL. & \textbf{Plano Pro Comercial:}\\[2pt]{\small\bfseries\color{BrandCrimson} US\$\ 25,00 a US\$\ 69,00 / mês}\\\textnormal{\scriptsize compute dedicado, 8 GB+ SSD e PITR} & \textbf{Integridade:} Crítico para evitar perda de vendas e locks concorrentes. Mitigação: conexões TLS e migrações versionadas. \\
+Supabase / Neon & \textbf{DBaaS PostgreSQL:}\\Persistência ACID e pooler & \textbf{Plano Pro:}\\\textbf{US\$\ 25 a US\$\ 69/mês}\\\scriptsize (compute dedicado e backups PITR) & Crítico para locks \texttt{SELECT FOR UPDATE}. Mitigação: réplicas e migrações Prisma. \\
 \midrule
-Resend Technologies & \textbf{Comunicação Transacional:} API REST para envio de vouchers e ingressos (DKIM/SPF). & \textbf{Resend Pro:}\\[2pt]{\small\bfseries\color{BrandCrimson} US\$\ 20,00 / mês}\\\textnormal{\scriptsize franquia de 50.000 e-mails/mês, domínio próprio} & \textbf{Experiência:} Recebimento do comprovante (\texttt{CA-11}). Mitigação: desacoplamento de provider e voucher em tela. \\
+Resend Technologies & \textbf{E-mail Transacional:}\\Vouchers e confirmações & \textbf{Resend Pro:}\\\textbf{US\$\ 20/mês}\\\scriptsize (franquia de 50.000 e-mails/mês) & Impacta envio de voucher (\texttt{CA-11}). Mitigação: exibição imediata em tela e histórico. \\
 \midrule
-Axiom Inc. & \textbf{Observabilidade \& Log Drain:} Ingestão de logs JSON e retenção legal para auditoria. & \textbf{Axiom Cloud:}\\[2pt]{\small\bfseries\color{BrandCrimson} US\$\ 25,00 / mês}\\\textnormal{\scriptsize até 1 TB/mês e retenção de 365 dias} & \textbf{Conformidade LGPD:} Rastreabilidade forense sem onerar o banco relacional. Mitigação: mascaramento prévio de PII. \\
+Axiom Inc. & \textbf{Log Drain:}\\Observabilidade e LGPD & \textbf{Axiom Cloud:}\\\textbf{US\$\ 25/mês}\\\scriptsize (1 TB/mês; retenção de 365 dias) & Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII no logger. \\
 \midrule
-GitHub Inc. & \textbf{Engenharia \& CI/CD:} Repositórios Git privados, Kanban Projects e GitHub Actions. & \textbf{GitHub Team:}\\[2pt]{\small\bfseries\color{BrandCrimson} US\$\ 4,00 / usuário / mês}\\\textnormal{\scriptsize 3.000 min Actions e branches protegidas} & \textbf{Qualidade:} Sustenta a integração contínua e o bloqueio de PRs defeituosos. Baixo impacto em produção. \\
+GitHub Inc. & \textbf{CI/CD \& Git:}\\Projetos e Actions & \textbf{GitHub Team:}\\\textbf{US\$\ 4/usuário/mês}\\\scriptsize (3.000 min Actions e branch rules) & Sustenta testes automatizados. Mitigação: bloqueio de merge sem aprovação na esteira. \\
 \midrule
-Stripe / Pagar.me \emph{(Macroentrega 2)} & \textbf{Gateway Financeiro PCI-DSS:} Pagamentos online via PIX dinâmico e cartão de crédito. & \textbf{Taxa Transacional (Pay-go):}\\[2pt]{\small\bfseries\color{BrandCrimson} 0,99\% (PIX) / 3,99\% + R\$\ 0,39}\\\textnormal{\scriptsize por transação de cartão (sem mensalidade fixa)} & \textbf{Segurança:} Elimina tráfego de dados sensíveis de cartão na CineSoft. Mitigação: webhooks idempotentes e balcão. \\
+Stripe / Pagar.me \emph{(M2)} & \textbf{Gateway Financeiro:}\\PIX e cartão online & \textbf{Taxa Transacional:}\\\textbf{0,99\% (PIX) / 3,99\% + R\$\ 0,39}\\\scriptsize (por cartão aprovado; sem mensalidade) & Certificação PCI-DSS. Mitigação: webhooks idempotentes e fallback presencial no balcão. \\
 \midrule
-Focus NFe / PlugNotas \emph{(Macroentrega 3)} & \textbf{Mensageria Fiscal SaaS:} Emissão, assinatura e transmissão de NFC-e à SEFAZ. & \textbf{Plano Empresarial:}\\[2pt]{\small\bfseries\color{BrandCrimson} R\$\ 149,00 / mês}\\\textnormal{\scriptsize até 2.000 notas/mês com contingência offline} & \textbf{Conformidade Fiscal:} Abstrai variações das SEFAZ estaduais, garantindo emissão assíncrona sem travar bilheteria. \\
+Focus NFe \emph{(M3)} & \textbf{Mensageria Fiscal:}\\Emissão de NFC-e SEFAZ & \textbf{Plano Empresarial:}\\\textbf{R\$\ 149/mês}\\\scriptsize (até 2.000 notas fiscais/mês) & Conformidade tributária. Mitigação: fila assíncrona com contingência offline. \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
