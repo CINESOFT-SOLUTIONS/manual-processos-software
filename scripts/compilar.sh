@@ -145,9 +145,9 @@ fi
 
 ensure_tectonic || true
 
-# Etapa 1: Compilação do Manual ABNT LaTeX
-if [ -f "$ROOT_DIR/manual/latex/manual-processos-software.tex" ]; then
-    compile_document "$ROOT_DIR/manual/latex" "manual-processos-software.tex" "${BG_BLUE} LATEX ${RESET}"
+# Etapa 1: Compilação do Manual Editorial LaTeX (main.tex)
+if [ -f "$ROOT_DIR/manual/latex/template/main.tex" ]; then
+    compile_document "$ROOT_DIR/manual/latex/template" "main.tex" "${BG_BLUE} LATEX ${RESET}"
 fi
 
 END_TIME=$(date +%s)
@@ -155,5 +155,5 @@ ELAPSED=$((END_TIME - START_TIME))
 
 printf "${BG_GREEN} SUCCESS ${RESET} ${GREEN}${BOLD}Build completed in %ss${RESET}\n\n" "$ELAPSED"
 printf "${BOLD}Artifacts:${RESET}\n"
-printf "  ${CYAN}•${RESET} manual/manual-processos-software.md ${DIM}(Markdown)${RESET}\n"
-[ -f "$ROOT_DIR/manual/latex/manual-processos-software.pdf" ] && printf "  ${CYAN}•${RESET} manual/latex/manual-processos-software.pdf ${DIM}(ABNT NBR 14724)${RESET}\n\n"
+printf "  ${CYAN}•${RESET} manual/manual-processos-software.md ${DIM}(Markdown montado dos capítulos)${RESET}\n"
+[ -f "$ROOT_DIR/manual/latex/template/main.pdf" ] && printf "  ${CYAN}•${RESET} manual/latex/template/main.pdf ${DIM}(ABNT NBR 14724 Oficial CineSoft)${RESET}\n\n"

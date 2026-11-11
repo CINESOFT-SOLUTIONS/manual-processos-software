@@ -209,7 +209,7 @@ O contexto de uso abrange:
 
 A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes em cartaz e o mapa interativo de assentos utilizado pelo espectador.
 
-![Figura 1 – Portal do Cliente: catálogo de filmes e mapa interativo de assentos](../assets/capitulo-01/prints/print-portal-cliente.png)
+![Figura 1 – Portal do Cliente: catálogo de filmes e mapa interativo de assentos](../../assets/capitulo-01/prints/print-portal-cliente.png)
 
 *Figura 1 – Portal do Cliente: catálogo de filmes em cartaz e mapa interativo de assentos*
 
@@ -231,7 +231,7 @@ A Figura 1 ilustra a interface do Portal do Cliente, com o catálogo de filmes e
 
 A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atendente para a venda direta de ingressos e a baixa de reservas originadas no portal.
 
-![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](../assets/capitulo-01/prints/print-bilheteria-atendente.png)
+![Figura 2 – Bilheteria presencial: mapa de assentos e operação de guichê](../../assets/capitulo-01/prints/print-bilheteria-atendente.png)
 
 *Figura 2 – Bilheteria presencial: mapa de assentos, venda direta e baixa de reservas pelo atendente.*
 
@@ -252,7 +252,7 @@ A Figura 2 apresenta a interface da bilheteria presencial, utilizada pelo atende
 
 A Figura 3 apresenta o painel gerencial do back-office, com a programação de sessões e os indicadores de ocupação acompanhados pela gerência.
 
-![Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação](../assets/capitulo-01/prints/print-painel-gerencial.png)
+![Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação](../../assets/capitulo-01/prints/print-painel-gerencial.png)
 
 *Figura 3 – Back-office gerencial: programação de sessões e indicadores de ocupação das salas*
 
@@ -290,7 +290,7 @@ Os seguintes módulos não compõem o escopo da **Macroentrega 1 (`Release 1.0 �
 
 ## 2.1 Descrição do processo de aquisição
 
-O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** para decidir entre desenvolver internamente (*Make*) ou contratar/adquirir de terceiros (*Buy*) os componentes, bibliotecas, APIs e serviços de infraestrutura que sustentam o produto **CineDoom** ao longo de suas três Macroentregas.
+O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** para decidir entre desenvolver internamente ou contratar/adquirir de terceiros os componentes, bibliotecas, APIs e serviços de infraestrutura que sustentam o produto **CineDoom** ao longo de suas três Macroentregas.
 
 ### Fronteira e Justificativa de Aquisição
 
@@ -589,6 +589,21 @@ A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenh
 | **Sprint 2 — Back-office, Salas e Bilheteria ACID** | Design System e mapa interativo 2D (`#17`), CRUDs de filmes, salas e sessões com pré-população (`#6`, `#7`, `#8`), polling a 2s (`#9`), venda atômica com `SELECT FOR UPDATE` (`#10`) e gestão de atendentes (`#13`). | **Gabriel Lourenço** & **Carlos Eduardo** (QA: **Kayque Vicente**) | 30/10/2026 | 04/11/2026 | **100% Concluído** |
 | **Sprint 3 — Portal do Cliente, Governança LGPD e QA** | Portal público e reserva web com expiração JIT (`#21`), autenticação de espectador e *"Minhas Reservas"* (`#22`), `NotificationService` e baixa de reserva no balcão (`#23`), cancelamento auditado (`#11`), painel de ocupação (`#12`), anonimização Art. 18 (`#14`) e suíte de 770 testes / 500 cenários *cross-tenant* (`#18`, `#19`). | **Gabriel Lourenço**, **Carlos Eduardo**, **Kayque Vicente** & **Yury Nogueira** | 05/11/2026 | 09/11/2026 | **100% Concluído** |
 
+### Recursos
+
+| Recurso / Serviço | Plano na Macroentrega 1 | Plano nas Macroentregas 2 e 3 | Finalidade no Projeto | Custo Estimado |
+| :--- | :--- | :--- | :--- | ---: |
+| **Vercel** (PaaS / Edge CDN) | Hobby (*free tier*) | Pro (1 assento de *deploy*) | Hospedagem do Next.js 14, CDN e ambientes de *Preview* e Produção | US$ 20/mês |
+| **Neon / Supabase** (DBaaS PostgreSQL) | Free | Pro (PITR e réplicas) | Persistência ACID, *connection pooler* e migrações Prisma | US$ 25/mês |
+| **Resend** (e-mail transacional) | Free (console de teste) | Pro (50 mil e-mails/mês) | Envio de vouchers e confirmações com DKIM/SPF | US$ 20/mês |
+| **Axiom** (observabilidade) | Free | Cloud (1 TB/mês, 365 dias) | *Log drain* estruturado e retenção legal (LGPD) | US$ 25/mês |
+| **GitHub** (código e CI/CD) | Free | Team (4 assentos) | Repositórios, Projects, Actions e branches protegidas | US$ 4/usuário |
+| **Focus NFe** (mensageria fiscal) | Não utilizado | Empresarial (somente M3) | Emissão e transmissão de NFC-e à SEFAZ | R$ 149/mês |
+| **Stripe / Pagar.me** (gateway financeiro) | Não utilizado | Taxa transacional (somente M2) | Checkout PIX e cartão no Portal do Cliente | 3,99% + R$ 0,39 |
+| **Total estimado dos serviços base (M2 e M3)** | — | — | Vercel + Neon + Resend + Axiom | **US$ 90/mês** |
+
+O plano é viável com os recursos disponíveis: a equipe de **4 engenheiros** atua em dedicação integral, a infraestrutura é *serverless* com cobrança *pay-as-you-go* (planos gratuitos na Macroentrega 1, com **US$ 0 de custo fixo** e cobrança apenas por uso excedente) e o custo operacional estimado dos serviços base — **US$ 90/mês** (≈ R$ 480/mês) nas Macroentregas 2 e 3 — é integralmente coberto pela receita do primeiro contrato B2B, cujo ticket médio estimado é de **R$ 590 a R$ 1.290/mês** por complexo exibidor (Cap. 3.3, Viabilidade Econômica e Financeira).
+
 ### Rotina de Acompanhamento e Tratamento de Desvios e Atrasos
 
 Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle:
@@ -703,7 +718,7 @@ Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralment
 
 ## 4.5 Métricas de acompanhamento do projeto
 
-O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI e do Vitest para monitorar a saúde técnica da entrega:
+O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI, do Vitest e dos painéis de *billing* dos provedores de nuvem para monitorar a saúde técnica e financeira da entrega:
 
 | Categoria de Métrica | Indicador Objetivo | Meta Organizacional | Resultado Aferido na Macroentrega 1 (`v1.0.0`) | Como é Monitorado e Ação em Caso de Desvio |
 | :--- | :--- | :---: | :---: | :--- |
@@ -712,6 +727,7 @@ O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quan
 | **Métrica de Qualidade** | **Suíte de Testes Automatizados e Cobertura Crítica** | **100% de aprovação** e 100% nos serviços críticos | **26 suítes / 770 testes passando (100%)** em ~4,9s | Bloqueio automático no GitHub Actions; PRs com qualquer teste quebrado são impedidos de merge. |
 | **Métrica de Qualidade** | **Densidade de Defeitos em Produção** (bugs críticos pós-deploy) | **0 defeitos críticos** (venda dupla ou perda de dados) | **0 defeitos críticos** (ajustes apenas cosméticos/mobile) | Monitorado via telemetria e testes de usuários reais; defeitos P1 acionam rollback em < 5 min. |
 | **Métrica de Progresso** | **Cumprimento do Escopo da Macroentrega (Throughput)** | **100% dos requisitos `RF-01` a `RF-18`** entregues no marco | **18/18 RFs (100%)** e **14/14 Critérios de Aceite** concluídos | Auditado ao final de cada Sprint na Matriz de Rastreabilidade (Capítulo 5.1.2). |
+| **Métrica de Custo** | **Custo Operacional dos Serviços Base (OPEX mensal)** | **$\le$ US$ 90/mês nas Macroentregas 2 e 3** (US$ 0 na M1 em *free tier*) | **US$ 0 na Macroentrega 1** (planos gratuitos/Hobby) | Monitorado nos painéis de *billing* de Vercel, Neon, Resend e Axiom, com revisão mensal do líder de DevOps; GitHub Team (US$ 4/usuário × 4 assentos) e Focus NFe (R$ 149/mês, somente M3) são controlados à parte, por terem base de cobrança distinta (assento e emissão). Desvio acima de 10% sobre o teto aciona revisão de planos e otimização de recursos. |
 
 ---
 

@@ -34,7 +34,7 @@ jobs:
       - name: Validar geração dos artefatos
         run: |
           test -f manual/manual-processos-software.md || (echo "[error] manual-processos-software.md was not generated." && exit 1)
-          test -f manual/latex/manual-processos-software.pdf || (echo "[error] manual-processos-software.pdf was not generated." && exit 1)
+          test -f manual/latex/template/main.pdf || (echo "[error] main.pdf was not generated." && exit 1)
           echo "[ci:ok] All document artifacts verified successfully."
 
       - name: Upload dos PDFs como Artefatos da Execução
@@ -42,7 +42,7 @@ jobs:
         with:
           name: cinedoom-documentos-pdf
           path: |
-            manual/latex/manual-processos-software.pdf
+            manual/latex/template/main.pdf
             manual/manual-processos-software.md
           retention-days: 30
 
@@ -51,7 +51,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            manual/latex/manual-processos-software.pdf
+            manual/latex/template/main.pdf
             manual/manual-processos-software.md
           generate_release_notes: true
           draft: false
