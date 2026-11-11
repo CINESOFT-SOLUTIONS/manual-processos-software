@@ -27,6 +27,23 @@
 \newcommand{\fazerCapaOficial}{\capamanual[capas/capa-frente.pdf]}
 
 % -----------------------------------------------------------------------------
+% 1.1 FOLHA DE ROSTO OFICIAL (FULL-BLEED A4 VIA PDF FINAL)
+% -----------------------------------------------------------------------------
+\newcommand{\folhaderosto}[1][capas/folha-de-rosto.pdf]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \global\showcontentbgfalse
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[inner sep=0pt, outer sep=0pt] at (current page.center) {%
+      \includegraphics[width=\paperwidth, height=\paperheight]{#1}%
+    };
+  \end{tikzpicture}%
+  \mbox{}%
+  \clearpage
+  \global\showcontentbgtrue
+}
+
+% -----------------------------------------------------------------------------
 % 2. ABERTURA DE CAPÍTULO (FUNDO EM PDF + TEXTO DINÂMICO CENTRALIZADO)
 % Formato: "Capítulo X \n Nome do Capítulo"
 % - "Capítulo X" menor e em cor suave e elegante (white!80 / RefLavender)
