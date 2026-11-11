@@ -122,6 +122,10 @@ A gestão da qualidade organizacional (Cláusula 6.2.5) define padrões objetivo
    - Nenhuma alteração é enviada diretamente para a branch `main`. Todo código deve passar por validação da esteira do GitHub Actions e revisão técnica antes da promoção entre `develop`, `staging` e `main`.
 4. **Critérios de Estabilidade Pré-Deploy:**
    - Zero vulnerabilidades críticas abertas, zero erros de build e validação de *smoke test* no ambiente de *Preview/Staging* antes da liberação para os cinemas clientes.
+5. **Diretrizes de Engenharia e Princípios de Construção:**
+   - Adoção estrita de **Domain-Driven Design (DDD)** para modelagem de entidades e isolamento vertical por contextos delimitados (*Bounded Contexts*).
+   - Aplicação sistemática dos princípios **SOLID** para garantir baixo acoplamento, manutenibilidade e alta testabilidade nos serviços de negócio.
+   - Disciplina de desenvolvimento orientado a testes (**Test-Driven Development — TDD**) prioritária nas transações críticas de concorrência ACID e regras de isolamento multi-tenant.
 
 ---
 
