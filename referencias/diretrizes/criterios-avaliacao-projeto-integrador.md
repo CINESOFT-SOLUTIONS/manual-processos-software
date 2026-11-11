@@ -1,5 +1,4 @@
 # Processos de Engenharia de Software
-**Página 1**
 
 ## Critérios de avaliação do projeto integrador
 **Processos de Engenharia de Software**  
