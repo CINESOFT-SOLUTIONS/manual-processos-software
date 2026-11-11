@@ -229,62 +229,6 @@
   - [6.4 Atualização e verificação](#64-atualização-e-verificação)
   - [6.5 Acompanhamento da execução](#65-acompanhamento-da-execução)
 
----
-
-## 7. Documentos de Referência e Controle
-
-- **Base Normativa Internacional:** ABNT NBR ISO/IEC/IEEE 12207:2021 (*Systems and software engineering — Software life cycle processes*), disponível no acervo local: [`referencias/normas/iso-12207/abnt-iso-iec-12207-2021.pdf`](referencias/normas/iso-12207/abnt-iso-iec-12207-2021.pdf) e transcrição em [`referencias/normas/iso-12207/abnt-iso-iec-12207-2021.md`](referencias/normas/iso-12207/abnt-iso-iec-12207-2021.md).
-- **Modelo de Referência Nacional:** Guia Geral MPS de Software (MR-MPS-SW:2024 — SOFTEX), níveis G (Gerência de Projetos e Requisitos) e F (Medição, Configuração e Garantia da Qualidade).
-- **Decisões Técnicas e Arquiteturais:** Catálogo Formal de Architecture Decision Records (ADRs, ADR-001 a ADR-012, disponíveis em [`specs/adrs/`](specs/adrs/)).
-- **Diretrizes Acadêmicas da Disciplina:** [`referencias/diretrizes/instrucoes-disciplina.md`](referencias/diretrizes/instrucoes-disciplina.md) e [`referencias/diretrizes/criterios-avaliacao-projeto-integrador.md`](referencias/diretrizes/criterios-avaliacao-projeto-integrador.md).
-
----
-
-## 8. Índice de Aderência à ISO/IEC/IEEE 12207:2021 e MPS.BR
-
-Este índice relaciona cada capítulo e processo deste manual ao processo normativo correspondente da ABNT NBR ISO/IEC/IEEE 12207:2021 e aos processos do modelo MR-MPS-SW:2024:
-
-| Capítulo do Manual | Processo Normativo de Referência | Cláusula / Processo |
-|---|---|---|
-| **Capítulo 1** | Insumo de Negócio e Elicitação de Stakeholders | ISO 12207 — Cláusulas 6.4.1 e 6.4.2 |
-| **Capítulo 2.1** | *Acquisition Process* (Processo de Aquisição) | ISO 12207 — Cláusula 6.1.1 |
-| **Capítulo 2.2** | *Supply Process* (Processo de Fornecimento) | ISO 12207 — Cláusula 6.1.2 |
-| **Capítulo 2.3** | *Supplier and Partner Management* | ISO 12207 — Cláusulas 6.1.1 e 6.1.2 |
-| **Capítulo 3.1** | *Life Cycle Model Management* (Gestão do Modelo de Ciclo de Vida) | ISO 12207 — Cláusula 6.2.1 |
-| **Capítulo 3.2** | *Infrastructure Management* (Gestão de Infraestrutura) | ISO 12207 — Cláusula 6.2.2 |
-| **Capítulo 3.3** | *Portfolio Management* (Gestão de Portfólio e Viabilidade) | ISO 12207 — Cláusula 6.2.3 |
-| **Capítulo 3.4** | *Human Resource Management* (Gestão de RH e RACI) | ISO 12207 — Cláusula 6.2.4 |
-| **Capítulo 3.5** | *Quality Management* (Gestão da Qualidade) | ISO 12207 — Cláusula 6.2.5 |
-| **Capítulo 3.6** | *Knowledge Management* (Gestão do Conhecimento) | ISO 12207 — Cláusula 6.2.6 |
-| **Capítulo 4.1** | *Project Planning Process* (Planejamento do Projeto) | ISO 12207 — Cláusula 6.3.1 (MPS.BR: GPR) |
-| **Capítulo 4.2** | *Risk Management Process* (Gestão de Riscos) | ISO 12207 — Cláusula 6.3.4 (MPS.BR: GPR) |
-| **Capítulo 4.3** | *Configuration Management Process* (Gestão de Configuração) | ISO 12207 — Cláusula 6.3.5 (MPS.BR: GCO) |
-| **Capítulo 4.4** | *Decision Management Process* (Gestão de Decisões / ADRs) | ISO 12207 — Cláusula 6.3.3 |
-| **Capítulo 4.5** | *Project Assessment and Control Process* (Medição e Avaliação) | ISO 12207 — Cláusula 6.3.2 (MPS.BR: MED) |
-| **Capítulo 5.1** | *Stakeholder & System Requirements Definition* (Requisitos) | ISO 12207 — Cláusulas 6.4.2 e 6.4.3 (MPS.BR: GPR/REQ) |
-| **Capítulo 5.2** | *Architecture Definition & Design Definition* (Arquitetura e Design) | ISO 12207 — Cláusulas 6.4.4 e 6.4.5 |
-| **Capítulo 5.3** | *Implementation & Integration Processes* (Implementação e Integração) | ISO 12207 — Cláusulas 6.4.7 e 6.4.8 |
-| **Capítulo 5.4** | *Verification, Validation and Transition* (V&V e Transição) | ISO 12207 — Cláusulas 6.4.9, 6.4.10 e 6.4.11 (MPS.BR: GQA) |
-| **Capítulo 5.5** | *Operation, Maintenance and Disposal* (Operação e Manutenção) | ISO 12207 — Cláusulas 6.4.12, 6.4.13 e 6.4.14 |
-| **Capítulo 6** | Avaliação e Melhoria de Processos (Gerência de Projetos) | MR-MPS-SW:2024 — Nível G (GPR) e Nível F (GQA) |
-
----
-
-## 9. Terminologia Adotada
-
-Para garantir consistência interna e rigor normativo conforme a ISO/IEC/IEEE 12207:2021 e a legislação vigente, este manual adota os seguintes termos formais padronizados:
-
-| Termo | Significado e Contexto de Aplicação |
-|---|---|
-| **Cliente (*Tenant* B2B)** | Organização proprietária ou administradora de cinema que contrata o CineDoom sob assinatura SaaS multi-tenant (adquirente do serviço). |
-| **Operador Interno** | Funcionário autorizado do cinema cliente que opera os módulos de gestão ou bilheteria física (perfis `GERENTE` e `ATENDENTE`). |
-| **Espectador (`CLIENTE` B2C)** | Consumidor final que utiliza o Portal do Cliente para consultar filmes, reservar poltronas online ou realizar compra presencial no guichê. |
-| **CineSoft Solutions** | Organização desenvolvedora responsável pela engenharia, evolução em macroentregas, infraestrutura gerenciada e sustentação do CineDoom. |
-| **Produto (CineDoom)** | Plataforma web integrada com isolamento lógico multi-tenant fornecida no modelo B2B2C. |
-| **Fornecedor Externo** | Provedor de computação em nuvem, banco de dados ou APIs especializadas contratado pela CineSoft (ex.: Vercel, Supabase/Neon, Resend, Axiom, Stripe). |
-| **Reserva Atômica (ACID)** | Bloqueio transitório de assento sob concorrência simultânea via `SELECT FOR UPDATE` determinístico, imune a venda dupla (*double-booking*). |
-| **Expiração JIT (*Just-in-Time*)** | Invalidação automática em tempo de consulta/transação de reservas não confirmadas a menos de 60 minutos da sessão. |
-| **Anonimização *In-Place*** | Sobrescrita criptográfica irreversível de dados pessoais (Art. 18 da LGPD), preservando a integridade dos registros contábeis e fiscais. |
 
 
 # Capítulo 1 – Apresentação do software
@@ -1520,3 +1464,29 @@ Para assegurar que a melhoria incorporada ao manual continue sendo praticada de 
 
 - **SOFTEX.** *Guia Geral MPS de Software: 2024 (MR-MPS-SW)*. Associação para Promoção da Excelência do Software Brasileiro. Disponível em: https://softex.br/download/guia-geral-mps-de-software2024/.
 - **ABNT.** *NBR ISO/IEC/IEEE 12207:2021 — Engenharia de sistemas e software — Processos de ciclo de vida de software*. Rio de Janeiro: ABNT, 2021.
+
+
+# Referências
+
+**ASSOCIAÇÃO BRASILEIRA DE NORMAS TÉCNICAS (ABNT)**. *ABNT NBR ISO/IEC/IEEE 12207:2021: Engenharia de sistemas e software — Processos de ciclo de vida de software*. Rio de Janeiro: ABNT, 2021.
+
+**ASSOCIAÇÃO PARA PROMOÇÃO DA EXCELÊNCIA DO SOFTWARE BRASILEIRO (SOFTEX)**. *MPS.BR — Guia Geral de Software: 2024 (MR-MPS-SW)*. Brasília: SOFTEX, 2024. Disponível em: <https://softex.br/download/guia-geral-mps-de-software2024/>. Acesso em: 09 nov. 2026.
+
+**PRESSMAN, Roger S.; MAXIM, Bruce R.** *Engenharia de Software: uma abordagem profissional*. 9. ed. Porto Alegre: AMGH Editora, 2021.
+
+**SOMMERVILLE, Ian**. *Engenharia de Software*. 10. ed. São Paulo: Pearson Education do Brasil, 2019.
+
+**VERCEL INC.** *Next.js 16 Documentation: Full-stack Web Architecture*. San Francisco: Vercel, 2026. Disponível em: <https://nextjs.org/docs>. Acesso em: 09 nov. 2026.
+
+### Normas e Documentos Técnicos
+
+- **ISO/IEC/IEEE 15288:2015**. *Systems and software engineering — System life cycle processes*. Geneva: International Organization for Standardization, 2015.
+- **ISO/IEC 25010:2011**. *Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — System and software quality models*. Geneva: ISO, 2011.
+- **BRASIL**. *Lei Geral de Proteção de Dados Pessoais (LGPD) — Lei nº 13.709, de 14 de agosto de 2018*. Brasília: Presidência da República, 2018.
+- **CINESOFT SOLUTIONS**. *Catálogo Formal de Architecture Decision Records (ADRs: ADR-001 a ADR-012)*. Goiânia: CineSoft Solutions, 2026.
+
+### Sites e Plataformas Técnicas
+
+- **NEON INC.** *Database Architecture and Serverless Postgres*. Disponível em: <https://neon.tech>. Acesso em: 09 nov. 2026.
+- **RESEND INC.** *Email API for Developers and Transactional Workflows*. Disponível em: <https://resend.com>. Acesso em: 09 nov. 2026.
+- **PRISMA DATA INC.** *Prisma ORM Schema Reference and Concurrency*. Disponível em: <https://prisma.io>. Acesso em: 09 nov. 2026.
