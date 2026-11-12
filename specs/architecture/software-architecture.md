@@ -139,7 +139,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 | **C-11** | `CompradoresModule` | Registra comprador no ato da venda e processa anonimização *in-place* (Art. 18 LGPD) via `/api/titulares/anonimizar` (`RF-09`, `CA-06`, `ADR-009`). | `CryptoService`, `TenancyContext`, `PrismaClientSingleton` |
 | **C-12** | `OcupacaoModule` | Calcula indicadores agregados de ocupação por sessão do dia corrente (`OccupancyService` / `GET /api/ocupacao/painel`) isolados por tenant (`RF-10`, `CA-07`). | `OccupancyService`, `TenancyContext`, `PrismaOccupancyRepository` |
 | **C-13** | `SeatMapPollingClient` | Client Component React com `useEffect` + `setInterval(2000ms)` atualizando reativamente o mapa de poltronas (`RF-05`, `CA-02`). | — |
-| **C-14** | `PrismaClientSingleton` | Instância singleton de `PrismaClient` estendida com `TenancyContext` e conectada ao pooler Supavisor do Supabase (porta 6543). | — |
+| **C-14** | `PrismaClientSingleton` | Instância singleton de `PrismaClient` estendida com `TenancyContext` e conectada ao banco Supabase PostgreSQL via pool de conexões. | — |
 | **C-15** | `ProvisionamentoInternalCLI` | Script administrativo (`pnpm run provisionar-tenant`) para criação controlada de novos cinemas tenants e conta inicial de `GERENTE` (`RES-03`). | `PrismaClientSingleton`, `CryptoService` |
 | **C-16** | `PortalModule` | Módulo do Portal do Cliente: rotas públicas de catálogo e grade de exibição (`/portal/**`) e orquestração do checkout de reserva (`RF-12`, `RF-13`). | `TenancyContext`, `PrismaClientSingleton`, `AuthModule` |
 | **C-17** | `ReservaTransactionHandler` | Executa `Prisma.$transaction` com `SELECT FOR UPDATE` em `session_seats`; valida antecedência mínima (> 60 min), cria `Reservation` (`PENDING`) com código `CD-XXXX` e marca assento como `RESERVED` (`RF-13`, `RN-08`, `CA-09`). | `PrismaClientSingleton`, `TenancyContext`, `NotificationService` |
@@ -153,7 +153,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 
 | ID | Descrição do Risco Técnico | Probabilidade | Impacto | Mitigação Implementada no Código |
 |----|----------------------------|---------------|---------|----------------------------------|
-| **R-1** | *Cold start* em conexão serverless elevar a latência do endpoint de venda acima de 800ms (`RNF-01`). | Média | Alto | Uso de connection pooling via Supavisor gerenciado no Supabase (porta 6543) e queries enxutas dentro da transação ACID. |
+| **R-1** | *Cold start* em conexão serverless elevar a latência do endpoint de venda acima de 800ms (`RNF-01`). | Média | Alto | Uso de connection pooling gerenciado no Supabase e queries enxutas dentro da transação ACID. |
 | **R-2** | Consultas SQL brutas (`$queryRaw`) não serem interceptadas automaticamente pela *Prisma Client Extension*. | Alta | Alto | Parametrização explícita e obrigatória de `tenant_id` em toda chamada `$queryRaw` do `VendaTransactionHandler`, auditada pela suíte de 500 cenários (`CA-04`). |
 | **R-3** | Reversão de hash de CPF por *rainbow table* caso fosse utilizado SHA-256 simples. | Média | Alto | Substituição definitiva por **`HMAC-SHA256`** com segredo `CINEDOOM_CPF_HMAC_KEY` no `CryptoService` (`ADR-008`, `CT-06`). |
 | **R-4** | Sobrecarga de leituras pelo polling de 2 segundos em sessões de grande procura. | Média | Médio | Índice composto `(session_id, status)` na tabela `session_seats` e resposta JSON minimalista (`CT-10`). |

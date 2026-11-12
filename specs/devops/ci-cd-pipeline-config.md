@@ -70,7 +70,7 @@ Conforme estabelecido na **ADR-005**, cada Pull Request gera um ambiente de pré
 - **Domínio Efêmero:** Cada PR recebe uma URL exclusiva no formato `https://cinedoom-app-git-<branch>-cinesoft-solutions.vercel.app`.
 
 ### 4.2 Isolamento de Dados em Ambientes de Preview
-- O PostgreSQL do CineDoom em produção é provisionado no **Supabase** (PostgreSQL 16 com connection pooling *Supavisor* na porta 6543 e conexões diretas de migração na porta 5432).
+- O PostgreSQL do CineDoom em produção é provisionado no **Supabase** (PostgreSQL 16 gerenciado com pool de conexões).
 - Os deployments de Preview na Vercel operam sobre schemas e instâncias isoladas populadas exclusivamente com dados sintéticos de *seed*, garantindo custo zero e total isolamento frente aos dados de produção.
 - Ao aprovar e realizar o merge do PR em `main`, a versão estável é promovida para o ambiente oficial de produção.
 

@@ -14,7 +14,7 @@ title: "Especificação de DevOps, Infraestrutura, Observabilidade e SLOs — Ci
 
 ## Resumo Executivo
 
-Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraestrutura para o **CineDoom**. Define a topologia de implantação em **Vercel + Supabase PostgreSQL (com pooler Supavisor)**, os Objetivos e Indicadores de Nível de Serviço (**SLOs** e **SLIs**) de disponibilidade, latência, integridade ACID e isolamento multi-tenant, a especificação de observabilidade com logs estruturados no **Axiom** e os procedimentos operacionais padrão (*runbooks*) para resposta a incidentes.
+Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraestrutura para o **CineDoom**. Define a topologia de implantação em **Vercel + Supabase PostgreSQL**, os Objetivos e Indicadores de Nível de Serviço (**SLOs** e **SLIs**) de disponibilidade, latência, integridade ACID e isolamento multi-tenant, a especificação de observabilidade com logs estruturados no **Axiom** e os procedimentos operacionais padrão (*runbooks*) para resposta a incidentes.
 
 ---
 
@@ -34,7 +34,7 @@ Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraes
 
 ### 1.3 Ambiente de Produção (`prod`)
 - **Hospedagem:** Vercel Production (região primária de execução: `gru1` — São Paulo via Vercel Edge Network).
-- **Banco de Dados:** PostgreSQL 16 gerenciado no Supabase — pool de conexões gerenciado via Supavisor na porta 6543 (`DATABASE_URL`, com `pgbouncer=true`) para leituras/polling e conexão direta na porta 5432 (`DIRECT_URL`) para migrações Prisma e transações ACID.
+- **Banco de Dados:** PostgreSQL 16 gerenciado no Supabase com pool de conexões (`DATABASE_URL`) para operações de aplicação/polling e conexão direta (`DIRECT_URL`) para migrações Prisma e transações ACID.
 - **CDN:** Vercel Edge Network global para distribuição de assets estáticos e cartazes (`poster_url`).
 - **Gestão de Segredos:** *Vercel Environment Variables* cifradas em repouso (`DATABASE_URL`, `DIRECT_URL`, `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY`, `CINEDOOM_CPF_HMAC_KEY`, `RESEND_API_KEY`, `NEXTAUTH_URL`).
 - **Migrações de Esquema:** `prisma migrate deploy` executado como etapa bloqueante no pipeline de CI/CD antes da promoção do deploy.
@@ -63,9 +63,9 @@ Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraes
 | ID | Indicador | Fórmula de Medição | Fonte de Coleta |
 |---|---|---|---|
 | **SLI-1** | `api_availability` | $\text{Requisições HTTP (2xx + 4xx)} / \text{Total de Requisições}$ em janela de 5 min | Vercel Analytics + Axiom Log Drain |
-| **SLI-2** | `latency_p95_venda` | Percentil 95 de duração das requisições de venda/reserva em milissegundos | OpenTelemetry / Axiom |
-| **SLI-3** | `latency_p99_venda` | Percentil 99 de duração das requisições de venda/reserva em milissegundos | OpenTelemetry / Axiom |
-| **SLI-4** | `latency_p95_polling` | Percentil 95 de duração do endpoint `GET /api/sessoes/{id}/assentos` em ms | OpenTelemetry / Axiom |
+| **SLI-2** | `latency_p95_venda` | Percentil 95 de duração das requisições de venda/reserva em milissegundos | Axiom Log Drain |
+| **SLI-3** | `latency_p99_venda` | Percentil 99 de duração das requisições de venda/reserva em milissegundos | Axiom Log Drain |
+| **SLI-4** | `latency_p95_polling` | Percentil 95 de duração do endpoint `GET /api/sessoes/{id}/assentos` em ms | Axiom Log Drain |
 | **SLI-5** | `error_rate_5xx` | $\text{Contagem}(\text{status\_code} \ge 500) / \text{Contagem}(\text{total de requisições})$ em 5 min | Axiom Log Drain |
 | **SLI-6** | `double_booking_detected` | Contagem de eventos de inconsistência de assento duplicado nos logs de auditoria | Auditoria de Aplicação / Banco |
 | **SLI-7** | `cross_tenant_leak_detected` | Contagem de violações detectadas pela *Prisma Tenancy Extension* (`TenantContextError`) | Axiom Log Drain |
@@ -92,25 +92,26 @@ Todo registro de log emitido pela aplicação deve conter obrigatoriamente:
 - **Autenticação e RBAC (`RF-01`, `CA-05`):** `action: 'login_success' | 'login_failure' | 'rbac_denied'`, `role`, `route`
 - **Tentativa de Violação Cross-Tenant (`CA-04`):** `action: 'cross_tenant_query_attempt'`, `expected_tenant_id`, `attempted_tenant_id` (`level: ERROR`)
 
-### 4.2 Rastreamento Distribuído (OpenTelemetry Spans)
-- `POST /api/vendas` e `POST /api/portal/reservas` — span raiz da transação:
-  - `prisma.transaction.seat_lock` (`SELECT FOR UPDATE`)
-  - `prisma.insert.ticket_or_reservation`
-  - `prisma.insert.buyer`
-- `GET /api/sessoes/{id}/assentos` — span de polling do mapa (`prisma.query.session_seats`)
-- `POST /api/ingressos/{id}/cancelar` — span de cancelamento (`prisma.insert.cancellation_audit` + `prisma.update.session_seat_release`)
-- `prisma.extension.tenant_filter` — span de validação do filtro `tenant_id`
+### 4.2 Rastreamento e Correlação de Requisições por `request_id`
+A aplicação propaga um `request_id` único gerado no logger em cada requisição, permitindo correlacionar os eventos de ponta a ponta no painel do Axiom:
+- **Transação de Venda e Reserva (`POST /api/vendas`, `POST /api/portal/reservas`):**
+  - Trava atômica de assento (`SELECT FOR UPDATE`)
+  - Registro de ingresso ou voucher (`action: 'ticket_sold'` ou `'reservation_created'`)
+  - Persistência com proteção criptográfica de comprador (`action: 'buyer_created'`)
+- **Polling de Assentos (`GET /api/sessoes/{id}/assentos`):** Leitura leve e indexada do mapa de ocupação
+- **Cancelamento Auditável (`POST /api/ingressos/{id}/cancelar`):** Gravação imutável em `cancellation_audits` e liberação do assento
+- **Validação de Locatário:** Injeção do filtro `tenant_id` via Prisma Client Extension
 
 ### 4.3 Matriz de Alertas Operacionais
 
 | Alerta | Condição de Disparo | Severidade | Canal de Notificação |
 |--------|---------------------|------------|----------------------|
-| `HighErrorRate5xx` | `error_rate_5xx > 1%` por 5 minutos | **P1** | Slack `#cinedoom-alerts` + PagerDuty |
-| `VendaLatencyHigh` | `p95` de venda/reserva $> 1.000\text{ ms}$ por 3 minutos | **P2** | Slack `#cinedoom-alerts` |
-| `PollingLatencyHigh` | `p95` do polling de assentos $> 500\text{ ms}$ por 5 minutos | **P2** | Slack `#cinedoom-alerts` |
-| `DoubleBookingDetected` | Qualquer violação de unicidade de assento vendido | **P0** | PagerDuty + Slack `#cinedoom-p0` |
-| `CrossTenantLeakDetected` | `cross_tenant_query_attempt > 0` em produção | **P0** | PagerDuty + Slack `#cinedoom-p0` + DPO LGPD |
-| `DatabasePoolExhausted` | Erros de conexão ao pool do Supabase/Supavisor $> 10/\text{min}$ | **P1** | Slack `#cinedoom-alerts` |
+| `HighErrorRate5xx` | `error_rate_5xx > 1%` por 5 minutos | **P1** | Axiom Monitor + E-mail da Equipe |
+| `VendaLatencyHigh` | `p95` de venda/reserva $> 1.000\text{ ms}$ por 3 minutos | **P2** | Axiom Monitor |
+| `PollingLatencyHigh` | `p95` do polling de assentos $> 500\text{ ms}$ por 5 minutos | **P2** | Axiom Monitor |
+| `DoubleBookingDetected` | Qualquer tentativa de conflito de assento duplicado | **P0** | Alerta Imediato (E-mail Equipe + Log Crítico) |
+| `CrossTenantLeakDetected` | `cross_tenant_query_attempt > 0` em produção | **P0** | Alerta Imediato (E-mail Equipe + DPO LGPD) |
+| `DatabasePoolExhausted` | Erros de saturação de conexões ao PostgreSQL $> 10/\text{min}$ | **P1** | Painel Supabase + Axiom Monitor |
 
 ---
 
@@ -129,9 +130,11 @@ Todo registro de log emitido pela aplicação deve conter obrigatoriamente:
 
 ## 6. Procedimentos Operacionais Padrão (Runbooks)
 
-1. **Pico de Erros `HTTP 5xx`:** Inspecionar os logs no Axiom filtrando por `status_code >= 500` $\to$ identificar a rota afetada $\to$ verificar o painel de conexões do Supabase $\to$ se o pool do Supavisor estiver saturado, ajustar `connection_limit` no pooler ou executar *rollback* imediato na Vercel caso decorra de deploy recente.
-2. **Latência Elevada na Venda/Reserva (`> 800ms p95`):** Inspecionar o span `prisma.transaction.seat_lock` $\to$ verificar se há contenção excessiva de `SELECT FOR UPDATE` na mesma sessão de estreia $\to$ validar se o erro `HTTP 409` está sendo retornado rapidamente sem espera em fila longa.
-3. **Polling do Mapa de Assentos Lento (`> 300ms p95`):** Verificar o plano de execução (`EXPLAIN ANALYZE`) da consulta em `session_seats` $\to$ confirmar uso do índice composto `idx_session_seats_session_status` $\to$ verificar se o endpoint está roteando pelo pooler Supavisor do Supabase (porta 6543).
-4. **Suspeita de Violação Cross-Tenant (P0):** Rotacionar imediatamente `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` e `CINEDOOM_CPF_HMAC_KEY` na Vercel $\to$ auditar os registros do span `prisma.extension.tenant_filter` no Axiom $\to$ aplicar correção emergencial, executar a bateria de 500 cenários (`security-cross-tenant-suite.test.ts`) e acionar o DPO conforme o plano de resposta a incidentes.
+1. **Pico de Erros `HTTP 5xx`:** Inspecionar os logs no Axiom filtrando por `status_code >= 500` $\to$ identificar a rota afetada $\to$ verificar o painel de métricas do Supabase $\to$ se as conexões estiverem saturadas, avaliar sobrecarga de requisições ou executar *rollback* imediato na Vercel caso decorra de deploy recente.
+2. **Latência Elevada na Venda/Reserva (`> 800ms p95`):** Inspecionar os logs de venda no Axiom $\to$ verificar se há contenção excessiva de `SELECT FOR UPDATE` na mesma sessão de estreia $\to$ validar se o erro `HTTP 409` está sendo retornado rapidamente sem espera em fila longa.
+3. **Polling do Mapa de Assentos Lento (`> 300ms p95`):** Verificar o plano de execução (`EXPLAIN ANALYZE`) da consulta em `session_seats` $\to$ confirmar uso do índice composto `idx_session_seats_session_status` $\to$ validar se a consulta opera com tempo de resposta dentro da meta.
+4. **Suspeita de Violação Cross-Tenant (P0):** Rotacionar imediatamente `NEXTAUTH_SECRET`, `CPF_ENCRYPTION_KEY` e `CINEDOOM_CPF_HMAC_KEY` na Vercel $\to$ auditar os registros de `tenant_id` e eventos `'cross_tenant_query_attempt'` no Axiom $\to$ aplicar correção emergencial, executar a bateria de 500 cenários (`security-cross-tenant-suite.test.ts`) e acionar o DPO conforme o plano de resposta a incidentes.
+5. **Rotação Anual da Chave `CPF_ENCRYPTION_KEY` (`ADR-008`):** Gerar nova chave AES-256-GCM de 32 bytes $\to$ executar script autenticado de re-cifragem em lote sobre `Buyer.cpf_encrypted` e `Reservation.buyer_cpf_encrypted` $\to$ atualizar a variável no cofre da Vercel e validar a integridade em staging antes de produção.
+6. **Atendimento a Solicitação de Anonimização LGPD (Art. 18 — `ADR-009`):** Executar chamada autenticada com perfil `GERENTE` ao endpoint `POST /api/titulares/anonimizar` informando o CPF do titular solicitante $\to$ verificar o retorno de confirmação da anonimização *in-place* $\to$ registrar o protocolo de atendimento e responder formalmente ao titular em até 15 dias.
 5. **Rotação Anual da Chave `CPF_ENCRYPTION_KEY` (`ADR-008`):** Gerar nova chave AES-256-GCM de 32 bytes $\to$ executar script autenticado de re-cifragem em lote sobre `Buyer.cpf_encrypted` e `Reservation.buyer_cpf_encrypted` $\to$ atualizar a variável no cofre da Vercel e validar a integridade em staging antes de produção.
 6. **Atendimento a Solicitação de Anonimização LGPD (Art. 18 — `ADR-009`):** Executar chamada autenticada com perfil `GERENTE` ao endpoint `POST /api/titulares/anonimizar` informando o CPF do titular solicitante $\to$ verificar o retorno de confirmação da anonimização *in-place* $\to$ registrar o protocolo de atendimento e responder formalmente ao titular em até 15 dias.

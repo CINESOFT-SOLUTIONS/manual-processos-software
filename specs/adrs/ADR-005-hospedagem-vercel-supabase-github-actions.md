@@ -21,7 +21,7 @@ Carlos Eduardo (@carloseduduu), Gabriel Lourenço (@gabrlou)
 Necessidade de ambiente de staging e produção com deploy contínuo automatizado e custo operacional zero no MVP.
 
 ## Decisão
-Vercel integrada ao repositório GitHub via GitHub Actions CI/CD e banco de dados hospedado no Supabase (PostgreSQL 16 gerenciado com connection pooling Supavisor na porta 6543 e conexões diretas na porta 5432).
+Vercel integrada ao repositório GitHub via GitHub Actions CI/CD e banco de dados hospedado no Supabase (PostgreSQL 16 gerenciado com pool de conexões).
 
 ## Consequências
 ### Positivas

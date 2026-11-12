@@ -37,7 +37,7 @@ Os artefatos aqui consolidados foram produzidos pela esteira de engenharia de so
 ### 6. Planejamento Operacional e DevOps
 * **[`planning/sprints-e-backlog.md`](planning/sprints-e-backlog.md):** Plano Mestre de Sprints, Backlog e Roadmap oficial do Kanban CineDoom com 33 issues distribuídas (23 em `cinedoom-app` e 10 em `manual-processos-software`), datas de início/término e matriz RACI.
 * **[`planning/tech-lead-plan.md`](planning/tech-lead-plan.md):** Detalhamento de 23 tarefas técnicas de desenvolvimento (`TASK-1` a `TASK-23`), caminho crítico e estimativa total de 116 horas.
-* **[`planning/devops-spec.md`](planning/devops-spec.md):** Configuração de CI/CD (GitHub Actions), provisionamento na Vercel, banco Supabase PostgreSQL (pooler Supavisor) e observabilidade via Axiom.
+* **[`planning/devops-spec.md`](planning/devops-spec.md):** Configuração de CI/CD (GitHub Actions), provisionamento na Vercel, banco Supabase PostgreSQL e observabilidade via Axiom.
 
 ### 7. Engenharia de Requisitos, Regras de Negócio e Rastreabilidade
 * **[`cinedoom-spec.md`](cinedoom-spec.md):** Especificação formal completa (SRS) padronizada em português conforme a Seção 6.4 da ISO/IEC/IEEE 12207:2021, separada em:
