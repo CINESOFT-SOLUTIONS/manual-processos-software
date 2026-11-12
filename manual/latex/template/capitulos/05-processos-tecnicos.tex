@@ -245,26 +245,28 @@ Para documentar integralmente a estrutura estática e o comportamento dinâmico 
 
 O Diagrama de Contêineres ilustra a interação entre os três perfis de usuários (Espectador, Atendente e Gerente), a aplicação web e API serverless hospedada na Vercel, o banco de dados relacional PostgreSQL e os serviços externos de e-mail transacional (Resend) e observabilidade (Axiom):
 
-
-\paragraph{2. Diagrama de Classes UML (Modelo de Domínio)}
-
-O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (\texttt{Tenant}):
-
-\figuracomfonte{capitulo-05/diagramas/diagrama-classes-dominio.pdf}{0.96\textwidth}{Diagrama de Classes do Domínio de Negócios CineDoom}{CineSoft Solutions (2026)}{fig:classes_dominio}
+\figuracomfonte{capitulo-05/diagramas/c4-containers.pdf}{0.96\textwidth}{Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom}{CineSoft Solutions (2026)}{fig:c4_containers}
 
 
-\paragraph{3. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)}
+\paragraph{2. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)}
 
 O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (\texttt{SELECT\ FOR\ UPDATE}), a emissão do voucher transacional e a posterior conversão em ingresso vendido (\texttt{SOLD}) no guichê físico:
 
 \figuracomfonte{capitulo-05/diagramas/diagrama-sequencia-reserva.pdf}{0.96\textwidth}{Diagrama de Sequência UML: Reserva Web e Emissão de Voucher}{CineSoft Solutions (2026)}{fig:sequencia_reserva}
 
 
-\paragraph{4. Diagrama de Casos de Uso UML}
+\paragraph{3. Diagrama de Casos de Uso UML}
 
 O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
 
-\figuracomfonte{capitulo-05/diagramas/c4-containers.pdf}{0.96\textwidth}{Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom}{CineSoft Solutions (2026)}{fig:c4_containers}
+\figuracomfonte{capitulo-05/diagramas/diagrama-casos-de-uso.pdf}{0.96\textwidth}{Diagrama de Casos de Uso UML: Atores e Casos de Uso da Plataforma CineDoom}{CineSoft Solutions (2026)}{fig:casos_de_uso}
+
+
+\paragraph{4. Diagrama de Classes UML (Modelo de Domínio)}
+
+O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (\texttt{Tenant}):
+
+\figuracomfonte{capitulo-05/diagramas/diagrama-classes-dominio.pdf}{0.96\textwidth}{Diagrama de Classes do Domínio de Negócios CineDoom}{CineSoft Solutions (2026)}{fig:classes_dominio}
 
 
 \paragraph{5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)}
