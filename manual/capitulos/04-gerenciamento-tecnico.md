@@ -8,30 +8,37 @@ O processo de planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 – Clá
 
 O diagrama abaixo decompõe o produto **CineDoom** em três níveis hierárquicos (Nível 1: Produto; Nível 2: Macroentregas e Governança; Nível 3: Pacotes de Trabalho e Entregáveis verificáveis):
 
-```mermaid
-flowchart TD
-    Root["1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)"]
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 11
+skinparam roundcorner 4
 
-    Root --> M1["1.1 Macroentrega 1 (v1.0 - MVP Operacional)\nBilheteria, Back-office & Portal Web"]
-    Root --> M2["1.2 Macroentrega 2 (v2.0 - Escala Comercial)\nPagamentos Online, Mensageria & Cloud Pro"]
-    Root --> M3["1.3 Macroentrega 3 (v3.0 - Enterprise & Fiscal)\nNFC-e/SEFAZ, Bomboniere & SaaS Self-Service"]
-    Root --> GOV["1.4 Governança, Qualidade & Segurança\nContínua (ISO 12207 / LGPD)"]
-
-    M1 --> M1_1["1.1.1 Fundação Multi-Tenant,\nAuth RBAC & Criptografia CPF"]
-    M1 --> M1_2["1.1.2 Back-office Gerencial:\nFilmes, Salas, Sessões & Ocupação"]
-    M1 --> M1_3["1.1.3 Bilheteria Presencial ACID\n(SELECT FOR UPDATE) & Auditoria"]
-    M1 --> M1_4["1.1.4 Portal do Cliente: Reserva Web,\nExpiração JIT & Baixa no Balcão"]
-
-    M2 --> M2_1["1.2.1 Checkout Transparente\nStripe / Pagar.me (PIX & Cartão)"]
-    M2 --> M2_2["1.2.2 Mensageria Dedicada Resend Pro\n(Domínio Próprio DKIM/SPF)"]
-    M2 --> M2_3["1.2.3 Migração DBaaS Pro (PITR,\nRéplicas & Pooler Expandido)"]
-
-    M3 --> M3_1["1.3.1 Integração Fiscal SEFAZ\n(Emissão Automática NFC-e)"]
-    M3 --> M3_2["1.3.2 Módulo de Bomboniere,\nCombos & Controle de Estoque"]
-    M3 --> M3_3["1.3.3 Console Admin Global:\nSelf-Service Onboarding & Billing SaaS"]
-
-    GOV --> GOV_1["1.4.1 Pipeline CI/CD, Linter\ne 711 Testes Automatizados"]
-    GOV --> GOV_2["1.4.2 Telemetria Axiom (365 dias)\ne Anonimização LGPD Art. 18"]
+rectangle "1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)" as Root {
+  rectangle "1.1 Macroentrega 1 (v1.0 - MVP Operacional)\nBilheteria, Back-office & Portal Web" as M1 {
+    rectangle "1.1.1 Fundação Multi-Tenant,\nAuth RBAC & Cripto CPF" as M1_1
+    rectangle "1.1.2 Back-office Gerencial:\nFilmes, Salas, Sessões & Ocupação" as M1_2
+    rectangle "1.1.3 Bilheteria Presencial ACID\n(SELECT FOR UPDATE) & Auditoria" as M1_3
+    rectangle "1.1.4 Portal do Cliente: Reserva Web,\nExpiração JIT & Baixa no Balcão" as M1_4
+  }
+  rectangle "1.2 Macroentrega 2 (v2.0 - Escala Comercial)\nPagamentos Online, Mensageria & Cloud Pro" as M2 {
+    rectangle "1.2.1 Checkout Transparente\nStripe / Pagar.me (PIX & Cartão)" as M2_1
+    rectangle "1.2.2 Mensageria Dedicada Resend Pro\n(Domínio Próprio DKIM/SPF)" as M2_2
+    rectangle "1.2.3 Migração DBaaS Pro (PITR,\nRéplicas & Pooler Expandido)" as M2_3
+  }
+  rectangle "1.3 Macroentrega 3 (v3.0 - Enterprise & Fiscal)\nNFC-e/SEFAZ, Bomboniere & SaaS Self-Service" as M3 {
+    rectangle "1.3.1 Integração Fiscal SEFAZ\n(Emissão Automática NFC-e)" as M3_1
+    rectangle "1.3.2 Módulo de Bomboniere,\nCombos & Controle de Estoque" as M3_2
+    rectangle "1.3.3 Console Admin Global:\nSelf-Service Onboarding & Billing SaaS" as M3_3
+  }
+  rectangle "1.4 Governança, Qualidade & Segurança\nContínua (ISO 12207 / LGPD)" as GOV {
+    rectangle "1.4.1 Pipeline CI/CD, Linter\ne 711 Testes Automatizados" as GOV_1
+    rectangle "1.4.2 Telemetria Axiom (365 dias)\ne Anonimização LGPD Art. 18" as GOV_2
+  }
+}
+@enduml
 ```
 
 ### Escopo e Marcos Comerciais por Macroentrega (Milestones)
@@ -121,11 +128,21 @@ São submetidos a controle formal de versão no GitHub:
 
 A CineSoft Solutions adota um fluxo estruturado em três branches permanentes (`develop`, `staging` e `main`) aliado a branches efêmeras por funcionalidade:
 
-```mermaid
-flowchart LR
-    F["feat/RF-XX-descricao\nou fix/escopo"] -->|"PR + Code Review\n+ 711 Testes CI"| DEV["develop\n(Integração Contínua)"]
-    DEV -->|"Promoção Verificada"| STG["staging\n(Homologação / Preview)"]
-    STG -->|"Release Gate Aprovado\n+ Tag SemVer"| MAIN["main\n(Produção Vercel)"]
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+
+state "feat/RF-XX\nou fix/escopo" as F
+state "develop\n(Integração Contínua)" as DEV
+state "staging\n(Homologação / Preview)" as STG
+state "main\n(Produção Vercel)" as MAIN
+
+F --> DEV : PR + Code Review\n+ 711 Testes CI
+DEV --> STG : Promoção Verificada
+STG --> MAIN : Release Gate Aprovado\n+ Tag SemVer
+@enduml
 ```
 
 - **`main` (Produção Protegida):** Reflete exclusivamente o código estável em execução para os cinemas clientes (`https://cinedoom.vercel.app/`). Proíbe *force push* e exige que toda alteração tenha passado pela validação completa da esteira de CI.

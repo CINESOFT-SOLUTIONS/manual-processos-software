@@ -2,20 +2,44 @@
 skinparam monochrome true
 skinparam shadowing false
 skinparam defaultFontName Helvetica
+skinparam packageStyle rectangle
+skinparam roundcorner 8
 
-rectangle "1. Planejamento (DoR)" as S1
-rectangle "2. Desenvolvimento" as S2
-rectangle "3. Testes Automatizados" as S3
-rectangle "4. Code Review & CI" as S4
-rectangle "5. Homologação Staging" as S5
-rectangle "6. Aceitação UAT (DoD)" as S6
-rectangle "7. Release Produção" as S7
+left to right direction
 
-S1 -> S2
-S2 -> S3
-S3 -> S4
-S4 -> S5
-S5 -> S6
-S6 -> S7
-S6 .> S1 : Retrospectiva
+package "Ciclo Iterativo de Desenvolvimento (Sprints de 2 semanas)" {
+    rectangle "1. Requisitos\n& Planejamento" as R
+    rectangle "2. Arquitetura\n& Design" as D
+    rectangle "3. Implementação\n& Code Review" as I
+    rectangle "4. Verificação\n& Testes" as T
+    rectangle "5. Publicação\n& Acompanhamento" as P
+
+    R --> D
+    D --> I
+    I --> T
+    T --> P
+    P ..> R : Feedback e refinamento
+}
+
+rectangle "Incrementos\nvalidados" as INC
+
+package "Roadmap de Evolução do Produto" {
+    rectangle "Macroentrega 1\nv1.0 – MVP\n\nBilheteria presencial\nMapa 2D\nReservas Web\nGovernança LGPD" as M1
+
+    rectangle "Macroentrega 2\nv2.0 – Expansão Digital\n\nPagamento PIX/Cartão\nVouchers por e-mail\nVenda digital" as M2
+
+    rectangle "Macroentrega 3\nv3.0 – Operação Fiscal\n\nNFC-e\nBomboniere\nPainel financeiro" as M3
+
+    M1 ==> M2
+    M2 ==> M3
+}
+
+P --> INC : Incrementos das iterações
+INC --> M1 : Consolidação progressiva
+
+note bottom of INC
+  Cada macroentrega pode envolver
+  múltiplas Sprints.
+end note
+
 @enduml
