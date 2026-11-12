@@ -1,0 +1,53 @@
+@startuml
+autonumber
+
+skinparam style strictuml
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+skinparam maxMessageSize 250
+
+actor "Público (Cliente)" as Esp
+participant "Next.js Route Handler /\nReservationService" as API
+database "PostgreSQL\n(Transação ACID)" as DB
+participant "NotificationService\n(Resend)" as Mail
+actor "Atendente (Balcão)" as Atd
+
+Esp -> API : POST /api/portal/reservas\n(sessionId, seatIds, buyer)
+activate API
+
+API -> API : Valida antecedência (>= 60 min)\ne ordena seatIds
+API -> DB : BEGIN TRANSACTION
+API -> DB : SELECT * FROM session_seats\nWHERE id IN (...) FOR UPDATE
+
+alt Algum assento não está AVAILABLE (e não expirado JIT)
+    DB --> API : Retorna status != AVAILABLE
+    API -> DB : ROLLBACK
+    API --> Esp : HTTP 409 Conflict\n(Poltrona indisponível)
+else Todos os assentos disponíveis
+    API -> DB : INSERT INTO reservations\n(code: CD-XXXX, status: PENDING, expiresAt)
+    API -> DB : UPDATE session_seats\nSET status = 'RESERVED', reservation_id = id
+    API -> DB : COMMIT
+    API -> Mail : sendReservationVoucher(reservationId)
+    activate Mail
+    Mail -> DB : UPDATE reservations\nSET email_sent_at = NOW()
+    deactivate Mail
+    API --> Esp : HTTP 201 Created\n(Voucher CD-XXXX)
+end
+deactivate API
+
+note over Esp, Atd
+  Espectador comparece à bilheteria até 60 min antes da sessão
+end note
+
+Atd -> API : POST /api/bilheteria/reservas/confirmar\n(code: CD-XXXX)
+activate API
+
+API -> DB : BEGIN TRANSACTION +\nSELECT reservation FOR UPDATE
+API -> DB : Verifica se NOW() <= expiresAt\n(Regra JIT 60 min)
+API -> DB : UPDATE reservations\nSET status = 'CONFIRMED', confirmed_at = NOW()
+API -> DB : UPDATE session_seats\nSET status = 'SOLD'
+API -> DB : INSERT INTO tickets\n(status: 'SOLD', operator_id)
+API -> DB : COMMIT
+API --> Atd : HTTP 200 OK\n(Ingressos Emitidos)
+deactivate API
+@enduml
