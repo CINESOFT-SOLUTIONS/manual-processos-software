@@ -6,7 +6,7 @@ O planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 – cláusula 6.3.1)
 
 ### Estrutura Analítica do Projeto (EAP)
 
-A Figura 4 decompõe o produto em três níveis: Nível 1 (produto), Nível 2 (macroentregas e governança) e Nível 3 (pacotes de trabalho verificáveis).
+A Figura 7 decompõe o produto em três níveis: Nível 1 (produto), Nível 2 (macroentregas e governança) e Nível 3 (pacotes de trabalho verificáveis).
 
 ```plantuml
 @startuml
@@ -41,13 +41,13 @@ rectangle "1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)" as Root {
 @enduml
 ```
 
-*Figura 4 – Estrutura Analítica do Projeto (EAP) do CineDoom. Fonte: CineSoft Solutions (2026).*
+*Figura 7 – Estrutura Analítica do Projeto (EAP) do CineDoom. Fonte: CineSoft Solutions (2026).*
 
 ### Escopo e Marcos por Macroentrega
 
 O ciclo de vida do CineDoom é dividido em três macroentregas, cada uma com critério de aceite verificável.
 
-**Tabela 14 – Macroentregas, escopo e critérios de aceite**
+**Tabela 15 – Macroentregas, escopo e critérios de aceite**
 
 | Marco | Versão | Escopo | Critério de aceite | Responsável técnico | Janela | Status |
 | :--- | :---: | :--- | :--- | :---: | :---: | :---: |
@@ -61,7 +61,7 @@ A M2 depende da conclusão da M1 e da definição do gateway de pagamento. A M3 
 
 ### Cronograma
 
-A Figura 5 apresenta o cronograma macro. A M1 foi executada em três Sprints de duas semanas.
+A Figura 8 apresenta o cronograma macro. A M1 foi executada em três Sprints de duas semanas.
 
 ```plantuml
 @startgantt
@@ -80,9 +80,9 @@ Project starts 2026-09-29
 @endgantt
 ```
 
-*Figura 5 – Cronograma macro das macroentregas. Fonte: CineSoft Solutions (2026).*
+*Figura 8 – Cronograma macro das macroentregas. Fonte: CineSoft Solutions (2026).*
 
-**Tabela 15 – Execução das Sprints da Macroentrega 1**
+**Tabela 16 – Execução das Sprints da Macroentrega 1**
 
 | Sprint | Pacotes de trabalho entregues | Responsáveis | Início | Término | Status |
 | :--- | :--- | :--- | :---: | :---: | :---: |
@@ -96,7 +96,7 @@ Project starts 2026-09-29
 
 A equipe é composta por quatro engenheiros (Seção 3.4). A infraestrutura é *serverless*, com planos gratuitos na M1 e planos pagos a partir da M2.
 
-**Tabela 16 – Recursos de infraestrutura e custo estimado**
+**Tabela 17 – Recursos de infraestrutura e custo estimado**
 
 | Recurso | Plano na M1 | Plano na M2 e M3 | Finalidade | Custo estimado |
 | :--- | :--- | :--- | :--- | ---: |
@@ -123,9 +123,9 @@ Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, e
 
 1. **Monitoramento diário:** todo cartão no GitHub Projects possui responsável nominal, data-limite, estimativa e critério de aceite. Tarefa parada em *In Progress* por mais de 48 horas sem atualização é sinalizada como impedimento.
 2. **Revisão semanal:** o Gerente de Projeto e o Tech Lead comparam os pacotes concluídos com os planejados.
-3. **Tratamento de desvios:** conforme a Tabela 17.
+3. **Tratamento de desvios:** conforme a Tabela 18.
 
-**Tabela 17 – Protocolo de tratamento de desvios**
+**Tabela 18 – Protocolo de tratamento de desvios**
 
 | Tipo de desvio | Critério | Ação | Registro |
 | :--- | :--- | :--- | :--- |
@@ -136,7 +136,7 @@ Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, e
 
 ![Quadro Kanban do GitHub Projects com responsável, data-limite e limite de WIP visíveis](../../assets/capitulo-04/prints/kanban-board.png) 
 
-*Figura 6 – Quadro Kanban do projeto no GitHub Projects. Fonte: CineSoft Solutions (2026).*
+*Figura 9 – Quadro Kanban do projeto no GitHub Projects. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -146,7 +146,7 @@ A gestão de riscos (cláusula 6.3.4) identifica, analisa, trata e monitora as a
 
 ### Critérios de Classificação
 
-**Tabela 18 – Escalas de probabilidade e impacto**
+**Tabela 19 – Escalas de probabilidade e impacto**
 
 | Nível | Probabilidade | Impacto |
 | :--- | :--- | :--- |
@@ -156,7 +156,7 @@ A gestão de riscos (cláusula 6.3.4) identifica, analisa, trata e monitora as a
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 19 – Matriz de prioridade (probabilidade × impacto)**
+**Tabela 20 – Matriz de prioridade (probabilidade × impacto)**
 
 | Probabilidade \ Impacto | Baixo | Médio | Alto |
 | :--- | :---: | :---: | :---: |
@@ -170,7 +170,7 @@ Riscos **Críticos** exigem barreira arquitetural e teste automatizado obrigató
 
 ### Registro de Riscos
 
-**Tabela 20 – Identificação e análise dos riscos**
+**Tabela 21 – Identificação e análise dos riscos**
 
 | ID | Risco | Categoria | Prob. | Impacto | Prioridade |
 | :---: | :--- | :--- | :---: | :---: | :---: |
@@ -188,7 +188,7 @@ Riscos **Críticos** exigem barreira arquitetural e teste automatizado obrigató
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 21 – Tratamento e monitoramento dos riscos**
+**Tabela 22 – Tratamento e monitoramento dos riscos**
 
 | ID | Resposta e mitigação | Gatilho de alerta | Responsável | Monitoramento |
 | :---: | :--- | :--- | :---: | :--- |
@@ -216,7 +216,7 @@ A gestão de configuração (cláusula 6.3.5) assegura a integridade, o rastream
 
 ### Itens de Configuração
 
-**Tabela 22 – Itens de configuração controlados**
+**Tabela 23 – Itens de configuração controlados**
 
 | Item | Localização | Controle |
 | :--- | :--- | :--- |
@@ -231,7 +231,7 @@ A gestão de configuração (cláusula 6.3.5) assegura a integridade, o rastream
 
 ### Estratégia de Branches
 
-O fluxo usa três branches permanentes e branches efêmeras por funcionalidade (Figura 7).
+O fluxo usa três branches permanentes e branches efêmeras por funcionalidade (Figura 10).
 
 ```plantuml
 @startuml
@@ -250,9 +250,9 @@ STG --> MAIN : Aprovação de release\n+ tag SemVer
 @enduml
 ```
 
-*Figura 7 – Estratégia de branches. Fonte: CineSoft Solutions (2026).*
+*Figura 10 – Estratégia de branches. Fonte: CineSoft Solutions (2026).*
 
-**Tabela 23 – Branches e regras de proteção**
+**Tabela 24 – Branches e regras de proteção**
 
 | Branch | Função | Regras |
 | :--- | :--- | :--- |
@@ -269,7 +269,7 @@ Todo Pull Request deve passar pelos *Quality Gates* da Seção 3.5 (compilação
 
 Cada tag `vMAJOR.MINOR.PATCH` aplicada a `main` constitui uma **baseline** de release.
 
-**Tabela 24 – Versionamento semântico e convenção de commits**
+**Tabela 25 – Versionamento semântico e convenção de commits**
 
 | Elemento | Regra |
 | :--- | :--- |
@@ -280,7 +280,7 @@ Cada tag `vMAJOR.MINOR.PATCH` aplicada a `main` constitui uma **baseline** de re
 
 *Fonte: CineSoft Solutions (2026).*
 
-O fluxo de release, incluindo a reversão e a correção urgente, segue a Figura 8.
+O fluxo de release, incluindo a reversão e a correção urgente, segue a Figura 11.
 
 ```plantuml
 @startuml
@@ -310,7 +310,7 @@ stop
 @enduml
 ```
 
-*Figura 8 – Fluxo de release, reversão e correção urgente. Fonte: CineSoft Solutions (2026).*
+*Figura 11 – Fluxo de release, reversão e correção urgente. Fonte: CineSoft Solutions (2026).*
 
 ### Auditoria e Registro de Status
 
@@ -320,10 +320,10 @@ stop
 
 
 ![Execução do GitHub Actions com todas as verificações aprovadas.](../../assets/capitulo-04/prints/CI.png) 
-*Figura 9 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
+*Figura 12 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
 
 ![Página de tags e releases do repositório (`v1.0.0`).](../../assets/capitulo-04/prints/releases.png) 
-> *Figura 10 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
+*Figura 13 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -336,7 +336,7 @@ A gestão de decisões (cláusula 6.3.3) fundamenta as escolhas de alto impacto 
 - **Quando registrar:** toda decisão que afete a arquitetura, a segurança, o banco de dados, a infraestrutura ou o custo exige um ADR.
 - **Quem decide:** o Tech Lead aprova, e o ADR é revisado em Pull Request por outro integrante.
 - **Conteúdo mínimo:** contexto, alternativas consideradas, decisão, justificativa e consequências.
-- **Ciclo de vida:** o ADR passa pelos estados da Figura 11. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
+- **Ciclo de vida:** o ADR passa pelos estados da Figura 14. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
 
 ```plantuml
 @startuml
@@ -352,13 +352,13 @@ Substituida --> [*]
 @enduml
 ```
 
-*Figura 11 – Ciclo de vida de um ADR. Fonte: CineSoft Solutions (2026).*
+*Figura 14 – Ciclo de vida de um ADR. Fonte: CineSoft Solutions (2026).*
 
 ### Matriz de Decisão Ponderada: Arquitetura Base (ADR-001)
 
 A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco critérios ponderados (nota de 1 a 5, sendo 5 a melhor aderência).
 
-**Tabela 25 – Matriz de decisão ponderada da arquitetura base**
+**Tabela 26 – Matriz de decisão ponderada da arquitetura base**
 
 | Critério | Peso | A: Monólito modular (Next.js 14 e Prisma) | B: Microsserviços (Node/Go e Kafka) | C: SPA separada e backend em VM |
 | :--- | :---: | :---: | :---: | :---: |
@@ -371,7 +371,7 @@ A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 26 – Ficha do ADR-001**
+**Tabela 27 – Ficha do ADR-001**
 
 | Elemento | Descrição |
 | :--- | :--- |
@@ -387,7 +387,7 @@ A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco
 
 As fichas completas dos 12 ADRs, com data e autor, estão em `specs/adrs/`. A tabela abaixo as relaciona aos riscos e requisitos que sustentam.
 
-**Tabela 27 – Índice dos ADRs**
+**Tabela 28 – Índice dos ADRs**
 
 | ADR | Título | Decisão resumida | Status | Relacionado a |
 | :---: | :--- | :--- | :---: | :--- |
@@ -408,13 +408,13 @@ As fichas completas dos 12 ADRs, com data e autor, estão em `specs/adrs/`. A ta
 
 
 ![Pasta `specs/adrs/` no GitHub, exibindo os 12 ADRs.](../../assets/capitulo-04/prints/ADRs.png) 
-*Figura 12 – Registro dos ADRs no repositório. Fonte: CineSoft Solutions (2026).*
+*Figura 15 – Registro dos ADRs no repositório. Fonte: CineSoft Solutions (2026).*
 
 ---
 
 ## 4.5 Métricas de acompanhamento do projeto
 
-O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 13 resume o ciclo de medição.
+O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 16 resume o ciclo de medição.
 
 ```plantuml
 @startuml
@@ -431,9 +431,9 @@ D --> N : Atualiza metas
 @enduml
 ```
 
-*Figura 13 – Ciclo de medição e decisão. Fonte: CineSoft Solutions (2026).*
+*Figura 16 – Ciclo de medição e decisão. Fonte: CineSoft Solutions (2026).*
 
-**Tabela 28 – Plano de medição**
+**Tabela 29 – Plano de medição**
 
 | Indicador | Necessidade atendida | Meta | Fonte e frequência | Responsável |
 | :--- | :--- | :---: | :--- | :---: |
@@ -443,13 +443,13 @@ D --> N : Atualiza metas
 | **Cobertura nas regras de domínio** | Qualidade | ≥ 70% (*statements*, funções e linhas) e ≥ 80% (*branches*) (Seção 3.5) | Relatório do Vitest, a cada PR | Kayque Vicente |
 | **Defeitos críticos em produção** | Qualidade | 0 | Telemetria e registro de incidentes, por macroentrega | Carlos Eduardo |
 | **Cumprimento do escopo** | Progresso | 100% dos requisitos do marco | Matriz de rastreabilidade (Seção 5.1.2), por Sprint | Kayque Vicente |
-| **Riscos críticos sem mitigação ativa** | Risco | 0 | Registro de riscos (Tabela 21), por Sprint | Kayque Vicente |
+| **Riscos críticos sem mitigação ativa** | Risco | 0 | Registro de riscos (Tabela 22), por Sprint | Kayque Vicente |
 | **Custo mensal dos serviços base** | Custo | ≤ US$ 90/mês na M2 e na M3 | Painéis de cobrança, mensal | Carlos Eduardo |
 | **Rollbacks por release** | Configuração | Tendência decrescente | Tags e histórico de deploy, por release | Carlos Eduardo |
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 29 – Resultados na Macroentrega 1 (`v1.0.0`) e ação em caso de desvio**
+**Tabela 30 – Resultados na Macroentrega 1 (`v1.0.0`) e ação em caso de desvio**
 
 | Indicador | Resultado aferido | Ação em caso de desvio |
 | :--- | :--- | :--- |
@@ -457,17 +457,17 @@ D --> N : Atualiza metas
 | WIP por engenheiro | Limite respeitado | Revisão do quadro na reunião diária |
 | Suíte de testes | 26 arquivos e 770 testes aprovados (100%) | O PR com teste falho não é integrado |
 | Cobertura nas regras de domínio | 71,2% de *statements*, 83,4% de *branches* e 76,3% de funções (gate: 70/80/70) | Abrir ação corretiva no registro de não conformidades (Seção 3.5) |
-| Defeitos críticos em produção | 0 (apenas ajustes cosméticos e de responsividade) | Defeito crítico aciona a reversão para a versão anterior e correção urgente (Figura 8) |
-| Cumprimento do escopo | 18 de 18 requisitos e 15 de 15 critérios de aceite | Ajuste de escopo conforme a Tabela 17 |
+| Defeitos críticos em produção | 0 (apenas ajustes cosméticos e de responsividade) | Defeito crítico aciona a reversão para a versão anterior e correção urgente (Figura 11) |
+| Cumprimento do escopo | 18 de 18 requisitos e 15 de 15 critérios de aceite | Ajuste de escopo conforme a Tabela 18 |
 | Riscos críticos sem mitigação | Medição iniciada a partir deste plano | Escalar à direção |
 | Custo mensal | US$ 0 (planos gratuitos) | Desvio acima de 10% do teto aciona revisão de planos |
 | Rollbacks por release | Medição iniciada a partir deste plano | Análise de causa na retrospectiva |
 
 *Fonte: CineSoft Solutions (2026).*
 
-Os valores da Tabela 29 referem-se à entrega da `v1.0.0` e são atualizados a cada macroentrega.
+Os valores da Tabela 30 referem-se à entrega da `v1.0.0` e são atualizados a cada macroentrega.
 
 ![Quadro do GitHub Projects com o tempo de ciclo das issues.](../../assets/capitulo-04/prints/fluxo.png)
-*Figura 14 – Evidência do fluxo de trabalho. Fonte: CineSoft Solutions (2026).*
+*Figura 17 – Evidência do fluxo de trabalho. Fonte: CineSoft Solutions (2026).*
 
 ---

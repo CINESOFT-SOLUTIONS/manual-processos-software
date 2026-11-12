@@ -8,6 +8,8 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 
 #### Catálogo Formal de Requisitos Funcionais (`RF-01` a `RF-18`)
 
+**Tabela 31 – Catálogo Formal de Requisitos Funcionais (RF-01 a RF-18)**
+
 | ID | Módulo | Requisito Funcional | Prioridade | Macroentrega |
 | :---: | :---: | :--- | :---: | :---: |
 | **RF-01** | Identidade & RBAC | Autenticar usuários via credenciais seguras (`bcrypt` cost 12) e sessão JWT contendo `userId`, `role` (`GERENTE`, `ATENDENTE`, `CLIENTE`) e `tenantId`. | *Must Have* | Macroentrega 1 (`v1.0`) |
@@ -29,7 +31,11 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 | **RF-17** | Bilheteria Híbrida | Permitir ao `ATENDENTE` localizar reservas web no balcão pelo código localizador (`CD-XXXX`) e confirmar o pagamento presencial, convertendo em `SOLD`. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-18** | Expiração JIT | Invalidar automaticamente reservas pendentes não pagas quando faltarem menos de 60 minutos para o início da sessão, liberando os assentos em tempo real. | *Must Have* | Macroentrega 1 (`v1.0`) |
 
+*Fonte: CineSoft Solutions (2026).*
+
 #### Catálogo Formal de Requisitos Não Funcionais (`RNF-01` a `RNF-06` — ISO/IEC 25010)
+
+**Tabela 32 – Catálogo Formal de Requisitos Não Funcionais (RNF-01 a RNF-06 — ISO/IEC 25010)**
 
 | ID | Característica ISO 25010 | Especificação e Métrica Objetiva |
 | :---: | :--- | :--- |
@@ -39,6 +45,8 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 | **RNF-04** | **Usabilidade e Responsividade** | Interface adaptativa para smartphones (a partir de `320px`) e terminais desktop de bilheteria (`1024x768+`), aderente às diretrizes WCAG 2.1 Nível AA. |
 | **RNF-05** | **Compatibilidade** | Operação integral via navegadores modernos (Chrome, Safari, Edge, Firefox) sem exigência de plugins locais ou aplicativos nativos. |
 | **RNF-06** | **Manutenibilidade** | Arquitetura limpa orientada a módulos com tipagem estática estrita (`tsc --noEmit`) e zero dependências circulares (`ESLint import/no-cycle`). |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -87,9 +95,13 @@ flowchart TD
     CODE -->|coberta por| TEST
 ```
 
+*Figura 18 – Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue #17). Fonte: CineSoft Solutions (2026).*
+
 > **Diagrama vetorial (PDF):** [diagrama-rastreabilidade.pdf](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.pdf) - Fonte PlantUML: [diagrama-rastreabilidade.puml](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.puml)
 
 O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a coluna de código-fonte, suprimida aqui para preservar a legibilidade, é mantida no artefato `assets/capitulo-05/tabelas/matriz-rastreabilidade.tex`:
+
+**Tabela 33 – Matriz de Rastreabilidade — Visão Compacta**
 
 | Necessidade / Stakeholder | Requisito(s) | Critério de Aceite | Caso de Teste (`tests/`) |
 | :--- | :---: | :---: | :--- |
@@ -103,6 +115,8 @@ O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a
 | `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `observability-logger.test.ts` (→ `RF-11`); `security-cross-tenant-suite.test.ts` (→ `RF-11`) |
 | `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12` a `RF-14`, `RNF-04`, `RNF-05`, `RES-01`, `RES-03`, `RES-06` | `CA-09`, `CA-10`, `CA-15` | `reserva-atomica.test.ts` (→ `RF-13`, `CA-09`); `cryptoservice.test.ts` (→ `RF-14`, `CA-10`); `auth-rbac.test.ts` (→ `RF-14`, `CA-10`); `seating-grid.test.ts` (→ `RNF-04`) |
 | `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15` a `RF-18`, `RES-01`, `RES-02` | `CA-11` a `CA-14` | `reserva-atomica.test.ts` (→ `RF-15`, `RF-16`, `RF-18`, `CA-11`, `CA-14`); **sem automação**: `RF-15` (e-mail/`email_sent_at`), `RF-16`/`CA-12` (cancelamento web), `RF-17`/`CA-13` (baixa presencial) |
+
+*Fonte: CineSoft Solutions (2026).*
 
 **`RNF-05` e `RES-01` a `RES-06` não têm linha própria porque não pertencem a uma única tela ou módulo**: são regras e qualidades que valem para várias partes do sistema ao mesmo tempo.
 
@@ -136,6 +150,8 @@ Os 15 critérios de aceitação foram definidos em formato comportamental BDD (*
 
 O levantamento de requisitos combinou quatro técnicas complementares de engenharia de requisitos: (1) **Entrevistas estruturadas** com gestores de salas independentes, (2) **Observação de campo** do fluxo de fila em bilheterias físicas, (3) **Prototipação iterativa de alta fidelidade** para validação da experiência mobile/desktop e (4) **Análise regulatória** do texto da LGPD e do Código de Defesa do Consumidor.
 
+**Tabela 34 – Mapeamento de Stakeholders e Técnicas de Elicitação**
+
 | Código | Stakeholder (Parte Interessada) | Técnica de Elicitação Aplicada | Necessidades Capturadas (`NEC`) |
 | :---: | :--- | :--- | :--- |
 | **STK-01** | **Proprietários e Diretores de Redes de Cinema (Clientes B2B)** | Entrevistas de negócio e análise de TCO | `NEC-01`: Eliminar vendas duplas de poltronas, reduzir ociosidade por *no-show* e operar em modelo SaaS com isolamento total dos dados da empresa. |
@@ -144,6 +160,8 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 | **STK-04** | **Espectadores / Clientes Finais (`CLIENTE` B2C)** | Prototipação mobile/desktop e testes de usabilidade | `NEC-05`, `NEC-06` e `NEC-07`: Consultar horários pelo celular ou computador, escolher poltronas exatas no mapa da sala, receber voucher e cancelar online se necessário. |
 | **STK-05** | **Encarregado de Dados (DPO) e Auditoria Jurídica** | Análise normativa (LGPD Lei 13.709/2018 e ISO 27701) | `NEC-04`: Garantir criptografia forte de CPF, consentimento explícito, direito à anonimização (Art. 18) e trilha de auditoria imutável por 365 dias. |
 
+*Fonte: CineSoft Solutions (2026).*
+
 ---
 
 ## 5.2 Arquitetura e Design
@@ -151,6 +169,8 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 ### 5.2.1 Documento de arquitetura do sistema
 
 #### Identificação e escopo
+
+**Tabela 35 – Identificação e Escopo do Documento de Arquitetura**
 
 | Campo | Definição |
 | :--- | :--- |
@@ -161,9 +181,13 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 | **Fronteira do sistema** | Aplicação web responsiva (desktop e mobile). O MVP **não** processa pagamento online, emissão fiscal, bomboniere ou *streaming* de mídia |
 | **Fora do escopo deste documento** | Detalhamento de telas (`specs/architecture/ui-mockups.md`), modelo de dados completo (`specs/data-model/data-model.md`) e plano de testes (§5.3) |
 
+*Fonte: CineSoft Solutions (2026).*
+
 #### Visão geral da arquitetura
 
 O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação Next.js 14 com *App Router*. A fronteira externa é composta por três atores (gerente, atendente e espectador) e quatro sistemas externos (Supabase PostgreSQL, Axiom, serviço de e-mail transacional e Vercel). Internamente, o código organiza-se em quatro zonas com dependência unidirecional:
+
+**Tabela 36 – Zonas Internas da Arquitetura e Regras de Dependência**
 
 | Zona | Responsabilidade | Regra de dependência |
 | :--- | :--- | :--- |
@@ -172,9 +196,13 @@ O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação N
 | **Domínio e segurança** | Invariantes (antecedência de 60 min, expiração JIT, CPF Módulo 11), RBAC e criptografia | Não depende de `next/*` nem de componentes React |
 | **Infraestrutura transversal** | Conexão Prisma, contexto de tenant via `AsyncLocalStorage`, logging estruturado e guarda de rotas | É dependida pelas demais zonas; não depende de UI |
 
+*Fonte: CineSoft Solutions (2026).*
+
 #### Catálogo de componentes
 
 O sistema é composto pelos **11 módulos de domínio** de `src/modules/`. Cada um expõe um contrato público em `index.ts`, e a rastreabilidade entre módulos e requisitos está no §5.1.2.
+
+**Tabela 37 – Catálogo de Componentes (Módulos de Domínio)**
 
 | Componente | Função |
 | :--- | :--- |
@@ -189,6 +217,8 @@ O sistema é composto pelos **11 módulos de domínio** de `src/modules/`. Cada 
 | `observability` | Log estruturado e rastreabilidade por requisição |
 | `ocupacao` | Indicadores de ocupação por sessão e por sala |
 | `tenancy` | Contexto de tenant e injeção do filtro `tenant_id` no Prisma |
+
+*Fonte: CineSoft Solutions (2026).*
 
 Além dos módulos, `src/shared/` concentra as peças transversais (cliente Prisma, logger e utilitários) e `src/app/` abriga a camada de interface.
 
@@ -208,6 +238,8 @@ Além dos módulos, `src/shared/` concentra as peças transversais (cliente Pris
 
 As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna “Efeito verificável” indica onde a decisão aparece no código ou nos critérios de aceite.
 
+**Tabela 38 – Decisões Arquiteturais (ADRs) e Efeito Verificável**
+
 | ADR | Decisão | Efeito verificável |
 | :---: | :--- | :--- |
 | **ADR-001** | Monólito modular em Next.js 14 com módulos verticais | `src/modules/*` e `src/shared/*`; lint `import/no-cycle` |
@@ -222,6 +254,8 @@ As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna �
 | **ADR-010** | Auditoria de cancelamentos *append-only* com trigger | `cancellation-service.ts`, modelo `CancellationAudit` e trigger em `prisma/triggers.sql` |
 | **ADR-011** | Log estruturado no Axiom com retenção de 365 dias | `src/shared/logger/`, `x-request-id` e `CA-03`/`CA-07` |
 | **ADR-012** | Portal do cliente com reserva JIT e notificação desacoplada | `portal-service.ts`, `notification-service.ts` e `CA-11`/`CA-14` |
+
+*Fonte: CineSoft Solutions (2026).*
 
 #### Princípios de modelagem: Domain-Driven Design (DDD)
 
@@ -284,6 +318,8 @@ flowchart TB
     API -->|"JSON Structured Logs"| Axiom
 ```
 
+*Figura 19 – Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom. Fonte: CineSoft Solutions (2026).*
+
 > **Diagrama vetorial (PDF):** [c4-containers.pdf](../../assets/capitulo-05/diagramas/c4-containers.pdf) — Fonte PlantUML: [c4-containers.puml](../../assets/capitulo-05/diagramas/c4-containers.puml)
 
 #### 2. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
@@ -331,6 +367,8 @@ sequenceDiagram
     API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
     deactivate API
 ```
+
+*Figura 20 – Diagrama de Sequência UML: Reserva Online Atômica e Baixa Presencial no Balcão. Fonte: CineSoft Solutions (2026).*
 
 > **Diagrama vetorial (PDF):** [diagrama-sequencia.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia.pdf) - Fonte PlantUML: [diagrama-sequencia.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia.puml)
 
@@ -438,6 +476,8 @@ classDiagram
     SessionSeat "1" --> "0..1" Ticket : gera
 ```
 
+*Figura 21 – Diagrama de Classes UML: Modelo de Domínio do CineDoom. Fonte: CineSoft Solutions (2026).*
+
 > **Diagrama vetorial (PDF):** [diagrama-classes-dominio.pdf](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.pdf) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
 
 ---
@@ -497,11 +537,15 @@ A verificação é feita no pipeline de CI (GitHub Actions) a cada commit e Pull
 
 #### Critérios Formais de Entrada e Saída de V&V (*Entry & Exit Criteria*)
 
+**Tabela 39 – Critérios Formais de Entrada e Saída de V&V**
+
 | Fase de V&V | Critérios de Entrada (*Entry Criteria*) | Critérios de Saída (*Exit Criteria*) |
 | :--- | :--- | :--- |
 | **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 770 testes passando, zero erros de linter/tipagem e cobertura mínima de 70% de *statements*, funções e linhas e 80% de *branches* no domínio. |
 | **2. Homologação em Staging** | Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. | Fluxos ponta a ponta (cadastro $\to$ reserva $\to$ baixa no balcão $\to$ painel gerencial) executados sem falhas. |
 | **3. Validação e Aceite em Produção (*UAT*)** | Ambiente de produção sincronizado na branch `main` com banco PostgreSQL ativo. | Operação validada por usuários externos reais sem ocorrência de *double-booking* ou erros HTTP 500. |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ### 5.4.2 Critérios de aceitação por stakeholder
 - **Proprietário / Gerente (`STK-01`, `STK-02`):** Precisão matemática no painel de ocupação, bloqueio de sessões conflitantes e isolamento multi-tenant comprovado.
@@ -528,6 +572,8 @@ Complementarmente, a equipe realizou **testes de experiência do usuário (UX)**
 
 Os resultados confirmam que o sistema atende às necessidades reais dos stakeholders no seu contexto de uso — não apenas ao que foi especificado. Os cenários abaixo representam o **critério final de aprovação** da Macroentrega 1 (`v1.0.0`):
 
+**Tabela 40 – Relatório de Testes de Aceitação e Homologação em Produção**
+
 | ID Cenário | Critério(s) | Descrição do Cenário Homologado | Evidência Observada em Produção | Status |
 | :---: | :---: | :--- | :--- | :---: |
 | **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco PostgreSQL gerenciado. | **Aprovado** |
@@ -541,6 +587,8 @@ Os resultados confirmam que o sistema atende às necessidades reais dos stakehol
 | **UAT-09** | `CA-07` | Consulta ao painel de ocupação por sessão e verificação da trilha de logs das operações críticas. | Percentuais de vendidos/reservados/livres corretos e logs JSON no Axiom com `tenant_id`, `user_id`, timestamp UTC e retenção de 365 dias. | **Aprovado** |
 | **UAT-10** | `CA-08` | Cadastro e edição de filmes, salas com layout de assentos e sessões com sobreposição de horário e campos ausentes. | Rejeição com `HTTP 422`, bloqueio do choque de horário na mesma sala e assentos pré-populados como `AVAILABLE`. | **Aprovado** |
 
+*Fonte: CineSoft Solutions (2026).*
+
 ### 5.4.4 Plano de transição/implantação do sistema
 
 A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207 (Seção 6.4.10), encadeadas de forma controlada a partir das branches do repositório.
@@ -549,11 +597,15 @@ A transição do CineDoom para o ambiente operacional segue as seis etapas do *S
 
 Cada destino de implantação está amarrado a uma branch e a um ambiente próprio, de forma que a publicação só ocorre após o merge aprovado:
 
+**Tabela 41 – Planejamento da Transição por Branch e Ambiente**
+
 | Branch | Ambiente | URL | Critério de sucesso da publicação |
 | :--- | :--- | :--- | :--- |
 | `develop` | Desenvolvimento | `https://dev.cinedoom.com` | Validação automatizada verde e catálogo consultável |
 | `staging` | Homologação | `https://hml.cinedoom.com` | UAT-01 a UAT-10 homologados (item 5.4.3) |
 | `main` | Produção | `https://cinedoom.com` | Aceite formal dos stakeholders (etapa 6) |
+
+*Fonte: CineSoft Solutions (2026).*
 
 - **Responsáveis:** o Tech Lead (Gabriel Lourenço) responde pela revisão de código e pelo merge; o Engenheiro de Backend, Segurança & DevOps (Carlos Eduardo) responde pela publicação e pelo monitoramento dos ambientes; no aceite, participam o gerente (`STK-01`/`STK-02`) e o encarregado de dados (`STK-05`).
 - **Cronograma:** a publicação é sequencial, ao final de cada Sprint de 2 semanas, com uma única versão em trânsito por ambiente.
@@ -611,12 +663,16 @@ A operação em produção é contínua e cobre três frentes simultâneas: o su
 
 Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiza essas alterações nas quatro modalidades da ISO 12207:2021 (Seção 6.4.13), sempre pelo mesmo fluxo: a alteração entra como *branch* `fix/*` ou `feat/*`, passa pelo Pull Request com a validação automatizada do capítulo 4 e só é promovida depois de homologada em `staging`.
 
+**Tabela 42 – Modalidades de Manutenção**
+
 | Modalidade | Quando é acionada | Como é feita | Responsável |
 | :--- | :--- | :--- | :--- |
 | **Corretiva** | Defeito apontado pelo cinema ou identificado nos logs (conflito de venda, e-mail de voucher que não chega) | *Branch* `fix/*` → Pull Request → promoção faseada | Desenvolvedor do módulo, com revisão do Tech Lead |
 | **Adaptativa** | Mudança fora do controle da equipe: nova versão do Node.js ou do Next.js, alteração nas regras fiscais estaduais (R-07), instabilidade do provedor de e-mail (R-05) ou do banco de dados (R-02) | Atualização da versão e ajuste do ponto afetado, com a suíte de testes completa | Desenvolvedor do módulo e Engenheiro de Backend, Segurança & DevOps |
 | **Perfectiva** | Evolução prevista no roadmap: emissão fiscal, portal gerencial e armazenamento de mídias das Macroentregas 2 e 3 | *Branch* `feat/*` ligada ao requisito correspondente | Gerente de Projeto (Kayque Vicente) e equipe |
 | **Preventiva** | Revisão mensal do registro de riscos do capítulo 4 | *Pull Request* de manutenção versionada: índices do banco por `tenant_id` (R-02), revisão de dependências e ajuste de acessibilidade | Tech Lead |
+
+*Fonte: CineSoft Solutions (2026).*
 
 - **Prioridade e registro:** toda manutenção é classificada pela criticidade do capítulo 2 (P1 a P4) e registrada no *changelog*, gerado a partir das mensagens padronizadas de commit (capítulo 4). Defeitos P1 acionam a reversão da versão em menos de 5 minutos.
 - **Limite conhecido:** a rotação da chave de sessão pode ser feita a qualquer momento. Já a rotação da chave que cifra o CPF dos compradores **não pode** — como os valores já gravados não são versionados por chave, a troca deixaria os CPF antigos ilegíveis. Esse procedimento está previsto para a Macroentrega 2, junto da re-criptografia dos dados.
@@ -625,12 +681,16 @@ Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiz
 
 O encerramento do CineDoom — seja o fim do contrato de um cinema, seja a descontinuação do produto — segue quatro etapas planejadas (Seção 6.4.14 da ISO 12207:2021). A regra que orienta todo o processo é simples: **o histórico do cinema é preservado e os dados pessoais são apagados, nunca o contrário**.
 
+**Tabela 43 – Etapas da Descontinuação e Migração de Dados**
+
 | Etapa | O que acontece | Como é feita |
 | :--- | :--- | :--- |
 | **1. Planejamento e aviso** | Decisão de encerrar, definição do prazo e comunicação oficial | Notificação formal ao cinema e aos atendentes, aviso de desligamento do serviço, encerramento do contrato e da taxa de suporte |
 | **2. Arquivamento dos dados** | Guardar o que precisa ser guardado e apagar o que é pessoal | Extração do histórico do cinema e anonimização, um a um, dos dados dos espectadores |
 | **3. Desativação controlada** | Cortar o acesso sem destruir nada | Inativação das contas dos atendentes, desativação da instância do cinema e do portal |
 | **4. Encerramento da infraestrutura** | Desligar o que estiver ligado | Desativação do ambiente e do banco após o prazo legal, com o arquivo de auditoria preservado |
+
+*Fonte: CineSoft Solutions (2026).*
 
 - **Como os dados pessoais são apagados:** a anonimização substitui nome, e-mail e CPF por valores fictícios, mas mantém o registro do espectador e todos os ingressos vinculados. É o que permite ao cinema guardar o histórico fiscal exigido pelo Código de Defesa do Consumidor mesmo depois do encerramento. Os cancelamentos são imutáveis por definição: o banco recusa qualquer alteração ou apagamento nessa trilha.
 - **A extração é rotina do time de DevOps:** o produto não oferece tela de exportação, então o histórico do cinema é extraído diretamente do banco, filtrado pelo cinema, e entregue em arquivo cifrado.

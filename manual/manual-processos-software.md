@@ -50,16 +50,17 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 
 | Data | Versão | Descrição Sucinta da Alteração |
 | :---: | :---: | :--- |
-| 10/09/2026 | Versão 1.0 | Criação do documento, identificação da equipe e elaboração da capa. |
-| 16/09/2026 | Versão 1.1 | Elaboração dos itens do Capítulo 1 (Apresentação do Software). |
-| 24/09/2026 | Versão 1.2 | Alinhamento dos Capítulos 1, 2 e 3 à norma ISO/IEC/IEEE 12207:2021. |
-| 24/09/2026 | Versão 1.3 | Revisão técnica: correção de contradições e justificativas de aquisição. |
-| 08/10/2026 | Versão 1.4 | Incremento e estruturação dos processos do Capítulo 4 (Gerenciamento). |
+| 10/09/2026 | Versão 1.0 | Criação do documento, identificação da equipe, elaboração da capa e estruturação inicial dos Capítulos 1 e 2. |
+| 16/09/2026 | Versão 1.1 | Elaboração e estruturação inicial do Capítulo 3. |
+| 24/09/2026 | Versão 1.2 | Revisão e adequação dos Capítulos 1 a 3 à norma ABNT NBR ISO/IEC/IEEE 12207:2021. |
+| 01/10/2026 | Versão 1.3 | Elaboração e estruturação inicial do Capítulo 4. |
+| 07/10/2026 | Versão 1.4 | Elaboração e estruturação inicial do Capítulo 5. |
 | 17/10/2026 | Versão 1.5 | Reestruturação da capa e padronização do controle documental. |
 | 22/10/2026 | Versão 1.6 | Padronização formal da estrutura editorial dos Capítulos 1 a 5. |
-| 23/10/2026 | Versão 1.7 | Incorporação do Portal do Cliente, reserva ACID, e-mail e LGPD (ADR-012). |
-| 09/11/2026 | Versão 2.0 | Consolidação em 3 Macroentregas, matrizes Make-or-Buy, Pugh, EAP e Cap. 6 (MPS.BR). |
-| 11/11/2026 | Versão 2.1 | Revisão e sincronização dos Capítulos 1 a 5: perfis RBAC e princípios DDD/SOLID/TDD, cinco atividades dos processos de aquisição e fornecimento, restrições `RES` e síntese das regras de negócio, alinhamento dos critérios de aceite e ampliação da homologação UAT, além de padronização pré-textual/LaTeX. |
+| 23/10/2026 | Versão 1.7 | Consolidação do conteúdo dos Capítulos 1 a 5 e organização dos artefatos. |
+| 05/11/2026 | Versão 1.8 | Elaboração e estruturação inicial do Capítulo 6. |
+| 09/11/2026 | Versão 2.0 | Revisão das seções 4.1, 4.2 e 4.5 conforme o plano de melhoria e consolidação do Capítulo 6. |
+| 09/11/2026 | Versão 2.1 | Revisão e adequação dos elementos dos capítulos e integração à estrutura geral do manual. |
 
 *Fonte: Elaborado pelos autores (2026).*
 
@@ -76,11 +77,25 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | **Figura 1** | Portal do Cliente: catálogo de filmes e mapa interativo de assentos |
 | **Figura 2** | Bilheteria presencial: mapa de assentos e operação de guichê |
 | **Figura 3** | Back-office gerencial: programação de sessões e indicadores de ocupação |
-| **Figura 4** | Diagrama de Classes do Domínio de Negócios CineDoom |
-| **Figura 5** | Diagrama de Sequência UML: Reserva Web e Emissão de Voucher |
-| **Figura 6** | Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom |
-| **Figura 7** | Diagrama de Máquina de Estados do Ciclo de Vida da Poltrona |
-| **Figura 8** | Diagrama Entidade-Relacionamento (DER) do Banco PostgreSQL |
+| **Figura 4** | Ciclo Iterativo de Desenvolvimento e Roadmap de Evolução do Produto |
+| **Figura 5** | Organização corporativa CINESOFT-SOLUTIONS no GitHub e repositórios oficiais |
+| **Figura 6** | Quadro Kanban corporativo no GitHub Projects v2 |
+| **Figura 7** | Estrutura Analítica do Projeto (EAP) do CineDoom |
+| **Figura 8** | Cronograma macro das macroentregas |
+| **Figura 9** | Quadro Kanban do projeto no GitHub Projects |
+| **Figura 10** | Estratégia de branches |
+| **Figura 11** | Fluxo de release, reversão e correção urgente |
+| **Figura 12** | Execução do pipeline de integração contínua |
+| **Figura 13** | Baseline da versão `v1.0.0` no GitHub |
+| **Figura 14** | Ciclo de vida de um ADR |
+| **Figura 15** | Registro dos ADRs no repositório |
+| **Figura 16** | Ciclo de medição e decisão |
+| **Figura 17** | Evidência do fluxo de trabalho |
+| **Figura 18** | Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue #17) |
+| **Figura 19** | Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom |
+| **Figura 20** | Diagrama de Sequência UML: Reserva Online Atômica e Baixa Presencial no Balcão |
+| **Figura 21** | Diagrama de Classes UML: Modelo de Domínio do CineDoom |
+| **Figura 22** | Formulário da Pesquisa de Experiência do Usuário (Google Forms) |
 
 ---
 
@@ -98,29 +113,47 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | **Tabela 4** | Perspectiva de Fornecimento e Ativos Comercializáveis |
 | **Tabela 5** | Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega |
 | **Tabela 6** | Identificação dos Fornecedores e Parceiros Relevantes |
-| **Tabela 7** | Inventário de Infraestrutura e Ferramentas |
-| **Tabela 8** | Composição da Equipe e Competências Técnicas Requeridas |
-| **Tabela 9** | Matriz RACI de Responsabilidades por Membro da Equipe |
-| **Tabela 10** | Escopo e Marcos Comerciais por Macroentrega (Milestones) |
-| **Tabela 11** | Cronograma Executivo e Pacotes de Trabalho por Sprint |
-| **Tabela 12** | Plano de Recursos Humanos e Operacionais |
-| **Tabela 13** | Matriz de Riscos do Produto e Ações Preventivas (Risk Register) |
-| **Tabela 14** | Matriz de Decisão Ponderada (Pugh Matrix) — Arquitetura Base |
-| **Tabela 15** | Quadro Sinóptico de Decisões de Arquitetura: Stack e Persistência (ADR-001 a ADR-006) |
-| **Tabela 16** | Quadro Sinóptico de Decisões de Arquitetura: Concorrência e Resiliência (ADR-007 a ADR-012) |
-| **Tabela 17** | Indicadores e Métricas de Monitoramento do Projeto |
-| **Tabela 18** | Catálogo Formal de Requisitos Funcionais: Domínio e Bilheteria (RF-01 a RF-09) |
-| **Tabela 19** | Catálogo Formal de Requisitos Funcionais: Governança, Portal e Notificações (RF-10 a RF-18) |
-| **Tabela 20** | Catálogo Formal de Requisitos Não Funcionais (ISO/IEC 25010) |
-| **Tabela 21** | Matriz de Rastreabilidade Bidirecional de Requisitos |
-| **Tabela 22** | Mapeamento de Stakeholders e Técnicas de Elicitação |
-| **Tabela 23** | Distinção Conceitual entre Verificação e Validação |
-| **Tabela 24** | Critérios Formais de Entrada e Saída de V&V |
-| **Tabela 25** | Relatório de Testes de Aceitação e Homologação em Produção |
-| **Tabela 26** | Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7) |
-| **Tabela 27** | Plano de Melhoria de Processo de Software (PMP) |
-| **Tabela 28** | Quadro Comparativo: Antes vs. Depois da Revisão de Processos |
-| **Tabela 29** | Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0) |
+| **Tabela 7** | Inventário de infraestrutura e ferramentas organizacionais |
+| **Tabela 8** | Composição da Equipe e Especialidades Técnicas |
+| **Tabela 9** | Matriz de Responsabilidades por Atividade (RACI) |
+| **Tabela 10** | Competências Requeridas, Lacunas e Ações |
+| **Tabela 11** | Plano de Capacitação |
+| **Tabela 12** | Diretrizes e Princípios de Engenharia Adotados |
+| **Tabela 13** | Métricas de Qualidade |
+| **Tabela 14** | Ativos de Conhecimento |
+| **Tabela 15** | Macroentregas, escopo e critérios de aceite |
+| **Tabela 16** | Execução das Sprints da Macroentrega 1 |
+| **Tabela 17** | Recursos de infraestrutura e custo estimado |
+| **Tabela 18** | Protocolo de tratamento de desvios |
+| **Tabela 19** | Escalas de probabilidade e impacto |
+| **Tabela 20** | Matriz de prioridade (probabilidade × impacto) |
+| **Tabela 21** | Identificação e análise dos riscos |
+| **Tabela 22** | Tratamento e monitoramento dos riscos |
+| **Tabela 23** | Itens de configuração controlados |
+| **Tabela 24** | Branches e regras de proteção |
+| **Tabela 25** | Versionamento semântico e convenção de commits |
+| **Tabela 26** | Matriz de decisão ponderada da arquitetura base |
+| **Tabela 27** | Ficha do ADR-001 |
+| **Tabela 28** | Índice dos ADRs |
+| **Tabela 29** | Plano de medição |
+| **Tabela 30** | Resultados na Macroentrega 1 (`v1.0.0`) e ação em caso de desvio |
+| **Tabela 31** | Catálogo Formal de Requisitos Funcionais (RF-01 a RF-18) |
+| **Tabela 32** | Catálogo Formal de Requisitos Não Funcionais (RNF-01 a RNF-06 — ISO/IEC 25010) |
+| **Tabela 33** | Matriz de Rastreabilidade — Visão Compacta |
+| **Tabela 34** | Mapeamento de Stakeholders e Técnicas de Elicitação |
+| **Tabela 35** | Identificação e Escopo do Documento de Arquitetura |
+| **Tabela 36** | Zonas Internas da Arquitetura e Regras de Dependência |
+| **Tabela 37** | Catálogo de Componentes (Módulos de Domínio) |
+| **Tabela 38** | Decisões Arquiteturais (ADRs) e Efeito Verificável |
+| **Tabela 39** | Critérios Formais de Entrada e Saída de V&V |
+| **Tabela 40** | Relatório de Testes de Aceitação e Homologação em Produção |
+| **Tabela 41** | Planejamento da Transição por Branch e Ambiente |
+| **Tabela 42** | Modalidades de Manutenção |
+| **Tabela 43** | Etapas da Descontinuação e Migração de Dados |
+| **Tabela 44** | Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7) |
+| **Tabela 45** | Plano de Melhoria de Processo de Software (PMP) |
+| **Tabela 46** | Quadro Comparativo: Antes vs. Depois da Revisão de Processos |
+| **Tabela 47** | Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0) |
 
 ---
 
@@ -159,82 +192,127 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 
 ## Sumário
 
-- [Capítulo 1 – Apresentação do software](#capítulo-1--apresentação-do-software)
-  - [1.1 Nome e descrição do software](#11-nome-e-descrição-do-software)
-  - [1.2 Qual é o software? O que ele faz? Qual problema resolve?](#12-qual-é-o-software-o-que-ele-faz-qual-problema-resolve)
+- [Capítulo 1 – Apresentação do Software](#capítulo-1--apresentação-do-software)
+  - [1.1 Nome e Descrição do Software](#11-nome-e-descrição-do-software)
+  - [1.2 Qual é o Software? O que ele faz? Qual problema resolve?](#12-qual-é-o-software-o-que-ele-faz-qual-problema-resolve)
     - [O que ele faz?](#o-que-ele-faz)
     - [Qual problema resolve?](#qual-problema-resolve)
     - [Proposta de valor](#proposta-de-valor)
-  - [1.3 Público-alvo e contexto de uso](#13-público-alvo-e-contexto-de-uso)
+  - [1.3 Público-alvo e Contexto de Uso](#13-público-alvo-e-contexto-de-uso)
+    - [Contextos de uso típicos](#contextos-de-uso-típicos)
   - [1.4 Quem vai usar? Em que situação? Qual o ambiente de operação esperado?](#14-quem-vai-usar-em-que-situação-qual-o-ambiente-de-operação-esperado)
-    - [Perfis de Usuários](#perfis-de-usuários)
+    - [Perfis de Usuários e Situações de Uso](#perfis-de-usuários-e-situações-de-uso)
     - [Ambiente de Operação Esperado](#ambiente-de-operação-esperado)
   - [1.5 Escopo e principais funcionalidades](#15-escopo-e-principais-funcionalidades)
-    - [Escopo Central e Módulos do Sistema](#escopo-central-e-módulos-do-sistema)
-    - [Fora do escopo imediato da Macroentrega 1](#fora-do-escopo-imediato-da-macroentrega-1)
+    - [Funcionalidades Incluídas (Escopo Atual)](#funcionalidades-incluídas-escopo-atual)
+    - [Fora do Escopo Imediato](#fora-do-escopo-imediato)
   - [1.6 Restrições e premissas](#16-restrições-e-premissas)
-    - [Restrições](#restrições)
-    - [Premissas](#premissas)
+    - [Restrições do Projeto](#restrições-do-projeto)
+    - [Premissas Adotadas](#premissas-adotadas)
 - [Capítulo 2 – Processos de Acordo](#capítulo-2--processos-de-acordo)
-  - [2.1 Descrição do processo de aquisição](#21-descrição-do-processo-de-aquisição)
-    - [Fronteira e Justificativa de Aquisição](#fronteira-e-justificativa-de-aquisição)
-    - [Análise de Aquisição (Make or Buy)](#análise-de-aquisição-make-or-buy)
-    - [As Cinco Atividades do Processo de Aquisição (ISO 12207)](#as-cinco-atividades-do-processo-de-aquisição-iso-12207)
-  - [2.2 Descrição do processo de fornecimento](#22-descrição-do-processo-de-fornecimento)
-    - [Perspectiva de Fornecimento e Ativos Comercializáveis](#perspectiva-de-fornecimento-e-ativos-comercializáveis)
-    - [Termos do Acordo, Entregáveis e Evolução por Macroentregas](#termos-do-acordo-entregáveis-e-evolução-por-macroentregas)
-    - [Critérios de Aceite Formal pelo Cliente Adquirente](#critérios-de-aceite-formal-pelo-cliente-adquirente)
-    - [Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega](#acordo-de-nível-de-serviço-sla-e-suporte-pós-entrega)
-  - [2.3 Identificação dos fornecedores e parceiros relevantes](#23-identificação-dos-fornecedores-e-parceiros-relevantes)
+  - [2.1 Processo de Aquisição: Decisões e Gestão de Provedores](#21-processo-de-aquisição-decisões-e-gestão-de-provedores)
+    - [O que construímos e o que contratamos (Make or Buy)](#o-que-construímos-e-o-que-contratamos-make-or-buy)
+    - [O Ciclo Prático de Aquisição de Provedores](#o-ciclo-prático-de-aquisição-de-provedores)
+  - [2.2 Processo de Fornecimento: Comercialização, Entrega e Operação](#22-processo-de-fornecimento-comercialização-entrega-e-operação)
+    - [Modelos de Negócio e Ativos Disponíveis](#modelos-de-negócio-e-ativos-disponíveis)
+    - [Jornada do Cliente: Da Contratação ao Pós-Venda](#jornada-do-cliente-da-contratação-ao-pós-venda)
+    - [Entregáveis da Implantação e Evolução Funcional](#entregáveis-da-implantação-e-evolução-funcional)
+    - [Critérios de Aceite Formal](#critérios-de-aceite-formal)
+    - [Níveis de Serviço (SLA) e Atendimento](#níveis-de-serviço-sla-e-atendimento)
+  - [2.3 Fornecedores e Parceiros de Tecnologia](#23-fornecedores-e-parceiros-de-tecnologia)
 - [Capítulo 3 – Processos Organizacionais Habilitadores](#capítulo-3--processos-organizacionais-habilitadores)
-  - [3.1 Modelo de ciclo de vida adotado e justificado](#31-modelo-de-ciclo-de-vida-adotado-e-justificado)
-    - [Estrutura das Fases, Cerimônias e Macroentregas](#estrutura-das-fases-cerimônias-e-macroentregas)
-    - [Justificativa da Escolha do Modelo](#justificativa-da-escolha-do-modelo)
-  - [3.2 Inventário de infraestrutura e ferramentas necessárias](#32-inventário-de-infraestrutura-e-ferramentas-necessárias)
-  - [3.3 Justificativa estratégica e viabilidade do projeto](#33-justificativa-estratégica-e-viabilidade-do-projeto)
-  - [3.4 Papéis, competências e plano de capacitação (RACI)](#34-papéis-competências-e-plano-de-capacitação-raci)
-    - [Composição da Equipe e Competências Requeridas](#composição-da-equipe-e-competências-requeridas)
-    - [Matriz RACI Consolidada por Membro da Equipe](#matriz-raci-consolidada-por-membro-da-equipe)
-    - [Plano de Capacitação Técnica Contínua](#plano-de-capacitação-técnica-contínua)
-  - [3.5 Plano de qualidade com critérios e métricas](#35-plano-de-qualidade-com-critérios-e-métricas)
-  - [3.6 Estratégia de gestão do conhecimento](#36-estratégia-de-gestão-do-conhecimento)
+  - [3.1 Modelo de Ciclo de Vida do Projeto](#31-modelo-de-ciclo-de-vida-do-projeto)
+    - [Fases de Engenharia e Evolução em Três Macroentregas](#fases-de-engenharia-e-evolução-em-três-macroentregas)
+    - [Fluxo de Trabalho no Git (Política Corporativa de Branches)](#fluxo-de-trabalho-no-git-política-corporativa-de-branches)
+    - [Organização das Iterações e Práticas de Trabalho](#organização-das-iterações-e-práticas-de-trabalho)
+    - [Governança, Avaliação e Melhoria Contínua do Ciclo de Vida](#governança-avaliação-e-melhoria-contínua-do-ciclo-de-vida)
+  - [3.2 Infraestrutura e Ferramentas Organizacionais](#32-infraestrutura-e-ferramentas-organizacionais)
+    - [Critérios de Seleção e Requisitos](#critérios-de-seleção-e-requisitos)
+    - [A Organização no GitHub (CINESOFT-SOLUTIONS)](#a-organização-no-github-cinesoft-solutions)
+    - [Inventário de Ferramentas Disponibilizadas](#inventário-de-ferramentas-disponibilizadas)
+    - [Ambientes de Execução e Manutenção Contínua](#ambientes-de-execução-e-manutenção-contínua)
+  - [3.3 Justificativa Estratégica e Viabilidade do Projeto](#33-justificativa-estratégica-e-viabilidade-do-projeto)
+    - [Oportunidade e Alinhamento Estratégico](#oportunidade-e-alinhamento-estratégico)
+    - [Identificação e Autorização do Projeto](#identificação-e-autorização-do-projeto)
+    - [Dimensões de Viabilidade](#dimensões-de-viabilidade)
+    - [Alocação de Recursos](#alocação-de-recursos)
+    - [Avaliação, Sustentação e Encerramento](#avaliação-sustentação-e-encerramento)
+  - [3.4 Papéis, Competências e Plano de Capacitação (RACI)](#34-papéis-competências-e-plano-de-capacitação-raci)
+    - [Composição da Equipe e Atribuição de Papéis](#composição-da-equipe-e-atribuição-de-papéis)
+    - [Matriz de Responsabilidades (RACI)](#matriz-de-responsabilidades-raci)
+    - [Competências Requeridas e Lacunas](#competências-requeridas-e-lacunas)
+    - [Plano de Capacitação Contínua](#plano-de-capacitação-contínua)
+    - [Avaliação, Registros e Riscos da Equipe](#avaliação-registros-e-riscos-da-equipe)
+  - [3.5 Plano de Qualidade: Diretrizes, Critérios e Métricas](#35-plano-de-qualidade-diretrizes-critérios-e-métricas)
+    - [Política e Objetivos de Qualidade](#política-e-objetivos-de-qualidade)
+    - [Responsabilidades](#responsabilidades)
+    - [Diretrizes e Princípios de Engenharia Adotados](#diretrizes-e-princípios-de-engenharia-adotados)
+    - [Critérios de Qualidade e Bloqueios Automatizados (Quality Gates)](#critérios-de-qualidade-e-bloqueios-automatizados-quality-gates)
+    - [Métricas e Indicadores de Qualidade](#métricas-e-indicadores-de-qualidade)
+    - [Avaliação do Processo e Tratamento de Não Conformidades](#avaliação-do-processo-e-tratamento-de-não-conformidades)
+    - [Melhoria Contínua](#melhoria-contínua)
+  - [3.6 Estratégia de Gestão do Conhecimento](#36-estratégia-de-gestão-do-conhecimento)
+    - [Objetivos](#objetivos)
+    - [Ativos de Conhecimento](#ativos-de-conhecimento)
+    - [Mecanismos de Registro e Preservação](#mecanismos-de-registro-e-preservação)
+    - [Compartilhamento do Conhecimento](#compartilhamento-do-conhecimento)
+    - [Manutenção e Controle](#manutenção-e-controle)
+    - [Medição da Eficácia](#medição-da-eficácia)
 - [Capítulo 4 – Processos de Gerenciamento Técnico](#capítulo-4--processos-de-gerenciamento-técnico)
   - [4.1 Plano de projeto: escopo, cronograma, recursos e entregas](#41-plano-de-projeto-escopo-cronograma-recursos-e-entregas)
-    - [Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis)](#estrutura-analítica-do-projeto-eap--wbs-em-3-níveis)
-    - [Escopo e Marcos Comerciais por Macroentrega (Milestones)](#escopo-e-marcos-comerciais-por-macroentrega-milestones)
-    - [Cronograma Detalhado de Execução da Macroentrega 1 (v1.0.0)](#cronograma-detalhado-de-execução-da-macroentrega-1-v100)
+    - [Estrutura Analítica do Projeto (EAP)](#estrutura-analítica-do-projeto-eap)
+    - [Escopo e Marcos por Macroentrega](#escopo-e-marcos-por-macroentrega)
+    - [Cronograma](#cronograma)
     - [Recursos](#recursos)
-    - [Rotina de Acompanhamento e Tratamento de Desvios e Atrasos](#rotina-de-acompanhamento-e-tratamento-de-desvios-e-atrasos)
+    - [Premissas e Restrições](#premissas-e-restrições)
+    - [Rotina de Acompanhamento e Tratamento de Desvios](#rotina-de-acompanhamento-e-tratamento-de-desvios)
   - [4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas](#42-plano-de-gestão-de-riscos-identificação-probabilidade-impacto-e-respostas)
-    - [Critérios de Classificação e Reavaliação Contínua](#critérios-de-classificação-e-reavaliação-contínua)
-    - [Matriz de Riscos do Produto (Risk Register)](#matriz-de-riscos-do-produto-risk-register)
+    - [Critérios de Classificação](#critérios-de-classificação)
+    - [Registro de Riscos](#registro-de-riscos)
   - [4.3 Plano de gestão de configuração: controle de versões, branches e releases](#43-plano-de-gestão-de-configuração-controle-de-versões-branches-e-releases)
+    - [Itens de Configuração](#itens-de-configuração)
+    - [Estratégia de Branches](#estratégia-de-branches)
+    - [Baselines, Versionamento e Releases](#baselines-versionamento-e-releases)
+    - [Auditoria e Registro de Status](#auditoria-e-registro-de-status)
   - [4.4 Registro de decisões técnicas relevantes (ADRs)](#44-registro-de-decisões-técnicas-relevantes-adrs)
-    - [Contextualização e Padrão Adotado (MADR)](#contextualização-e-padrão-adotado-madr)
-    - [Matriz de Decisão Ponderada (Pugh Matrix) — Escolha da Arquitetura Base (ADR-001)](#matriz-de-decisão-ponderada-pugh-matrix--escolha-da-arquitetura-base-adr-001)
-    - [Fichas Estruturadas de Decisões Arquiteturais (ADR-001 a ADR-012)](#fichas-estruturadas-de-decisões-arquiteturais-adr-001-a-adr-012)
+    - [Processo de Decisão](#processo-de-decisão)
+    - [Matriz de Decisão Ponderada: Arquitetura Base (ADR-001)](#matriz-de-decisão-ponderada-arquitetura-base-adr-001)
+    - [Índice de Decisões (ADR-001 a ADR-012)](#índice-de-decisões-adr-001-a-adr-012)
   - [4.5 Métricas de acompanhamento do projeto](#45-métricas-de-acompanhamento-do-projeto)
 - [Capítulo 5 – Processos Técnicos](#capítulo-5--processos-técnicos)
   - [5.1 Requisitos](#51-requisitos)
-    - [5.1.1 Catálogo formal de requisitos](#511-catálogo-formal-de-requisitos)
-    - [5.1.2 Matriz de rastreabilidade bidirecional de requisitos](#512-matriz-de-rastreabilidade-bidirecional-de-requisitos)
-    - [5.1.3 Critérios de aceitação (CA-01 a CA-14)](#513-critérios-de-aceitação-ca-01-a-ca-14)
-    - [5.1.4 Mapeamento de partes interessadas e técnicas de elicitação](#514-mapeamento-de-partes-interessadas-e-técnicas-de-elicitação)
+    - [5.1.1 Documento de requisitos do sistema](#511-documento-de-requisitos-do-sistema)
+    - [5.1.2 Rastreabilidade de requisitos](#512-rastreabilidade-de-requisitos)
+    - [5.1.3 Critérios de aceitação (CA-01 a CA-15)](#513-critérios-de-aceitação-ca-01-a-ca-15)
+    - [5.1.4 Registro de stakeholders e necessidades elicitadas](#514-registro-de-stakeholders-e-necessidades-elicitadas)
   - [5.2 Arquitetura e Design](#52-arquitetura-e-design)
-    - [5.2.1 Visão Geral e Princípios Arquiteturais](#521-visão-geral-e-princípios-arquiteturais)
-    - [5.2.2 Diagramas Arquiteturais e de Domínio](#522-diagramas-arquiteturais-e-de-domínio)
+    - [5.2.1 Documento de arquitetura do sistema](#521-documento-de-arquitetura-do-sistema)
+    - [5.2.2 Diagramas de design](#522-diagramas-de-design)
+    - [5.2.3 Justificativa das escolhas tecnológicas](#523-justificativa-das-escolhas-tecnológicas)
+    - [5.2.4 Estratégia de gestão de mídias e desacoplamento de storage](#524-estratégia-de-gestão-de-mídias-e-desacoplamento-de-storage)
   - [5.3 Implementação e Integração](#53-implementação-e-integração)
+    - [5.3.1 Padrões de codificação e engenharia adotados](#531-padrões-de-codificação-e-engenharia-adotados)
+    - [5.3.2 Plano de integração entre componentes (CI/CD)](#532-plano-de-integração-entre-componentes-cicd)
+    - [5.3.3 Registro de testes unitários e de integração](#533-registro-de-testes-unitários-e-de-integração)
   - [5.4 Verificação, Validação e Transição](#54-verificação-validação-e-transição)
-    - [5.4.1 Distinção formal entre Verificação e Validação](#541-distinção-formal-entre-verificação-e-validação)
+    - [5.4.1 Plano de verificação e validação](#541-plano-de-verificação-e-validação)
     - [5.4.2 Critérios de aceitação por stakeholder](#542-critérios-de-aceitação-por-stakeholder)
     - [5.4.3 Relatório de testes de aceitação (Homologação e Produção)](#543-relatório-de-testes-de-aceitação-homologação-e-produção)
+    - [5.4.4 Plano de transição/implantação do sistema](#544-plano-de-transiçãoimplantação-do-sistema)
   - [5.5 Operação, Manutenção e Descontinuação](#55-operação-manutenção-e-descontinuação)
+    - [5.5.1 Procedimentos de operação e monitoramento](#551-procedimentos-de-operação-e-monitoramento)
+    - [5.5.2 Plano de manutenção](#552-plano-de-manutenção)
+    - [5.5.3 Estratégia de descontinuação e migração de dados](#553-estratégia-de-descontinuação-e-migração-de-dados)
 - [Capítulo 6 – Avaliação e melhoria dos processos de software](#capítulo-6--avaliação-e-melhoria-dos-processos-de-software)
   - [6.1 Referencial e recorte](#61-referencial-e-recorte)
   - [6.2 Diagnóstico do manual](#62-diagnóstico-do-manual)
   - [6.3 Plano de uma melhoria](#63-plano-de-uma-melhoria)
   - [6.4 Atualização e verificação](#64-atualização-e-verificação)
+    - [Quadro Comparativo: Antes vs. Depois da Revisão (Seções 4.1, 4.2 e 4.5)](#quadro-comparativo-antes-vs-depois-da-revisão-seções-41-42-e-45)
+    - [Reavaliação Pós-Melhoria (Verificação da Eficácia Documental)](#reavaliação-pós-melhoria-verificação-da-eficácia-documental)
   - [6.5 Acompanhamento da execução](#65-acompanhamento-da-execução)
+    - [Referências Normativas do Capítulo](#referências-normativas-do-capítulo)
+- [Referências](#referências)
 
 
 
@@ -620,6 +698,8 @@ end note
 @enduml
 ```
 
+*Figura 4 – Ciclo Iterativo de Desenvolvimento e Roadmap de Evolução do Produto. Fonte: CineSoft Solutions (2026).*
+
 A evolução do produto está organizada em três macroentregas, que agrupam funcionalidades relacionadas e representam marcos de evolução da solução:
 
 - **Macroentrega 1 (v1.0 – MVP):** bilheteria presencial, mapa de assentos 2D, reservas pela web e funcionalidades de governança e proteção de dados.
@@ -686,11 +766,11 @@ Como base institucional de governança e trabalho colaborativo, a empresa estrut
 
 ![Organização Corporativa no GitHub CINESOFT-SOLUTIONS](../../assets/capitulo-03/prints/organizacao-github.png)
 
-*Figura: Organização corporativa CINESOFT-SOLUTIONS no GitHub e repositórios oficiais.*
+*Figura 5 – Organização corporativa CINESOFT-SOLUTIONS no GitHub e repositórios oficiais. Fonte: CineSoft Solutions (2026).*
 
 ![Quadro Kanban Corporativo no GitHub Projects v2](../../assets/capitulo-03/prints/quadro_kanban.png)
 
-*Figura: Quadro Kanban corporativo no GitHub Projects v2.*
+*Figura 6 – Quadro Kanban corporativo no GitHub Projects v2. Fonte: CineSoft Solutions (2026).*
 
 ### Inventário de Ferramentas Disponibilizadas
 
@@ -822,6 +902,8 @@ A matriz abaixo estabelece a governança sobre as principais atividades do proje
 | Gestão de Configuração (Git) e Revisão de Código | **A** | R | R | I |
 | Suporte e Manutenção Pós-Implantação | C | **A / R** | R | I |
 
+*Fonte: CineSoft Solutions (2026).*
+
 *Legenda:* **R** = Responsável pela execução (*Responsible*); **A** = Aprovador final (*Accountable*); **C** = Consultado (*Consulted*); **I** = Informado (*Informed*).
 
 ### Competências Requeridas e Lacunas
@@ -884,12 +966,16 @@ Conforme o RACI (Seção 3.4), o Engenheiro de Qualidade (Kayque Vicente) é o a
 
 Quatro pilares técnicos orientam a escrita de código em todos os repositórios. Cada pilar possui uma forma de verificação:
 
+**Tabela 12 – Diretrizes e Princípios de Engenharia Adotados**
+
 | Princípio | Descrição | Verificação |
 | :--- | :--- | :--- |
 | **Spec-Driven Development (SDD)** | Nenhuma funcionalidade é implementada sem especificação prévia em `specs/`, com schemas de entrada e saída validados por contratos formais (Zod). | O *Pull Request* deve referenciar a especificação correspondente; caso contrário, é recusado na revisão. |
 | **Domain-Driven Design (DDD)** | Organização por contextos delimitados (*Bounded Contexts*), isolando a lógica de negócio (sessões, ingressos, bloqueios temporários) de infraestrutura e persistência. | Checklist de revisão e regra `eslint no-cycle` contra dependências circulares. |
 | **Princípios SOLID** | Código modular com responsabilidade única, desacoplamento de serviços e injeção de dependências. | Checklist de revisão de código. |
 | **TDD e Pirâmide de Testes** | Testes automatizados das regras críticas de domínio escritos antes ou junto da implementação. | Gate de testes e meta de cobertura (Tabela de métricas). |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ### Critérios de Qualidade e Bloqueios Automatizados (*Quality Gates*)
 
@@ -904,7 +990,7 @@ Para que qualquer código seja integrado aos ramos principais (`develop`, `stagi
 
 ### Métricas e Indicadores de Qualidade
 
-**Tabela 12 – Métricas de Qualidade**
+**Tabela 13 – Métricas de Qualidade**
 
 | Métrica | Meta | Fonte de coleta | Frequência |
 | :--- | :--- | :--- | :--- |
@@ -943,7 +1029,7 @@ A organização assegura que todo o conhecimento técnico, arquitetural e proces
 
 ### Ativos de Conhecimento
 
-**Tabela 13 – Ativos de Conhecimento**
+**Tabela 14 – Ativos de Conhecimento**
 
 | Ativo | Conteúdo | Local | Responsável |
 | :--- | :--- | :--- | :--- |
@@ -993,7 +1079,7 @@ O planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 – cláusula 6.3.1)
 
 ### Estrutura Analítica do Projeto (EAP)
 
-A Figura 4 decompõe o produto em três níveis: Nível 1 (produto), Nível 2 (macroentregas e governança) e Nível 3 (pacotes de trabalho verificáveis).
+A Figura 7 decompõe o produto em três níveis: Nível 1 (produto), Nível 2 (macroentregas e governança) e Nível 3 (pacotes de trabalho verificáveis).
 
 ```plantuml
 @startuml
@@ -1028,13 +1114,13 @@ rectangle "1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)" as Root {
 @enduml
 ```
 
-*Figura 4 – Estrutura Analítica do Projeto (EAP) do CineDoom. Fonte: CineSoft Solutions (2026).*
+*Figura 7 – Estrutura Analítica do Projeto (EAP) do CineDoom. Fonte: CineSoft Solutions (2026).*
 
 ### Escopo e Marcos por Macroentrega
 
 O ciclo de vida do CineDoom é dividido em três macroentregas, cada uma com critério de aceite verificável.
 
-**Tabela 14 – Macroentregas, escopo e critérios de aceite**
+**Tabela 15 – Macroentregas, escopo e critérios de aceite**
 
 | Marco | Versão | Escopo | Critério de aceite | Responsável técnico | Janela | Status |
 | :--- | :---: | :--- | :--- | :---: | :---: | :---: |
@@ -1048,7 +1134,7 @@ A M2 depende da conclusão da M1 e da definição do gateway de pagamento. A M3 
 
 ### Cronograma
 
-A Figura 5 apresenta o cronograma macro. A M1 foi executada em três Sprints de duas semanas.
+A Figura 8 apresenta o cronograma macro. A M1 foi executada em três Sprints de duas semanas.
 
 ```plantuml
 @startgantt
@@ -1067,9 +1153,9 @@ Project starts 2026-09-29
 @endgantt
 ```
 
-*Figura 5 – Cronograma macro das macroentregas. Fonte: CineSoft Solutions (2026).*
+*Figura 8 – Cronograma macro das macroentregas. Fonte: CineSoft Solutions (2026).*
 
-**Tabela 15 – Execução das Sprints da Macroentrega 1**
+**Tabela 16 – Execução das Sprints da Macroentrega 1**
 
 | Sprint | Pacotes de trabalho entregues | Responsáveis | Início | Término | Status |
 | :--- | :--- | :--- | :---: | :---: | :---: |
@@ -1083,7 +1169,7 @@ Project starts 2026-09-29
 
 A equipe é composta por quatro engenheiros (Seção 3.4). A infraestrutura é *serverless*, com planos gratuitos na M1 e planos pagos a partir da M2.
 
-**Tabela 16 – Recursos de infraestrutura e custo estimado**
+**Tabela 17 – Recursos de infraestrutura e custo estimado**
 
 | Recurso | Plano na M1 | Plano na M2 e M3 | Finalidade | Custo estimado |
 | :--- | :--- | :--- | :--- | ---: |
@@ -1110,9 +1196,9 @@ Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, e
 
 1. **Monitoramento diário:** todo cartão no GitHub Projects possui responsável nominal, data-limite, estimativa e critério de aceite. Tarefa parada em *In Progress* por mais de 48 horas sem atualização é sinalizada como impedimento.
 2. **Revisão semanal:** o Gerente de Projeto e o Tech Lead comparam os pacotes concluídos com os planejados.
-3. **Tratamento de desvios:** conforme a Tabela 17.
+3. **Tratamento de desvios:** conforme a Tabela 18.
 
-**Tabela 17 – Protocolo de tratamento de desvios**
+**Tabela 18 – Protocolo de tratamento de desvios**
 
 | Tipo de desvio | Critério | Ação | Registro |
 | :--- | :--- | :--- | :--- |
@@ -1123,7 +1209,7 @@ Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, e
 
 ![Quadro Kanban do GitHub Projects com responsável, data-limite e limite de WIP visíveis](../../assets/capitulo-04/prints/kanban-board.png) 
 
-*Figura 6 – Quadro Kanban do projeto no GitHub Projects. Fonte: CineSoft Solutions (2026).*
+*Figura 9 – Quadro Kanban do projeto no GitHub Projects. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -1133,7 +1219,7 @@ A gestão de riscos (cláusula 6.3.4) identifica, analisa, trata e monitora as a
 
 ### Critérios de Classificação
 
-**Tabela 18 – Escalas de probabilidade e impacto**
+**Tabela 19 – Escalas de probabilidade e impacto**
 
 | Nível | Probabilidade | Impacto |
 | :--- | :--- | :--- |
@@ -1143,7 +1229,7 @@ A gestão de riscos (cláusula 6.3.4) identifica, analisa, trata e monitora as a
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 19 – Matriz de prioridade (probabilidade × impacto)**
+**Tabela 20 – Matriz de prioridade (probabilidade × impacto)**
 
 | Probabilidade \ Impacto | Baixo | Médio | Alto |
 | :--- | :---: | :---: | :---: |
@@ -1157,7 +1243,7 @@ Riscos **Críticos** exigem barreira arquitetural e teste automatizado obrigató
 
 ### Registro de Riscos
 
-**Tabela 20 – Identificação e análise dos riscos**
+**Tabela 21 – Identificação e análise dos riscos**
 
 | ID | Risco | Categoria | Prob. | Impacto | Prioridade |
 | :---: | :--- | :--- | :---: | :---: | :---: |
@@ -1175,7 +1261,7 @@ Riscos **Críticos** exigem barreira arquitetural e teste automatizado obrigató
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 21 – Tratamento e monitoramento dos riscos**
+**Tabela 22 – Tratamento e monitoramento dos riscos**
 
 | ID | Resposta e mitigação | Gatilho de alerta | Responsável | Monitoramento |
 | :---: | :--- | :--- | :---: | :--- |
@@ -1203,7 +1289,7 @@ A gestão de configuração (cláusula 6.3.5) assegura a integridade, o rastream
 
 ### Itens de Configuração
 
-**Tabela 22 – Itens de configuração controlados**
+**Tabela 23 – Itens de configuração controlados**
 
 | Item | Localização | Controle |
 | :--- | :--- | :--- |
@@ -1218,7 +1304,7 @@ A gestão de configuração (cláusula 6.3.5) assegura a integridade, o rastream
 
 ### Estratégia de Branches
 
-O fluxo usa três branches permanentes e branches efêmeras por funcionalidade (Figura 7).
+O fluxo usa três branches permanentes e branches efêmeras por funcionalidade (Figura 10).
 
 ```plantuml
 @startuml
@@ -1237,9 +1323,9 @@ STG --> MAIN : Aprovação de release\n+ tag SemVer
 @enduml
 ```
 
-*Figura 7 – Estratégia de branches. Fonte: CineSoft Solutions (2026).*
+*Figura 10 – Estratégia de branches. Fonte: CineSoft Solutions (2026).*
 
-**Tabela 23 – Branches e regras de proteção**
+**Tabela 24 – Branches e regras de proteção**
 
 | Branch | Função | Regras |
 | :--- | :--- | :--- |
@@ -1256,7 +1342,7 @@ Todo Pull Request deve passar pelos *Quality Gates* da Seção 3.5 (compilação
 
 Cada tag `vMAJOR.MINOR.PATCH` aplicada a `main` constitui uma **baseline** de release.
 
-**Tabela 24 – Versionamento semântico e convenção de commits**
+**Tabela 25 – Versionamento semântico e convenção de commits**
 
 | Elemento | Regra |
 | :--- | :--- |
@@ -1267,7 +1353,7 @@ Cada tag `vMAJOR.MINOR.PATCH` aplicada a `main` constitui uma **baseline** de re
 
 *Fonte: CineSoft Solutions (2026).*
 
-O fluxo de release, incluindo a reversão e a correção urgente, segue a Figura 8.
+O fluxo de release, incluindo a reversão e a correção urgente, segue a Figura 11.
 
 ```plantuml
 @startuml
@@ -1297,7 +1383,7 @@ stop
 @enduml
 ```
 
-*Figura 8 – Fluxo de release, reversão e correção urgente. Fonte: CineSoft Solutions (2026).*
+*Figura 11 – Fluxo de release, reversão e correção urgente. Fonte: CineSoft Solutions (2026).*
 
 ### Auditoria e Registro de Status
 
@@ -1307,10 +1393,10 @@ stop
 
 
 ![Execução do GitHub Actions com todas as verificações aprovadas.](../../assets/capitulo-04/prints/CI.png) 
-*Figura 9 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
+*Figura 12 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
 
 ![Página de tags e releases do repositório (`v1.0.0`).](../../assets/capitulo-04/prints/releases.png) 
-> *Figura 10 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
+*Figura 13 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -1323,7 +1409,7 @@ A gestão de decisões (cláusula 6.3.3) fundamenta as escolhas de alto impacto 
 - **Quando registrar:** toda decisão que afete a arquitetura, a segurança, o banco de dados, a infraestrutura ou o custo exige um ADR.
 - **Quem decide:** o Tech Lead aprova, e o ADR é revisado em Pull Request por outro integrante.
 - **Conteúdo mínimo:** contexto, alternativas consideradas, decisão, justificativa e consequências.
-- **Ciclo de vida:** o ADR passa pelos estados da Figura 11. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
+- **Ciclo de vida:** o ADR passa pelos estados da Figura 14. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
 
 ```plantuml
 @startuml
@@ -1339,13 +1425,13 @@ Substituida --> [*]
 @enduml
 ```
 
-*Figura 11 – Ciclo de vida de um ADR. Fonte: CineSoft Solutions (2026).*
+*Figura 14 – Ciclo de vida de um ADR. Fonte: CineSoft Solutions (2026).*
 
 ### Matriz de Decisão Ponderada: Arquitetura Base (ADR-001)
 
 A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco critérios ponderados (nota de 1 a 5, sendo 5 a melhor aderência).
 
-**Tabela 25 – Matriz de decisão ponderada da arquitetura base**
+**Tabela 26 – Matriz de decisão ponderada da arquitetura base**
 
 | Critério | Peso | A: Monólito modular (Next.js 14 e Prisma) | B: Microsserviços (Node/Go e Kafka) | C: SPA separada e backend em VM |
 | :--- | :---: | :---: | :---: | :---: |
@@ -1358,7 +1444,7 @@ A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 26 – Ficha do ADR-001**
+**Tabela 27 – Ficha do ADR-001**
 
 | Elemento | Descrição |
 | :--- | :--- |
@@ -1374,7 +1460,7 @@ A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco
 
 As fichas completas dos 12 ADRs, com data e autor, estão em `specs/adrs/`. A tabela abaixo as relaciona aos riscos e requisitos que sustentam.
 
-**Tabela 27 – Índice dos ADRs**
+**Tabela 28 – Índice dos ADRs**
 
 | ADR | Título | Decisão resumida | Status | Relacionado a |
 | :---: | :--- | :--- | :---: | :--- |
@@ -1395,13 +1481,13 @@ As fichas completas dos 12 ADRs, com data e autor, estão em `specs/adrs/`. A ta
 
 
 ![Pasta `specs/adrs/` no GitHub, exibindo os 12 ADRs.](../../assets/capitulo-04/prints/ADRs.png) 
-*Figura 12 – Registro dos ADRs no repositório. Fonte: CineSoft Solutions (2026).*
+*Figura 15 – Registro dos ADRs no repositório. Fonte: CineSoft Solutions (2026).*
 
 ---
 
 ## 4.5 Métricas de acompanhamento do projeto
 
-O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 13 resume o ciclo de medição.
+O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 16 resume o ciclo de medição.
 
 ```plantuml
 @startuml
@@ -1418,9 +1504,9 @@ D --> N : Atualiza metas
 @enduml
 ```
 
-*Figura 13 – Ciclo de medição e decisão. Fonte: CineSoft Solutions (2026).*
+*Figura 16 – Ciclo de medição e decisão. Fonte: CineSoft Solutions (2026).*
 
-**Tabela 28 – Plano de medição**
+**Tabela 29 – Plano de medição**
 
 | Indicador | Necessidade atendida | Meta | Fonte e frequência | Responsável |
 | :--- | :--- | :---: | :--- | :---: |
@@ -1430,13 +1516,13 @@ D --> N : Atualiza metas
 | **Cobertura nas regras de domínio** | Qualidade | ≥ 70% (*statements*, funções e linhas) e ≥ 80% (*branches*) (Seção 3.5) | Relatório do Vitest, a cada PR | Kayque Vicente |
 | **Defeitos críticos em produção** | Qualidade | 0 | Telemetria e registro de incidentes, por macroentrega | Carlos Eduardo |
 | **Cumprimento do escopo** | Progresso | 100% dos requisitos do marco | Matriz de rastreabilidade (Seção 5.1.2), por Sprint | Kayque Vicente |
-| **Riscos críticos sem mitigação ativa** | Risco | 0 | Registro de riscos (Tabela 21), por Sprint | Kayque Vicente |
+| **Riscos críticos sem mitigação ativa** | Risco | 0 | Registro de riscos (Tabela 22), por Sprint | Kayque Vicente |
 | **Custo mensal dos serviços base** | Custo | ≤ US$ 90/mês na M2 e na M3 | Painéis de cobrança, mensal | Carlos Eduardo |
 | **Rollbacks por release** | Configuração | Tendência decrescente | Tags e histórico de deploy, por release | Carlos Eduardo |
 
 *Fonte: CineSoft Solutions (2026).*
 
-**Tabela 29 – Resultados na Macroentrega 1 (`v1.0.0`) e ação em caso de desvio**
+**Tabela 30 – Resultados na Macroentrega 1 (`v1.0.0`) e ação em caso de desvio**
 
 | Indicador | Resultado aferido | Ação em caso de desvio |
 | :--- | :--- | :--- |
@@ -1444,18 +1530,18 @@ D --> N : Atualiza metas
 | WIP por engenheiro | Limite respeitado | Revisão do quadro na reunião diária |
 | Suíte de testes | 26 arquivos e 770 testes aprovados (100%) | O PR com teste falho não é integrado |
 | Cobertura nas regras de domínio | 71,2% de *statements*, 83,4% de *branches* e 76,3% de funções (gate: 70/80/70) | Abrir ação corretiva no registro de não conformidades (Seção 3.5) |
-| Defeitos críticos em produção | 0 (apenas ajustes cosméticos e de responsividade) | Defeito crítico aciona a reversão para a versão anterior e correção urgente (Figura 8) |
-| Cumprimento do escopo | 18 de 18 requisitos e 15 de 15 critérios de aceite | Ajuste de escopo conforme a Tabela 17 |
+| Defeitos críticos em produção | 0 (apenas ajustes cosméticos e de responsividade) | Defeito crítico aciona a reversão para a versão anterior e correção urgente (Figura 11) |
+| Cumprimento do escopo | 18 de 18 requisitos e 15 de 15 critérios de aceite | Ajuste de escopo conforme a Tabela 18 |
 | Riscos críticos sem mitigação | Medição iniciada a partir deste plano | Escalar à direção |
 | Custo mensal | US$ 0 (planos gratuitos) | Desvio acima de 10% do teto aciona revisão de planos |
 | Rollbacks por release | Medição iniciada a partir deste plano | Análise de causa na retrospectiva |
 
 *Fonte: CineSoft Solutions (2026).*
 
-Os valores da Tabela 29 referem-se à entrega da `v1.0.0` e são atualizados a cada macroentrega.
+Os valores da Tabela 30 referem-se à entrega da `v1.0.0` e são atualizados a cada macroentrega.
 
 ![Quadro do GitHub Projects com o tempo de ciclo das issues.](../../assets/capitulo-04/prints/fluxo.png)
-*Figura 14 – Evidência do fluxo de trabalho. Fonte: CineSoft Solutions (2026).*
+*Figura 17 – Evidência do fluxo de trabalho. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -1469,6 +1555,8 @@ Os valores da Tabela 29 referem-se à entrega da `v1.0.0` e são atualizados a c
 A especificação formal de requisitos da plataforma **CineDoom** estrutura os requisitos funcionais (`RF`), não funcionais (`RNF`, segundo a norma ISO/IEC 25010) e restrições arquiteturais (`RES`), priorizados pelo método **MoSCoW**.
 
 #### Catálogo Formal de Requisitos Funcionais (`RF-01` a `RF-18`)
+
+**Tabela 31 – Catálogo Formal de Requisitos Funcionais (RF-01 a RF-18)**
 
 | ID | Módulo | Requisito Funcional | Prioridade | Macroentrega |
 | :---: | :---: | :--- | :---: | :---: |
@@ -1491,7 +1579,11 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 | **RF-17** | Bilheteria Híbrida | Permitir ao `ATENDENTE` localizar reservas web no balcão pelo código localizador (`CD-XXXX`) e confirmar o pagamento presencial, convertendo em `SOLD`. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-18** | Expiração JIT | Invalidar automaticamente reservas pendentes não pagas quando faltarem menos de 60 minutos para o início da sessão, liberando os assentos em tempo real. | *Must Have* | Macroentrega 1 (`v1.0`) |
 
+*Fonte: CineSoft Solutions (2026).*
+
 #### Catálogo Formal de Requisitos Não Funcionais (`RNF-01` a `RNF-06` — ISO/IEC 25010)
+
+**Tabela 32 – Catálogo Formal de Requisitos Não Funcionais (RNF-01 a RNF-06 — ISO/IEC 25010)**
 
 | ID | Característica ISO 25010 | Especificação e Métrica Objetiva |
 | :---: | :--- | :--- |
@@ -1501,6 +1593,8 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 | **RNF-04** | **Usabilidade e Responsividade** | Interface adaptativa para smartphones (a partir de `320px`) e terminais desktop de bilheteria (`1024x768+`), aderente às diretrizes WCAG 2.1 Nível AA. |
 | **RNF-05** | **Compatibilidade** | Operação integral via navegadores modernos (Chrome, Safari, Edge, Firefox) sem exigência de plugins locais ou aplicativos nativos. |
 | **RNF-06** | **Manutenibilidade** | Arquitetura limpa orientada a módulos com tipagem estática estrita (`tsc --noEmit`) e zero dependências circulares (`ESLint import/no-cycle`). |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -1549,9 +1643,13 @@ flowchart TD
     CODE -->|coberta por| TEST
 ```
 
+*Figura 18 – Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue #17). Fonte: CineSoft Solutions (2026).*
+
 > **Diagrama vetorial (PDF):** [diagrama-rastreabilidade.pdf](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.pdf) - Fonte PlantUML: [diagrama-rastreabilidade.puml](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.puml)
 
 O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a coluna de código-fonte, suprimida aqui para preservar a legibilidade, é mantida no artefato `assets/capitulo-05/tabelas/matriz-rastreabilidade.tex`:
+
+**Tabela 33 – Matriz de Rastreabilidade — Visão Compacta**
 
 | Necessidade / Stakeholder | Requisito(s) | Critério de Aceite | Caso de Teste (`tests/`) |
 | :--- | :---: | :---: | :--- |
@@ -1565,6 +1663,8 @@ O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a
 | `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `observability-logger.test.ts` (→ `RF-11`); `security-cross-tenant-suite.test.ts` (→ `RF-11`) |
 | `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12` a `RF-14`, `RNF-04`, `RNF-05`, `RES-01`, `RES-03`, `RES-06` | `CA-09`, `CA-10`, `CA-15` | `reserva-atomica.test.ts` (→ `RF-13`, `CA-09`); `cryptoservice.test.ts` (→ `RF-14`, `CA-10`); `auth-rbac.test.ts` (→ `RF-14`, `CA-10`); `seating-grid.test.ts` (→ `RNF-04`) |
 | `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15` a `RF-18`, `RES-01`, `RES-02` | `CA-11` a `CA-14` | `reserva-atomica.test.ts` (→ `RF-15`, `RF-16`, `RF-18`, `CA-11`, `CA-14`); **sem automação**: `RF-15` (e-mail/`email_sent_at`), `RF-16`/`CA-12` (cancelamento web), `RF-17`/`CA-13` (baixa presencial) |
+
+*Fonte: CineSoft Solutions (2026).*
 
 **`RNF-05` e `RES-01` a `RES-06` não têm linha própria porque não pertencem a uma única tela ou módulo**: são regras e qualidades que valem para várias partes do sistema ao mesmo tempo.
 
@@ -1598,6 +1698,8 @@ Os 15 critérios de aceitação foram definidos em formato comportamental BDD (*
 
 O levantamento de requisitos combinou quatro técnicas complementares de engenharia de requisitos: (1) **Entrevistas estruturadas** com gestores de salas independentes, (2) **Observação de campo** do fluxo de fila em bilheterias físicas, (3) **Prototipação iterativa de alta fidelidade** para validação da experiência mobile/desktop e (4) **Análise regulatória** do texto da LGPD e do Código de Defesa do Consumidor.
 
+**Tabela 34 – Mapeamento de Stakeholders e Técnicas de Elicitação**
+
 | Código | Stakeholder (Parte Interessada) | Técnica de Elicitação Aplicada | Necessidades Capturadas (`NEC`) |
 | :---: | :--- | :--- | :--- |
 | **STK-01** | **Proprietários e Diretores de Redes de Cinema (Clientes B2B)** | Entrevistas de negócio e análise de TCO | `NEC-01`: Eliminar vendas duplas de poltronas, reduzir ociosidade por *no-show* e operar em modelo SaaS com isolamento total dos dados da empresa. |
@@ -1606,6 +1708,8 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 | **STK-04** | **Espectadores / Clientes Finais (`CLIENTE` B2C)** | Prototipação mobile/desktop e testes de usabilidade | `NEC-05`, `NEC-06` e `NEC-07`: Consultar horários pelo celular ou computador, escolher poltronas exatas no mapa da sala, receber voucher e cancelar online se necessário. |
 | **STK-05** | **Encarregado de Dados (DPO) e Auditoria Jurídica** | Análise normativa (LGPD Lei 13.709/2018 e ISO 27701) | `NEC-04`: Garantir criptografia forte de CPF, consentimento explícito, direito à anonimização (Art. 18) e trilha de auditoria imutável por 365 dias. |
 
+*Fonte: CineSoft Solutions (2026).*
+
 ---
 
 ## 5.2 Arquitetura e Design
@@ -1613,6 +1717,8 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 ### 5.2.1 Documento de arquitetura do sistema
 
 #### Identificação e escopo
+
+**Tabela 35 – Identificação e Escopo do Documento de Arquitetura**
 
 | Campo | Definição |
 | :--- | :--- |
@@ -1623,9 +1729,13 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 | **Fronteira do sistema** | Aplicação web responsiva (desktop e mobile). O MVP **não** processa pagamento online, emissão fiscal, bomboniere ou *streaming* de mídia |
 | **Fora do escopo deste documento** | Detalhamento de telas (`specs/architecture/ui-mockups.md`), modelo de dados completo (`specs/data-model/data-model.md`) e plano de testes (§5.3) |
 
+*Fonte: CineSoft Solutions (2026).*
+
 #### Visão geral da arquitetura
 
 O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação Next.js 14 com *App Router*. A fronteira externa é composta por três atores (gerente, atendente e espectador) e quatro sistemas externos (Supabase PostgreSQL, Axiom, serviço de e-mail transacional e Vercel). Internamente, o código organiza-se em quatro zonas com dependência unidirecional:
+
+**Tabela 36 – Zonas Internas da Arquitetura e Regras de Dependência**
 
 | Zona | Responsabilidade | Regra de dependência |
 | :--- | :--- | :--- |
@@ -1634,9 +1744,13 @@ O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação N
 | **Domínio e segurança** | Invariantes (antecedência de 60 min, expiração JIT, CPF Módulo 11), RBAC e criptografia | Não depende de `next/*` nem de componentes React |
 | **Infraestrutura transversal** | Conexão Prisma, contexto de tenant via `AsyncLocalStorage`, logging estruturado e guarda de rotas | É dependida pelas demais zonas; não depende de UI |
 
+*Fonte: CineSoft Solutions (2026).*
+
 #### Catálogo de componentes
 
 O sistema é composto pelos **11 módulos de domínio** de `src/modules/`. Cada um expõe um contrato público em `index.ts`, e a rastreabilidade entre módulos e requisitos está no §5.1.2.
+
+**Tabela 37 – Catálogo de Componentes (Módulos de Domínio)**
 
 | Componente | Função |
 | :--- | :--- |
@@ -1651,6 +1765,8 @@ O sistema é composto pelos **11 módulos de domínio** de `src/modules/`. Cada 
 | `observability` | Log estruturado e rastreabilidade por requisição |
 | `ocupacao` | Indicadores de ocupação por sessão e por sala |
 | `tenancy` | Contexto de tenant e injeção do filtro `tenant_id` no Prisma |
+
+*Fonte: CineSoft Solutions (2026).*
 
 Além dos módulos, `src/shared/` concentra as peças transversais (cliente Prisma, logger e utilitários) e `src/app/` abriga a camada de interface.
 
@@ -1670,6 +1786,8 @@ Além dos módulos, `src/shared/` concentra as peças transversais (cliente Pris
 
 As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna “Efeito verificável” indica onde a decisão aparece no código ou nos critérios de aceite.
 
+**Tabela 38 – Decisões Arquiteturais (ADRs) e Efeito Verificável**
+
 | ADR | Decisão | Efeito verificável |
 | :---: | :--- | :--- |
 | **ADR-001** | Monólito modular em Next.js 14 com módulos verticais | `src/modules/*` e `src/shared/*`; lint `import/no-cycle` |
@@ -1684,6 +1802,8 @@ As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna �
 | **ADR-010** | Auditoria de cancelamentos *append-only* com trigger | `cancellation-service.ts`, modelo `CancellationAudit` e trigger em `prisma/triggers.sql` |
 | **ADR-011** | Log estruturado no Axiom com retenção de 365 dias | `src/shared/logger/`, `x-request-id` e `CA-03`/`CA-07` |
 | **ADR-012** | Portal do cliente com reserva JIT e notificação desacoplada | `portal-service.ts`, `notification-service.ts` e `CA-11`/`CA-14` |
+
+*Fonte: CineSoft Solutions (2026).*
 
 #### Princípios de modelagem: Domain-Driven Design (DDD)
 
@@ -1746,6 +1866,8 @@ flowchart TB
     API -->|"JSON Structured Logs"| Axiom
 ```
 
+*Figura 19 – Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom. Fonte: CineSoft Solutions (2026).*
+
 > **Diagrama vetorial (PDF):** [c4-containers.pdf](../../assets/capitulo-05/diagramas/c4-containers.pdf) — Fonte PlantUML: [c4-containers.puml](../../assets/capitulo-05/diagramas/c4-containers.puml)
 
 #### 2. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
@@ -1793,6 +1915,8 @@ sequenceDiagram
     API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
     deactivate API
 ```
+
+*Figura 20 – Diagrama de Sequência UML: Reserva Online Atômica e Baixa Presencial no Balcão. Fonte: CineSoft Solutions (2026).*
 
 > **Diagrama vetorial (PDF):** [diagrama-sequencia.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia.pdf) - Fonte PlantUML: [diagrama-sequencia.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia.puml)
 
@@ -1900,6 +2024,8 @@ classDiagram
     SessionSeat "1" --> "0..1" Ticket : gera
 ```
 
+*Figura 21 – Diagrama de Classes UML: Modelo de Domínio do CineDoom. Fonte: CineSoft Solutions (2026).*
+
 > **Diagrama vetorial (PDF):** [diagrama-classes-dominio.pdf](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.pdf) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
 
 ---
@@ -1959,11 +2085,15 @@ A verificação é feita no pipeline de CI (GitHub Actions) a cada commit e Pull
 
 #### Critérios Formais de Entrada e Saída de V&V (*Entry & Exit Criteria*)
 
+**Tabela 39 – Critérios Formais de Entrada e Saída de V&V**
+
 | Fase de V&V | Critérios de Entrada (*Entry Criteria*) | Critérios de Saída (*Exit Criteria*) |
 | :--- | :--- | :--- |
 | **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 770 testes passando, zero erros de linter/tipagem e cobertura mínima de 70% de *statements*, funções e linhas e 80% de *branches* no domínio. |
 | **2. Homologação em Staging** | Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. | Fluxos ponta a ponta (cadastro $\to$ reserva $\to$ baixa no balcão $\to$ painel gerencial) executados sem falhas. |
 | **3. Validação e Aceite em Produção (*UAT*)** | Ambiente de produção sincronizado na branch `main` com banco PostgreSQL ativo. | Operação validada por usuários externos reais sem ocorrência de *double-booking* ou erros HTTP 500. |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ### 5.4.2 Critérios de aceitação por stakeholder
 - **Proprietário / Gerente (`STK-01`, `STK-02`):** Precisão matemática no painel de ocupação, bloqueio de sessões conflitantes e isolamento multi-tenant comprovado.
@@ -1990,6 +2120,8 @@ Complementarmente, a equipe realizou **testes de experiência do usuário (UX)**
 
 Os resultados confirmam que o sistema atende às necessidades reais dos stakeholders no seu contexto de uso — não apenas ao que foi especificado. Os cenários abaixo representam o **critério final de aprovação** da Macroentrega 1 (`v1.0.0`):
 
+**Tabela 40 – Relatório de Testes de Aceitação e Homologação em Produção**
+
 | ID Cenário | Critério(s) | Descrição do Cenário Homologado | Evidência Observada em Produção | Status |
 | :---: | :---: | :--- | :--- | :---: |
 | **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco PostgreSQL gerenciado. | **Aprovado** |
@@ -2003,6 +2135,8 @@ Os resultados confirmam que o sistema atende às necessidades reais dos stakehol
 | **UAT-09** | `CA-07` | Consulta ao painel de ocupação por sessão e verificação da trilha de logs das operações críticas. | Percentuais de vendidos/reservados/livres corretos e logs JSON no Axiom com `tenant_id`, `user_id`, timestamp UTC e retenção de 365 dias. | **Aprovado** |
 | **UAT-10** | `CA-08` | Cadastro e edição de filmes, salas com layout de assentos e sessões com sobreposição de horário e campos ausentes. | Rejeição com `HTTP 422`, bloqueio do choque de horário na mesma sala e assentos pré-populados como `AVAILABLE`. | **Aprovado** |
 
+*Fonte: CineSoft Solutions (2026).*
+
 ### 5.4.4 Plano de transição/implantação do sistema
 
 A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207 (Seção 6.4.10), encadeadas de forma controlada a partir das branches do repositório.
@@ -2011,11 +2145,15 @@ A transição do CineDoom para o ambiente operacional segue as seis etapas do *S
 
 Cada destino de implantação está amarrado a uma branch e a um ambiente próprio, de forma que a publicação só ocorre após o merge aprovado:
 
+**Tabela 41 – Planejamento da Transição por Branch e Ambiente**
+
 | Branch | Ambiente | URL | Critério de sucesso da publicação |
 | :--- | :--- | :--- | :--- |
 | `develop` | Desenvolvimento | `https://dev.cinedoom.com` | Validação automatizada verde e catálogo consultável |
 | `staging` | Homologação | `https://hml.cinedoom.com` | UAT-01 a UAT-10 homologados (item 5.4.3) |
 | `main` | Produção | `https://cinedoom.com` | Aceite formal dos stakeholders (etapa 6) |
+
+*Fonte: CineSoft Solutions (2026).*
 
 - **Responsáveis:** o Tech Lead (Gabriel Lourenço) responde pela revisão de código e pelo merge; o Engenheiro de Backend, Segurança & DevOps (Carlos Eduardo) responde pela publicação e pelo monitoramento dos ambientes; no aceite, participam o gerente (`STK-01`/`STK-02`) e o encarregado de dados (`STK-05`).
 - **Cronograma:** a publicação é sequencial, ao final de cada Sprint de 2 semanas, com uma única versão em trânsito por ambiente.
@@ -2073,12 +2211,16 @@ A operação em produção é contínua e cobre três frentes simultâneas: o su
 
 Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiza essas alterações nas quatro modalidades da ISO 12207:2021 (Seção 6.4.13), sempre pelo mesmo fluxo: a alteração entra como *branch* `fix/*` ou `feat/*`, passa pelo Pull Request com a validação automatizada do capítulo 4 e só é promovida depois de homologada em `staging`.
 
+**Tabela 42 – Modalidades de Manutenção**
+
 | Modalidade | Quando é acionada | Como é feita | Responsável |
 | :--- | :--- | :--- | :--- |
 | **Corretiva** | Defeito apontado pelo cinema ou identificado nos logs (conflito de venda, e-mail de voucher que não chega) | *Branch* `fix/*` → Pull Request → promoção faseada | Desenvolvedor do módulo, com revisão do Tech Lead |
 | **Adaptativa** | Mudança fora do controle da equipe: nova versão do Node.js ou do Next.js, alteração nas regras fiscais estaduais (R-07), instabilidade do provedor de e-mail (R-05) ou do banco de dados (R-02) | Atualização da versão e ajuste do ponto afetado, com a suíte de testes completa | Desenvolvedor do módulo e Engenheiro de Backend, Segurança & DevOps |
 | **Perfectiva** | Evolução prevista no roadmap: emissão fiscal, portal gerencial e armazenamento de mídias das Macroentregas 2 e 3 | *Branch* `feat/*` ligada ao requisito correspondente | Gerente de Projeto (Kayque Vicente) e equipe |
 | **Preventiva** | Revisão mensal do registro de riscos do capítulo 4 | *Pull Request* de manutenção versionada: índices do banco por `tenant_id` (R-02), revisão de dependências e ajuste de acessibilidade | Tech Lead |
+
+*Fonte: CineSoft Solutions (2026).*
 
 - **Prioridade e registro:** toda manutenção é classificada pela criticidade do capítulo 2 (P1 a P4) e registrada no *changelog*, gerado a partir das mensagens padronizadas de commit (capítulo 4). Defeitos P1 acionam a reversão da versão em menos de 5 minutos.
 - **Limite conhecido:** a rotação da chave de sessão pode ser feita a qualquer momento. Já a rotação da chave que cifra o CPF dos compradores **não pode** — como os valores já gravados não são versionados por chave, a troca deixaria os CPF antigos ilegíveis. Esse procedimento está previsto para a Macroentrega 2, junto da re-criptografia dos dados.
@@ -2087,12 +2229,16 @@ Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiz
 
 O encerramento do CineDoom — seja o fim do contrato de um cinema, seja a descontinuação do produto — segue quatro etapas planejadas (Seção 6.4.14 da ISO 12207:2021). A regra que orienta todo o processo é simples: **o histórico do cinema é preservado e os dados pessoais são apagados, nunca o contrário**.
 
+**Tabela 43 – Etapas da Descontinuação e Migração de Dados**
+
 | Etapa | O que acontece | Como é feita |
 | :--- | :--- | :--- |
 | **1. Planejamento e aviso** | Decisão de encerrar, definição do prazo e comunicação oficial | Notificação formal ao cinema e aos atendentes, aviso de desligamento do serviço, encerramento do contrato e da taxa de suporte |
 | **2. Arquivamento dos dados** | Guardar o que precisa ser guardado e apagar o que é pessoal | Extração do histórico do cinema e anonimização, um a um, dos dados dos espectadores |
 | **3. Desativação controlada** | Cortar o acesso sem destruir nada | Inativação das contas dos atendentes, desativação da instância do cinema e do portal |
 | **4. Encerramento da infraestrutura** | Desligar o que estiver ligado | Desativação do ambiente e do banco após o prazo legal, com o arquivo de auditoria preservado |
+
+*Fonte: CineSoft Solutions (2026).*
 
 - **Como os dados pessoais são apagados:** a anonimização substitui nome, e-mail e CPF por valores fictícios, mas mantém o registro do espectador e todos os ingressos vinculados. É o que permite ao cinema guardar o histórico fiscal exigido pelo Código de Defesa do Consumidor mesmo depois do encerramento. Os cancelamentos são imutáveis por definição: o banco recusa qualquer alteração ou apagamento nessa trilha.
 - **A extração é rotina do time de DevOps:** o produto não oferece tela de exportação, então o histórico do cinema é extraído diretamente do banco, filtrado pelo cinema, e entregue em arquivo cifrado.
@@ -2115,6 +2261,8 @@ Para avaliar e aprimorar continuamente a qualidade de sua governança de engenha
 
 Antes da execução do ciclo de melhoria (sobre a linha de base documental da versão `1.7` do manual), a equipe realizou uma auditoria interna examinando as seções **4.1, 4.2 e 4.5** frente às quatro questões de diagnóstico. Cada item foi classificado como **Descrito** (informação explícita e suficiente), **Parcialmente Descrito** (informação existente, porém incompleta) ou **Não Descrito** (informação ausente):
 
+**Tabela 44 – Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7)**
+
 | Pergunta de avaliação | Seção | Situação e evidência (Diagnóstico Inicial — Versão 1.7) |
 | :--- | :---: | :--- |
 | **1. O escopo e as entregas do projeto estão claros?** | `4.1` | **Parcialmente Descrito.** A seção 4.1 listava uma tabela resumida de 5 incrementos internos, mas não apresentava a Estrutura Analítica do Projeto (EAP/WBS) nem estruturava o ciclo de evolução comercial do produto nas **3 Macroentregas** (`v1.0` MVP, `v2.0` Escala/Pagamentos e `v3.0` Enterprise/Fiscal). |
@@ -2122,11 +2270,15 @@ Antes da execução do ciclo de melhoria (sobre a linha de base documental da ve
 | **3. Os riscos e suas respostas estão definidos?** | `4.2` | **Parcialmente Descrito.** A tabela da seção 4.2 continha 5 itens, porém **não possuía a coluna de Prioridade** (Crítico / Alto / Médio), não explicitava os critérios de classificação/reavaliação e misturava riscos escolares (*"falha de rede na apresentação"*) em vez de focar integralmente nos riscos reais de engenharia e operação do SaaS. |
 | **4. Está definido como acompanhar o andamento e tratar atrasos?** | `4.5` e `4.1` | **Não Descrito.** A seção 4.5 listava três indicadores conceituais sem metas numéricas nem valores aferidos, e a seção 4.1 **não definia a rotina de acompanhamento diário/semanal nem o protocolo de ação corretiva** para destravar tarefas atrasadas ou bloqueadas. |
 
+*Fonte: CineSoft Solutions (2026).*
+
 ---
 
 ## 6.3 Plano de uma melhoria
 
 Com base nas lacunas identificadas no diagnóstico da seção 6.2 — especialmente a ausência de atribuição nominal de responsáveis por entrega/Sprint, a falta de um protocolo claro para monitoramento e tratamento de atrasos e a incompletude da matriz de riscos —, a equipe estruturou e executou o seguinte plano de ação:
+
+**Tabela 45 – Plano de Melhoria de Processo de Software (PMP)**
 
 | Campo do plano | Resposta da equipe (CineSoft Solutions) |
 | :--- | :--- |
@@ -2136,6 +2288,8 @@ Com base nas lacunas identificadas no diagnóstico da seção 6.2 — especialme
 | **Evidência da revisão** | Atualização documental das seções `4.1`, `4.2` e `4.5` no arquivo `manual/capitulos/04-gerenciamento-tecnico.md` (registrada na versão `2.0` do Histórico de Versões) e sincronização dos cards no quadro GitHub Projects v2 (`CINESOFT-SOLUTIONS`). |
 | **Resultado esperado** | Eliminar dúvidas sobre a responsabilidade de cada pacote de trabalho, detectar gargalos em menos de 48 horas e garantir 100% de previsibilidade na entrega dos 18 requisitos funcionais da Macroentrega 1 (`v1.0.0`). |
 
+*Fonte: CineSoft Solutions (2026).*
+
 ---
 
 ## 6.4 Atualização e verificação
@@ -2144,36 +2298,160 @@ A melhoria planejada foi efetivamente aplicada no Capítulo 4 deste manual. O qu
 
 ### Quadro Comparativo: Antes vs. Depois da Revisão (Seções 4.1, 4.2 e 4.5)
 
-```diff
---- a/manual/capitulos/04-gerenciamento-tecnico.md (Versão 1.7 - Antes da Melhoria)
-+++ b/manual/capitulos/04-gerenciamento-tecnico.md (Versão 2.0 - Após a Melhoria)
-@@ Seção 4.1: Escopo, Cronograma e Rotina de Acompanhamento @@
-- ### Cronograma de Execução
-- - 22/10 a 24/10: Congelamento do escopo do MVP, modelagem do Prisma e configuração do CI.
-- - 25/10 a 31/10: Implementação das rotas de filmes, salas, sessões e do mapa de assentos.
-- - 05/11 a 08/11: Integração total na Vercel e congelamento da release v1.0.0-mvp.
-- (Sem EAP, sem divisão em Macroentregas, sem responsáveis nominais nas entregas e sem rotina de tratamento de atrasos)
-+ ### Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis) e Roadmap em 3 Macroentregas
-+ - Macroentrega 1 (v1.0.0 - MVP Operacional): Gabriel Lourenço | Out–Nov/2026 | Concluído
-+ - Macroentrega 2 (v2.0.0 - Escala & Pagamentos Stripe/Resend Pro): Carlos Eduardo | Dez/2026–Jan/2027
-+ - Macroentrega 3 (v3.0.0 - Enterprise, Fiscal NFC-e & Billing SaaS): Kayque Vicente & Yury Nogueira | Fev–Abr/2027
-+ - Cronograma por Sprint (Sprints 1, 2 e 3) com Responsáveis Diretos nominais e datas de início/término.
-+ ### Rotina de Acompanhamento e Tratamento de Desvios e Atrasos
-+ - Monitoramento diário no GitHub Projects (responsável, deadline e critério de aceite obrigatórios).
-+ - Gatilho de 48h para tarefas sem avanço: realocação em Pair Programming (desvio leve <= 24h)
-+   ou fatiamento MoSCoW protegendo os requisitos Must Have (desvio crítico).
+**Tabela 46 – Quadro Comparativo: Antes vs. Depois da Revisão de Processos**
 
-@@ Seção 4.2 e 4.5: Risk Register e Métricas Quantitativas @@
-- | ID | Risco Identificado | Categoria | Prob. | Impacto | Estratégia de Mitigação | Responsável |
-- (Sem coluna Prioridade, sem critérios de reavaliação e sem metas nas métricas da Seção 4.5)
-+ | ID | Risco identificado | Categoria | Probabilidade | Impacto | Prioridade | Resposta / Mitigação | Responsável |
-+ (Incluídos 7 riscos reais de produto/engenharia classificados em Crítico/Alto/Médio + critérios formais)
-+ (Seção 4.5 atualizada com metas numéricas: Lead Time <= 48h, WIP <= 2, 770 testes verdes e 18/18 RFs entregues)
-```
+| Seção / Dimensão | Versão 1.7 (Antes da Melhoria) | Versão 2.0 (Após a Melhoria) |
+| :--- | :--- | :--- |
+| **Seção 4.1: Escopo e Cronograma** | Cronograma empírico sem divisão formal de entregas e sem responsáveis nominais. | EAP em 3 níveis, 3 Macroentregas definidas e responsáveis nominais por Sprint. |
+| **Seção 4.1: Tratamento de Desvios** | Sem procedimento documentado para acompanhamento e contingência de atrasos. | Protocolo claro de 48h no GitHub Projects com pareamento técnico ou fatiamento MoSCoW. |
+| **Seção 4.2: Matriz de Riscos** | Registro de riscos resumido, sem severidade quantitativa (P×I) e sem ações reativas. | Risk Register com 7 riscos reais quantificados, mitigação preventiva e contingência. |
+| **Seção 4.5: Métricas de Projeto** | Ausência de tabela formal de indicadores, metas e ações corretivas de desvio. | 6 métricas objetivas (Lead Time, WIP, testes, taxa de defeitos, escopo e custos). |
+
+*Fonte: CineSoft Solutions (2026).*
+
+O Código 1 registra a alteração efetiva do texto das seções 4.1, 4.2 e 4.5 no arquivo `manual/capitulos/04-gerenciamento-tecnico.md`, entre a Versão 1.7 (commit `02edc29`, linha de base do diagnóstico) e a Versão 2.0 (commit `bb40194`, de 09/11/2026, em que a melhoria foi aplicada). Linhas iniciadas por `-` foram removidas e linhas iniciadas por `+` foram incluídas. O mesmo conteúdo está em [`assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff`](../../assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff), e o diff completo do arquivo pode ser consultado com `git diff 02edc29 bb40194 -- manual/capitulos/04-gerenciamento-tecnico.md`.
+
+**Código 1 – Diff das seções 4.1, 4.2 e 4.5 entre a Versão 1.7 e a Versão 2.0**
+
+````diff
+diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-gerenciamento-tecnico.md
+--- a/manual/capitulos/04-gerenciamento-tecnico.md	(Versão 1.7 — commit 02edc29)
++++ b/manual/capitulos/04-gerenciamento-tecnico.md	(Versão 2.0 — commit bb40194)
+@@ -3,21 +3,62 @@ ## 4.1 Plano de projeto: escopo, cronograma, recursos e entregas
+ ## 4.1 Plano de projeto: escopo, cronograma, recursos e entregas
+ 
+-O planejamento do projeto (ISO/IEC/IEEE 12207:2021 – Cláusula 6.3.1) organiza a execução e o cronograma do CineDoom:
++O processo de planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.3.1) estabelece a Estrutura Analítica do Projeto (EAP/WBS), o roadmap comercial em **três Macroentregas**, o cronograma detalhado de Sprints, a alocação nominal de responsáveis e a rotina formal para monitorar o progresso e corrigir eventuais desvios.
+ 
+-### Escopo por Incremento e Releases
++### Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis)
+ 
+-| Incremento | Escopo Funcional | Requisitos Vinculados | Status |
+-|---|---|---|---|
+-| **Inc. 1 (Fundação)** | Filmes, Salas e Assentos | RF-03, RF-04 | Concluído no planejamento |
+-| **Inc. 2 (Operação)** | Sessões e Mapa de Assentos | RF-05, RF-06 | Em andamento |
+-| **Inc. 3 (Transação)** | Venda atômica, Cancelamento e Auditoria | RF-07, RF-08, RF-12 | Prioridade MVP |
+-| **Inc. 4 (Clientes)** | Cadastro de Clientes e Interesses | RF-09, RF-10 | Backlog Release 1.1 |
+-| **Inc. 5 (Fechamento)** | Indicadores de Ocupação e Release Demo | RF-11 | Prioridade MVP |
++O diagrama abaixo decompõe o produto **CineDoom** em três níveis hierárquicos (Nível 1: Produto; Nível 2: Macroentregas e Governança; Nível 3: Pacotes de Trabalho e Entregáveis verificáveis):
+ 
+-### Cronograma de Execução (Foco na Entrega de 12/11/2026)
+-- **22/10 a 24/10:** Congelamento do escopo do MVP, modelagem do Prisma e configuração do CI no GitHub Actions.
+-- **25/10 a 31/10:** Implementação das rotas de filmes, salas, sessões e do mapa de assentos interativo.
+-- **01/11 a 04/11:** Implementação da trava transacional de venda, testes no Vitest e cancelamento.
+-- **05/11 a 08/11:** Integração total na Vercel com banco Neon, consolidação dos Capítulos 4 e 5 do Manual.
+-- **09/11 a 11/11:** Ensaios da apresentação oral com slides Beamer e congelamento da release `v1.0.0-mvp`.
+-- **12/11/2026:** Apresentação final perante a banca avaliadora.
++```mermaid
++flowchart TD
++    Root["1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)"]
++
++    Root --> M1["1.1 Macroentrega 1 (v1.0 - MVP Operacional)\nBilheteria, Back-office & Portal Web"]
++    Root --> M2["1.2 Macroentrega 2 (v2.0 - Escala Comercial)\nPagamentos Online, Mensageria & Cloud Pro"]
++    Root --> M3["1.3 Macroentrega 3 (v3.0 - Enterprise & Fiscal)\nNFC-e/SEFAZ, Bomboniere & SaaS Self-Service"]
++    Root --> GOV["1.4 Governança, Qualidade & Segurança\nContínua (ISO 12207 / LGPD)"]
++
++    M1 --> M1_1["1.1.1 Fundação Multi-Tenant,\nAuth RBAC & Criptografia CPF"]
++    M1 --> M1_2["1.1.2 Back-office Gerencial:\nFilmes, Salas, Sessões & Ocupação"]
++    M1 --> M1_3["1.1.3 Bilheteria Presencial ACID\n(SELECT FOR UPDATE) & Auditoria"]
++    M1 --> M1_4["1.1.4 Portal do Cliente: Reserva Web,\nExpiração JIT & Baixa no Balcão"]
++
++    M2 --> M2_1["1.2.1 Checkout Transparente\nStripe / Pagar.me (PIX & Cartão)"]
++    M2 --> M2_2["1.2.2 Mensageria Dedicada Resend Pro\n(Domínio Próprio DKIM/SPF)"]
++    M2 --> M2_3["1.2.3 Migração DBaaS Pro (PITR,\nRéplicas & Pooler Expandido)"]
++
++    M3 --> M3_1["1.3.1 Integração Fiscal SEFAZ\n(Emissão Automática NFC-e)"]
++    M3 --> M3_2["1.3.2 Módulo de Bomboniere,\nCombos & Controle de Estoque"]
++    M3 --> M3_3["1.3.3 Console Admin Global:\nSelf-Service Onboarding & Billing SaaS"]
++
++    GOV --> GOV_1["1.4.1 Pipeline CI/CD, Linter\ne 770 Testes Automatizados"]
++    GOV --> GOV_2["1.4.2 Telemetria Axiom (365 dias)\ne Anonimização LGPD Art. 18"]
++```
++
++### Escopo e Marcos Comerciais por Macroentrega (Milestones)
++
++A estratégia de produto da CineSoft Solutions divide o ciclo de vida do CineDoom em três grandes marcos contratuais de entrega:
++
++| Marco (Milestone) | Versão Alvo | Escopo Funcional e Infraestrutura Associada | Responsável Geral | Prazo / Janela | Status |
++| :--- | :---: | :--- | :---: | :---: | :---: |
++| **Macroentrega 1 (MVP Operacional)** | `v1.0.0` | Núcleo Multi-tenant, RBAC (`GERENTE`, `ATENDENTE`, `CLIENTE`), criptografia CPF (`HMAC-SHA256` + `AES-256-GCM`), CRUDs de filmes/salas/sessões, bilheteria presencial atômica, portal de reservas web com expiração JIT, painel de ocupação, anonimização LGPD e deploy em produção (`RF-01` a `RF-18`). | **Gabriel Lourenço** | Out/2026 – Nov/2026 | **Concluído (Em Produção)** |
++| **Macroentrega 2 (Escala & Pagamentos)** | `v2.0.0` | Integração de gateway financeiro online (PIX QR Code dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do **Resend Pro** com domínio corporativo próprio (`@cinedoom.com.br`), upgrade para **Supabase/Neon Pro** (backups PITR e réplicas) e **Vercel Pro**. | **Carlos Eduardo** | Dez/2026 – Jan/2027 | **Planejado (Próxima Fase)** |
++| **Macroentrega 3 (Enterprise & Fiscal)** | `v3.0.0` | Emissão fiscal eletrônica automatizada (**NFC-e / SAT** via API Focus NFe integrada à SEFAZ), módulo de bomboniere e estoque, programa de fidelidade, **Console Global de Administração de Tenants** (*Self-Service Billing*) e BI financeiro avançado. | **Kayque Vicente & Yury Nogueira** | Fev/2027 – Abr/2027 | **Backlog Evolutivo** |
++
++### Cronograma Detalhado de Execução da Macroentrega 1 (`v1.0.0`)
++
++A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenharia com pacotes de trabalho atribuídos nominalmente aos engenheiros da CineSoft Solutions:
++
++| Sprint / Iteração | Pacotes de Trabalho e Requisitos Entregues | Responsáveis Diretos | Início | Término | Status |
++| :--- | :--- | :--- | :---: | :---: | :---: |
++| **Sprint 1 — Fundação, Arquitetura e Segurança** | Setup Next.js 14/TypeScript (`#1`), modelagem Prisma/PostgreSQL e trigger append-only (`#2`), extensão Multi-tenant (`#3`), autenticação NextAuth/RBAC (`#4`), criptografia PII de CPF (`#5`), Log Drain Axiom (`#15`) e pipeline CI/CD (`#16`). | **Gabriel Lourenço** & **Carlos Eduardo** (Apoio: **Yury Nogueira**) | 23/10/2026 | 29/10/2026 | **100% Concluído** |
++| **Sprint 2 — Back-office, Salas e Bilheteria ACID** | Design System e mapa interativo 2D (`#17`), CRUDs de filmes, salas e sessões com pré-população (`#6`, `#7`, `#8`), polling a 2s (`#9`), venda atômica com `SELECT FOR UPDATE` (`#10`) e gestão de atendentes (`#13`). | **Gabriel Lourenço** & **Carlos Eduardo** (QA: **Kayque Vicente**) | 30/10/2026 | 04/11/2026 | **100% Concluído** |
++| **Sprint 3 — Portal do Cliente, Governança LGPD e QA** | Portal público e reserva web com expiração JIT (`#21`), autenticação de espectador e *"Minhas Reservas"* (`#22`), `NotificationService` e baixa de reserva no balcão (`#23`), cancelamento auditado (`#11`), painel de ocupação (`#12`), anonimização Art. 18 (`#14`) e suíte de 770 testes / 500 cenários *cross-tenant* (`#18`, `#19`). | **Gabriel Lourenço**, **Carlos Eduardo**, **Kayque Vicente** & **Yury Nogueira** | 05/11/2026 | 09/11/2026 | **100% Concluído** |
++
++### Rotina de Acompanhamento e Tratamento de Desvios e Atrasos
++
++Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle:
++1. **Monitoramento Diário no Quadro Kanban (GitHub Projects):** Todo cartão de tarefa deve conter obrigatoriamente **responsável nominal**, **data-limite (deadline)**, **estimativa** e **critério de aceite**. Tarefas paradas na coluna *In Progress* por mais de **48 horas** sem commits ou atualização de status acionam um alerta automático de impedimento (*blocker*).
++2. **Revisão Semanal de Sprint e Burndown:** Ao final de cada semana, o Gerente de Projeto (**Kayque Vicente**) e o Tech Lead (**Gabriel Lourenço**) auditam o percentual de pacotes concluídos versus planejados.
++3. **Protocolo de Tratamento de Desvios e Atrasos:**
++   - **Desvio Leve (atraso $\le 24\text{h}$ em tarefa não crítica):** Realocação de par técnico (*pair programming*) entre os desenvolvedores de backend e frontend para destravar a entrega dentro da mesma Sprint.
++   - **Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):** Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos *Must Have* de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
+@@ -25,11 +68,22 @@ ## 4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas
+ ## 4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas
+ 
+-A gestão de riscos (Cláusula 6.3.4) monitora incertezas que possam comprometer o cronograma ou a qualidade do sistema:
++O processo de gestão de riscos (Cláusula 6.3.4) identifica continuamente ameaças técnicas, operacionais, de segurança e de fornecedores externos que possam afetar a disponibilidade ou a integridade financeira e legal do CineDoom.
+ 
+-| ID | Risco Identificado | Categoria | Prob. | Impacto | Estratégia de Mitigação | Responsável |
+-|---|---|---|:---:|:---:|---|---|
+-| **R-01** | Indisponibilidade de banco na nuvem | Técnico | Baixa | Alto | Uso de provedor com SLA comprovado (Neon) e script local de fallback com SQLite | DevOps |
+-| **R-02** | Conflito de venda concorrente de assentos | Técnico | Média | Alto | Restrição única `@@unique([sessionId, seatId])` no banco e transações atômicas | Arquiteto |
+-| **R-03** | Estouro de prazo para a apresentação | Organizacional | Média | Alto | Corte formal de escopo (foco estrito no MVP de bilheteria e ocupação) | Gerente de Projeto |
+-| **R-04** | Falha de rede durante a demonstração | Operacional | Média | Alto | Gravação prévia de vídeo de contingência com o fluxo ponta a ponta | Analista de QA |
+-| **R-05** | Inconsistência entre código e manual | Metodológico | Média | Médio | Matriz de rastreabilidade contínua ligando RFs a commits e testes | Analista de Requisitos |
++### Critérios de Classificação e Reavaliação Contínua
++
++- **Probabilidade de Ocorrência:** **Alta** (forte tendência de ocorrer em operação normal ou picos de estreia), **Média** (pode ocorrer sob condições específicas de carga ou falha de terceiros) ou **Baixa** (evento raro ou já contido por barreiras nativas).
++- **Impacto no Negócio:** **Alto** (indisponibilidade da bilheteria, venda dupla de poltronas, perda financeira ou violação da LGPD), **Médio** (degradação parcial de funcionalidade secundária com contorno disponível) ou **Baixo** (inconveniência visual sem bloqueio operacional).
++- **Matriz de Prioridade:** A combinação de Probabilidade $\times$ Impacto define a prioridade de tratamento como **Crítico** (exige barreira arquitetural imediata e teste automatizado obrigatório), **Alto** (exige mitigação ativa e monitoramento) ou **Médio** (monitorado com plano de contingência).
++- **Ciclo de Reavaliação:** O *Risk Register* é revisado formalmente ao final de cada Sprint e antes do início de cada nova Macroentrega.
++
++### Matriz de Riscos do Produto (*Risk Register*)
++
++| ID | Risco identificado | Categoria | Probabilidade | Impacto | Prioridade | Resposta / Mitigação | Responsável |
++| :---: | :--- | :---: | :---: | :---: | :---: | :--- | :---: |
++| **R-01** | **Conflito de concorrência (*double-booking*)** entre compras simultâneas no portal web e nos guichês físicos em estreias de alta demanda. | Técnico / Core | Média | Alto | **Crítico** | Pré-população determinística de `SessionSeat`, ordenação de IDs anti-deadlock e bloqueio pessimista `SELECT ... FOR UPDATE` em transação ACID, validado por teste automatizado com 50 threads simultâneas. | **Gabriel Lourenço** |
++| **R-02** | **Exaustão do pool de conexões ou indisponibilidade do banco PostgreSQL** devido à criação efêmera de instâncias serverless em picos de acesso. | Infraestrutura / Externa | Média | Alto | **Crítico** | Uso obrigatório de *Connection Pooler* transacional (*Supavisor* porta `6543` com `pgbouncer=true`), índices compostos por `tenant_id` e migração para plano **Pro com réplicas e PITR** na Macroentrega 2. | **Carlos Eduardo** |
++| **R-03** | **Exposição de dados pessoais (CPF) ou vazamento de dados entre cinemas concorrentes (*cross-tenant leak*)**. | Segurança / Legal (LGPD) | Baixa | Alto | **Crítico** | Proibição de CPF em texto puro (uso de `HMAC-SHA256` + `AES-256-GCM`), extensão Prisma que injeta `WHERE tenant_id` automaticamente e suíte automatizada com **500 cenários de ataque cross-tenant**. | **Carlos Eduardo & Yury Nogueira** |
++| **R-04** | **Retenção ociosa de poltronas (*no-show*)** por espectadores que reservam online e não comparecem para pagar no balcão. | Negócio / Operacional | Alta | Médio | **Alto** | Bloqueio de novas reservas web a menos de 60 minutos da sessão e **Expiração Just-in-Time (JIT)** automática, liberando os assentos instantaneamente para venda presencial na bilheteria (`ADR-012`). | **Gabriel Lourenço** |
++| **R-05** | **Falha na entrega de e-mails transacionais de vouchers** ou retenção em filtros anti-spam sem domínio próprio verificado. | Dependência Externa | Média | Médio | **Alto** | Desacoplamento via interface `EmailProvider`, exibição imediata do voucher com código localizador na tela de confirmação e na área *"Minhas Reservas"*, e contratação do **Resend Pro com domínio DKIM/SPF** na Macroentrega 2. | **Carlos Eduardo** |
++| **R-06** | **Atraso na integração de dependências entre módulos** (ex.: acoplamento entre refatorações de UI responsiva e contratos de API). | Organizacional / Projeto | Média | Médio | **Médio** | Contratos de validação estritos via schemas `Zod`, esteira de CI bloqueante a cada Pull Request e protocolo de realocação em pares (*pair programming*) quando uma tarefa excede 48h. | **Kayque Vicente** |
++| **R-07** | **Instabilidade nos webservices estaduais da SEFAZ ou gateway de pagamento** durante o horário de pico noturno dos cinemas (Macroentregas 2 e 3). | Dependência Externa | Média | Alto | **Alto** | Processamento fiscal em fila assíncrona com emissão em contingência offline (Focus NFe) e fallback imediato para recebimento presencial no guichê caso o gateway online oscile. | **Gabriel Lourenço & Kayque Vicente** |
+@@ -71,6 +169,11 @@ ## 4.5 Métricas de acompanhamento do projeto
+ ## 4.5 Métricas de acompanhamento do projeto
+ 
+-A medição e controle (Cláusula 6.3.2) subsidiam o acompanhamento do avanço do projeto:
+-- **Velocidade de Entrega:** Percentual de requisitos funcionais com status *Done*.
+-- **Cobertura de Testes de Regra Crítica:** 100% de cobertura nos métodos do serviço de venda e cancelamento de ingressos.
+-- **Densidade de Defeitos:** Número de bugs abertos versus resolvidos no GitHub Issues antes da release.
++O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI e do Vitest para monitorar a saúde técnica da entrega:
++
++| Categoria de Métrica | Indicador Objetivo | Meta Organizacional | Resultado Aferido na Macroentrega 1 (`v1.0.0`) | Como é Monitorado e Ação em Caso de Desvio |
++| :--- | :--- | :---: | :---: | :--- |
++| **Métrica de Fluxo** | **Lead Time de Issues e PRs** (tempo entre abertura da tarefa e merge em `main`) | $\le 48\text{ horas}$ por pacote de trabalho | Média de **18 a 32 horas** por issue | Monitorado via GitHub Projects. Se exceder 48h, o GP aciona pareamento técnico imediato. |
++| **Métrica de Fluxo** | **Work in Progress (WIP Limit)** por engenheiro | Máximo de **2 tarefas** simultâneas em *In Progress* | Respeitado ($\le 2$ por membro) | Conferido na revisão diária do quadro Kanban para evitar gargalos de troca de contexto. |
++| **Métrica de Qualidade** | **Suíte de Testes Automatizados e Cobertura Crítica** | **100% de aprovação** e 100% nos serviços críticos | **26 suítes / 770 testes passando (100%)** em ~4,9s | Bloqueio automático no GitHub Actions; PRs com qualquer teste quebrado são impedidos de merge. |
++| **Métrica de Qualidade** | **Densidade de Defeitos em Produção** (bugs críticos pós-deploy) | **0 defeitos críticos** (venda dupla ou perda de dados) | **0 defeitos críticos** (ajustes apenas cosméticos/mobile) | Monitorado via telemetria e testes de usuários reais; defeitos P1 acionam rollback em < 5 min. |
++| **Métrica de Progresso** | **Cumprimento do Escopo da Macroentrega (Throughput)** | **100% dos requisitos `RF-01` a `RF-18`** entregues no marco | **18/18 RFs (100%)** e **14/14 Critérios de Aceite** concluídos | Auditado ao final de cada Sprint na Matriz de Rastreabilidade (Capítulo 5.1.2). |
+````
+
+*Fonte: Histórico de versões do repositório `manual-processos-software` no GitHub (2026).*
 
 ### Reavaliação Pós-Melhoria (Verificação da Eficácia Documental)
 
 Reavaliando as seções **4.1, 4.2 e 4.5** sob as mesmas quatro questões do diagnóstico inicial, comprova-se a superação integral das lacunas:
+
+**Tabela 47 – Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0)**
 
 | Pergunta de avaliação | Seção Revisada | Nova Situação e Evidência Verificável (Versão 2.0) |
 | :--- | :---: | :--- |
@@ -2181,6 +2459,8 @@ Reavaliando as seções **4.1, 4.2 e 4.5** sob as mesmas quatro questões do dia
 | **2. As atividades possuem responsáveis e prazos?** | `4.1` | **Descrito.** Tanto a tabela de Marcos Comerciais quanto a tabela das 3 Sprints de execução especificam nominalmente os engenheiros responsáveis (`Gabriel Lourenço`, `Carlos Eduardo`, `Kayque Vicente`, `Yury Nogueira`) e as datas de início e término. |
 | **3. Os riscos e suas respostas estão definidos?** | `4.2` | **Descrito.** A seção 4.2 explicita os critérios de Probabilidade, Impacto e Prioridade, o ciclo de reavaliação por Sprint e a matriz com 7 riscos reais de engenharia/negócio, respostas técnicas e responsáveis nominais. |
 | **4. Está definido como acompanhar o andamento e tratar atrasos?** | `4.1` e `4.5` | **Descrito.** A seção 4.1 formaliza a subseção *"Rotina de Acompanhamento e Tratamento de Desvios e Atrasos"* (gatilho de 48h e pareamento técnico), complementada na seção 4.5 por métricas com metas objetivas e resultados aferidos (`Lead Time <= 48h`, `WIP <= 2`, `770 testes`). |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ---
 

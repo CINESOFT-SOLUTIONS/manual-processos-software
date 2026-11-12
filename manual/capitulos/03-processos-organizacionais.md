@@ -68,6 +68,8 @@ end note
 @enduml
 ```
 
+*Figura 4 – Ciclo Iterativo de Desenvolvimento e Roadmap de Evolução do Produto. Fonte: CineSoft Solutions (2026).*
+
 A evolução do produto está organizada em três macroentregas, que agrupam funcionalidades relacionadas e representam marcos de evolução da solução:
 
 - **Macroentrega 1 (v1.0 – MVP):** bilheteria presencial, mapa de assentos 2D, reservas pela web e funcionalidades de governança e proteção de dados.
@@ -134,11 +136,11 @@ Como base institucional de governança e trabalho colaborativo, a empresa estrut
 
 ![Organização Corporativa no GitHub CINESOFT-SOLUTIONS](../../assets/capitulo-03/prints/organizacao-github.png)
 
-*Figura: Organização corporativa CINESOFT-SOLUTIONS no GitHub e repositórios oficiais.*
+*Figura 5 – Organização corporativa CINESOFT-SOLUTIONS no GitHub e repositórios oficiais. Fonte: CineSoft Solutions (2026).*
 
 ![Quadro Kanban Corporativo no GitHub Projects v2](../../assets/capitulo-03/prints/quadro_kanban.png)
 
-*Figura: Quadro Kanban corporativo no GitHub Projects v2.*
+*Figura 6 – Quadro Kanban corporativo no GitHub Projects v2. Fonte: CineSoft Solutions (2026).*
 
 ### Inventário de Ferramentas Disponibilizadas
 
@@ -270,6 +272,8 @@ A matriz abaixo estabelece a governança sobre as principais atividades do proje
 | Gestão de Configuração (Git) e Revisão de Código | **A** | R | R | I |
 | Suporte e Manutenção Pós-Implantação | C | **A / R** | R | I |
 
+*Fonte: CineSoft Solutions (2026).*
+
 *Legenda:* **R** = Responsável pela execução (*Responsible*); **A** = Aprovador final (*Accountable*); **C** = Consultado (*Consulted*); **I** = Informado (*Informed*).
 
 ### Competências Requeridas e Lacunas
@@ -332,12 +336,16 @@ Conforme o RACI (Seção 3.4), o Engenheiro de Qualidade (Kayque Vicente) é o a
 
 Quatro pilares técnicos orientam a escrita de código em todos os repositórios. Cada pilar possui uma forma de verificação:
 
+**Tabela 12 – Diretrizes e Princípios de Engenharia Adotados**
+
 | Princípio | Descrição | Verificação |
 | :--- | :--- | :--- |
 | **Spec-Driven Development (SDD)** | Nenhuma funcionalidade é implementada sem especificação prévia em `specs/`, com schemas de entrada e saída validados por contratos formais (Zod). | O *Pull Request* deve referenciar a especificação correspondente; caso contrário, é recusado na revisão. |
 | **Domain-Driven Design (DDD)** | Organização por contextos delimitados (*Bounded Contexts*), isolando a lógica de negócio (sessões, ingressos, bloqueios temporários) de infraestrutura e persistência. | Checklist de revisão e regra `eslint no-cycle` contra dependências circulares. |
 | **Princípios SOLID** | Código modular com responsabilidade única, desacoplamento de serviços e injeção de dependências. | Checklist de revisão de código. |
 | **TDD e Pirâmide de Testes** | Testes automatizados das regras críticas de domínio escritos antes ou junto da implementação. | Gate de testes e meta de cobertura (Tabela de métricas). |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ### Critérios de Qualidade e Bloqueios Automatizados (*Quality Gates*)
 
@@ -352,7 +360,7 @@ Para que qualquer código seja integrado aos ramos principais (`develop`, `stagi
 
 ### Métricas e Indicadores de Qualidade
 
-**Tabela 12 – Métricas de Qualidade**
+**Tabela 13 – Métricas de Qualidade**
 
 | Métrica | Meta | Fonte de coleta | Frequência |
 | :--- | :--- | :--- | :--- |
@@ -391,7 +399,7 @@ A organização assegura que todo o conhecimento técnico, arquitetural e proces
 
 ### Ativos de Conhecimento
 
-**Tabela 13 – Ativos de Conhecimento**
+**Tabela 14 – Ativos de Conhecimento**
 
 | Ativo | Conteúdo | Local | Responsável |
 | :--- | :--- | :--- | :--- |
