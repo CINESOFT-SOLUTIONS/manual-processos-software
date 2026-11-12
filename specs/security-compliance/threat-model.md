@@ -20,7 +20,7 @@ Durante a fase inicial de arquitetura, duas ameaças críticas (`T-1` e `T-2`) f
 1. **`T-1` (Hash de CPF vulnerável a *Rainbow Table*):** Mitigada integralmente por meio da substituição do SHA-256 simples por **`HMAC-SHA256`** com chave secreta dedicada (`CINEDOOM_CPF_HMAC_KEY`), conforme formalizado no **[`ADR-008`](../adr/ADR-008-protecao-cpf-hmac-sha256-aes256gcm.md)** e implementado no módulo `CryptoService`.
 2. **`T-2` (Gestão de chaves criptográficas de PII):** Mitigada pelo armazenamento exclusivo de `CPF_ENCRYPTION_KEY` (AES-256-GCM) e `CINEDOOM_CPF_HMAC_KEY` no cofre cifrado **Vercel Environment Secrets**, com política documentada de rotação anual em lote (`ADR-008`).
 
-Todas as 17 ameaças mapeadas (`T-1` a `T-17`) possuem controles ativos implementados e validados por testes automatizados na suíte de integração e segurança (`770 testes` aprovados, incluindo a bateria de 500 cenários cross-tenant em [`security-cross-tenant-suite.md`](../quality/security-cross-tenant-suite.md)).
+Todas as 17 ameaças mapeadas (`T-1` a `T-17`) possuem controles ativos implementados e validados por testes automatizados na suíte de integração e segurança (`711 testes` aprovados, incluindo a bateria de 500 cenários cross-tenant em [`security-cross-tenant-suite.md`](../quality/security-cross-tenant-suite.md)).
 
 ---
 
@@ -61,5 +61,5 @@ Todas as 17 ameaças mapeadas (`T-1` a `T-17`) possuem controles ativos implemen
 
 | Bloqueador Inicial (Fase de Concepção) | Decisão Arquitetural Adotada | Evidência de Implementação e Teste |
 | :--- | :--- | :--- |
-| **Blocker 1 (`T-1`):** Hash SHA-256 simples para CPF vulnerável a *rainbow table* no universo finito de CPFs (~900M). | Adoção de **`HMAC-SHA256`** com segredo de servidor (`CINEDOOM_CPF_HMAC_KEY`) no `CryptoService` (`ADR-008`). | Implementado em `src/features/compradores/crypto.service.ts` e validado em `tests/unit/cryptoservice.test.ts` (`CT-06`, `CT-15`). |
+| **Blocker 1 (`T-1`):** Hash SHA-256 simples para CPF vulnerável a *rainbow table* no universo finito de CPFs (~900M). | Adoção de **`HMAC-SHA256`** com segredo de servidor (`CINEDOOM_CPF_HMAC_KEY`) no `CryptoService` (`ADR-008`). | Implementado em `src/modules/crypto/crypto-service.ts` e validado em `tests/unit/cryptoservice.test.ts` (`CT-06`, `CT-15`). |
 | **Blocker 2 (`T-2`):** Ausência de especificação para proteção e rotação da chave `AES-256-GCM` do CPF cifrado. | Isolamento das chaves em **Vercel Environment Secrets** e criação de procedimento formal de rotação em lote (`ADR-008`). | Documentado em [`devops-spec.md`](../planning/devops-spec.md) e validado em `tests/unit/cryptoservice.test.ts` (`CT-06`). |

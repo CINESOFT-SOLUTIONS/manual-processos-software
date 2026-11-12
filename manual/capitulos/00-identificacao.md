@@ -53,6 +53,7 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | 22/10/2026 | Versão 1.6 | Padronização formal da estrutura editorial dos Capítulos 1 a 5. |
 | 23/10/2026 | Versão 1.7 | Incorporação do Portal do Cliente, reserva ACID, e-mail e LGPD (ADR-012). |
 | 09/11/2026 | Versão 2.0 | Consolidação em 3 Macroentregas, matrizes Make-or-Buy, Pugh, EAP e Cap. 6 (MPS.BR). |
+| 11/11/2026 | Versão 2.1 | Revisão e sincronização dos Capítulos 1 a 5: perfis RBAC e princípios DDD/SOLID/TDD, cinco atividades dos processos de aquisição e fornecimento, restrições `RES` e síntese das regras de negócio, alinhamento dos critérios de aceite e ampliação da homologação UAT, além de padronização pré-textual/LaTeX. |
 
 *Fonte: Elaborado pelos autores (2026).*
 

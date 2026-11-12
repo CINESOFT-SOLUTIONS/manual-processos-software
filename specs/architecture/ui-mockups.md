@@ -10,7 +10,7 @@ title: "Especificação de Interface (UI), Tokens de Design e Protótipos HTML �
 # Especificação de Interface (UI), Tokens de Design e Protótipos HTML — CineDoom
 
 > **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
-> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`HU-01` a `HU-11`, `RF-01` a `RF-18`, `RNF-04`, `RNF-05`, `CA-01` a `CA-14`) e [`ux-design.md`](ux-design.md).
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`HU-01` a `HU-11`, `RF-01` a `RF-18`, `RNF-04`, `RNF-05`, `CA-01` a `CA-15`) e [`ux-design.md`](ux-design.md).
 
 ## Resumo Executivo
 

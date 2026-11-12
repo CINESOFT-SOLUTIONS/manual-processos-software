@@ -95,7 +95,7 @@ A CineSoft Solutions conduz o ciclo comercial e operacional de atendimento ao cl
    - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,5%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
    - *Saídas:* Contrato de Prestação de Serviço (SaaS) e Aditivo de Privacidade e DPA.
 4. **Execução do Acordo:**
-   - *Descrição:* Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 770 testes automatizados.
+   - *Descrição:* Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 711 testes automatizados.
    - *Saídas:* Ambiente de Produção Provisionado e Relatório de Validação de CI/CD.
 5. **Entrega e Suporte:**
    - *Descrição:* Condução da homologação assistida (*UAT*), assinatura do Termo de Aceite de Implantação (TAI) após comprovação de zero *double-booking* e ativação do suporte técnico contínuo estruturado nos 4 níveis de SLA.
@@ -116,7 +116,7 @@ O fornecimento comercial aos cinemas adquirentes contempla os seguintes entregá
 ### Critérios de Aceite Formal pelo Cliente Adquirente
 
 A entrega de cada implantação ou macroentrega é considerada formalmente aceita mediante:
-1. Aprovação integral da bateria de testes automatizados (770 cenários unitários, de integração e isolamento *cross-tenant*) e homologação assistida (*UAT*).
+1. Aprovação integral da bateria de testes automatizados (711 testes unitários, de integração e isolamento *cross-tenant*) e homologação assistida (*UAT*).
 2. Inexistência de defeitos abertos de severidade **Crítica** (bloqueio de venda ou corrupção de dados) ou **Alta**.
 3. Comprovação prática de zero ocorrência de venda dupla (*double-booking*) sob disputa simultânea entre portal web e balcão físico.
 4. Assinatura digital do **Termo de Aceite de Implantação (TAI)** pelo representante legal do cinema contratante.

@@ -14,7 +14,7 @@ flowchart LR
         direction LR
         R["1. Requisitos & Backlog"] --> D["2. Arquitetura & ADRs"]
         D --> I["3. Implementação & Code Review"]
-        I --> T["4. V&V (770 Testes CI)"]
+        I --> T["4. V&V (711 Testes CI)"]
         T --> P["5. Deploy & Telemetria"]
         P -.->|"Feedback & Lições"| R
     end
@@ -45,7 +45,7 @@ A gestão de infraestrutura (Cláusula 6.2.2) assegura que a CineSoft Solutions 
 | Categoria | Ferramenta / Infraestrutura | Finalidade no Projeto |
 | :--- | :--- | :--- |
 | **Gestão e Código** | **GitHub & GitHub Projects v2** | Hospedagem do código-fonte (Git), controle de branches protegidas, gestão do quadro Kanban, issues, milestones e revisão de Pull Requests. |
-| **CI/CD e Automação** | **GitHub Actions** | Pipeline automatizada de integração e entrega contínua (validação de schema Prisma, TypeScript `tsc`, ESLint `no-cycle`, 770 testes e build). |
+| **CI/CD e Automação** | **GitHub Actions** | Pipeline automatizada de integração e entrega contínua (validação de schema Prisma, TypeScript `tsc`, ESLint `no-cycle`, 711 testes e build). |
 | **Hospedagem e Computação** | **Vercel Serverless & Edge Network** | Execução das rotas de API e Server Components do Next.js 14, distribuição global de assets na borda (CDN) e ambientes isolados de *Preview* e *Production*. |
 | **Banco de Dados e ORM** | **Supabase / Neon PostgreSQL + Prisma ORM** | Persistência relacional ACID em nuvem, pooler de conexões transacional (*Supavisor* porta `6543`), migrações versionadas e triggers de auditoria imutável. |
 | **Design e Prototipação** | **Figma + Tailwind CSS + Lucide** | Prototipação de alta fidelidade, construção do Design System escuro (*Dark Cinema UI*) e componentes responsivos acessíveis (WCAG 2.1 AA). |
@@ -116,7 +116,7 @@ A gestão da qualidade organizacional (Cláusula 6.2.5) define padrões objetivo
    - Tipagem estrita obrigatória (`TypeScript strict: true`) sem erros de compilação (`npm run typecheck`).
    - Proibição de dependências circulares entre módulos validada automaticamente via regra `import/no-cycle` do ESLint.
 2. **Cobertura e Aprovação de Testes Automatizados:**
-   - **100% de aprovação obrigatória** nas **26 suítes de teste (770 testes automatizados)** cobrindo regras de domínio, criptografia, reserva atômica, expiração JIT e 500 cenários de isolamento *cross-tenant*.
+   - **100% de aprovação obrigatória** nos **20 arquivos de teste (711 testes automatizados)** cobrindo regras de domínio, criptografia, reserva atômica, expiração JIT e 500 cenários de isolamento *cross-tenant*.
    - Cobertura mínima de **100% nas funções críticas de negócio** (emissão de ingressos, bloqueio de assentos, cancelamento auditado e anonimização LGPD).
 3. **Política de Revisão de Código (*Code Review*):**
    - Nenhuma alteração é enviada diretamente para a branch `main`. Todo código deve passar por validação da esteira do GitHub Actions e revisão técnica antes da promoção entre `develop`, `staging` e `main`.

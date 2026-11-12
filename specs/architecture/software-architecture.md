@@ -10,7 +10,7 @@ title: "Arquitetura de Software (C4 Níveis 3 e 4) — CineDoom"
 # Arquitetura de Software (C4 Níveis 3 e 4) — CineDoom
 
 > **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
-> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-01` a `RF-18`, `RNF-01` a `RNF-06`, `RN-01` a `RN-12`, `CA-01` a `CA-14`, `RES-01` a `RES-06`) e [`ADR-001` a `ADR-014`](../adr/).
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-01` a `RF-18`, `RNF-01` a `RNF-06`, `RN-01` a `RN-12`, `CA-01` a `CA-15`, `RES-01` a `RES-06`) e [`ADR-001` a `ADR-014`](../adr/).
 
 ## Resumo Executivo
 
@@ -23,7 +23,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 ### AD-1. Clean Architecture e Feature-Driven Architecture (Padrão Controller-Service-Repository) (`ADR-001`)
 
 - **Reversível:** Sim
-- **Racional:** Organiza o código-fonte em fatias verticais de domínio (`src/features/<modulo>/[domain|application|infrastructure]`), desacoplando integralmente as regras de negócio de detalhes de persistência e transporte HTTP por meio de Inversão de Dependência estrita (`RNF-06`):
+- **Racional:** Organiza o código-fonte em fatias verticais de domínio (`src/modules/<modulo>/`) e utilitários compartilhados (`src/shared/`), desacoplando integralmente as regras de negócio de detalhes de persistência e transporte HTTP por meio de Inversão de Dependência estrita (`RNF-06`):
   1. **Controllers (Apresentação / HTTP):** Route Handlers enxutos em `src/app/api/**` que tratam requisições HTTP, validam sessão NextAuth, aplicam RBAC e extraem o contexto de Tenancy.
   2. **Services (Aplicação):** Orquestração de casos de uso e validação de esquemas Zod em `application/`, interagindo exclusivamente com interfaces abstratas de repositório.
   3. **Interfaces de Repositório (Domínio):** Contratos puros (`ISaleRepository`, `IFilmRepository`, `IUserRepository`, `ICounterRepository`, etc.) definidos em `domain/`.
@@ -88,7 +88,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 ### AD-8. Pirâmide de testes automatizados com Vitest e Playwright (`ADR-011`)
 
 - **Reversível:** Sim
-- **Racional:** Cobertura integral dos critérios de aceite `CA-01` a `CA-14` (`AC-1` a `AC-14`) e dos 26 casos de teste (`CT-01` a `CT-26`); utiliza **Vitest** para testes unitários, de segurança (500 cenários cross-tenant) e de integração concorrente (50 threads simultâneas), e **Playwright** para testes fim a fim (E2E) na matriz Chromium e Firefox em resolução `1024x768` (`RNF-05`).
+- **Racional:** Cobertura integral dos critérios de aceite `CA-01` a `CA-15` (`AC-1` a `AC-15`) e dos 26 casos de teste (`CT-01` a `CT-26`); utiliza **Vitest** para testes unitários, de segurança (500 cenários cross-tenant) e de integração concorrente (50 threads simultâneas), e **Playwright** para testes fim a fim (E2E) na matriz Chromium e Firefox em resolução `1024x768` (`RNF-05`).
 - **Atributo de Qualidade (ISO/IEC 25010):** Confiabilidade e Testabilidade (*Reliability / Testability*)
 - **Estratégia (*Build vs. Buy*):** Reúso (*Reuse*)
 
@@ -130,12 +130,12 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 | **C-2** | `RBACGuard` | Middleware Next.js (`middleware.ts`) interceptando rotas protegidas (`/gestao/**`, `/api/gestao/**`, `/bilheteria/**`, `/portal/minhas-reservas`); valida `role` no JWT e retorna `HTTP 403` para acessos não autorizados (`RN-01`, `CA-05`). | `AuthModule` |
 | **C-3** | `TenancyContext` | *Prisma Client Extension* (`$extends`) que intercepta operações CRUD injetando `where: { tenant_id: currentTenantId }` lido de `AsyncLocalStorage` (`RN-12`, `CA-04`). | `PrismaClientSingleton` |
 | **C-4** | `CryptoService` | Serviço criptográfico puro (`node:crypto`): `encryptCPF(plaintext)` via `AES-256-GCM`, `decryptCPF(ciphertext)` e `hashCPF(plaintext)` via `HMAC-SHA256` (`RF-09`, `RN-07`, `CA-06`). | — |
-| **C-5** | `BilheteriaModule` | Módulo de Bilheteria em `src/features/bilheteria`: `SaleService`, `CounterService` e `CancellationService` desacoplados por interfaces de domínio (`RF-06`, `RF-07`, `RF-08`, `RF-17`). | `PrismaSaleRepository`, `PrismaCounterRepository`, `PrismaCancellationRepository`, `TenancyContext` |
+| **C-5** | `BilheteriaModule` | Módulo de Bilheteria em `src/modules/bilheteria`: `SaleService`, `CounterService` e `CancellationService` desacoplados por interfaces de domínio (`RF-06`, `RF-07`, `RF-08`, `RF-17`). | `PrismaSaleRepository`, `PrismaCounterRepository`, `PrismaCancellationRepository`, `TenancyContext` |
 | **C-6** | `VendaTransactionHandler` | Executa `Prisma.$transaction` com trava pessimista `SELECT FOR UPDATE NOWAIT` em `session_seats`; cria `Ticket` atômico e atualiza poltrona para `SOLD`, ou lança `ConflitoAssentoError` (`HTTP 409`) (`RN-05`, `CA-01`). | `PrismaSaleRepository`, `TenancyContext` |
 | **C-7** | `CancelamentoService` | Caso de uso de cancelamento presencial: valida tenant, insere registro em `cancellation_audits` **antes** de liberar a poltrona para `AVAILABLE` (`RF-08`, `RN-06`, `CA-03`). | `ICancellationRepository`, `TenancyContext` |
 | **C-8** | `AuditoriaRepository` | Adaptador Prisma para `cancellation_audits` (`PrismaCancellationRepository`); tabela protegida por trigger PostgreSQL `BEFORE UPDATE OR DELETE` (`CA-03`). | `PrismaClientSingleton`, `TenancyContext` |
 | **C-9** | `SeatMapRouteHandler` | Route Handler `GET /api/sessoes/[id]/assentos` com `Cache-Control: no-store`; consome `SessionSeatsService` e aplica expiração JIT antes de retornar os estados (`RF-05`, `RF-18`, `CA-02`, `CA-14`). | `SessionSeatsService`, `RBACGuard` |
-| **C-10** | `GestaoModule` | Módulo de Back-office em `src/features/catalogo` e `src/features/identidade`: CRUD de filmes, salas, sessões (com pré-população de `SessionSeat`) e operadores, validado com Zod (`RF-01` a `RF-04`, `RN-02` a `RN-04`, `CA-08`). | `FilmService`, `RoomService`, `SessionService`, `UserService`, `RBACGuard` |
+| **C-10** | `GestaoModule` | Módulo de Back-office em `src/modules/backoffice` e `src/modules/auth`: CRUD de filmes, salas, sessões (com pré-população de `SessionSeat`) e operadores, validado com Zod (`RF-01` a `RF-04`, `RN-02` a `RN-04`, `CA-08`). | `FilmService`, `RoomService`, `SessionService`, `UserService`, `RBACGuard` |
 | **C-11** | `CompradoresModule` | Registra comprador no ato da venda e processa anonimização *in-place* (Art. 18 LGPD) via `/api/titulares/anonimizar` (`RF-09`, `CA-06`, `ADR-009`). | `CryptoService`, `TenancyContext`, `PrismaClientSingleton` |
 | **C-12** | `OcupacaoModule` | Calcula indicadores agregados de ocupação por sessão do dia corrente (`OccupancyService` / `GET /api/ocupacao/painel`) isolados por tenant (`RF-10`, `CA-07`). | `OccupancyService`, `TenancyContext`, `PrismaOccupancyRepository` |
 | **C-13** | `SeatMapPollingClient` | Client Component React com `useEffect` + `setInterval(2000ms)` atualizando reativamente o mapa de poltronas (`RF-05`, `CA-02`). | — |

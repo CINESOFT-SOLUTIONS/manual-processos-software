@@ -30,7 +30,7 @@ flowchart TD
     M3 --> M3_2["1.3.2 Módulo de Bomboniere,\nCombos & Controle de Estoque"]
     M3 --> M3_3["1.3.3 Console Admin Global:\nSelf-Service Onboarding & Billing SaaS"]
 
-    GOV --> GOV_1["1.4.1 Pipeline CI/CD, Linter\ne 770 Testes Automatizados"]
+    GOV --> GOV_1["1.4.1 Pipeline CI/CD, Linter\ne 711 Testes Automatizados"]
     GOV --> GOV_2["1.4.2 Telemetria Axiom (365 dias)\ne Anonimização LGPD Art. 18"]
 ```
 
@@ -52,7 +52,7 @@ A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenh
 | :--- | :--- | :--- | :---: | :---: | :---: |
 | **Sprint 1 — Fundação, Arquitetura e Segurança** | Setup Next.js 14/TypeScript (`#1`), modelagem Prisma/PostgreSQL e trigger append-only (`#2`), extensão Multi-tenant (`#3`), autenticação NextAuth/RBAC (`#4`), criptografia PII de CPF (`#5`), Log Drain Axiom (`#15`) e pipeline CI/CD (`#16`). | **Gabriel Lourenço** & **Carlos Eduardo** (Apoio: **Yury Nogueira**) | 23/10/2026 | 29/10/2026 | **100% Concluído** |
 | **Sprint 2 — Back-office, Salas e Bilheteria ACID** | Design System e mapa interativo 2D (`#17`), CRUDs de filmes, salas e sessões com pré-população (`#6`, `#7`, `#8`), polling a 2s (`#9`), venda atômica com `SELECT FOR UPDATE` (`#10`) e gestão de atendentes (`#13`). | **Gabriel Lourenço** & **Carlos Eduardo** (QA: **Kayque Vicente**) | 30/10/2026 | 04/11/2026 | **100% Concluído** |
-| **Sprint 3 — Portal do Cliente, Governança LGPD e QA** | Portal público e reserva web com expiração JIT (`#21`), autenticação de espectador e *"Minhas Reservas"* (`#22`), `NotificationService` e baixa de reserva no balcão (`#23`), cancelamento auditado (`#11`), painel de ocupação (`#12`), anonimização Art. 18 (`#14`) e suíte de 770 testes / 500 cenários *cross-tenant* (`#18`, `#19`). | **Gabriel Lourenço**, **Carlos Eduardo**, **Kayque Vicente** & **Yury Nogueira** | 05/11/2026 | 09/11/2026 | **100% Concluído** |
+| **Sprint 3 — Portal do Cliente, Governança LGPD e QA** | Portal público e reserva web com expiração JIT (`#21`), autenticação de espectador e *"Minhas Reservas"* (`#22`), `NotificationService` e baixa de reserva no balcão (`#23`), cancelamento auditado (`#11`), painel de ocupação (`#12`), anonimização Art. 18 (`#14`) e suíte de 711 testes / 500 cenários *cross-tenant* (`#18`, `#19`). | **Gabriel Lourenço**, **Carlos Eduardo**, **Kayque Vicente** & **Yury Nogueira** | 05/11/2026 | 09/11/2026 | **100% Concluído** |
 
 ### Recursos
 
@@ -123,7 +123,7 @@ A CineSoft Solutions adota um fluxo estruturado em três branches permanentes (`
 
 ```mermaid
 flowchart LR
-    F["feat/RF-XX-descricao\nou fix/escopo"] -->|"PR + Code Review\n+ 770 Testes CI"| DEV["develop\n(Integração Contínua)"]
+    F["feat/RF-XX-descricao\nou fix/escopo"] -->|"PR + Code Review\n+ 711 Testes CI"| DEV["develop\n(Integração Contínua)"]
     DEV -->|"Promoção Verificada"| STG["staging\n(Homologação / Preview)"]
     STG -->|"Release Gate Aprovado\n+ Tag SemVer"| MAIN["main\n(Produção Vercel)"]
 ```
@@ -132,7 +132,7 @@ flowchart LR
 - **`staging` (Homologação e Pré-Produção):** Ambiente espelhado para validação integrada e testes de aceitação antes da promoção para produção.
 - **`develop` (Integração de Engenharia):** Branch base para consolidação diária das entregas aprovadas da Sprint.
 - **`feat/*` e `fix/*` (Branches de Trabalho):** Criadas a partir de `develop` para cada requisito ou correção (ex.: `feat/RF-06-venda-atomica`).
-- **Regras Obrigatórias de Pull Request:** Todo PR requer (1) compilação TypeScript limpa (`tsc --noEmit`), (2) zero erros de ESLint (`import/no-cycle`), (3) **100% dos 770 testes passando no Vitest** e (4) revisão técnica aprovada por outro engenheiro da equipe.
+- **Regras Obrigatórias de Pull Request:** Todo PR requer (1) compilação TypeScript limpa (`tsc --noEmit`), (2) zero erros de ESLint (`import/no-cycle`), (3) **100% dos 711 testes passando no Vitest** e (4) revisão técnica aprovada por outro engenheiro da equipe.
 
 ### Versionamento Semântico (SemVer) e Convenção de Commits
 - **Padrão SemVer (`MAJOR.MINOR.PATCH`):**
@@ -166,7 +166,7 @@ Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralment
 
 | Código e Título | Status | Contexto do Problema | Alternativas Consideradas | Decisão e Justificativa | Consequências e Trade-offs |
 | :--- | :---: | :--- | :--- | :--- | :--- |
-| **ADR-001:** Arquitetura Monólito Modular em Next.js 14 | **Aprovada** | Necessidade de integrar Portal do Cliente, Bilheteria e Back-office sob o mesmo motor transacional com equipe enxuta. | (1) Monólito Modular Next.js; (2) Microsserviços; (3) SPA + API separada. | Adotar Monólito Modular com fatias verticais (`src/features/*`) e regra ESLint `import/no-cycle`. | (+) Transações ACID simples e tipagem unificada; (-) Exige disciplina de linter para manter fronteiras modulares. |
+| **ADR-001:** Arquitetura Monólito Modular em Next.js 14 | **Aprovada** | Necessidade de integrar Portal do Cliente, Bilheteria e Back-office sob o mesmo motor transacional com equipe enxuta. | (1) Monólito Modular Next.js; (2) Microsserviços; (3) SPA + API separada. | Adotar Monólito Modular com módulos de domínio verticais (`src/modules/*`) e regra ESLint `import/no-cycle`. | (+) Transações ACID simples e tipagem unificada; (-) Exige disciplina de linter para manter fronteiras modulares. |
 | **ADR-002:** Interface Reativa com Tailwind CSS | **Aprovada** | Construção de mapa 2D de assentos e painéis responsivos para desktop (guichê) e mobile (espectador). | (1) Tailwind CSS + Componentes próprios; (2) Material UI / Chakra; (3) CSS-in-JS. | Adotar Tailwind CSS com tema escuro cinematográfico (*Dark UI*) e zero runtime JS de estilos. | (+) Bundle leve, alta performance mobile e identidade visual própria; (-) Classes utilitárias extensas no JSX. |
 | **ADR-003:** Backend em TypeScript com Route Handlers | **Aprovada** | Exigência de validação rigorosa de payloads e contratos seguros entre frontend e API. | (1) Next.js Route Handlers + Zod; (2) Express/NestJS separado; (3) GraphQL. | Utilizar Route Handlers RESTful tipados em TypeScript estrito combinados com schemas `Zod`. | (+) Zero incompatibilidade de tipos cliente-servidor e deploy serverless nativo; (-) Acoplado às convenções do Next.js. |
 | **ADR-004:** Banco PostgreSQL com Prisma ORM | **Aprovada** | Venda e reserva de poltronas exigem integridade relacional absoluta e bloqueio pessimista de linha. | (1) PostgreSQL + Prisma; (2) MongoDB (NoSQL); (3) MySQL + TypeORM. | Adotar PostgreSQL gerenciado com Prisma ORM e suporte a transações interativas e SQL bruto para locks. | (+) Conformidade ACID plena e migrações seguras; (-) Requer `queryRaw` pontual para `SELECT FOR UPDATE`. |
@@ -189,9 +189,9 @@ O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quan
 | :--- | :--- | :---: | :---: | :--- |
 | **Métrica de Fluxo** | **Lead Time de Issues e PRs** (tempo entre abertura da tarefa e merge em `main`) | $\le 48\text{ horas}$ por pacote de trabalho | Média de **18 a 32 horas** por issue | Monitorado via GitHub Projects. Se exceder 48h, o GP aciona pareamento técnico imediato. |
 | **Métrica de Fluxo** | **Work in Progress (WIP Limit)** por engenheiro | Máximo de **2 tarefas** simultâneas em *In Progress* | Respeitado ($\le 2$ por membro) | Conferido na revisão diária do quadro Kanban para evitar gargalos de troca de contexto. |
-| **Métrica de Qualidade** | **Suíte de Testes Automatizados e Cobertura Crítica** | **100% de aprovação** e 100% nos serviços críticos | **26 suítes / 770 testes passando (100%)** em ~4,9s | Bloqueio automático no GitHub Actions; PRs com qualquer teste quebrado são impedidos de merge. |
+| **Métrica de Qualidade** | **Suíte de Testes Automatizados e Cobertura Crítica** | **100% de aprovação** e 100% nos serviços críticos | **20 arquivos / 711 testes passando (100%)** em ~10,6s | Bloqueio automático no GitHub Actions; PRs com qualquer teste quebrado são impedidos de merge. |
 | **Métrica de Qualidade** | **Densidade de Defeitos em Produção** (bugs críticos pós-deploy) | **0 defeitos críticos** (venda dupla ou perda de dados) | **0 defeitos críticos** (ajustes apenas cosméticos/mobile) | Monitorado via telemetria e testes de usuários reais; defeitos P1 acionam rollback em < 5 min. |
-| **Métrica de Progresso** | **Cumprimento do Escopo da Macroentrega (Throughput)** | **100% dos requisitos `RF-01` a `RF-18`** entregues no marco | **18/18 RFs (100%)** e **14/14 Critérios de Aceite** concluídos | Auditado ao final de cada Sprint na Matriz de Rastreabilidade (Capítulo 5.1.2). |
+| **Métrica de Progresso** | **Cumprimento do Escopo da Macroentrega (Throughput)** | **100% dos requisitos `RF-01` a `RF-18`** entregues no marco | **18/18 RFs (100%)** e **15/15 Critérios de Aceite** concluídos | Auditado ao final de cada Sprint na Matriz de Rastreabilidade (Capítulo 5.1.2). |
 | **Métrica de Custo** | **Custo Operacional dos Serviços Base (OPEX mensal)** | **$\le$ US$ 90/mês nas Macroentregas 2 e 3** (US$ 0 na M1 em *free tier*) | **US$ 0 na Macroentrega 1** (planos gratuitos/Hobby) | Monitorado nos painéis de *billing* de Vercel, Neon, Resend e Axiom, com revisão mensal do líder de DevOps; GitHub Team (US$ 4/usuário × 4 assentos) e Focus NFe (R$ 149/mês, somente M3) são controlados à parte, por terem base de cobrança distinta (assento e emissão). Desvio acima de 10% sobre o teto aciona revisão de planos e otimização de recursos. |
 
 ---

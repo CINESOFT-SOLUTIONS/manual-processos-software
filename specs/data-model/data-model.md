@@ -10,7 +10,7 @@ title: "Especificação do Modelo de Dados e Esquema Relacional — CineDoom"
 # Especificação do Modelo de Dados e Esquema Relacional — CineDoom
 
 > **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
-> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-01` a `RF-18`, `RNF-01` a `RNF-06`, `RN-01` a `RN-12`, `CA-01` a `CA-14`, `RES-01` a `RES-06`) e [`ADR-002` a `ADR-014`](../adr/).
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-01` a `RF-18`, `RNF-01` a `RNF-06`, `RN-01` a `RN-12`, `CA-01` a `CA-15`, `RES-01` a `RES-06`) e [`ADR-002` a `ADR-014`](../adr/).
 
 ## Resumo Executivo
 
