@@ -1,7 +1,5 @@
 % =============================================================================
 % CAPÍTULO 2: PROCESSOS DE ACORDO
-% Conteúdo sincronizado com manual/capitulos/02-processos-acordo.md (fonte da verdade).
-% As tabelas são importadas de assets/capitulo-02/tabelas/.
 % =============================================================================
 
 \aberturacapitulo{Capítulo 2}{Processos de Acordo}
@@ -17,26 +15,68 @@ No papel de adquirente, a CineSoft Solutions adota uma diretriz clara: \textbf{o
 \subsubsecao{\texorpdfstring{O que construímos e o que contratamos (\emph{Make or Buy})}{O que construímos e o que contratamos (Make or Buy)}}
 
 \begin{itemize}
-\tightlist
-\item \textbf{Desenvolvimento Interno (\emph{Make}):} O motor de bilheteria e reservas atômicas com bloqueio pessimista (\texttt{SELECT\ FOR\ UPDATE}), a máquina de estados de assentos com liberação automática de ingressos expirados, o isolamento lógico multi-tenant entre diferentes redes de cinema e os mecanismos de anonimização exigidos pela LGPD. Esses itens compõem a propriedade intelectual e o diferencial de confiabilidade da CineSoft.
+\item \textbf{Desenvolvimento Interno (\emph{Make}):} O motor de bilheteria e reservas atômicas com bloqueio pessimista (\texttt{SELECT \allowbreak\hspace{0pt plus 1pt}FOR \allowbreak\hspace{0pt plus 1pt}UPDATE}), a máquina de estados de assentos com liberação automática de ingressos expirados, o isolamento lógico multi-tenant entre diferentes redes de cinema e os mecanismos de anonimização exigidos pela LGPD. Esses itens compõem a propriedade intelectual e o diferencial de confiabilidade da CineSoft.
 \item \textbf{Soluções Prontas de Terceiros (\emph{Buy}):} Infraestrutura de banco de dados gerenciado (PostgreSQL no Supabase), hospedagem serverless com distribuição global (Vercel), mensageria de e-mails transacionais (Resend), retenção de logs para auditoria (Axiom), processamento de pagamentos digitais (Stripe/Pagar.me na Macroentrega 2) e mensageria fiscal de notas (Focus NFe na Macroentrega 3).
 \end{itemize}
 
 As tabelas a seguir detalham a justificativa técnica e econômica de cada decisão:
 
-\tabelaabnt{Análise de Aquisição: Componentes de Software e Domínio (Make or Buy)}{CineSoft Solutions (2026)}{tab:analise_de_aquisicao_componentes_de_software_e_d}{\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy-core.tex}}
+\tabelaabnt{Análise de Aquisição: Componentes de Software e Domínio (Make or Buy)}{CineSoft Solutions (2026)}{tab:analise_de_aquisicao_componentes_de_soft}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=0.88\hsize}X >{\centering\arraybackslash\hsize=0.52\hsize}X >{\raggedright\arraybackslash\hsize=1.73\hsize}X >{\raggedright\arraybackslash\hsize=0.88\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Elemento do sistema} & \textbf{Adquirir pronto?} & \textbf{Justificativa} & \textbf{Possível fornecedor} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{Motor de Bilheteria e Reserva Atômica ACID} & \textbf{Não} & Diferencial competitivo central. Exige controle estrito sobre locks pessimistas (\texttt{SELECT \allowbreak\hspace{0pt plus 1pt}FOR \allowbreak\hspace{0pt plus 1pt}UPDATE}) para impedir venda dupla entre web e guichê físico. & Desenvolvimento interno (CineSoft Solutions) \\
+\midrule
+\textbf{Isolamento Multi-Tenant e Governança de Dados} & \textbf{Não} & Núcleo do modelo SaaS B2B. A injeção automática de \texttt{tenant\_id} via Prisma Client Extensions garante isolamento seguro na mesma base relacional com baixo custo. & Desenvolvimento interno sobre Prisma Extensions \\
+\midrule
+\textbf{Módulo de Criptografia e Anonimização LGPD} & \textbf{Não} & Requisito legal (LGPD Art. 18 e 46). Exige anonimização irreversível sob demanda sem corromper o histórico fiscal de ingressos vendidos pelo cinema. & Desenvolvimento interno (\texttt{Node.\allowbreak\hspace{0pt plus 1pt}js \allowbreak\hspace{0pt plus 1pt}crypto}) \\
+\midrule
+\textbf{Autenticação, Sessão JWT e Controle RBAC} & \textbf{Parcial} & Adota biblioteca madura (\texttt{NextAuth.\allowbreak\hspace{0pt plus 1pt}js}) para gerenciar sessões e cookies seguros, desenvolvendo internamente a matriz de perfis (\texttt{RBAC}) e o vínculo por cinema. & \texttt{NextAuth.\allowbreak\hspace{0pt plus 1pt}js} + Middleware proprietário CineSoft \\
+\midrule
+\textbf{Interface Gráfica e Mapa Interativo de Salas} & \textbf{Parcial} & Aproveita bibliotecas de mercado (\texttt{Tailwind}, \texttt{Lucide}) para primitivas visuais, desenvolvendo sob medida a matriz reativa de poltronas e o fluxo do guichê. & \texttt{Tailwind \allowbreak\hspace{0pt plus 1pt}CSS}, \texttt{Lucide \allowbreak\hspace{0pt plus 1pt}Icons} + Componentes CineSoft \\
+\midrule
+\textbf{ORM e Validação de Schemas de Entrada} & \textbf{Sim} & Padrão de mercado que provê tipagem estrita (\emph{type-safety}) e proteção nativa contra \emph{SQL Injection}, sendo antieconômico construir do zero. & \texttt{Prisma ORM} e \texttt{Zod} (Open Source / MIT) \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
-\tabelaabnt{Análise de Aquisição: Infraestrutura Cloud e Serviços Gerenciados (Make or Buy)}{CineSoft Solutions (2026)}{tab:analise_de_aquisicao_infraestrutura_cloud_e_serv}{\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy-infra.tex}}
+\tabelaabnt{Análise de Aquisição: Infraestrutura Cloud e Serviços Gerenciados (Make or Buy)}{CineSoft Solutions (2026)}{tab:analise_de_aquisicao_infraestrutura_clou}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=0.95\hsize}X >{\centering\arraybackslash\hsize=0.52\hsize}X >{\raggedright\arraybackslash\hsize=1.76\hsize}X >{\raggedright\arraybackslash\hsize=0.77\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Elemento do sistema} & \textbf{Adquirir pronto?} & \textbf{Justificativa} & \textbf{Possível fornecedor} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{Banco de Dados Relacional Gerenciado (DBaaS)} & \textbf{Sim} & Elimina custos de DBA, provendo restauração pontual automatizada (PITR), \emph{connection pooling} para serverless e alta disponibilidade ($\ge 99{,}9\%$). & \textbf{Supabase Pro (PostgreSQL)} \\
+\midrule
+\textbf{Plataforma de Hospedagem Serverless e CDN} & \textbf{Sim} & Elimina a manutenção de servidores dedicados, entregando deploys atômicos com reversão para a versão anterior, proteção DDoS e distribuição global na borda. & \textbf{Vercel Pro} (Cloud PaaS) \\
+\midrule
+\textbf{Serviço de Disparo de E-mails Transacionais} & \textbf{Sim} & Evita que vouchers caiam em caixas de spam; a API especializada assegura entrega em milissegundos com autenticação SPF, DKIM e DMARC. & \textbf{Resend} (SaaS de E-mail Transacional) \\
+\midrule
+\textbf{Observabilidade e Retenção Legal de Logs} & \textbf{Sim} & Cumpre a retenção legal de logs por 1 ano (Marco Civil e LGPD) sem sobrecarregar o armazenamento do banco relacional, com busca indexada rápida. & \textbf{Axiom Cloud} (Log Drain SaaS) \\
+\midrule
+\textbf{Gateway de Pagamento Online (Macroentrega 2)} & \textbf{Sim} & Transfere a complexidade regulatória da certificação PCI-DSS Nível 1 e antifraude, automatizando a liquidação de PIX dinâmico e cartões. & \textbf{Stripe / Pagar.me} \\
+\midrule
+\textbf{Motor de Mensageria Fiscal NFC-e (Macroentrega 3)} & \textbf{Sim} & Abstrai as constantes mudanças tributárias estaduais da SEFAZ, contingência offline e assinatura digital com certificado A1, evitando passivos fiscais. & \textbf{Focus NFe / PlugNotas} \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
 \subsubsecao{O Ciclo Prático de Aquisição de Provedores}
 
 Para selecionar e manter esses provedores em operação contínua, a CineSoft Solutions estrutura a contratação em cinco etapas práticas:
 
 \begin{enumerate}
-\tightlist
-\item \textbf{Definição de Requisitos e Critérios:} O Arquiteto e os líderes técnicos mapeiam as restrições de cada necessidade --- limites de latência (priorizando servidores na América do Sul), compatibilidade com Node.js/Next.js, conformidade com a LGPD e facilidade de integração local.
+\item \textbf{Definição de Requisitos e Critérios:} O Arquiteto e os líderes técnicos mapeiam as restrições de cada necessidade — limites de latência (priorizando servidores na América do Sul), compatibilidade com Node.js/Next.js, conformidade com a LGPD e facilidade de integração local.
 \item \textbf{Avaliação Técnica e Financeira:} São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus PostgreSQL autogerenciado, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
-\item \textbf{Contratação e Formalização:} Assinatura digital dos planos corporativos, formalização de Aditivos de Proteção de Dados (\emph{Data Processing Agreements} -- DPA) para garantir sigilo sob a LGPD e armazenamento seguro de chaves de API em gerenciadores de segredos com rotação periódica.
+\item \textbf{Contratação e Formalização:} Assinatura digital dos planos corporativos, formalização de Aditivos de Proteção de Dados (\emph{Data Processing Agreements} – DPA) para garantir sigilo sob a LGPD e armazenamento seguro de chaves de API em gerenciadores de segredos com rotação periódica.
 \item \textbf{Monitoramento e Acompanhamento de SLA:} A equipe monitora a disponibilidade real dos provedores via telemetria contínua, páginas de status e relatórios mensais de consumo, garantindo que o tempo de resposta e a taxa de erros permaneçam dentro dos padrões acordados.
 \item \textbf{Homologação e Aceite Técnico:} Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (\emph{sandbox}) na esteira de integração contínua (CI/CD), com procedimento de reversão (\emph{rollback}) documentado caso ocorram falhas.
 \end{enumerate}
@@ -49,15 +89,32 @@ Como fornecedora de software, a CineSoft Solutions atende cinemas independentes,
 
 O principal produto fornecido é a plataforma \textbf{CineDoom} em modelo SaaS (\emph{Software as a Service}), cobrada por assinatura mensal mais taxa por sala ativa. No entanto, sua arquitetura modular também permite licenciar componentes específicos para parceiros ou exibidores com sistemas legados:
 
-\tabelaabnt{Perspectiva de Fornecimento e Ativos Comercializáveis}{CineSoft Solutions (2026). Valores comerciais estimados para fins de planejamento}{tab:perspectiva_de_fornecimento_e_ativos_comercializ}{\input{../../../assets/capitulo-02/tabelas/perspectiva-fornecimento.tex}}
+\tabelaabnt{Perspectiva de Fornecimento e Ativos Comercializáveis}{CineSoft Solutions (2026). Valores comerciais estimados para fins de planejamento}{tab:perspectiva_de_fornecimento_e_ativos_com}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=0.46\hsize}X >{\raggedright\arraybackslash\hsize=1.17\hsize}X >{\raggedright\arraybackslash\hsize=1.36\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Ativo potencial} & \textbf{Possíveis adquirentes} & \textbf{Modelo de fornecimento e preço estimado} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Plataforma CineDoom (completa) & Cinemas independentes, cinemas de rua e pequenas redes de exibição. & SaaS B2B: R\$ 790/mês de assinatura-base, acrescidos de R\$ 120/mês por sala ativa e R\$ 1.500 de implantação (faixa efetiva de R\$ 910 a R\$ 1.270/mês para complexos de uma a quatro salas). \\
+\midrule
+Engine de Trava Atômica (API) & Plataformas de venda de ingressos, teatros e sistemas de reservas de eventos. & Licenciamento de API: R\$ 0,08 por assento confirmado, com cobrança mínima de R\$ 200/mês. \\
+\midrule
+Módulo de Governança LGPD (SDK) & Empresas de desenvolvimento de software e plataformas de entretenimento. & Licenciamento de SDK: R\$ 8.900/ano ou R\$ 16.000 por licença perpétua, incluindo 10 horas de consultoria técnica. \\
+\midrule
+Portal White-Label de Reservas & Exibidores que utilizam sistemas administrativos próprios e desejam oferecer reservas on-line. & SaaS White-Label: R\$ 490/mês por exibidor, com domínio próprio, SSL e taxa de implantação de R\$ 800. \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
 \subsubsecao{Jornada do Cliente: Da Contratação ao Pós-Venda}
 
 A relação entre a CineSoft Solutions e o cinema contratante segue um ciclo transparente e estruturado em cinco etapas:
 
 \begin{enumerate}
-\tightlist
-\item \textbf{Alinhamento e Diagnóstico Inicial:} A CineSoft compreende o perfil do cinema --- quantidade de salas físicas, categorias de poltronas, volume médio de sessões semanais e necessidade de equipamentos físicos de guichê.
+\item \textbf{Alinhamento e Diagnóstico Inicial:} A CineSoft compreende o perfil do cinema — quantidade de salas físicas, categorias de poltronas, volume médio de sessões semanais e necessidade de equipamentos físicos de guichê.
 \item \textbf{Proposta e Escopo de Implantação:} Apresentação da proposta comercial contendo valores claros, cronograma de parametrização e requisitos mínimos de rede e navegadores para os computadores da bilheteria.
 \item \textbf{Formalização Contratual:} Assinatura do Contrato de Licenciamento SaaS e do Termo de Tratamento de Dados (LGPD), definindo os níveis de serviço garantidos (SLA de 99,5\%), a propriedade exclusiva dos dados pelo cinema e as regras de confidencialidade.
 \item \textbf{Implantação e Treinamento:} Provisionamento do ambiente isolado do cinema (\texttt{tenant\_id}), cadastro de salas e filmes, simulação de vendas com a equipe de atendentes e treinamento operacional dos gerentes de bilheteria.
@@ -66,20 +123,82 @@ A relação entre a CineSoft Solutions e o cinema contratante segue um ciclo tra
 
 \subsubsecao{Entregáveis da Implantação e Evolução Funcional}
 
-Cada cinema contratante recebe: - \textbf{Tenant Exclusivo e Isolado:} Criação do identificador da organização (\texttt{tenant\_id}) no banco de dados com isolamento lógico garantido em todas as consultas. - \textbf{Configuração de Salas e Catálogo:} Montagem do mapa visual de poltronas de cada sala física (comun, VIP, acessibilidade) e treinamento prático para cadastro de sessões e preços. - \textbf{Manual do Operador e Capacitação:} Guia rápido de utilização do ponto de venda no balcão e no portal web. - \textbf{Evolução Contínua em Três Fases (Macroentregas):} - \emph{Fase 1 (Atual):} Bilheteria presencial completa, controle de sessões, catálogo de filmes e portal web de reserva antecipada com pagamento no balcão. - \emph{Fase 2 (Próxima):} Venda online direta com pagamento imediato via PIX dinâmico e cartão, com emissão de vouchers digitais no e-mail do cliente. - \emph{Fase 3 (Futura):} Emissão integrada de notas fiscais (NFC-e na SEFAZ), controle de vendas de bomboniere/pipoca e relatórios consolidados de faturamento.
+Cada cinema contratante recebe:
+
+\begin{itemize}
+\item \textbf{Tenant Exclusivo e Isolado:} Criação do identificador da organização (\texttt{tenant\_id}) no banco de dados com isolamento lógico garantido em todas as consultas.
+\item \textbf{Configuração de Salas e Catálogo:} Montagem do mapa visual de poltronas de cada sala física (comun, VIP, acessibilidade) e treinamento prático para cadastro de sessões e preços.
+\item \textbf{Manual do Operador e Capacitação:} Guia rápido de utilização do ponto de venda no balcão e no portal web.
+\item \textbf{Evolução Contínua em Três Fases (Macroentregas):}
+\begin{itemize}
+\item \emph{Fase 1 (Atual):} Bilheteria presencial completa, controle de sessões, catálogo de filmes e portal web de reserva antecipada com pagamento no balcão.
+\item \emph{Fase 2 (Próxima):} Venda online direta com pagamento imediato via PIX dinâmico e cartão, com emissão de vouchers digitais no e-mail do cliente.
+\item \emph{Fase 3 (Futura):} Emissão integrada de notas fiscais (NFC-e na SEFAZ), controle de vendas de bomboniere/pipoca e relatórios consolidados de faturamento.
+\end{itemize}
+\end{itemize}
 
 \subsubsecao{Critérios de Aceite Formal}
 
-O cinema cliente formaliza a aceitação do sistema quando os seguintes requisitos são atendidos: 1. Aprovação de todos os testes da suíte automatizada do sistema (26 arquivos e 770 testes) e execução bem-sucedida dos testes práticos de balcão. 2. Inexistência de qualquer defeito impeditivo ou crítico em aberto. 3. Comprovação prática de que a trava atômica impede rigorosamente a venda simultânea da mesma poltrona entre a web e o guichê. 4. Assinatura do Termo de Aceite de Implantação (TAI) pelo responsável do cinema.
+O cinema cliente formaliza a aceitação do sistema quando os seguintes requisitos são atendidos:
+
+\begin{enumerate}
+\item Aprovação de todos os testes da suíte automatizada do sistema (26 arquivos e 770 testes) e execução bem-sucedida dos testes práticos de balcão.
+\item Inexistência de qualquer defeito impeditivo ou crítico em aberto.
+\item Comprovação prática de que a trava atômica impede rigorosamente a venda simultânea da mesma poltrona entre a web e o guichê.
+\item Assinatura do Termo de Aceite de Implantação (TAI) pelo responsável do cinema.
+\end{enumerate}
 
 \subsubsecao{Níveis de Serviço (SLA) e Atendimento}
 
 Para manter a bilheteria funcionando sem interrupções nas horas de pico (finais de semana e estreias), a CineSoft estabelece tempos máximos de resposta e resolução:
 
-\tabelaabnt{Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega}{CineSoft Solutions (2026)}{tab:acordo_de_nivel_de_servico_sla_e_suporte_pos_ent}{\input{../../../assets/capitulo-02/tabelas/acordo-nivel-servico.tex}}
+\tabelaabnt{Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega}{CineSoft Solutions (2026)}{tab:acordo_de_nivel_de_servico_sla_e_suporte}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=0.79\hsize}X >{\raggedright\arraybackslash\hsize=1.95\hsize}X >{\centering\arraybackslash\hsize=0.52\hsize}X >{\centering\arraybackslash\hsize=0.74\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Severidade / Modalidade} & \textbf{Descrição do Cenário} & \textbf{Tempo de 1ª Resposta} & \textbf{Meta de Resolução / Contorno} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{Crítica (P1 — Corretiva Urgente)} & Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. & Até \textbf{15 minutos} & Até \textbf{2 horas} (reversão documentada para a versão anterior) \\
+\midrule
+\textbf{Alta (P2 — Corretiva Prioritária)} & Degradação no painel gerencial, falha no envio de voucher por e-mail ou lentidão acima do SLA. & Até \textbf{1 hora} & Até \textbf{8 horas} \\
+\midrule
+\textbf{Normal (P3 — Adaptativa / Preventiva)} & Ajustes de compatibilidade de navegador, dúvidas operacionais ou otimização preventiva de índices. & Até \textbf{4 horas úteis} & Até \textbf{24 horas úteis} \\
+\midrule
+\textbf{Evolutiva (P4 — Perfectiva)} & Solicitação de novos relatórios, filtros ou melhorias de usabilidade no Portal do Cliente. & Até \textbf{2 dias úteis} & Planejada na próxima \emph{Sprint / Release} \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
 \subsecao{2.3 Fornecedores e Parceiros de Tecnologia}
 
 Para manter a plataforma CineDoom estável, rápida e segura com custos proporcionais à escala dos cinemas, a CineSoft selecionou parceiros especializados para cada camada do sistema:
 
-\tabelaabnt{Identificação dos Fornecedores e Parceiros Relevantes}{CineSoft Solutions (2026)}{tab:identificacao_dos_fornecedores_e_parceiros_relev}{\input{../../../assets/capitulo-02/tabelas/fornecedores-parceiros.tex}}
+\tabelaabnt{Identificação dos Fornecedores e Parceiros Relevantes}{CineSoft Solutions (2026)}{tab:identificacao_dos_fornecedores_e_parceir}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=0.64\hsize}X >{\raggedright\arraybackslash\hsize=0.95\hsize}X >{\raggedright\arraybackslash\hsize=0.97\hsize}X >{\raggedright\arraybackslash\hsize=1.44\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Fornecedor} & \textbf{Categoria e serviço} & \textbf{Plano e custo comercial} & \textbf{Impacto e mitigação de riscos} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{Vercel Inc.} & \textbf{PaaS \& CDN Edge:} Next.js 14 e serverless & \textbf{US\$ 20/mês} por dev (Vercel Pro; piloto Hobby grátis) & SLA 99,99\% na borda. Mitigação: build determinístico e rollback instantâneo. \\
+\midrule
+\textbf{Supabase} & \textbf{DBaaS PostgreSQL:} Persistência ACID e pooling & \textbf{US\$ 25 a US\$ 69/mês} (Plano Pro compute dedicado) & Crítico para locks \texttt{SELECT \allowbreak\hspace{0pt plus 1pt}FOR \allowbreak\hspace{0pt plus 1pt}UPDATE}. Mitigação: réplicas e migrações Prisma. \\
+\midrule
+\textbf{Resend} & \textbf{E-mail transacional:} API de vouchers (DKIM/SPF) & \textbf{US\$ 20/mês} (franquia de 50.000 e-mails/mês) & Impacta envio de voucher (\texttt{CA-11}). Mitigação: exibição imediata em tela. \\
+\midrule
+\textbf{Axiom Inc.} & \textbf{Log drain:} Observabilidade e auditoria LGPD & \textbf{US\$ 25/mês} (1 TB/mês; retenção de 365 dias) & Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII. \\
+\midrule
+\textbf{GitHub Inc.} & \textbf{CI/CD \& Git:} Repositórios e GitHub Actions & \textbf{US\$ 4/usuário/mês} (Plano Team e branch rules) & Sustenta testes automatizados. Mitigação: bloqueio de merge sem testes. \\
+\midrule
+\textbf{Stripe / Pagar.me} \emph{(M2)} & \textbf{Gateway financeiro:} Checkout PIX e cartão & \textbf{0,99\% PIX / 3,99\% + R\$ 0,39 Cartão} (sem mensalidade) & Certificação PCI-DSS. Mitigação: webhooks idempotentes e balcão físico. \\
+\midrule
+\textbf{Focus NFe} \emph{(M3)} & \textbf{Mensageria fiscal:} Emissão de NFC-e SEFAZ & \textbf{R\$ 149/mês} (até 2.000 notas fiscais/mês) & Conformidade tributária. Mitigação: fila assíncrona com contingência offline. \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
+

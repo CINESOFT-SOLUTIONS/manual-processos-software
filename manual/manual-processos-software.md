@@ -61,6 +61,7 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | 05/11/2026 | Versão 1.8 | Elaboração e estruturação inicial do Capítulo 6. |
 | 09/11/2026 | Versão 2.0 | Revisão das seções 4.1, 4.2 e 4.5 conforme o plano de melhoria e consolidação do Capítulo 6. |
 | 09/11/2026 | Versão 2.1 | Revisão e adequação dos elementos dos capítulos e integração à estrutura geral do manual. |
+| 12/11/2026 | Versão 2.2 | Revisão. |
 
 *Fonte: Elaborado pelos autores (2026).*
 
@@ -91,7 +92,7 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | **Figura 15** | Registro dos ADRs no repositório |
 | **Figura 16** | Ciclo de medição e decisão |
 | **Figura 17** | Evidência do fluxo de trabalho |
-| **Figura 18** | Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue #17) |
+| **Figura 18** | Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issues #9 e #10) |
 | **Figura 19** | Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom |
 | **Figura 20** | Diagrama de Sequência UML: Reserva Online Atômica e Baixa Presencial no Balcão |
 | **Figura 21** | Diagrama de Classes UML: Modelo de Domínio do CineDoom |
@@ -294,6 +295,7 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
     - [5.3.1 Padrões de codificação e engenharia adotados](#531-padrões-de-codificação-e-engenharia-adotados)
     - [5.3.2 Plano de integração entre componentes (CI/CD)](#532-plano-de-integração-entre-componentes-cicd)
     - [5.3.3 Registro de testes unitários e de integração](#533-registro-de-testes-unitários-e-de-integração)
+    - [5.3.4 Rastreabilidade entre código e requisitos](#534-rastreabilidade-entre-código-e-requisitos)
   - [5.4 Verificação, Validação e Transição](#54-verificação-validação-e-transição)
     - [5.4.1 Plano de verificação e validação](#541-plano-de-verificação-e-validação)
     - [5.4.2 Critérios de aceitação por stakeholder](#542-critérios-de-aceitação-por-stakeholder)
@@ -1626,16 +1628,16 @@ Para tornar essa cadeia verificável, o diagrama a seguir percorre um **exemplo 
 ```mermaid
 flowchart TD
     ME1["<b>Macroentrega 1 — MVP (v1.0)</b><br/>Escopo fechado da entrega incremental do CineDoom"]
-    SP1["<b>Sprint 1</b> (23/10 a 28/10)<br/>Fundação técnica e Modelagem"]
-    FEAT["<b>Issue #17</b> [FEAT(UI)] | @gabrlou | 26/10 a 29/10<br/>Design system e mapa interativo de assentos responsivo"]
+    SP1["<b>Sprint 2</b> (13/10 a 26/10)<br/>Back-office, salas e bilheteria ACID"]
+    FEAT["<b>Issues #9</b> [FEAT(UI)] e <b>#10</b> [FEAT(POLLING)] | @gabrlou<br/>Design System e mapa 2D com polling a cada 2 s"]
     NEC["<b>NEC-06</b> (STK-04 — Espectador)<br/>Escolher poltronas exatas no mapa da sala"]
     RF["<b>RF-06</b> | Bilheteria | Must Have | Macroentrega 1<br/>Mapa interativo da sessão com polling a cada 2 s"]
     CA["<b>CA-02</b> | Sincronização do Mapa por Polling a Cada 2 s<br/>GET /api/sessoes/{id}/assentos re-executado a cada 2.000 ms"]
     CODE["<b>Código-Fonte</b> (cinedoom-app/)<br/>src/modules/bilheteria/components/seating-grid.tsx<br/>src/modules/bilheteria/hooks/use-session-seats.ts<br/>src/app/api/sessoes/[id]/assentos/route.ts"]
-    TEST["<b>Teste Automatizado</b> (Vitest)<br/>tests/unit/session-seats-polling.test.ts<br/>tests/unit/seating-grid.test.ts<br/>↳ declaram RF-06 | CA-02 | RNF-01"]
+    TEST["<b>Teste Automatizado</b> (Vitest)<br/>tests/unit/session-seats-polling.test.ts<br/>tests/unit/seating-grid.test.ts<br/>↳ verificam RF-06 | CA-02 | RNF-01"]
 
     ME1 -->|sprint| SP1
-    SP1 -->|issue| FEAT
+    SP1 -->|issues| FEAT
     FEAT -->|atende a| NEC
     NEC -->|formalizada em| RF
     RF -->|verificada por| CA
@@ -1643,7 +1645,7 @@ flowchart TD
     CODE -->|coberta por| TEST
 ```
 
-*Figura 18 – Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue #17). Fonte: CineSoft Solutions (2026).*
+*Figura 18 – Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issues #9 e #10). Fonte: CineSoft Solutions (2026).*
 
 > **Diagrama vetorial (PDF):** [diagrama-rastreabilidade.pdf](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.pdf) - Fonte PlantUML: [diagrama-rastreabilidade.puml](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.puml)
 
@@ -1655,12 +1657,12 @@ O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a
 | :--- | :---: | :---: | :--- |
 | `STK-02` / `NEC-02` (Controle de Acesso e Equipe) | `RF-01`, `RF-02` | `CA-05` | `auth-rbac.test.ts` (→ `RF-01`, `CA-05`); `users-management.test.ts` (→ `RF-02`, `CA-05`) |
 | `STK-02` / `NEC-02` (Gestão de Acervo e Salas) | `RF-03` a `RF-05`, `RES-05` | `CA-08` | `catalog-filmes.test.ts` (→ `RF-03`); `rooms-layout.test.ts` (→ `RF-04`); `sessions-prepopulation.test.ts` (→ `RF-05`) |
-| `STK-03`, `STK-04` / `NEC-03`, `NEC-06` (Mapa Reativo e Guichê) | `RF-06`, `RNF-01`, `RNF-04` | `CA-02` | `seating-grid.test.ts` (→ `RF-06`, `RNF-04`); `session-seats-polling.test.ts` (→ `RF-06`, `RNF-01`) |
+| `STK-03`, `STK-04` / `NEC-03`, `NEC-06` (Mapa Reativo e Guichê) | `RF-06`, `RNF-01`, `RNF-04` | `CA-02` | `seating-grid.test.ts` (→ `RF-06`, `RNF-04`, `CA-02`); `session-seats-polling.test.ts` (→ `RF-06`, `RNF-01`, `CA-02`) |
 | `STK-01`, `STK-03` / `NEC-01`, `NEC-03` (Venda Atômica ACID) | `RF-07`, `RF-08`, `RNF-02`, `RES-01`, `RES-02`, `RES-04` | `CA-01`, `CA-15` | `venda-atomica.test.ts` (→ `RF-07`, `CA-01`); `concurrency-acid-50-threads.test.ts` (→ `RF-07`, `CA-01`); `cancelamento-auditavel.test.ts` (→ `RF-08`, `CA-15`) |
-| `STK-03`, `STK-05` / `NEC-04`, `NEC-08` (Cancelamento Imutável) | `RF-09` | `CA-03` | `cancelamento-auditavel.test.ts` (→ `RF-09`); `database-schema.test.ts` (→ `RF-09`) |
-| `STK-05` / `NEC-04` (Privacidade e LGPD Art. 18) | `RF-10`, `RNF-03` | `CA-06` | `cryptoservice.test.ts` (→ `RF-10`); `compliance-anonymization.test.ts` (→ `RF-10`) |
-| `STK-01` / `NEC-01` (Isolamento Multi-Tenant SaaS) | `RNF-03`, `RNF-06` | `CA-04` | `tenancy-isolation.test.ts` (→ `RNF-03`); `security-cross-tenant-suite.test.ts` (→ `RNF-03`); `modules.test.ts`, `ci-workflow.test.ts` (→ `RNF-06`) |
-| `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `observability-logger.test.ts` (→ `RF-11`); `security-cross-tenant-suite.test.ts` (→ `RF-11`) |
+| `STK-03`, `STK-05` / `NEC-04`, `NEC-08` (Cancelamento Imutável) | `RF-09` | `CA-03` | `cancelamento-auditavel.test.ts` (→ `RF-09`, `CA-03`); `database-schema.test.ts` (→ `RF-09`, `CA-03`) |
+| `STK-05` / `NEC-04` (Privacidade e LGPD Art. 18) | `RF-10`, `RNF-03` | `CA-06` | `cryptoservice.test.ts` (→ `RF-10`, `RNF-03`, `CA-06`); `compliance-anonymization.test.ts` (→ `RF-10`, `CA-06`) |
+| `STK-01` / `NEC-01` (Isolamento Multi-Tenant SaaS) | `RNF-03`, `RNF-06` | `CA-04` | `tenancy-isolation.test.ts` (→ `RNF-03`, `CA-04`); `security-cross-tenant-suite.test.ts` (→ `RNF-03`, `CA-04`); `modules.test.ts`, `ci-workflow.test.ts` (→ `RNF-06`) |
+| `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `observability-logger.test.ts` (→ `RF-11`, `CA-07`); `security-cross-tenant-suite.test.ts` (→ `RF-11`, `CA-07`) |
 | `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12` a `RF-14`, `RNF-04`, `RNF-05`, `RES-01`, `RES-03`, `RES-06` | `CA-09`, `CA-10`, `CA-15` | `reserva-atomica.test.ts` (→ `RF-13`, `CA-09`); `cryptoservice.test.ts` (→ `RF-14`, `CA-10`); `auth-rbac.test.ts` (→ `RF-14`, `CA-10`); `seating-grid.test.ts` (→ `RNF-04`) |
 | `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15` a `RF-18`, `RES-01`, `RES-02` | `CA-11` a `CA-14` | `reserva-atomica.test.ts` (→ `RF-15`, `RF-16`, `RF-18`, `CA-11`, `CA-14`); **sem automação**: `RF-15` (e-mail/`email_sent_at`), `RF-16`/`CA-12` (cancelamento web), `RF-17`/`CA-13` (baixa presencial) |
 
@@ -2074,6 +2076,9 @@ A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizand
 - **Concorrência ACID com 50 Threads (`concurrency-acid-50-threads.test.ts`, `venda-atomica.test.ts` e `reserva-atomica.test.ts`):** Simulação de 50 requisições paralelas disputando o mesmo assento entre portal web e balcão, comprovando exatamente 1 aprovação e 49 rejeições `HTTP 409`.
 - **Criptografia e Conformidade LGPD (`cryptoservice.test.ts` e `compliance-anonymization.test.ts`):** 40 testes validando cifragem `AES-256-GCM`, busca `HMAC-SHA256`, validação Módulo 11 de CPF e expurgo irreversível *in-place*.
 - **Fluxos de Negócio e Interface (`reserva-atomica.test.ts`, `seating-grid.test.ts`, `users-management.test.ts`, `cancelamento-auditavel.test.ts`):** Validação completa de reservas, mapa 2D de poltronas, RBAC e triggers de auditoria.
+
+### 5.3.4 Rastreabilidade entre código e requisitos
+Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos normativos (ex.: `feat(auth): adicionar gerador aleatorio de CPF valido (Modulo 11)` e comentários `// Requisito: RF-07 | CA-01 | ADR-007`), permitindo auditoria imediata no histórico do Git. A cadeia completa, da necessidade do stakeholder ao caso de teste, está consolidada na matriz de rastreabilidade da seção 5.1.2.
 
 ---
 

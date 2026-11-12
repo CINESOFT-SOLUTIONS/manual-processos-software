@@ -1,31 +1,37 @@
 diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-gerenciamento-tecnico.md
---- a/manual/capitulos/04-gerenciamento-tecnico.md	(Versão 1.7 — commit 02edc29)
-+++ b/manual/capitulos/04-gerenciamento-tecnico.md	(Versão 2.0 — commit bb40194)
+--- a/manual/capitulos/04-gerenciamento-tecnico.md  (Versão 1.7 — commit 02edc29)
++++ b/manual/capitulos/04-gerenciamento-tecnico.md  (Versão 2.0 — commit bb40194)
 @@ -3,21 +3,62 @@ ## 4.1 Plano de projeto: escopo, cronograma, recursos e entregas
  ## 4.1 Plano de projeto: escopo, cronograma, recursos e entregas
- 
 -O planejamento do projeto (ISO/IEC/IEEE 12207:2021 – Cláusula 6.3.1) organiza a execução e o cronograma do CineDoom:
 +O processo de planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.3.1) estabelece a Estrutura Analítica do Projeto (EAP/WBS), o roadmap comercial em **três Macroentregas**, o cronograma detalhado de Sprints, a alocação nominal de responsáveis e a rotina formal para monitorar o progresso e corrigir eventuais desvios.
- 
 -### Escopo por Incremento e Releases
 +### Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis)
- 
 -| Incremento | Escopo Funcional | Requisitos Vinculados | Status |
 -|---|---|---|---|
 -| **Inc. 1 (Fundação)** | Filmes, Salas e Assentos | RF-03, RF-04 | Concluído no planejamento |
--| **Inc. 2 (Operação)** | Sessões e Mapa de Assentos | RF-05, RF-06 | Em andamento |
--| **Inc. 3 (Transação)** | Venda atômica, Cancelamento e Auditoria | RF-07, RF-08, RF-12 | Prioridade MVP |
--| **Inc. 4 (Clientes)** | Cadastro de Clientes e Interesses | RF-09, RF-10 | Backlog Release 1.1 |
--| **Inc. 5 (Fechamento)** | Indicadores de Ocupação e Release Demo | RF-11 | Prioridade MVP |
-+O diagrama abaixo decompõe o produto **CineDoom** em três níveis hierárquicos (Nível 1: Produto; Nível 2: Macroentregas e Governança; Nível 3: Pacotes de Trabalho e Entregáveis verificáveis):
  
+-| **Inc. 2 (Operação)** | Sessões e Mapa de Assentos | RF-05, RF-06 | Em andamento |
+ 
+-| **Inc. 3 (Transação)** | Venda atômica, Cancelamento e Auditoria | RF-07, RF-08, RF-12 | Prioridade MVP |
+ 
+-| **Inc. 4 (Clientes)** | Cadastro de Clientes e Interesses | RF-09, RF-10 | Backlog Release 1.1 |
+ 
+-| **Inc. 5 (Fechamento)** | Indicadores de Ocupação e Release Demo | RF-11 | Prioridade MVP |
+ 
++O diagrama abaixo decompõe o produto **CineDoom** em três níveis hierárquicos (Nível 1: Produto; Nível 2: Macroentregas e Governança; Nível 3: Pacotes de Trabalho e Entregáveis verificáveis):
 -### Cronograma de Execução (Foco na Entrega de 12/11/2026)
 -- **22/10 a 24/10:** Congelamento do escopo do MVP, modelagem do Prisma e configuração do CI no GitHub Actions.
 -- **25/10 a 31/10:** Implementação das rotas de filmes, salas, sessões e do mapa de assentos interativo.
+ 
 -- **01/11 a 04/11:** Implementação da trava transacional de venda, testes no Vitest e cancelamento.
+ 
 -- **05/11 a 08/11:** Integração total na Vercel com banco Neon, consolidação dos Capítulos 4 e 5 do Manual.
+ 
 -- **09/11 a 11/11:** Ensaios da apresentação oral com slides Beamer e congelamento da release `v1.0.0-mvp`.
+ 
 -- **12/11/2026:** Apresentação final perante a banca avaliadora.
+ 
 +```mermaid
 +flowchart TD
 +    Root["1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)"]
@@ -50,7 +56,7 @@ diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-
 +
 +    GOV --> GOV_1["1.4.1 Pipeline CI/CD, Linter\ne 770 Testes Automatizados"]
 +    GOV --> GOV_2["1.4.2 Telemetria Axiom (365 dias)\ne Anonimização LGPD Art. 18"]
-+```
++
 +
 +### Escopo e Marcos Comerciais por Macroentrega (Milestones)
 +
@@ -59,8 +65,11 @@ diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-
 +| Marco (Milestone) | Versão Alvo | Escopo Funcional e Infraestrutura Associada | Responsável Geral | Prazo / Janela | Status |
 +| :--- | :---: | :--- | :---: | :---: | :---: |
 +| **Macroentrega 1 (MVP Operacional)** | `v1.0.0` | Núcleo Multi-tenant, RBAC (`GERENTE`, `ATENDENTE`, `CLIENTE`), criptografia CPF (`HMAC-SHA256` + `AES-256-GCM`), CRUDs de filmes/salas/sessões, bilheteria presencial atômica, portal de reservas web com expiração JIT, painel de ocupação, anonimização LGPD e deploy em produção (`RF-01` a `RF-18`). | **Gabriel Lourenço** | Out/2026 – Nov/2026 | **Concluído (Em Produção)** |
+ 
 +| **Macroentrega 2 (Escala & Pagamentos)** | `v2.0.0` | Integração de gateway financeiro online (PIX QR Code dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do **Resend Pro** com domínio corporativo próprio (`@cinedoom.com.br`), upgrade para **Supabase/Neon Pro** (backups PITR e réplicas) e **Vercel Pro**. | **Carlos Eduardo** | Dez/2026 – Jan/2027 | **Planejado (Próxima Fase)** |
+ 
 +| **Macroentrega 3 (Enterprise & Fiscal)** | `v3.0.0` | Emissão fiscal eletrônica automatizada (**NFC-e / SAT** via API Focus NFe integrada à SEFAZ), módulo de bomboniere e estoque, programa de fidelidade, **Console Global de Administração de Tenants** (*Self-Service Billing*) e BI financeiro avançado. | **Kayque Vicente & Yury Nogueira** | Fev/2027 – Abr/2027 | **Backlog Evolutivo** |
+ 
 +
 +### Cronograma Detalhado de Execução da Macroentrega 1 (`v1.0.0`)
 +
@@ -69,8 +78,11 @@ diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-
 +| Sprint / Iteração | Pacotes de Trabalho e Requisitos Entregues | Responsáveis Diretos | Início | Término | Status |
 +| :--- | :--- | :--- | :---: | :---: | :---: |
 +| **Sprint 1 — Fundação, Arquitetura e Segurança** | Setup Next.js 14/TypeScript (`#1`), modelagem Prisma/PostgreSQL e trigger append-only (`#2`), extensão Multi-tenant (`#3`), autenticação NextAuth/RBAC (`#4`), criptografia PII de CPF (`#5`), Log Drain Axiom (`#15`) e pipeline CI/CD (`#16`). | **Gabriel Lourenço** & **Carlos Eduardo** (Apoio: **Yury Nogueira**) | 23/10/2026 | 29/10/2026 | **100% Concluído** |
+ 
 +| **Sprint 2 — Back-office, Salas e Bilheteria ACID** | Design System e mapa interativo 2D (`#17`), CRUDs de filmes, salas e sessões com pré-população (`#6`, `#7`, `#8`), polling a 2s (`#9`), venda atômica com `SELECT FOR UPDATE` (`#10`) e gestão de atendentes (`#13`). | **Gabriel Lourenço** & **Carlos Eduardo** (QA: **Kayque Vicente**) | 30/10/2026 | 04/11/2026 | **100% Concluído** |
+ 
 +| **Sprint 3 — Portal do Cliente, Governança LGPD e QA** | Portal público e reserva web com expiração JIT (`#21`), autenticação de espectador e *"Minhas Reservas"* (`#22`), `NotificationService` e baixa de reserva no balcão (`#23`), cancelamento auditado (`#11`), painel de ocupação (`#12`), anonimização Art. 18 (`#14`) e suíte de 770 testes / 500 cenários *cross-tenant* (`#18`, `#19`). | **Gabriel Lourenço**, **Carlos Eduardo**, **Kayque Vicente** & **Yury Nogueira** | 05/11/2026 | 09/11/2026 | **100% Concluído** |
+ 
 +
 +### Rotina de Acompanhamento e Tratamento de Desvios e Atrasos
 +
@@ -82,10 +94,8 @@ diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-
 +   - **Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):** Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos *Must Have* de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
 @@ -25,11 +68,22 @@ ## 4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas
  ## 4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas
- 
 -A gestão de riscos (Cláusula 6.3.4) monitora incertezas que possam comprometer o cronograma ou a qualidade do sistema:
 +O processo de gestão de riscos (Cláusula 6.3.4) identifica continuamente ameaças técnicas, operacionais, de segurança e de fornecedores externos que possam afetar a disponibilidade ou a integridade financeira e legal do CineDoom.
- 
 -| ID | Risco Identificado | Categoria | Prob. | Impacto | Estratégia de Mitigação | Responsável |
 -|---|---|---|:---:|:---:|---|---|
 -| **R-01** | Indisponibilidade de banco na nuvem | Técnico | Baixa | Alto | Uso de provedor com SLA comprovado (Neon) e script local de fallback com SQLite | DevOps |
@@ -96,7 +106,9 @@ diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-
 +### Critérios de Classificação e Reavaliação Contínua
 +
 +- **Probabilidade de Ocorrência:** **Alta** (forte tendência de ocorrer em operação normal ou picos de estreia), **Média** (pode ocorrer sob condições específicas de carga ou falha de terceiros) ou **Baixa** (evento raro ou já contido por barreiras nativas).
+ 
 +- **Impacto no Negócio:** **Alto** (indisponibilidade da bilheteria, venda dupla de poltronas, perda financeira ou violação da LGPD), **Médio** (degradação parcial de funcionalidade secundária com contorno disponível) ou **Baixo** (inconveniência visual sem bloqueio operacional).
+ 
 +- **Matriz de Prioridade:** A combinação de Probabilidade $\times$ Impacto define a prioridade de tratamento como **Crítico** (exige barreira arquitetural imediata e teste automatizado obrigatório), **Alto** (exige mitigação ativa e monitoramento) ou **Médio** (monitorado com plano de contingência).
 +- **Ciclo de Reavaliação:** O *Risk Register* é revisado formalmente ao final de cada Sprint e antes do início de cada nova Macroentrega.
 +
@@ -105,19 +117,27 @@ diff --git a/manual/capitulos/04-gerenciamento-tecnico.md b/manual/capitulos/04-
 +| ID | Risco identificado | Categoria | Probabilidade | Impacto | Prioridade | Resposta / Mitigação | Responsável |
 +| :---: | :--- | :---: | :---: | :---: | :---: | :--- | :---: |
 +| **R-01** | **Conflito de concorrência (*double-booking*)** entre compras simultâneas no portal web e nos guichês físicos em estreias de alta demanda. | Técnico / Core | Média | Alto | **Crítico** | Pré-população determinística de `SessionSeat`, ordenação de IDs anti-deadlock e bloqueio pessimista `SELECT ... FOR UPDATE` em transação ACID, validado por teste automatizado com 50 threads simultâneas. | **Gabriel Lourenço** |
+ 
 +| **R-02** | **Exaustão do pool de conexões ou indisponibilidade do banco PostgreSQL** devido à criação efêmera de instâncias serverless em picos de acesso. | Infraestrutura / Externa | Média | Alto | **Crítico** | Uso obrigatório de *Connection Pooler* transacional (*Supavisor* porta `6543` com `pgbouncer=true`), índices compostos por `tenant_id` e migração para plano **Pro com réplicas e PITR** na Macroentrega 2. | **Carlos Eduardo** |
+ 
 +| **R-03** | **Exposição de dados pessoais (CPF) ou vazamento de dados entre cinemas concorrentes (*cross-tenant leak*)**. | Segurança / Legal (LGPD) | Baixa | Alto | **Crítico** | Proibição de CPF em texto puro (uso de `HMAC-SHA256` + `AES-256-GCM`), extensão Prisma que injeta `WHERE tenant_id` automaticamente e suíte automatizada com **500 cenários de ataque cross-tenant**. | **Carlos Eduardo & Yury Nogueira** |
+ 
 +| **R-04** | **Retenção ociosa de poltronas (*no-show*)** por espectadores que reservam online e não comparecem para pagar no balcão. | Negócio / Operacional | Alta | Médio | **Alto** | Bloqueio de novas reservas web a menos de 60 minutos da sessão e **Expiração Just-in-Time (JIT)** automática, liberando os assentos instantaneamente para venda presencial na bilheteria (`ADR-012`). | **Gabriel Lourenço** |
+ 
 +| **R-05** | **Falha na entrega de e-mails transacionais de vouchers** ou retenção em filtros anti-spam sem domínio próprio verificado. | Dependência Externa | Média | Médio | **Alto** | Desacoplamento via interface `EmailProvider`, exibição imediata do voucher com código localizador na tela de confirmação e na área *"Minhas Reservas"*, e contratação do **Resend Pro com domínio DKIM/SPF** na Macroentrega 2. | **Carlos Eduardo** |
+ 
 +| **R-06** | **Atraso na integração de dependências entre módulos** (ex.: acoplamento entre refatorações de UI responsiva e contratos de API). | Organizacional / Projeto | Média | Médio | **Médio** | Contratos de validação estritos via schemas `Zod`, esteira de CI bloqueante a cada Pull Request e protocolo de realocação em pares (*pair programming*) quando uma tarefa excede 48h. | **Kayque Vicente** |
+ 
 +| **R-07** | **Instabilidade nos webservices estaduais da SEFAZ ou gateway de pagamento** durante o horário de pico noturno dos cinemas (Macroentregas 2 e 3). | Dependência Externa | Média | Alto | **Alto** | Processamento fiscal em fila assíncrona com emissão em contingência offline (Focus NFe) e fallback imediato para recebimento presencial no guichê caso o gateway online oscile. | **Gabriel Lourenço & Kayque Vicente** |
+ 
 @@ -71,6 +169,11 @@ ## 4.5 Métricas de acompanhamento do projeto
  ## 4.5 Métricas de acompanhamento do projeto
- 
 -A medição e controle (Cláusula 6.3.2) subsidiam o acompanhamento do avanço do projeto:
 -- **Velocidade de Entrega:** Percentual de requisitos funcionais com status *Done*.
+ 
 -- **Cobertura de Testes de Regra Crítica:** 100% de cobertura nos métodos do serviço de venda e cancelamento de ingressos.
 -- **Densidade de Defeitos:** Número de bugs abertos versus resolvidos no GitHub Issues antes da release.
+ 
 +O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI e do Vitest para monitorar a saúde técnica da entrega:
 +
 +| Categoria de Métrica | Indicador Objetivo | Meta Organizacional | Resultado Aferido na Macroentrega 1 (`v1.0.0`) | Como é Monitorado e Ação em Caso de Desvio |

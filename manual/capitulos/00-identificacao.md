@@ -55,6 +55,7 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | 05/11/2026 | Versão 1.8 | Elaboração e estruturação inicial do Capítulo 6. |
 | 09/11/2026 | Versão 2.0 | Revisão das seções 4.1, 4.2 e 4.5 conforme o plano de melhoria e consolidação do Capítulo 6. |
 | 09/11/2026 | Versão 2.1 | Revisão e adequação dos elementos dos capítulos e integração à estrutura geral do manual. |
+| 12/11/2026 | Versão 2.2 | Revisão. |
 
 *Fonte: Elaborado pelos autores (2026).*
 
@@ -85,7 +86,7 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | **Figura 15** | Registro dos ADRs no repositório |
 | **Figura 16** | Ciclo de medição e decisão |
 | **Figura 17** | Evidência do fluxo de trabalho |
-| **Figura 18** | Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue #17) |
+| **Figura 18** | Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issues #9 e #10) |
 | **Figura 19** | Diagrama C4 Nível 2: Contêineres da Plataforma CineDoom |
 | **Figura 20** | Diagrama de Sequência UML: Reserva Online Atômica e Baixa Presencial no Balcão |
 | **Figura 21** | Diagrama de Classes UML: Modelo de Domínio do CineDoom |
@@ -288,6 +289,7 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
     - [5.3.1 Padrões de codificação e engenharia adotados](#531-padrões-de-codificação-e-engenharia-adotados)
     - [5.3.2 Plano de integração entre componentes (CI/CD)](#532-plano-de-integração-entre-componentes-cicd)
     - [5.3.3 Registro de testes unitários e de integração](#533-registro-de-testes-unitários-e-de-integração)
+    - [5.3.4 Rastreabilidade entre código e requisitos](#534-rastreabilidade-entre-código-e-requisitos)
   - [5.4 Verificação, Validação e Transição](#54-verificação-validação-e-transição)
     - [5.4.1 Plano de verificação e validação](#541-plano-de-verificação-e-validação)
     - [5.4.2 Critérios de aceitação por stakeholder](#542-critérios-de-aceitação-por-stakeholder)

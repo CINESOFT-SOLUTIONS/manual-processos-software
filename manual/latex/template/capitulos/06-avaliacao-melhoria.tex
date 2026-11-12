@@ -1,7 +1,5 @@
 % =============================================================================
 % CAPÍTULO 6: AVALIAÇÃO E MELHORIA DOS PROCESSOS
-% Conteúdo sincronizado com manual/capitulos/06-avaliacao-melhoria.md (fonte da verdade).
-% As tabelas são importadas de assets/capitulo-06/tabelas/.
 % =============================================================================
 
 \aberturacapitulo{Capítulo 6}{Avaliação e melhoria dos processos}
@@ -14,55 +12,129 @@ Para avaliar e aprimorar continuamente a qualidade de sua governança de engenha
 
 Antes da execução do ciclo de melhoria (sobre a linha de base documental da versão \texttt{1.7} do manual), a equipe realizou uma auditoria interna examinando as seções \textbf{4.1, 4.2 e 4.5} frente às quatro questões de diagnóstico. Cada item foi classificado como \textbf{Descrito} (informação explícita e suficiente), \textbf{Parcialmente Descrito} (informação existente, porém incompleta) ou \textbf{Não Descrito} (informação ausente):
 
-\tabelaabnt{Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7)}{CineSoft Solutions (2026)}{tab:diagnostico_de_avaliacao_e_maturidade_de_process}{\input{../../../assets/capitulo-06/tabelas/diagnostico-processo.tex}}
+\tabelaabnt{Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7)}{CineSoft Solutions (2026)}{tab:diagnostico_de_avaliacao_e_maturidade_de}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=1.05\hsize}X >{\centering\arraybackslash\hsize=0.24\hsize}X >{\raggedright\arraybackslash\hsize=1.71\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Pergunta de avaliação} & \textbf{Seção} & \textbf{Situação e evidência (Diagnóstico Inicial — Versão 1.7)} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{1. O escopo e as entregas do projeto estão claros?} & \texttt{4.1} & \textbf{Parcialmente Descrito.} A seção 4.1 listava uma tabela resumida de 5 incrementos internos, mas não apresentava a Estrutura Analítica do Projeto (EAP/WBS) nem estruturava o ciclo de evolução comercial do produto nas \textbf{3 Macroentregas} (\texttt{v1.0} MVP, \texttt{v2.0} Escala/Pagamentos e \texttt{v3.0} Enterprise/Fiscal). \\
+\midrule
+\textbf{2. As atividades possuem responsáveis e prazos?} & \texttt{4.1} & \textbf{Parcialmente Descrito.} O cronograma da seção 4.1 apresentava janelas de datas gerais (ex.: \emph{``25/10 a 31/10''}), mas \textbf{não atribuía nominalmente os responsáveis diretos} por cada pacote de trabalho/Sprint dentro da própria tabela do plano de projeto, além de misturar tarefas acadêmicas externas ao produto. \\
+\midrule
+\textbf{3. Os riscos e suas respostas estão definidos?} & \texttt{4.2} & \textbf{Parcialmente Descrito.} A tabela da seção 4.2 continha 5 itens, porém \textbf{não possuía a coluna de Prioridade} (Crítico / Alto / Médio), não explicitava os critérios de classificação/reavaliação e misturava riscos escolares (\emph{``falha de rede na apresentação''}) em vez de focar integralmente nos riscos reais de engenharia e operação do SaaS. \\
+\midrule
+\textbf{4. Está definido como acompanhar o andamento e tratar atrasos?} & \texttt{4.5} e \texttt{4.1} & \textbf{Não Descrito.} A seção 4.5 listava três indicadores conceituais sem metas numéricas nem valores aferidos, e a seção 4.1 \textbf{não definia a rotina de acompanhamento diário/semanal nem o protocolo de ação corretiva} para destravar tarefas atrasadas ou bloqueadas. \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
 \subsecao{6.3 Plano de uma melhoria}
 
-Com base nas lacunas identificadas no diagnóstico da seção 6.2 --- especialmente a ausência de atribuição nominal de responsáveis por entrega/Sprint, a falta de um protocolo claro para monitoramento e tratamento de atrasos e a incompletude da matriz de riscos ---, a equipe estruturou e executou o seguinte plano de ação:
+Com base nas lacunas identificadas no diagnóstico da seção 6.2 — especialmente a ausência de atribuição nominal de responsáveis por entrega/Sprint, a falta de um protocolo claro para monitoramento e tratamento de atrasos e a incompletude da matriz de riscos —, a equipe estruturou e executou o seguinte plano de ação:
 
-\tabelaabnt{Plano de Melhoria de Processo de Software (PMP)}{CineSoft Solutions (2026)}{tab:plano_de_melhoria_de_processo_de_software_pmp}{\input{../../../assets/capitulo-06/tabelas/plano-melhoria-pmp.tex}}
+\tabelaabnt{Plano de Melhoria de Processo de Software (PMP)}{CineSoft Solutions (2026)}{tab:plano_de_melhoria_de_processo_de_softwar}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=0.40\hsize}X >{\raggedright\arraybackslash\hsize=1.60\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Campo do plano} & \textbf{Resposta da equipe (CineSoft Solutions)} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{Lacuna e justificativa} & As seções \texttt{4.1}, \texttt{4.2} e \texttt{4.5} careciam de atribuição nominal de responsáveis nos pacotes do cronograma, não definiam a rotina prática para detectar e tratar desvios/atrasos (com metas e limites objetivos) e não classificavam a prioridade dos riscos reais do produto. Isso gerava ambiguidade sobre quem deveria agir quando uma tarefa atrasava no quadro Kanban. \\
+\midrule
+\textbf{Ação} & Reestruturar integralmente as seções \texttt{4.1}, \texttt{4.2} e \texttt{4.5} para: (1) incorporar a EAP de 3 níveis e o roadmap corporativo nas \textbf{3 Macroentregas} com responsáveis nominais e prazos por Sprint; (2) instituir o protocolo formal de acompanhamento e tratamento de desvios (alerta de bloqueio em 48h, limite WIP $\le 2$ e pareamento técnico); (3) adicionar a coluna \textbf{Prioridade} e critérios de reavaliação no \emph{Risk Register}; e (4) estabelecer metas quantitativas e resultados aferidos nas métricas de acompanhamento. \\
+\midrule
+\textbf{Responsável e prazo} & \textbf{Responsável:} Kayque Vicente Silva (Gerente de Projeto \& QA Lead), com revisão de Gabriel Henrique Lourenço Dias (Tech Lead). \textbf{Prazo de conclusão:} 09/11/2026. \\
+\midrule
+\textbf{Evidência da revisão} & Atualização documental das seções \texttt{4.1}, \texttt{4.2} e \texttt{4.5} no arquivo \texttt{manual/\allowbreak\hspace{0pt plus 1pt}capitulos/\allowbreak\hspace{0pt plus 1pt}04-\allowbreak\hspace{0pt plus 1pt}gerenciamento-\allowbreak\hspace{0pt plus 1pt}tecnico.\allowbreak\hspace{0pt plus 1pt}md} (registrada na versão \texttt{2.0} do Histórico de Versões) e sincronização dos cards no quadro GitHub Projects v2 (\texttt{CINESOFT-\allowbreak\hspace{0pt plus 1pt}SOLUTIONS}). \\
+\midrule
+\textbf{Resultado esperado} & Eliminar dúvidas sobre a responsabilidade de cada pacote de trabalho, detectar gargalos em menos de 48 horas e garantir 100\% de previsibilidade na entrega dos 18 requisitos funcionais da Macroentrega 1 (\texttt{v1.0.0}). \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
 \subsecao{6.4 Atualização e verificação}
 
 A melhoria planejada foi efetivamente aplicada no Capítulo 4 deste manual. O quadro comparativo a seguir confronta diretamente o trecho que constava antes (Versão \texttt{1.7}) com a nova redação implementada (Versão \texttt{2.0}):
 
-\subsubsecao{Quadro Comparativo: Antes vs.~Depois da Revisão (Seções 4.1, 4.2 e 4.5)}
+\subsubsecao{Quadro Comparativo: Antes vs. Depois da Revisão (Seções 4.1, 4.2 e 4.5)}
 
-\tabelaabnt{Quadro Comparativo: Antes vs.~Depois da Revisão de Processos}{CineSoft Solutions (2026)}{tab:quadro_comparativo_antes_vs_depois_da_revisao_de}{\input{../../../assets/capitulo-06/tabelas/quadro-comparativo.tex}}
+\tabelaabnt{Quadro Comparativo: Antes vs.~Depois da Revisão de Processos}{CineSoft Solutions (2026)}{tab:comparativo_melhoria}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} Y Y}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Seção / Dimensão} & \textbf{Versão 1.7 (Antes da Melhoria)} & \textbf{Versão 2.0 (Após a Melhoria)} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Seção 4.1: Escopo e Cronograma & Cronograma empírico sem divisão formal de entregas e sem responsáveis nominais. & EAP em 3 níveis, 3 Macroentregas definidas e responsáveis nominais por Sprint. \\
+\midrule
+Seção 4.1: Tratamento de Desvios & Sem procedimento documentado para acompanhamento e contingência de atrasos. & Protocolo claro de 48h no GitHub Projects com pareamento técnico ou fatiamento MoSCoW. \\
+\midrule
+Seção 4.2: Matriz de Riscos & Registro de riscos resumido, sem severidade quantitativa (P×I) e sem ações reativas. & Risk Register com 7 riscos reais quantificados, mitigação preventiva e contingência. \\
+\midrule
+Seção 4.5: Métricas de Projeto & Ausência de tabela formal de indicadores, metas e ações corretivas de desvio. & 6 métricas objetivas (Lead Time, WIP, testes, taxa de defeitos, escopo e custos). \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
-O Código 1 registra a alteração efetiva do texto das seções 4.1, 4.2 e 4.5 no arquivo \texttt{manual/\quebra{}capitulos/\quebra{}04-\quebra{}gerenciamento-\quebra{}tecnico.\quebra{}md}, entre a Versão 1.7 (commit \texttt{02edc29}, linha de base do diagnóstico) e a Versão 2.0 (commit \texttt{bb40194}, de 09/11/2026, em que a melhoria foi aplicada). Linhas iniciadas por \texttt{-} foram removidas e linhas iniciadas por \texttt{+} foram incluídas. O mesmo conteúdo está em \href{../../assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff}{\texttt{assets/\quebra{}capitulo-\quebra{}06/\quebra{}diffs/\quebra{}melhoria-\quebra{}cap04-\quebra{}v1.\quebra{}7-\quebra{}v2.\quebra{}0.\quebra{}diff}}, e o diff completo do arquivo pode ser consultado com \texttt{git\ diff\ 02edc29\ bb40194\ -\quebra{}\/\quebra{}-\quebra{}\ manual/\quebra{}capitulos/\quebra{}04-\quebra{}gerenciamento-\quebra{}tecnico.\quebra{}md}.
+O Código~\ref{cod:diff_melhoria} registra a alteração efetiva do texto das seções 4.1, 4.2 e 4.5 no arquivo \texttt{manual/\allowbreak capitulos/\allowbreak 04-gerenciamento-tecnico.md}, entre a Versão 1.7 (commit \texttt{02edc29}, linha de base do diagnóstico) e a Versão 2.0 (commit \texttt{bb40194}, de 09/11/2026, em que a melhoria foi aplicada). Linhas iniciadas por \texttt{-} foram removidas e linhas iniciadas por \texttt{+} foram incluídas. O mesmo conteúdo está em \href{../../../assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff}{\texttt{assets/\allowbreak capitulo-06/\allowbreak diffs/\allowbreak melhoria-cap04-v1.7-v2.0.diff}}, e o diff completo do arquivo pode ser consultado com \texttt{git diff 02edc29 bb40194 -- manual/\allowbreak capitulos/\allowbreak 04-gerenciamento-tecnico.md}.
 
-{\blocodigocaption{Diff das seções 4.1, 4.2 e 4.5 entre a Versão 1.7 e a Versão 2.0}{}{cod:diff_das_secoes_4_1_4_2_e_4_5_entre_a_versao_1_7}}
-\diffeditorial{../../../assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff}{git diff}
-{\blocodigofonte{Histórico de versões do repositório \texttt{manual-\quebra{}processos-\quebra{}software} no GitHub (2026)}}
-
+\par\vspace{6pt}
+{\blocodigocaption{Diff das seções 4.1, 4.2 e 4.5 entre a Versão 1.7 e a Versão 2.0}{CineSoft Solutions (2026)}{cod:diff_melhoria}\par}
+\begin{tcolorbox}[enhanced, breakable, colback=BrandCodeBg, colframe=BrandCodeBg, arc=3pt, boxrule=0pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt]
+\lstinputlisting[style=diffmanual]{../../../assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff}
+\end{tcolorbox}
+{\blocodigofonte{Histórico de versões do repositório \texttt{manual-processos-software} no GitHub (2026)}\par}
 \subsubsecao{Reavaliação Pós-Melhoria (Verificação da Eficácia Documental)}
 
 Reavaliando as seções \textbf{4.1, 4.2 e 4.5} sob as mesmas quatro questões do diagnóstico inicial, comprova-se a superação integral das lacunas:
 
-\tabelaabnt{Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0)}{CineSoft Solutions (2026)}{tab:reavaliacao_pos_melhoria_da_conformidade_do_manu}{\input{../../../assets/capitulo-06/tabelas/reavaliacao-processo.tex}}
+\tabelaabnt{Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0)}{CineSoft Solutions (2026)}{tab:reavaliacao_pos_melhoria_da_conformidade}{%
+{\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash\hsize=1.00\hsize}X >{\centering\arraybackslash\hsize=0.38\hsize}X >{\raggedright\arraybackslash\hsize=1.62\hsize}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Pergunta de avaliação} & \textbf{Seção Revisada} & \textbf{Nova Situação e Evidência Verificável (Versão 2.0)} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{1. O escopo e as entregas do projeto estão claros?} & \texttt{4.1} & \textbf{Descrito.} A seção 4.1 agora inclui o diagrama da EAP em 3 níveis e a tabela das \textbf{3 Macroentregas} (\texttt{v1.0.0}, \texttt{v2.0.0} e \texttt{v3.0.0}), detalhando exatamente os pacotes entregues em produção e a evolução comercial. \\
+\midrule
+\textbf{2. As atividades possuem responsáveis e prazos?} & \texttt{4.1} & \textbf{Descrito.} Tanto a tabela de Marcos Comerciais quanto a tabela das 3 Sprints de execução especificam nominalmente os engenheiros responsáveis (\texttt{Gabriel \allowbreak\hspace{0pt plus 1pt}Lourenço}, \texttt{Carlos \allowbreak\hspace{0pt plus 1pt}Eduardo}, \texttt{Kayque \allowbreak\hspace{0pt plus 1pt}Vicente}, \texttt{Yury \allowbreak\hspace{0pt plus 1pt}Nogueira}) e as datas de início e término. \\
+\midrule
+\textbf{3. Os riscos e suas respostas estão definidos?} & \texttt{4.2} & \textbf{Descrito.} A seção 4.2 explicita os critérios de Probabilidade, Impacto e Prioridade, o ciclo de reavaliação por Sprint e a matriz com 7 riscos reais de engenharia/negócio, respostas técnicas e responsáveis nominais. \\
+\midrule
+\textbf{4. Está definido como acompanhar o andamento e tratar atrasos?} & \texttt{4.1} e \texttt{4.5} & \textbf{Descrito.} A seção 4.1 formaliza a subseção \emph{``Rotina de Acompanhamento e Tratamento de Desvios e Atrasos''} (gatilho de 48h e pareamento técnico), complementada na seção 4.5 por métricas com metas objetivas e resultados aferidos (\texttt{Lead \allowbreak\hspace{0pt plus 1pt}Time \allowbreak\hspace{0pt plus 1pt}<= \allowbreak\hspace{0pt plus 1pt}48h}, \texttt{WIP <= 2}, \texttt{770 testes}). \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
+}
 
 \subsecao{6.5 Acompanhamento da execução}
 
 Para assegurar que a melhoria incorporada ao manual continue sendo praticada de forma sustentável nas próximas iterações e ao longo das Macroentregas 2 e 3, a CineSoft Solutions estabeleceu a seguinte sistemática de verificação operacional:
 
 \begin{enumerate}
-\tightlist
 \item \textbf{Quem realiza a conferência:} \textbf{Kayque Vicente Silva} (Gerente de Projeto \& QA Lead), em conjunto com \textbf{Gabriel Henrique Lourenço Dias} (Tech Lead).
 \item \textbf{Quando ocorre a verificação:} Semanalmente, durante a cerimônia de \emph{Sprint Planning / Review}, e continuamente a cada abertura de Pull Request no repositório do GitHub.
 \item \textbf{Qual registro e medida são observados:}
-
 \begin{itemize}
-  \tightlist
-  \item   \textbf{Indicador de Conformidade do Quadro Kanban:} Percentual de cartões ativos nas colunas \emph{Sprint Backlog} e \emph{In Progress} do GitHub Projects que possuem simultaneamente \textbf{responsável atribuído (\texttt{Assignee})}, \textbf{prazo estipulado (\texttt{Iteration\ /\quebra{}\ Milestone})} e \textbf{requisitos vinculados} (Meta: \textbf{100\% dos cartões conformes}).
-  \item   \textbf{Registro de Auditoria:} Caso seja identificado qualquer cartão sem responsável ou acima do limite de 48h sem atualização, a pendência é registrada e corrigida imediatamente na abertura da reunião semanal, acionando o protocolo de pareamento descrito na seção 4.1.
+\item \textbf{Indicador de Conformidade do Quadro Kanban:} Percentual de cartões ativos nas colunas \emph{Sprint Backlog} e \emph{In Progress} do GitHub Projects que possuem simultaneamente \textbf{responsável atribuído (\texttt{Assignee})}, \textbf{prazo estipulado (\texttt{Iteration \allowbreak\hspace{0pt plus 1pt}/\allowbreak\hspace{0pt plus 1pt} \allowbreak\hspace{0pt plus 1pt}Milestone})} e \textbf{requisitos vinculados} (Meta: \textbf{100\% dos cartões conformes}).
+\item \textbf{Registro de Auditoria:} Caso seja identificado qualquer cartão sem responsável ou acima do limite de 48h sem atualização, a pendência é registrada e corrigida imediatamente na abertura da reunião semanal, acionando o protocolo de pareamento descrito na seção 4.1.
 \end{itemize}
 \end{enumerate}
 
 \subsubsecao{Referências Normativas do Capítulo}
 
 \begin{itemize}
-\tightlist
 \item \textbf{SOFTEX.} \emph{Guia Geral MPS de Software: 2024 (MR-MPS-SW)}. Associação para Promoção da Excelência do Software Brasileiro. Disponível em: \url{https://softex.br/download/guia-geral-mps-de-software2024/}.
-\item \textbf{ABNT.} \emph{NBR ISO/IEC/IEEE 12207:2021 --- Engenharia de sistemas e software --- Processos de ciclo de vida de software}. Rio de Janeiro: ABNT, 2021.
+\item \textbf{ABNT.} \emph{NBR ISO/IEC/IEEE 12207:2021 — Engenharia de sistemas e software — Processos de ciclo de vida de software}. Rio de Janeiro: ABNT, 2021.
 \end{itemize}
+

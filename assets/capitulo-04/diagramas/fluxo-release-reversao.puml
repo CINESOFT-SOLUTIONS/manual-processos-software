@@ -1,0 +1,25 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+start
+:Criar feat/RF-XX a partir de develop;
+:Abrir PR com issue vinculada;
+:Executar Quality Gates no CI;
+if (Gates aprovados e revisão aprovada?) then (sim)
+  :Merge em develop;
+else (não)
+  :Corrigir e atualizar o PR;
+  stop
+endif
+:Promover develop para staging;
+:Validar o aceite em homologação;
+:Promover staging para main e aplicar tag SemVer;
+:Deploy em produção (Vercel);
+if (Defeito crítico em produção?) then (sim)
+  :Reverter para a tag anterior (rollback);
+  :Corrigir em fix/* a partir de main e repetir o fluxo;
+else (não)
+  :Registrar a release no changelog;
+endif
+stop
+@enduml
