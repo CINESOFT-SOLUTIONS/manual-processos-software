@@ -1,5 +1,11 @@
 # Capítulo 1 – Apresentação do Software
 
+<p align="center">
+  <img src="../../assets/logos/cinesoft-logo-horizontal-color.png" alt="CineSoft Solutions" height="56">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="../../assets/logos/cinedoom-logo-horizontal-color.png" alt="CineDoom" height="48">
+</p>
+
 ## 1.1 Nome e Descrição do Software
 
 **Nome do Software:** CineDoom.  

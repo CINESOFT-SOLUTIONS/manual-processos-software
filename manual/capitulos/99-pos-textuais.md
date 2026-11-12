@@ -23,3 +23,10 @@
 - **RESEND INC.** *Email API for Developers and Transactional Workflows*. Disponível em: <https://resend.com>. Acesso em: 09 nov. 2026.
 - **PRISMA DATA INC.** *Prisma ORM Schema Reference and Concurrency*. Disponível em: <https://prisma.io>. Acesso em: 09 nov. 2026.
 
+
+---
+
+<p align="center">
+  <a href="https://cinedoom.vercel.app/"><img src="../../assets/capas/qrcode-cinedoom.png" alt="QR code de acesso ao CineDoom" width="180"></a><br>
+  <strong>Acesse o CineDoom:</strong> <a href="https://cinedoom.vercel.app/">cinedoom.vercel.app</a>
+</p>

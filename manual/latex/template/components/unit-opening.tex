@@ -49,6 +49,8 @@
 % - "Capítulo X" menor e em cor suave e elegante (white!80 / RefLavender)
 % - "Nome do Capítulo" em destaque branco (\fontExtraBold)
 % -----------------------------------------------------------------------------
+% Gancho opcional para elementos extras na abertura (ex.: logos no Capítulo 1)
+\newcommand{\aberturaExtra}{}
 \newcommand{\aberturaunidade}[2]{%
   \clearpage
   \thispagestyle{empty}%
@@ -70,6 +72,7 @@
         {\fontsize{38pt}{30pt}\fontExtraBold\color{white} #2\par}%
       }%
     };
+    \aberturaExtra
   \end{tikzpicture}%
   \mbox{}%
   \clearpage
@@ -86,13 +89,18 @@
 % -----------------------------------------------------------------------------
 % 3. CONTRACAPA OFICIAL (FULL-BLEED A4 VIA PDF FINAL)
 % -----------------------------------------------------------------------------
-\newcommand{\contracapamanual}[1][capas/contracapa-final.pdf]{%
+% contracapa-qrcode.pdf: CineSoft, QR code do CineDoom (centro) e CineDoom
+\newcommand{\contracapamanual}[1][capas/contracapa-qrcode.pdf]{%
   \clearpage
   \thispagestyle{empty}%
   \global\showcontentbgfalse
   \begin{tikzpicture}[remember picture, overlay]
     \node[inner sep=0pt, outer sep=0pt] at (current page.center) {%
       \includegraphics[width=\paperwidth, height=\paperheight]{#1}%
+    };
+    % Área clicável sobre o cartão do QR code (links do PDF incluído se perdem)
+    \node[inner sep=0pt] at (current page.center) {%
+      \href{https://cinedoom.vercel.app/}{\phantom{\rule{184pt}{214pt}}}%
     };
   \end{tikzpicture}%
   \mbox{}%

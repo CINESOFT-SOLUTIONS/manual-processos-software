@@ -240,6 +240,12 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 
 # Capítulo 1 – Apresentação do Software
 
+<p align="center">
+  <img src="../../assets/logos/cinesoft-logo-horizontal-color.png" alt="CineSoft Solutions" height="56">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="../../assets/logos/cinedoom-logo-horizontal-color.png" alt="CineDoom" height="48">
+</p>
+
 ## 1.1 Nome e Descrição do Software
 
 **Nome do Software:** CineDoom.  
@@ -1974,6 +1980,14 @@ A validação do CineDoom seguiu duas fases de testes com usuários reais, confo
 - **Teste Alfa:** ambiente controlado com usuários selecionados (equipe interna e parceiros).
 - **Teste Beta:** ambiente real de produção com grupo ampliado antes do lançamento oficial.
 
+Complementarmente, a equipe realizou **testes de experiência do usuário (UX)** com o Portal do Cliente, aplicando o formulário on-line *CineDoom | Pesquisa de Experiência do Usuário* (Google Forms), estruturado em três páginas e apresentado na Figura 22. Antes das perguntas, o participante lê um aviso sobre a participação e confirma que concorda em participar da avaliação. A participação é voluntária e anônima — não são solicitados nome, e-mail ou outros dados pessoais —, e as respostas são utilizadas exclusivamente pela equipe para avaliar a experiência de uso do Portal do Cliente, identificar possíveis problemas e orientar melhorias no sistema.
+
+**Figura 22 – Formulário da Pesquisa de Experiência do Usuário (Google Forms)**
+
+<p align="center"><img src="../../assets/capitulo-05/prints/print-formulario-pesquisa-ux.png" alt="Formulário da Pesquisa de Experiência do Usuário do CineDoom" width="420"></p>
+
+*Fonte: CineSoft Solutions (2026)*
+
 Os resultados confirmam que o sistema atende às necessidades reais dos stakeholders no seu contexto de uso — não apenas ao que foi especificado. Os cenários abaixo representam o **critério final de aprovação** da Macroentrega 1 (`v1.0.0`):
 
 | ID Cenário | Critério(s) | Descrição do Cenário Homologado | Evidência Observada em Produção | Status |
@@ -2213,3 +2227,10 @@ Para assegurar que a melhoria incorporada ao manual continue sendo praticada de 
 - **RESEND INC.** *Email API for Developers and Transactional Workflows*. Disponível em: <https://resend.com>. Acesso em: 09 nov. 2026.
 - **PRISMA DATA INC.** *Prisma ORM Schema Reference and Concurrency*. Disponível em: <https://prisma.io>. Acesso em: 09 nov. 2026.
 
+
+---
+
+<p align="center">
+  <a href="https://cinedoom.vercel.app/"><img src="../../assets/capas/qrcode-cinedoom.png" alt="QR code de acesso ao CineDoom" width="180"></a><br>
+  <strong>Acesse o CineDoom:</strong> <a href="https://cinedoom.vercel.app/">cinedoom.vercel.app</a>
+</p>

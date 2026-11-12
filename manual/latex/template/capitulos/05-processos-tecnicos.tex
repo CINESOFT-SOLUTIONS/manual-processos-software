@@ -111,7 +111,7 @@ A integridade da engenharia de software da CineSoft Solutions é garantida por u
 
 Para tornar essa cadeia verificável, o diagrama a seguir percorre um \textbf{exemplo completo e real}, da macroentrega planejada até o teste de código que a comprova:
 
-\figuracomfonte[0.85\textheight]{capitulo-05/diagramas/diagrama-rastreabilidade.pdf}{0.96\textwidth}{Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue \#17)}{CineSoft Solutions (2026)}{fig:rastreabilidade}
+\figuracomfonte[430pt]{capitulo-05/diagramas/diagrama-rastreabilidade.pdf}{0.96\textwidth}{Cadeia de Rastreabilidade: da Macroentrega 1 ao Teste de Código (exemplo real: Issue \#17)}{CineSoft Solutions (2026)}{fig:rastreabilidade}
 
 O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a coluna de código-fonte, suprimida aqui para preservar a legibilidade, é mantida no artefato \texttt{assets/capitulo-05/tabelas/matriz-rastreabilidade.tex}:
 
@@ -149,7 +149,9 @@ O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a
 }
 }
 
-\noindent\emph{Notas:} os nomes de teste indicados têm o sufixo \texttt{.test.ts} e residem em \texttt{tests/}. Os requisitos \texttt{RF-15} (e-mail/\texttt{email\_sent\_at}), \texttt{RF-16}/\texttt{CA-12} (cancelamento web) e \texttt{RF-17}/\texttt{CA-13} (baixa presencial) ainda não possuem teste automatizado dedicado nesta macroentrega.
+\textbf{\texttt{RNF-05} e \texttt{RES-01} a \texttt{RES-06} não têm linha própria porque não pertencem a uma única tela ou módulo}: são regras e qualidades que valem para várias partes do sistema ao mesmo tempo.
+
+\textbf{Evidência das restrições no repositório:} \texttt{RES-01}/\texttt{RES-02} --- não existem rotas de gateway de pagamento nem modelos fiscais em \texttt{src/app/api/} e \texttt{prisma/schema.prisma}; \texttt{RES-03} --- a aplicação é web (\texttt{src/app/}), sem projeto mobile nativo; \texttt{RES-04} --- não há módulo de bomboniere/estoque; \texttt{RES-05} --- não há \emph{streaming} ou DRM; \texttt{RES-06} --- \texttt{src/app/layout.tsx} declara \texttt{lang="pt-BR"}.
 
 
 
@@ -404,6 +406,10 @@ Exemplos Aplicados & Compilação TypeScript (\texttt{tsc}), linter \texttt{no-c
 
 
 \subsubsecao{5.4.3 Relatório de testes de aceitação (Homologação e Produção)}
+
+Complementarmente, a equipe realizou \textbf{testes de experiência do usuário (UX)} com o Portal do Cliente, aplicando o formulário on-line \textit{CineDoom | Pesquisa de Experiência do Usuário} (Google Forms), estruturado em três páginas e apresentado na Figura~\ref{fig:formulario_ux}. Antes das perguntas, o participante lê um aviso sobre a participação e confirma que concorda em participar da avaliação. A participação é voluntária e anônima --- não são solicitados nome, e-mail ou outros dados pessoais ---, e as respostas são utilizadas exclusivamente pela equipe para avaliar a experiência de uso do Portal do Cliente, identificar possíveis problemas e orientar melhorias no sistema.
+
+\figuracomfonte[0.5\textheight]{capitulo-05/prints/print-formulario-pesquisa-ux.png}{0.6\textwidth}{Formulário da Pesquisa de Experiência do Usuário (Google Forms)}{CineSoft Solutions (2026)}{fig:formulario_ux}
 
 Todos os cenários de aceitação da Macroentrega 1 (\texttt{v1.0.0}) foram executados e homologados com usuários reais no ambiente de produção (\texttt{https://cinedoom.com/}):
 
