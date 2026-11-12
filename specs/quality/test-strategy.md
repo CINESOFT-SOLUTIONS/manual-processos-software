@@ -13,9 +13,9 @@ norma_referencia: "ABNT NBR ISO/IEC/IEEE 12207:2021 (Seções 6.4.9 e 6.4.11)"
 
 ## 1. Resumo da Cobertura de Verificação e Validação
 
-A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14`)** e dos **18 Requisitos Funcionais (`RF-01` a `RF-18`)** por meio de **26 Casos de Teste formais (`CT-01` a `CT-26`)** implementados no repositório `cinedoom-app` (totalizando 748 asserções automatizadas na suíte Vitest).
+A suíte de qualidade cobre os **15 Critérios de Aceite (`CA-01` a `CA-15`)** e os **18 Requisitos Funcionais (`RF-01` a `RF-18`)** por meio de **26 Casos de Teste formais (`CT-01` a `CT-26`)** implementados no repositório `cinedoom-app` (totalizando **20 arquivos e 711 testes** automatizados na suíte Vitest).
 
-### Cobertura por Critério de Aceite (`CA-01` a `CA-14`)
+### Cobertura por Critério de Aceite (`CA-01` a `CA-15`)
 
 | Critério de Aceite (`CA`) | Equivalência no Código (`AC`) | Requisito Principal (`RF` / `RNF`) | Regra de Negócio (`RN`) | Cobertura (%) |
 | :---: | :---: | :---: | :---: | :---: |
@@ -25,14 +25,15 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 | **`CA-04`** | `AC-4` | `RNF-03` | `RN-12` | 100% |
 | **`CA-05`** | `AC-5` | `RF-01`, `RF-02` | `RN-08`, `RN-09` | 100% |
 | **`CA-06`** | `AC-6` | `RF-09`, `RNF-03` | `RN-10`, `RN-11` | 100% |
-| **`CA-07`** | `AC-7` | `RF-10` | `RN-08`, `RN-12` | 100% |
+| **`CA-07`** | `AC-7` | `RF-11` | `RN-08`, `RN-12` | Isolamento automatizado; cálculo percentual em UAT-09 |
 | **`CA-08`** | `AC-8` | `RF-03`, `RF-04`, `RF-05` | `RN-05`, `RN-06` | 100% |
 | **`CA-09`** | `AC-9` | `RF-12`, `RF-13` | `RN-01`, `RN-02`, `RN-03` | 100% |
 | **`CA-10`** | `AC-10` | `RF-01`, `RF-14` | `RN-09`, `RN-10` | 100% |
-| **`CA-11`** | `AC-11` | `RF-11`, `RF-15` | `RN-03` | 100% |
-| **`CA-12`** | `AC-12` | `RF-16` | `RN-02`, `RN-04` | 100% |
-| **`CA-13`** | `AC-13` | `RF-17` | `RN-02`, `RN-03` | 100% |
+| **`CA-11`** | `AC-11` | `RF-15` | `RN-03` | Voucher automatizado; e-mail/`email_sent_at` em lacuna |
+| **`CA-12`** | `AC-12` | `RF-16` | `RN-02`, `RN-04` | UAT-04 (não automatizado) |
+| **`CA-13`** | `AC-13` | `RF-17` | `RN-02`, `RN-03` | UAT-05 (não automatizado) |
 | **`CA-14`** | `AC-14` | `RF-06`, `RF-18` | `RN-02`, `RN-04` | 100% |
+| **`CA-15`** | `AC-15` | `RF-08`, `RF-12` | `RN-01`, `RN-12` | Parcial (comprovante automatizado; catálogo em UAT/lacuna) |
 
 ---
 
@@ -42,7 +43,7 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 | :---: | :---: | :---: | :---: | :---: | :--- | :--- |
 | **`CT-01`** | `TC-1` | `CA-01` | `RF-07` | Integração | Dois terminais simultâneos: apenas um vende o mesmo assento | `tests/unit/venda-atomica.test.ts` |
 | **`CT-02`** | `TC-2` | `CA-02` | `RF-06` | Integração | Mapa de assentos reflete venda em no máximo 2 segundos via polling | `tests/unit/session-seats-polling.test.ts` |
-| **`CT-03`** | `TC-3` | `CA-03` | `RF-08` | Integração | Cancelamento persiste registro imutável em `auditoria_cancelamentos` com todos os campos obrigatórios | `tests/unit/cancelamento-auditavel.test.ts` |
+| **`CT-03`** | `TC-3` | `CA-03` | `RF-08` | Integração | Cancelamento persiste registro imutável em `cancellation_audits` com todos os campos obrigatórios | `tests/unit/cancelamento-auditavel.test.ts` |
 | **`CT-04`** | `TC-4` | `CA-04` | `RF-03` | Integração | Prisma Extension injeta `tenant_id` automaticamente em query de filmes | `tests/unit/tenancy-isolation.test.ts` |
 | **`CT-05`** | `TC-5` | `CA-05` | `RF-01` | Integração | `ATENDENTE` recebe `HTTP 403` ao tentar acessar rota de cadastro de filmes | `tests/unit/auth-rbac.test.ts` |
 | **`CT-06`** | `TC-6` | `CA-06` | `RF-09` | Unitário | Persiste comprador com CPF em hash (`HMAC-SHA256`), CPF cifrado (`AES-256-GCM`), e-mail e consentimento LGPD com timestamp | `tests/unit/cryptoservice.test.ts` |
@@ -50,7 +51,7 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 | **`CT-08`** | `TC-8` | `CA-08` | `RF-03` | Integração | `GERENTE` cria filme com campos obrigatórios válidos e recebe `HTTP 201` | `tests/unit/catalog-filmes.test.ts` |
 | **`CT-09`** | `TC-9` | `CA-01` | `RF-07` | Integração | Trava `SELECT FOR UPDATE` impede leitura de assento como disponível durante transação ativa (50 threads) | `tests/unit/concurrency-acid-50-threads.test.ts` |
 | **`CT-10`** | `TC-10` | `CA-02` | `RF-06` | Integração | Mapa de assentos reflete cancelamento em no máximo 2 segundos via polling | `tests/unit/session-seats-polling.test.ts` |
-| **`CT-11`** | `TC-11` | `CA-03` | `RF-08` | Integração | Cancelamento falha atomicamente se inserção em `auditoria_cancelamentos` falhar — assento permanece vendido | `tests/unit/cancelamento-auditavel.test.ts` |
+| **`CT-11`** | `TC-11` | `CA-03` | `RF-08` | Integração | Cancelamento falha atomicamente se inserção em `cancellation_audits` falhar — assento permanece vendido | `tests/unit/cancelamento-auditavel.test.ts` |
 | **`CT-12`** | `TC-12` | `CA-04` | `RNF-03` | Segurança | Isolamento *cross-tenant* em query de ingressos — `tenant-B` não vaza para `tenant-A` | `tests/unit/security-cross-tenant-suite.test.ts` |
 | **`CT-13`** | `TC-13` | `CA-05` | `RF-02` | Integração | `ATENDENTE` recebe `HTTP 403` ao tentar acessar rotas de salas, sessões e usuários | `tests/unit/auth-rbac.test.ts` |
 | **`CT-14`** | `TC-14` | `CA-06` | `RF-09` | Unitário | Rejeita cadastro de comprador quando qualquer campo obrigatório ou consentimento LGPD está ausente | `tests/unit/compliance-anonymization.test.ts` |
@@ -62,10 +63,10 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 | **`CT-20`** | `TC-20` | `CA-05` | `RF-01` | Integração | `GERENTE` tem acesso completo às rotas de gerenciamento do seu *tenant* | `tests/unit/auth-rbac.test.ts` |
 | **`CT-21`** | `TC-21` | `CA-09` | `RF-13` | Integração | Reserva atômica bloqueia assento com status `RESERVED` e impede venda ou reserva simultânea | `tests/integration/reserva-atomica.test.ts` |
 | **`CT-22`** | `TC-22` | `CA-10` | `RF-14` | Unitário | Cadastro de cliente final com perfil `CLIENTE`, senha hash e proteção LGPD (`HMAC-SHA256` e `AES-256-GCM`) | `tests/unit/users-management.test.ts` |
-| **`CT-23`** | `TC-23` | `CA-11` | `RF-15` | Integração | `NotificationService` dispara voucher por e-mail com código da reserva e grava `email_sent_at` | `tests/unit/observability-logger.test.ts` |
-| **`CT-24`** | `TC-24` | `CA-12` | `RF-16` | Integração | Cancelamento voluntário pelo cliente via web atualiza reserva para `CANCELLED` e libera assento para `AVAILABLE` | `tests/integration/reserva-atomica.test.ts` |
-| **`CT-25`** | `TC-25` | `CA-13` | `RF-17` | Integração | Atendente localiza reserva no balcão e confirma pagamento presencial convertendo em `Ticket` vendido (`SOLD`) | `tests/integration/reserva-atomica.test.ts` |
-| **`CT-26`** | `TC-26` | `CA-14` | `RF-18` | Integração | Reserva não paga até 60 minutos antes da sessão é considerada expirada (`EXPIRED`) *Just-in-Time* liberando assento | `tests/integration/reserva-atomica.test.ts` |
+| **`CT-23`** | `TC-23` | `CA-11` | `RF-15` | Integração | Gera voucher digital com código localizador e o disponibiliza na consulta da reserva (`GET /api/portal/reservas/{id}`) | `tests/integration/reserva-atomica.test.ts` |
+| **`CT-24`** | `TC-24` | `CA-12` | `RF-16` | Integração | Cancelamento voluntário pelo cliente via web atualiza reserva para `CANCELLED` e libera assento para `AVAILABLE` | Não automatizado (UAT-04) |
+| **`CT-25`** | `TC-25` | `CA-13` | `RF-17` | Integração | Atendente localiza reserva pelo código localizador e confirma pagamento presencial convertendo em `Ticket` vendido (`SOLD`) | Não automatizado (UAT-05) |
+| **`CT-26`** | `TC-26` | `CA-14` | `RF-18` | Integração | Reserva não paga até 60 minutos antes da sessão tem a baixa rejeitada com `HTTP 400` e o assento retornado como `AVAILABLE` (*Just-in-Time*) | `tests/integration/reserva-atomica.test.ts` |
 
 ---
 
@@ -85,12 +86,12 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 * **Quando:** Uma venda é concluída com sucesso para o assento `A1`.
 * **Então:** Na próxima resposta do *polling* (dentro de `2000ms`), o assento `A1` deve aparecer com status `SOLD` na resposta JSON do Route Handler.
 
-### CT-03 (`TC-3`). Cancelamento persiste registro imutável em `auditoria_cancelamentos` com todos os campos obrigatórios
+### CT-03 (`TC-3`). Cancelamento persiste registro imutável em `cancellation_audits` com todos os campos obrigatórios
 * **Critério coberto:** `CA-03` (`AC-3`) | **Requisito:** `RF-08` | **Regra:** `RN-07`
 * **Nível:** Integração | **Arquivo:** `tests/unit/cancelamento-auditavel.test.ts`
 * **Dado que:** Um ingresso vendido existe para a sessão do `tenant-A`, e o usuário autenticado como `ATENDENTE` possui `id`, `tenant_id` e fornece motivo válido de cancelamento.
 * **Quando:** O serviço de cancelamento é invocado com `ticket_id`, `user_id`, motivo e `tenant_id`.
-* **Então:** Um registro é inserido em `auditoria_cancelamentos` contendo `ticket_id`, `user_id`, `timestamp` UTC, `tenant_id` e motivo **antes** de o `SessionSeat` ter o status alterado para `AVAILABLE`, sendo protegido por *trigger* *append-only* no PostgreSQL contra `UPDATE` e `DELETE`.
+* **Então:** Um registro é inserido em `cancellation_audits` contendo `ticket_id`, `user_id`, `timestamp` UTC, `tenant_id` e motivo **antes** de o `SessionSeat` ter o status alterado para `AVAILABLE`, sendo protegido por *trigger* *append-only* no PostgreSQL contra `UPDATE` e `DELETE`.
 
 ### CT-04 (`TC-4`). Prisma Extension injeta `tenant_id` em query de filmes
 * **Critério coberto:** `CA-04` (`AC-4`) | **Requisito:** `RF-03` | **Regra:** `RN-12`
@@ -141,10 +142,10 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 * **Quando:** O cancelamento do ingresso do assento `B3` é processado com sucesso.
 * **Então:** Na próxima resposta do *polling* (dentro de `2000ms`), o assento `B3` aparece com status `AVAILABLE`.
 
-### CT-11 (`TC-11`). Cancelamento falha atomicamente se inserção em `auditoria_cancelamentos` falhar
+### CT-11 (`TC-11`). Cancelamento falha atomicamente se inserção em `cancellation_audits` falhar
 * **Critério coberto:** `CA-03` (`AC-3`) | **Requisito:** `RF-08` | **Regra:** `RN-07`
 * **Nível:** Integração | **Arquivo:** `tests/unit/cancelamento-auditavel.test.ts`
-* **Dado que:** Um ingresso vendido existe e a inserção em `auditoria_cancelamentos` falha por violação de *constraint*.
+* **Dado que:** Um ingresso vendido existe e a inserção em `cancellation_audits` falha por violação de *constraint*.
 * **Quando:** O serviço de cancelamento é invocado dentro de transação Prisma.
 * **Então:** A transação sofre *rollback* integral e o assento permanece com status `SOLD`.
 
@@ -193,7 +194,7 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 ### CT-18 (`TC-18`). Registro de auditoria de cancelamento é isolado por `tenant_id`
 * **Critério coberto:** `CA-03` (`AC-3`) | **Requisito:** `RF-08` | **Regra:** `RN-07`, `RN-12`
 * **Nível:** Segurança | **Arquivo:** `tests/unit/cancelamento-auditavel.test.ts`
-* **Dado que:** `tenant-A` e `tenant-B` possuem cancelamentos registrados em `auditoria_cancelamentos`.
+* **Dado que:** `tenant-A` e `tenant-B` possuem cancelamentos registrados em `cancellation_audits`.
 * **Quando:** Uma consulta é executada no contexto de `tenant-B`.
 * **Então:** Apenas os registros de cancelamento de `tenant-B` são retornados.
 
@@ -225,12 +226,12 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 * **Quando:** `POST /api/portal/cadastro` é executado.
 * **Então:** O usuário é salvo com `role = 'CLIENTE'`, senha em hash `bcrypt` (custo 12) e CPF protegido com `HMAC-SHA256` e `AES-256-GCM`.
 
-### CT-23 (`TC-23`). `NotificationService` dispara voucher por e-mail com código da reserva e grava `email_sent_at`
-* **Critério coberto:** `CA-11` (`AC-11`) | **Requisito:** `RF-15` | **Regra:** `RN-03`
-* **Nível:** Integração | **Arquivo:** `tests/unit/observability-logger.test.ts`
-* **Dado que:** Uma reserva online foi criada com status `PENDING`.
-* **Quando:** O `NotificationService` processa o envio do comprovante transacional.
-* **Então:** O e-mail contendo código localizador, sala, poltronas e prazo limite (60 min antes da sessão) é despachado e o campo `email_sent_at` é atualizado com o `timestamp` UTC.
+### CT-23 (`TC-23`). Voucher digital com código localizador disponível na consulta da reserva
+* **Critério coberto:** `CA-11` (`AC-11`) | **Requisito:** `RF-15` | **Regra:** `RN-03`, `RN-04`
+* **Nível:** Integração | **Arquivo:** `tests/integration/reserva-atomica.test.ts`
+* **Dado que:** Uma reserva online foi criada com status `PENDING` e código localizador `CD-XXXX`.
+* **Quando:** O cliente consulta `GET /api/portal/reservas/{id}` ou acessa a página `/portal/reservas/{id}/comprovante`.
+* **Então:** O voucher retorna código localizador, filme, sala, data/hora, assentos, valor total e instruções de pagamento presencial; o disparo de e-mail (`email_sent_at`) não é acionado no MVP (lacuna declarada).
 
 ### CT-24 (`TC-24`). Cancelamento voluntário pelo cliente via web libera assento imediatamente
 * **Critério coberto:** `CA-12` (`AC-12`) | **Requisito:** `RF-16` | **Regra:** `RN-02`, `RN-04`
@@ -241,14 +242,14 @@ A suíte de qualidade cobre **100% dos 14 Critérios de Aceite (`CA-01` a `CA-14
 
 ### CT-25 (`TC-25`). Atendente localiza reserva no balcão e confirma pagamento presencial convertendo em `Ticket` (`SOLD`)
 * **Critério coberto:** `CA-13` (`AC-13`) | **Requisito:** `RF-17` | **Regra:** `RN-02`, `RN-03`
-* **Nível:** Integração | **Arquivo:** `tests/integration/reserva-atomica.test.ts`
-* **Dado que:** Uma reserva `PENDING` válida é localizada pelo atendente via código `CD-XXXX` ou CPF na bilheteria.
+* **Nível:** Integração | **Arquivo:** Não automatizado (UAT-05)
+* **Dado que:** Uma reserva `PENDING` válida é localizada pelo atendente via código localizador `CD-XXXX` na bilheteria.
 * **Quando:** O atendente confirma o recebimento presencial em `POST /api/bilheteria/reservas/confirmar`.
 * **Então:** O status da reserva muda para `CONFIRMED`, os assentos mudam para `SOLD` e os registros de `Ticket` são emitidos com o identificador do atendente.
 
-### CT-26 (`TC-26`). Reserva não paga até 60 minutos antes da sessão expira *Just-in-Time* liberando assento
+### CT-26 (`TC-26`). Reserva não paga até 60 minutos antes da sessão tem baixa rejeitada e assento liberado *Just-in-Time*
 * **Critério coberto:** `CA-14` (`AC-14`) | **Requisito:** `RF-18` | **Regra:** `RN-02`, `RN-04`
 * **Nível:** Integração | **Arquivo:** `tests/integration/reserva-atomica.test.ts`
-* **Dado que:** Uma reserva permanece com status `PENDING` quando faltam menos de 60 minutos para o início da sessão.
+* **Dado que:** Uma reserva permanece com status `PENDING` e `reservation_expires_at` igual ou anterior ao instante atual.
 * **Quando:** O mapa de assentos é consultado ou uma venda de balcão é realizada para aquela poltrona.
-* **Então:** O sistema avalia a expiração *Just-in-Time*, marca a reserva como `EXPIRED` e libera o assento como `AVAILABLE`, permitindo a venda imediata no balcão.
+* **Então:** O sistema avalia a expiração *Just-in-Time*, rejeita a baixa presencial com `HTTP 400` e retorna o assento como `AVAILABLE`, permitindo a venda imediata no balcão.

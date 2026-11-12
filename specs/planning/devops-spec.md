@@ -10,7 +10,7 @@ title: "Especificação de DevOps, Infraestrutura, Observabilidade e SLOs — Ci
 # Especificação de DevOps, Infraestrutura, Observabilidade e SLOs — CineDoom
 
 > **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
-> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-08`, `RF-11`, `RNF-01` a `RNF-06`, `CA-01` a `CA-14`, `RES-01` a `RES-06`) e [`ADR-002`](../adr/ADR-002-neon-postgresql-serverless.md) / [`ADR-010`](../adr/ADR-010-observabilidade-axiom-cicd-vercel.md).
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-08`, `RF-11`, `RNF-01` a `RNF-06`, `CA-01` a `CA-15`, `RES-01` a `RES-06`) e [`ADR-002`](../adr/ADR-002-neon-postgresql-serverless.md) / [`ADR-010`](../adr/ADR-010-observabilidade-axiom-cicd-vercel.md).
 
 ## Resumo Executivo
 
@@ -30,7 +30,7 @@ Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraes
 - Ambientes *Vercel Preview* provisionados automaticamente para cada Pull Request / branch.
 - Branch efêmero e isolado do banco Neon criado via integração nativa Vercel-Neon, populado exclusivamente com dados sintéticos.
 - Domínio efêmero: `cinedoom-<branch>.vercel.app`.
-- O pipeline de CI no GitHub Actions executa verificação de tipos (`tsc --noEmit`), linting (`ESLint import/no-cycle`), os **748 testes unitários/integração (Vitest)** e a suíte E2E (**Playwright** em Chromium e Firefox) como *gate* obrigatório antes do merge.
+- O pipeline de CI no GitHub Actions executa verificação de tipos (`tsc --noEmit`), linting (`ESLint import/no-cycle`), os **711 testes unitários/integração (Vitest)** e a suíte E2E (**Playwright** em Chromium e Firefox) como *gate* obrigatório antes do merge.
 
 ### 1.3 Ambiente de Produção (`prod`)
 - **Hospedagem:** Vercel Production (região primária de execução: `gru1` — São Paulo via Vercel Edge Network).

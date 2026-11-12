@@ -21,12 +21,12 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 | **RF-09** | Auditoria & Guichê | Realizar o cancelamento síncrono de ingresso vendido na bilheteria mediante justificativa obrigatória, gravando trilha *append-only* protegida por trigger SQL. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-10** | Governança LGPD | Proteger o CPF de compradores e clientes por indexação cega `HMAC-SHA256` e criptografia autenticada `AES-256-GCM`, permitindo anonimização *in-place* (Art. 18). | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-11** | Ocupação & Logs | Apresentar painel gerencial com cálculo em tempo real da taxa de ocupação (vendidos, reservados e livres) por sessão/sala e exportar logs para o Axiom. | *Must Have* | Macroentrega 1 (`v1.0`) |
-| **RF-12** | Portal do Cliente | Exibir catálogo público responsivo de filmes em cartaz com filtros por data, busca por título/gênero e modal de detalhes/sinopse. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-12** | Portal do Cliente | Exibir catálogo público responsivo de filmes em cartaz com busca por título/sinopse, filtro por gênero e exibição da sinopse. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-13** | Portal do Cliente | Permitir ao espectador selecionar poltronas no mapa interativo e confirmar reserva online com status `PENDING` e bloqueio dos assentos como `RESERVED`, exclusivamente quando faltarem 60 minutos ou mais para o início da sessão. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-14** | Portal do Cliente | Permitir o cadastro e login de espectadores (`CLIENTE`) com validação matemática de CPF (Módulo 11) e termo explícito de consentimento LGPD. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-15** | Notificações | Emitir voucher digital com localizador único (`CD-XXXX`) e acionar o `NotificationService` (`ResendProvider` / `ConsoleLogger`), registrando `email_sent_at`. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-16** | Portal do Cliente | Disponibilizar área autenticada *"Minhas Reservas"* permitindo ao espectador consultar seus vouchers e realizar o cancelamento voluntário de reservas pendentes. | *Must Have* | Macroentrega 1 (`v1.0`) |
-| **RF-17** | Bilheteria Híbrida | Permitir ao `ATENDENTE` localizar reservas web no balcão por código localizador (`CD-XXXX`) ou CPF e confirmar o pagamento presencial, convertendo em `SOLD`. | *Must Have* | Macroentrega 1 (`v1.0`) |
+| **RF-17** | Bilheteria Híbrida | Permitir ao `ATENDENTE` localizar reservas web no balcão pelo código localizador (`CD-XXXX`) e confirmar o pagamento presencial, convertendo em `SOLD`. | *Must Have* | Macroentrega 1 (`v1.0`) |
 | **RF-18** | Expiração JIT | Invalidar automaticamente reservas pendentes não pagas quando faltarem menos de 60 minutos para o início da sessão, liberando os assentos em tempo real. | *Must Have* | Macroentrega 1 (`v1.0`) |
 
 #### Catálogo Formal de Requisitos Não Funcionais (`RNF-01` a `RNF-06` — ISO/IEC 25010)
@@ -69,14 +69,14 @@ A integridade da engenharia de software da CineSoft Solutions é garantida por u
 | :--- | :---: | :---: | :--- | :--- |
 | `STK-02` / `NEC-02` (Controle de Acesso e Equipe) | `RF-01`, `RF-02` | `CA-05` | `src/modules/auth/`, `src/middleware.ts`, `src/app/api/backoffice/usuarios/` | `tests/unit/auth-rbac.test.ts` (→ `RF-01`, `CA-05`); `tests/unit/users-management.test.ts` (→ `RF-02`, `CA-05`) |
 | `STK-02` / `NEC-02` (Gestão de Acervo e Salas) | `RF-03`, `RF-04`, `RF-05`, `RES-05` | `CA-08` | `src/modules/backoffice/` (film-service, room-service, session-service), `src/app/api/{filmes,salas,sessoes}/` | `tests/unit/catalog-filmes.test.ts` (→ `RF-03`, `CA-08`); `tests/unit/rooms-layout.test.ts` (→ `RF-04`, `CA-08`); `tests/unit/sessions-prepopulation.test.ts` (→ `RF-05`, `CA-08`) |
-| `STK-03`, `STK-04` / `NEC-03`, `NEC-06` (Mapa Reativo e Guichê) | `RF-06`, `RNF-01`, `RNF-04` | `CA-02` | `src/modules/bilheteria/components/seating-grid.tsx`, `src/modules/bilheteria/hooks/use-session-seats.ts`, `src/app/api/sessoes/[id]/assentos/` | `tests/unit/seating-grid.test.ts` (→ `RF-06`, `CA-02`); `tests/unit/session-seats-polling.test.ts` (→ `RF-06`, `RNF-01`, `CA-02`); `tests/unit/acessibilidade-responsividade.test.ts` (→ `RNF-04`) |
-| `STK-01`, `STK-03` / `NEC-01`, `NEC-03` (Venda Atômica ACID) | `RF-07`, `RF-08`, `RNF-02`, `RES-01`, `RES-02`, `RES-04` | `CA-01` | `src/modules/bilheteria/sale-service.ts`, `src/modules/bilheteria/counter-service.ts`, `src/app/api/vendas/`, `prisma/schema.prisma` | `tests/unit/venda-atomica.test.ts` (→ `RF-07`, `RNF-02`, `CA-01`); `tests/unit/concurrency-acid-50-threads.test.ts` (→ `RF-07`, `RNF-02`, `CA-01`); `tests/unit/comprovante-ingresso.test.ts`  (→ `RF-08`) |
+| `STK-03`, `STK-04` / `NEC-03`, `NEC-06` (Mapa Reativo e Guichê) | `RF-06`, `RNF-01`, `RNF-04` | `CA-02` | `src/modules/bilheteria/components/seating-grid.tsx`, `src/modules/bilheteria/hooks/use-session-seats.ts`, `src/app/api/sessoes/[id]/assentos/` | `tests/unit/seating-grid.test.ts` (→ `RF-06`, `RNF-04`, `CA-02`); `tests/unit/session-seats-polling.test.ts` (→ `RF-06`, `RNF-01`, `CA-02`) |
+| `STK-01`, `STK-03` / `NEC-01`, `NEC-03` (Venda Atômica ACID) | `RF-07`, `RF-08`, `RNF-02`, `RES-01`, `RES-02`, `RES-04` | `CA-01`, `CA-15` | `src/modules/bilheteria/sale-service.ts`, `src/modules/bilheteria/counter-service.ts`, `src/app/api/vendas/`, `src/app/api/ingressos/`, `prisma/schema.prisma` | `tests/unit/venda-atomica.test.ts` (→ `RF-07`, `RNF-02`, `CA-01`); `tests/unit/concurrency-acid-50-threads.test.ts` (→ `RF-07`, `RNF-02`, `CA-01`); `tests/unit/cancelamento-auditavel.test.ts` (→ `RF-08`, `CA-15`) |
 | `STK-03`, `STK-05` / `NEC-04`, `NEC-08` (Cancelamento Imutável) | `RF-09` | `CA-03` | `src/modules/bilheteria/cancellation-service.ts`, `src/app/api/ingressos/[id]/cancelar/`, `prisma/triggers.sql`, `prisma/schema.prisma` | `tests/unit/cancelamento-auditavel.test.ts` (→ `RF-09`, `CA-03`); `tests/unit/database-schema.test.ts` (→ `RF-09`, `CA-03`) |
 | `STK-05` / `NEC-04` (Privacidade e LGPD Art. 18) | `RF-10`, `RNF-03` | `CA-06` | `src/modules/crypto/crypto-service.ts`, `src/modules/compliance/`, `src/modules/compradores/buyer-service.ts` | `tests/unit/cryptoservice.test.ts` (→ `RF-10`, `RNF-03`, `CA-06`); `tests/unit/compliance-anonymization.test.ts` (→ `RF-10`, `CA-06`) |
 | `STK-01` / `NEC-01` (Isolamento Multi-Tenant SaaS) | `RNF-03`, `RNF-06` | `CA-04` | `src/modules/tenancy/prisma-tenancy-extension.ts`, `src/modules/tenancy/tenancy-context.ts`, `src/shared/db/prisma.ts` | `tests/unit/tenancy-isolation.test.ts` (→ `RNF-03`, `CA-04`); `tests/unit/security-cross-tenant-suite.test.ts` (→ `RNF-03`, `CA-04`); `tests/unit/modules.test.ts` (→ `RNF-06`); `tests/unit/ci-workflow.test.ts` (→ `RNF-06`) |
-| `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `src/app/api/ocupacao/painel/`, `src/modules/ocupacao/ocupacao-service.ts`, `src/shared/logger/index.ts` | `tests/unit/observability-logger.test.ts` (→ `RF-11`, `CA-07`); `tests/unit/ocupacao-painel.test.ts`  (→ `RF-11`, `CA-07`) |
-| `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12`, `RF-13`, `RF-14`, `RNF-04`, `RNF-05`, `RES-01`, `RES-03`, `RES-06` | `CA-09`, `CA-10` | `src/modules/portal/portal-service.ts`, `src/app/portal/`, `src/app/api/portal/`, `src/app/layout.tsx` | `tests/integration/reserva-atomica.test.ts` (→ `RF-13`, `CA-09`); `tests/unit/cryptoservice.test.ts` (→ `RF-14`, `CA-10`); `tests/unit/auth-rbac.test.ts` (→ `RF-14`, `CA-10`); `tests/unit/catalogo-portal.test.ts`  (→ `RF-12`); `tests/unit/registro-espectador.test.ts`  (→ `RF-14`, `CA-10`); `tests/unit/booking-flow.test.ts`  (→ `RF-13`, `CA-09`); `tests/unit/compatibilidade-navegadores.test.ts`  (→ `RNF-05`) |
-| `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15`, `RF-16`, `RF-17`, `RF-18`, `RES-01`, `RES-02` | `CA-11` a `CA-14` | `src/modules/notificacoes/notification-service.ts`, `src/app/api/portal/reservas/`, `src/app/api/bilheteria/reservas/`, `src/modules/bilheteria/counter-service.ts` | `tests/integration/reserva-atomica.test.ts` (→ `RF-16` consulta, `RF-18`, `CA-14`); `tests/unit/notification-service.test.ts`  (→ `RF-15`, `CA-11`); `tests/integration/cancelamento-web.test.ts`  (→ `RF-16`, `CA-12`); `tests/integration/baixa-reserva.test.ts`  (→ `RF-17`, `CA-13`) |
+| `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `src/app/api/ocupacao/painel/`, `src/modules/ocupacao/ocupacao-service.ts`, `src/shared/logger/index.ts` | `tests/unit/observability-logger.test.ts` (→ `RF-11`, `CA-07`); `tests/unit/security-cross-tenant-suite.test.ts` (→ `RF-11`, `CA-07`) |
+| `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12`, `RF-13`, `RF-14`, `RNF-04`, `RNF-05`, `RES-01`, `RES-03`, `RES-06` | `CA-09`, `CA-10`, `CA-15` | `src/modules/portal/portal-service.ts`, `src/app/portal/`, `src/app/api/portal/`, `src/app/layout.tsx` | `tests/integration/reserva-atomica.test.ts` (→ `RF-13`, `CA-09`); `tests/unit/cryptoservice.test.ts` (→ `RF-14`, `CA-10`); `tests/unit/auth-rbac.test.ts` (→ `RF-14`, `CA-10`); `tests/unit/seating-grid.test.ts` (→ `RNF-04`) |
+| `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15`, `RF-16`, `RF-17`, `RF-18`, `RES-01`, `RES-02` | `CA-11` a `CA-14` | `src/modules/notificacoes/notification-service.ts`, `src/app/api/portal/reservas/`, `src/app/api/bilheteria/reservas/`, `src/modules/bilheteria/counter-service.ts` | `tests/integration/reserva-atomica.test.ts` (→ `RF-15` voucher, `RF-16` consulta, `RF-18`, `CA-11`, `CA-14`); `não automatizado: RF-15` (e-mail/`email_sent_at`), `RF-16`/`CA-12` (cancelamento web), `RF-17`/`CA-13` (baixa presencial) |
 
 **`RNF-05` e `RES-01` a `RES-06` não têm linha própria porque não pertencem a uma única tela ou módulo**: são regras e qualidades que valem para várias partes do sistema ao mesmo tempo.
 
@@ -84,24 +84,25 @@ A integridade da engenharia de software da CineSoft Solutions é garantida por u
 
 ---
 
-### 5.1.3 Critérios de aceitação (`CA-01` a `CA-14`)
+### 5.1.3 Critérios de aceitação (`CA-01` a `CA-15`)
 
-Os 14 critérios de aceitação foram definidos em formato comportamental BDD (*Dado que / Quando / Então*):
+Os 15 critérios de aceitação foram definidos em formato comportamental BDD (*Dado que / Quando / Então*):
 
 1. **`CA-01` (Venda Presencial Atômica Anti-Double-Booking):** *Dado que* dois operadores ou clientes tentam adquirir a mesma poltrona `AVAILABLE` simultaneamente, *quando* as transações concorrentes são submetidas, *então* o banco deve serializar o acesso via `SELECT FOR UPDATE`, aprovar apenas a primeira (`HTTP 201`) e rejeitar a segunda com `HTTP 409 Conflict`.
-2. **`CA-02` (Sincronização do Mapa em até 2s):** *Dado que* o mapa de uma sessão está aberto, *quando* o status de um assento muda para `RESERVED` ou `SOLD`, *então* o polling HTTP deve refletir a mudança visualmente em até 2 segundos.
+2. **`CA-02` (Sincronização do Mapa por Polling a Cada 2 s):** *Dado que* o mapa de assentos de uma sessão está aberto, *quando* o status de um assento muda para `RESERVED`, `SOLD` ou `AVAILABLE`, *então* o sistema deve consultar `GET /api/sessoes/{id}/assentos` a cada 2.000 ms e a resposta da consulta seguinte deve refletir o novo status em até 2 segundos.
 3. **`CA-03` (Auditoria Imutável de Cancelamento):** *Dado que* um ingresso vendido é cancelado na bilheteria, *quando* a operação é executada, *então* um registro imutável deve ser gravado em `cancellation_audits` (protegido por trigger PostgreSQL contra `UPDATE/DELETE`) antes de liberar o assento.
 4. **`CA-04` (Isolamento Estrito Multi-Tenant):** *Dado que* um operador do *Tenant A* está autenticado, *quando* tenta ler ou modificar filmes, salas, sessões ou reservas do *Tenant B*, *então* a extensão de tenancy deve bloquear o acesso em 100% dos 500 cenários de teste.
-5. **`CA-05` (Controle de Acesso RBAC):** *Dado que* um usuário com perfil `ATENDENTE` ou `CLIENTE` tenta acessar rotas administrativas (`/admin/*` ou `/api/admin/*`), *então* o middleware deve interceptar e retornar `HTTP 403 Forbidden`.
-6. **`CA-06` (Criptografia de CPF e Anonimização LGPD):** *Dado que* um CPF é fornecido na compra ou cadastro, *então* jamais deve ser salvo em texto puro, sendo persistido como `HMAC-SHA256` e `AES-256-GCM`, permitindo anonimização irreversível *in-place* (Art. 18 da LGPD) sem apagar o registro contábil do ingresso.
-7. **`CA-07` (Painel de Ocupação e Trilha de Logs Estruturados):** *Dado que* uma sessão possui assentos vendidos e reservados e que operações críticas (vendas, reservas, cancelamentos e falhas de autenticação) são executadas, *quando* o `GERENTE` consulta o painel de ocupação, *então* o sistema deve exibir os percentuais exatos sobre a capacidade total da sala e emitir, para cada operação crítica, log estruturado em JSON contendo `tenant_id`, `user_id`, timestamp UTC e identificador do recurso, com retenção de 365 dias no Axiom.
-8. **`CA-08` (Gestão Validada de Catálogo, Salas e Sessões):** *Dado que* o `GERENTE` gerencia a programação, *quando* cria, edita ou lista filmes, salas com layout de assentos e sessões cinematográficas, *então* o sistema deve validar todos os campos obrigatórios (rejeitando ausências com `HTTP 422`), impedir sobreposição de horário na mesma sala e pré-popular os assentos da sessão (`SessionSeat`) com status inicial `AVAILABLE`.
-9. **`CA-09` (Reserva Online com Antecedência de 60 min):** *Dado que* faltam mais de 60 minutos para a sessão, *quando* o espectador seleciona assentos livres no portal, *então* o sistema deve criar a reserva com status `PENDING` e bloquear os assentos como `RESERVED`.
-10. **`CA-10` (Cadastro e Login de Espectador com LGPD):** *Dado que* um espectador preenche nome, e-mail, senha, CPF válido (Módulo 11) e aceite LGPD, *então* o sistema deve autenticar sua sessão com perfil `CLIENTE`.
-11. **`CA-11` (Emissão de Voucher e Disparo de E-mail Transacional):** *Dado que* uma reserva web é concluída, *então* o sistema deve gerar o código localizador (`CD-XXXX`), acionar o serviço de notificação e gravar o timestamp `email_sent_at`.
-12. **`CA-12` (Cancelamento Voluntário pelo Espectador):** *Dado que* o cliente possui uma reserva `PENDING` dentro do prazo, *quando* solicita o cancelamento em *"Minhas Reservas"*, *então* o status muda para `CANCELLED` e os assentos voltam imediatamente para `AVAILABLE`.
-13. **`CA-13` (Baixa Presencial de Reserva no Balcão):** *Dado que* o cliente apresenta o código localizador ou CPF na bilheteria até 60 min antes da sessão, *quando* o atendente confirma o pagamento, *então* a reserva muda para `CONFIRMED` e os assentos para `SOLD`.
-14. **`CA-14` (Expiração Just-in-Time a 60 min da Sessão):** *Dado que* uma reserva `PENDING` não foi paga e faltam menos de 60 minutos para o início do filme, *quando* a sessão é consultada, *então* a reserva expira dinamicamente (`EXPIRED`) e as poltronas são liberadas para venda imediata no balcão.
+5. **`CA-05` (Controle de Acesso RBAC e Gestão de Operadores):** *Dado que* um usuário autenticado possui perfil `ATENDENTE` ou `CLIENTE`, *quando* tenta acessar rotas administrativas (`/admin/*` ou `/api/admin/*`), *então* o sistema deve responder `HTTP 403 Forbidden`; *dado que* o `GERENTE` gerencia operadores do próprio cinema, *quando* cria, lista, atualiza ou inativa um atendente, *então* a operação deve ser persistida e a inativação deve revogar o acesso do operador, retornando `HTTP 403` nas APIs e redirecionando ao login nas páginas.
+6. **`CA-06` (Criptografia de CPF e Anonimização LGPD):** *Dado que* um CPF é fornecido na compra ou cadastro, *quando* o registro é persistido, *então* o CPF não deve ser armazenado em texto puro, sendo gravado como `HMAC-SHA256` (`cpf_hash`) e `AES-256-GCM` (`cpf_encrypted`); *quando* a anonimização é solicitada pelo titular, *então* nome, e-mail e CPF cifrado devem ser sobrescritos *in-place*, `anonymized_at` preenchido, os vínculos com os ingressos preservados e uma segunda solicitação rejeitada.
+7. **`CA-07` (Painel de Ocupação e Trilha de Logs Estruturados):** *Dado que* uma sessão possui assentos vendidos, reservados, bloqueados e livres e que operações críticas são executadas, *quando* o `GERENTE` consulta o painel de ocupação, *então* o sistema deve exibir as contagens por status e o percentual de ocupação calculado como `(vendidos ÷ capacidade) × 100`, arredondado a uma casa decimal; e, para cada operação crítica efetivamente executada (venda, cancelamento, conflito ACID, violação de segurança, autenticação e anonimização), emitir log estruturado em JSON contendo `tenant_id`, `user_id`, timestamp UTC e identificador do recurso, com retenção de 365 dias no Axiom.
+8. **`CA-08` (Gestão Validada de Catálogo, Salas e Sessões):** *Dado que* o `GERENTE` gerencia a programação, *quando* cria, edita ou lista filmes, salas com layout de assentos e sessões cinematográficas, *então* o sistema deve rejeitar com `HTTP 422` qualquer campo obrigatório ausente, rejeitar com `HTTP 409` sessões com sobreposição de horário na mesma sala e pré-popular os assentos da sessão (`SessionSeat`) com status inicial `AVAILABLE`.
+9. **`CA-09` (Reserva Online com Antecedência de 60 min):** *Dado que* faltam 60 minutos ou mais para o início da sessão, *quando* o espectador seleciona assentos livres no portal, *então* o sistema deve criar a reserva com status `PENDING` e bloquear os assentos como `RESERVED`.
+10. **`CA-10` (Cadastro e Login de Espectador com LGPD):** *Dado que* um espectador preenche nome, e-mail, senha, CPF válido (Módulo 11) e aceita o termo de consentimento LGPD, *quando* conclui o cadastro e efetua login, *então* o sistema deve persistir o CPF como `HMAC-SHA256` + `AES-256-GCM`, gravar `lgpd_consent_at` e autenticar a sessão com perfil `CLIENTE`.
+11. **`CA-11` (Voucher Digital com Localizador Único):** *Dado que* uma reserva web é concluída, *então* o sistema deve gerar o voucher digital com código localizador `CD-XXXX` e disponibilizá-lo em `GET /api/portal/reservas/{id}` e na página `/portal/reservas/{id}/comprovante`, contendo filme, sala, data e horário da sessão, assentos e valor total, com instruções para pagamento presencial.
+12. **`CA-12` (Cancelamento Voluntário pelo Espectador):** *Dado que* o cliente possui uma reserva com status `PENDING` e `reservation_expires_at` futuro, *quando* solicita o cancelamento em *"Minhas Reservas"*, *então* o status deve mudar para `CANCELLED` e os assentos devem voltar imediatamente para `AVAILABLE`; reservas não pendentes ou expiradas devem ser rejeitadas com `HTTP 400`.
+13. **`CA-13` (Baixa Presencial de Reserva no Balcão):** *Dado que* o cliente apresenta o código localizador `CD-XXXX` na bilheteria, *quando* o atendente consulta a reserva e confirma o pagamento enquanto `reservation_expires_at` for futuro, *então* a reserva deve mudar para `CONFIRMED` e os assentos para `SOLD`; reservas não pendentes ou expiradas devem ser rejeitadas com `HTTP 400`.
+14. **`CA-14` (Expiração Just-in-Time a 60 min da Sessão):** *Dado que* uma reserva `PENDING` possui `reservation_expires_at` igual ou anterior ao instante atual, *quando* o atendente tenta confirmar o pagamento ou o mapa de assentos é consultado, *então* a baixa presencial deve ser rejeitada com `HTTP 400` e o assento deve ser retornado como `AVAILABLE`, podendo ser reservado ou vendido para outro cliente.
+15. **`CA-15` (Catálogo Público e Comprovante de Ingresso):** *Dado que* existem filmes em cartaz com sessões futuras e ingressos vendidos, *quando* o espectador acessa o catálogo público ou o operador consulta um ingresso pelo identificador único, *então* (a) o catálogo deve listar os filmes em cartaz, permitir busca por título ou sinopse e filtro por gênero, exibindo a sinopse do filme; e (b) o comprovante deve retornar o identificador único do ingresso, o filme, a sala, o horário da sessão, a poltrona e o valor pago.
 
 ---
 
@@ -113,7 +114,7 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 | :---: | :--- | :--- | :--- |
 | **STK-01** | **Proprietários e Diretores de Redes de Cinema (Clientes B2B)** | Entrevistas de negócio e análise de TCO | `NEC-01`: Eliminar vendas duplas de poltronas, reduzir ociosidade por *no-show* e operar em modelo SaaS com isolamento total dos dados da empresa. |
 | **STK-02** | **Gerentes Operacionais de Cinema (`GERENTE`)** | Entrevistas e workshops de fluxo administrativo | `NEC-02`: Configurar facilmente salas (Clássica, IMAX, VIP), grade de filmes/sessões, equipe de atendentes e acompanhar a lotação em tempo real. |
-| **STK-03** | **Atendentes de Bilheteria Física (`ATENDENTE`)** | Observação de operação de guichê e prototipação | `NEC-03` e `NEC-08`: Vender ingressos em poucos cliques no mapa visual, localizar reservas web pelo código ou CPF rapidamente e cancelar com segurança. |
+| **STK-03** | **Atendentes de Bilheteria Física (`ATENDENTE`)** | Observação de operação de guichê e prototipação | `NEC-03` e `NEC-08`: Vender ingressos em poucos cliques no mapa visual, localizar reservas web pelo código localizador rapidamente e cancelar com segurança. |
 | **STK-04** | **Espectadores / Clientes Finais (`CLIENTE` B2C)** | Prototipação mobile/desktop e testes de usabilidade | `NEC-05`, `NEC-06` e `NEC-07`: Consultar horários pelo celular ou computador, escolher poltronas exatas no mapa da sala, receber voucher e cancelar online se necessário. |
 | **STK-05** | **Encarregado de Dados (DPO) e Auditoria Jurídica** | Análise normativa (LGPD Lei 13.709/2018 e ISO 27701) | `NEC-04`: Garantir criptografia forte de CPF, consentimento explícito, direito à anonimização (Art. 18) e trilha de auditoria imutável por 365 dias. |
 
@@ -123,7 +124,7 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 
 ### 5.2.1 Documento de arquitetura do sistema
 
-O **CineDoom** adota a arquitetura de **Monólito Modular em Next.js 14 (App Router)** fundamentada nos princípios de *Clean Architecture* (`ADR-001`), estruturada em cinco camadas lógicas com inversão de dependência e isolamento vertical por domínio (`src/features/*` e `src/modules/*`):
+O **CineDoom** adota a arquitetura de **Monólito Modular em Next.js 14 (App Router)** fundamentada nos princípios de *Clean Architecture* (`ADR-001`), estruturada em cinco camadas lógicas com inversão de dependência e isolamento vertical por domínio (`src/modules/*` e `src/shared/*`):
 
 1. **Camada de Apresentação e UI Reativa (`src/app/`, `src/components/`):** Combina *React Server Components* para carregamento rápido do catálogo e *Client Components* interativos para o fluxo de reserva em 4 etapas, mapa bidimensional de poltronas (`SeatingGrid` com polling de 2s) e painéis administrativos.
 2. **Camada de Controladores HTTP (`src/app/api/**/route.ts`):** Route Handlers tipados que extraem o contexto de sessão/tenant, validam payloads de entrada com schemas `Zod` e traduzem exceções de domínio em códigos HTTP semânticos (`200`, `201`, `400`, `401`, `403`, `404`, `409`, `422`).
@@ -136,7 +137,7 @@ O **CineDoom** adota a arquitetura de **Monólito Modular em Next.js 14 (App Rou
 A decomposição e estruturação do software são orientadas pelos fundamentos do **Domain-Driven Design (DDD)**, assegurando que as regras de negócio de exibição cinematográfica sejam refletidas diretamente no código:
 
 - **Linguagem Ubíqua (*Ubiquitous Language*):** Vocabulário unificado e compartilhado de forma inequívoca entre desenvolvedores, stakeholders e especificações técnicas. Termos como *Tenant* (cinema cliente), *SessionSeat* (poltrona alocada à sessão), *ReservationStatus* (`PENDING`, `CONFIRMED`, `CANCELLED`, `EXPIRED`), *Ticket* (`SOLD`) e *Double-booking* possuem significado rigoroso e idêntico no modelo de dados, no código TypeScript e nas regras de negócio.
-- **Contextos Delimitados (*Bounded Contexts*):** O sistema organiza-se em fronteiras de domínio verticalmente isoladas (`src/features/*`), onde cada módulo encapsula seus modelos e casos de uso específicos:
+- **Contextos Delimitados (*Bounded Contexts*):** O sistema organiza-se em fronteiras de domínio verticalmente isoladas (`src/modules/*`), onde cada módulo encapsula seus modelos e casos de uso específicos:
   - *Contexto de Bilheteria e Ocupação:* Focado na transacionalidade concorrente no guichê, mapa reativo de assentos e travas de venda presencial.
   - *Contexto de Reservas e Atendimento Web:* Responsável pela jornada do espectador, reserva antecipada e despacho de vouchers transacionais.
   - *Contexto de Catálogo e Programação:* Gestão de acervo de filmes, layout bidimensional de salas e prevenção de choques de grade.
@@ -362,7 +363,7 @@ flowchart LR
         UC3("Reservar Assentos Online e Emitir Voucher")
         UC4("Cancelar Reserva Voluntariamente (Web)")
         UC5("Vender Ingressos no Balcão (ACID)")
-        UC6("Localizar Reserva (Código/CPF) e Dar Baixa")
+        UC6("Localizar Reserva (Código Localizador) e Dar Baixa")
         UC7("Cancelar Ingresso com Auditoria Imutável")
         UC8("Gerenciar Filmes, Salas e Grade de Sessões")
         UC9("Gerenciar Atendentes e Monitorar Ocupação")
@@ -496,14 +497,14 @@ O banco relacional armazena exclusivamente a referência textual (`poster_url VA
 ## 5.3 Implementação e Integração
 
 ### 5.3.1 Padrões de codificação e engenharia adotados
-- **Estruturação Modular:** Organização em fatias de domínio (`src/features/{bilheteria,catalogo,governanca-lgpd,identidade,reserva,salas,sessoes}`) e utilitários compartilhados (`src/shared/`).
+- **Estruturação Modular:** Organização em fatias de domínio (`src/modules/{auth,backoffice,bilheteria,compradores,compliance,crypto,notificacoes,observability,ocupacao,portal,tenancy}`) e utilitários compartilhados (`src/shared/`).
 - **Convenções de Nomenclatura:** Arquivos em `kebab-case.ts`, componentes e classes em `PascalCase`, métodos e variáveis em `camelCase` e constantes globais em `UPPER_SNAKE_CASE`.
 - **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle: error`).
 - **Metodologia Test-Driven Development (TDD):** A equipe adotou a disciplina do desenvolvimento orientado a testes (*Test-Driven Development*), seguindo o ciclo iterativo **Red $\to$ Green $\to$ Refactor**, com ênfase prioritária nas regras de negócio críticas e transações de alta concorrência:
-  1. *Fase Red (Teste de Falha Inicial):* Antes de implementar as rotas e regras finais de negócio, os testes automatizados foram construídos para falhar intencionalmente, espelhando os critérios de aceite (`CA-01` a `CA-14`). Foram antecipadamente criados os testes de corrida concorrente com 50 threads disputando o mesmo assento e os 509 cenários de invasão *cross-tenant*.
+  1. *Fase Red (Teste de Falha Inicial):* Antes de implementar as rotas e regras finais de negócio, os testes automatizados foram construídos para falhar intencionalmente, espelhando os critérios de aceite (`CA-01` a `CA-15`). Foram antecipadamente criados os testes de corrida concorrente com 50 threads disputando o mesmo assento e os 500 cenários de invasão *cross-tenant*.
   2. *Fase Green (Implementação da Solução Mínima):* Desenvolveu-se a lógica de bloqueio pessimista (`SELECT FOR UPDATE`), ordenação determinística de chaves para prevenção de deadlocks e extensão multi-tenant no Prisma até atingir aprovação plena com sinal verde.
   3. *Fase Refactor (Otimização e Limpeza):* O código aprovado foi refatorado aplicando os princípios SOLID, eliminando duplicações e assegurando tipagem estrita sem introduzir regressões na suíte.
-  Essa prática resultou em uma base consolidada de **26 arquivos e 770 testes automatizados no Vitest**, permitindo refatorações contínuas com garantia estrita de integridade.
+  Essa prática resultou em uma base consolidada de **20 arquivos e 711 testes automatizados no Vitest**, permitindo refatorações contínuas com garantia estrita de integridade.
 
 ### 5.3.2 Plano de integração entre componentes (CI/CD)
 A integração contínua é executada automaticamente pelo **GitHub Actions** (`.github/workflows/ci.yml` e `deploy.yml`) a cada push ou Pull Request:
@@ -514,11 +515,11 @@ A integração contínua é executada automaticamente pelo **GitHub Actions** (`
 5. Compilação de produção (`pnpm build`) e promoção automática para a Vercel.
 
 ### 5.3.3 Registro de testes unitários e de integração
-A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizando **26 arquivos de teste e 770 testes automatizados passando com 100% de sucesso** em ~4,9 segundos:
+A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizando **20 arquivos de teste e 711 testes automatizados passando com 100% de sucesso** em ~10,6 segundos:
 - **Segurança e Isolamento Multi-Tenant (`security-cross-tenant-suite.test.ts` e `tenancy-isolation.test.ts`):** 509 testes verificando que nenhum tenant consegue ler, alterar ou apagar registros de outro cinema.
 - **Concorrência ACID com 50 Threads (`concurrency-acid-50-threads.test.ts`, `venda-atomica.test.ts` e `reserva-atomica.test.ts`):** Simulação de 50 requisições paralelas disputando o mesmo assento entre portal web e balcão, comprovando exatamente 1 aprovação e 49 rejeições `HTTP 409`.
 - **Criptografia e Conformidade LGPD (`cryptoservice.test.ts` e `compliance-anonymization.test.ts`):** 40 testes validando cifragem `AES-256-GCM`, busca `HMAC-SHA256`, validação Módulo 11 de CPF e expurgo irreversível *in-place*.
-- **Fluxos de Negócio e Interface (`booking-flow.test.ts`, `seating-grid.test.ts`, `users-management.test.ts`, `cancelamento-auditavel.test.ts`):** Validação completa de reservas, mapa 2D de poltronas, RBAC e triggers de auditoria.
+- **Fluxos de Negócio e Interface (`reserva-atomica.test.ts`, `seating-grid.test.ts`, `users-management.test.ts`, `cancelamento-auditavel.test.ts`):** Validação completa de reservas, mapa 2D de poltronas, RBAC e triggers de auditoria.
 
 ### ~~5.3.4 Rastreabilidade entre código e requisitos~~
 Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos normativos (ex.: `feat(auth): adicionar gerador aleatorio de CPF valido (Modulo 11)` e comentários `// Requisito: RF-07 | CA-01 | ADR-007`), permitindo auditoria imediata no histórico do Git.
@@ -537,19 +538,19 @@ A CineSoft Solutions distingue e aplica complementarmente as atividades de **Ver
 | **Foco Principal** | Conformidade técnica com as especificações, ADRs e regras de código | Adequação funcional e de usabilidade às reais necessidades dos cinemas e espectadores |
 | **Quando Ocorre** | Continuamente em cada commit e Pull Request | Ao final de cada Sprint e na homologação em produção com usuários reais |
 | **Quem Realiza** | Equipe de engenharia da CineSoft e pipeline automatizado (GitHub Actions) | Stakeholders, operadores de cinema-piloto e espectadores finais reais |
-| **Exemplos Aplicados no CineDoom** | Compilação TypeScript (`tsc`), linter `no-cycle` e execução dos **770 testes no Vitest** | Testes de aceitação (*UAT*) no ambiente `cinedoom.vercel.app` com cadastros e reservas reais |
+| **Exemplos Aplicados no CineDoom** | Compilação TypeScript (`tsc`), linter `no-cycle` e execução dos **711 testes no Vitest** | Testes de aceitação (*UAT*) no ambiente `cinedoom.vercel.app` com cadastros e reservas reais |
 
 #### Critérios Formais de Entrada e Saída de V&V (*Entry & Exit Criteria*)
 
 | Fase de V&V | Critérios de Entrada (*Entry Criteria*) | Critérios de Saída (*Exit Criteria*) |
 | :--- | :--- | :--- |
-| **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 770 testes passando, zero erros de linter/tipagem e cobertura de 100% nas regras críticas. |
+| **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 711 testes passando, zero erros de linter/tipagem e cobertura de 100% nas regras críticas. |
 | **2. Homologação em Staging** | Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. | Fluxos ponta a ponta (cadastro $\to$ reserva $\to$ baixa no balcão $\to$ painel gerencial) executados sem falhas. |
 | **3. Validação e Aceite em Produção (*UAT*)** | Ambiente de produção sincronizado na branch `main` com banco PostgreSQL ativo. | Operação validada por usuários externos reais sem ocorrência de *double-booking* ou erros HTTP 500. |
 
 ### 5.4.2 Critérios de aceitação por stakeholder
 - **Proprietário / Gerente (`STK-01`, `STK-02`):** Precisão matemática no painel de ocupação, bloqueio de sessões conflitantes e isolamento multi-tenant comprovado.
-- **Atendente de Bilheteria (`STK-03`):** Venda direta ou localização/baixa de reserva web por código ou CPF concluída em menos de 15 segundos de operação no guichê.
+- **Atendente de Bilheteria (`STK-03`):** Venda direta ou localização/baixa de reserva web pelo código localizador concluída em menos de 15 segundos de operação no guichê.
 - **Espectador (`STK-04`):** Experiência fluida em dispositivos móveis e desktop para filtrar filmes, visualizar todas as colunas do mapa da sala, reservar poltronas e consultar o voucher em *"Minhas Reservas"*.
 - **Encarregado de Dados / DPO (`STK-05`):** Criptografia de CPF (`HMAC-SHA256` + `AES-256-GCM`), consentimento LGPD com *timestamp*, anonimização *in-place* (Art. 18) e retenção da trilha de auditoria por 365 dias comprovadas em produção.
 
@@ -561,9 +562,9 @@ Todos os cenários de aceitação da Macroentrega 1 (`v1.0.0`) foram executados 
 | :---: | :---: | :--- | :--- | :---: |
 | **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco Supabase. | **Aprovado** |
 | **UAT-02** | `CA-09`, `CA-11` | Seleção de poltronas no mapa 2D (mobile e desktop), reserva atômica e geração de voucher. | 11 reservas confirmadas (múltiplos ingressos de R$ 30 a R$ 75) sem falhas de layout. | **Aprovado** |
-| **UAT-03** | `CA-01`, `CA-02` | Disputa simultânea de assentos e atualização visual do mapa por polling. | 20 assentos vendidos (`SOLD`) e 10 reservados (`RESERVED`) com zero venda dupla. | **Aprovado** |
+| **UAT-03** | `CA-01`, `CA-02` | Disputa simultânea de assentos e atualização do mapa por polling a cada 2 s. | 20 assentos vendidos (`SOLD`) e 10 reservados (`RESERVED`) com zero venda dupla. | **Aprovado** |
 | **UAT-04** | `CA-12` | Consulta de histórico em *"Minhas Reservas"* e cancelamento voluntário pelo cliente. | Liberação imediata das poltronas para `AVAILABLE` após cancelamento web. | **Aprovado** |
-| **UAT-05** | `CA-13`, `CA-14` | Busca de reserva no balcão por código/CPF, baixa para `SOLD` e expiração JIT a 60 min. | Conversão instantânea de reserva em ingresso emitido e liberação de vencidas. | **Aprovado** |
+| **UAT-05** | `CA-13`, `CA-14` | Busca de reserva no balcão por código localizador, baixa para `SOLD` e expiração JIT a 60 min. | Conversão instantânea de reserva em ingresso emitido e liberação de vencidas. | **Aprovado** |
 | **UAT-06** | `CA-03`, `CA-06` | Cancelamento de ingresso no guichê com justificativa e anonimização LGPD Art. 18. | Trigger PostgreSQL bloqueando deleção da auditoria e PII anonimizado *in-place*. | **Aprovado** |
 | **UAT-07** | `CA-04` | Tentativa de acesso *cross-tenant* a filmes, salas, sessões e reservas de outro cinema com operador autenticado no *Tenant A*. | Extensão de tenancy bloqueando 100% dos 500 cenários de intrusão, sem vazamento entre *tenants*. | **Aprovado** |
 | **UAT-08** | `CA-05` | Acesso de `ATENDENTE` e `CLIENTE` a rotas administrativas (`/admin/*` e `/api/admin/*`). | Middleware retornando `HTTP 403 Forbidden` em todas as tentativas, sem exposição de dados. | **Aprovado** |
@@ -573,7 +574,7 @@ Todos os cenários de aceitação da Macroentrega 1 (`v1.0.0`) foram executados 
 ### 5.4.4 Plano de transição/implantação do sistema e procedimento de rollback
 
 A transição para produção segue um protocolo automatizado e seguro:
-1. **Pré-Deploy e Migração:** Execução da pipeline no GitHub Actions validando `prisma migrate deploy` e os 770 testes antes de autorizar o build na Vercel.
+1. **Pré-Deploy e Migração:** Execução da pipeline no GitHub Actions validando `prisma migrate deploy` e os 711 testes antes de autorizar o build na Vercel.
 2. **Smoke Test Pós-Implantação:** Verificação imediata da rota de saúde (`/api/health`), carregamento do catálogo público e teste de autenticação em produção.
 3. **Procedimento Formal de Rollback (Tempo de Recuperação $< 5\text{ min}$):**
    - *Camada de Aplicação:* Caso qualquer anomalia P1 seja detectada após o deploy, o líder de DevOps aciona o recurso **Instant Rollback** no painel da Vercel (ou reverte o commit em `main`), restaurando o build imutável anterior em menos de 30 segundos sem tempo de inatividade (*zero-downtime*).

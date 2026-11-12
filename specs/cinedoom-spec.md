@@ -47,7 +47,7 @@ Para eliminar ambiguidades e conflitos terminológicos entre a documentação do
 | :---: | :--- | :---: | :--- | :--- |
 | **`STK-01`** | **Proprietários e Diretores de Redes de Cinema (Clientes B2B)** | Patrocinador / Negócio | Reduzir custos com taxas de bilheteria terceirizada, eliminar *overbooking* e ociosidade por *no-show* e operar em modelo SaaS com isolamento total dos dados da empresa. | Entrevistas de negócio e análise de TCO. |
 | **`STK-02`** | **Gerentes Operacionais de Cinema (`GERENTE`)** | Operacional / Decisor | Configurar salas (Clássica, IMAX, VIP), grade de filmes/sessões e equipe de atendentes, além de acompanhar a lotação em tempo real. | Entrevistas e workshops de fluxo administrativo. |
-| **`STK-03`** | **Atendentes de Bilheteria Física (`ATENDENTE`)** | Operacional | Vender ingressos em poucos cliques no mapa visual, localizar reservas web pelo código ou CPF rapidamente e cancelar com segurança. | Observação direta do ambiente de guichê e prototipação de tela. |
+| **`STK-03`** | **Atendentes de Bilheteria Física (`ATENDENTE`)** | Operacional | Vender ingressos em poucos cliques no mapa visual, localizar reservas web pelo código localizador rapidamente e cancelar com segurança. | Observação direta do ambiente de guichê e prototipação de tela. |
 | **`STK-04`** | **Espectadores / Clientes Finais (`CLIENTE` B2C)** | Usuário Final | Consultar horários pelo celular ou computador, escolher poltronas exatas no mapa da sala, receber voucher e cancelar online se necessário. | Prototipação navegável e testes de usabilidade mobile/desktop. |
 | **`STK-05`** | **Encarregado de Dados (DPO) e Auditoria Jurídica** | Regulatório / Legal | Garantir criptografia forte de CPF, consentimento explícito, direito à anonimização (Art. 18 da LGPD) e trilha de auditoria imutável por 365 dias. | Análise normativa (LGPD Lei nº 13.709/2018 e ISO/IEC 27701). |
 
@@ -62,7 +62,7 @@ Para eliminar ambiguidades e conflitos terminológicos entre a documentação do
 | **`NEC-05`** | `STK-04` | Consultar horários de filmes e sessões pelo celular ou computador. | `RF-12`, `RF-13`, `RN-03` |
 | **`NEC-06`** | `STK-04` | Escolher poltronas exatas no mapa da sala e garantir a reserva com antecedência. | `RF-13`, `RF-14`, `RN-01`, `RN-03` |
 | **`NEC-07`** | `STK-04` | Receber o voucher da reserva e cancelar online se necessário. | `RF-15`, `RF-16`, `RN-04` |
-| **`NEC-08`** | `STK-03` | Localizar reservas web pelo código localizador ou CPF rapidamente e cancelar com segurança no guichê. | `RF-17`, `RF-18`, `RN-03`, `RN-04` |
+| **`NEC-08`** | `STK-03` | Localizar reservas web pelo código localizador rapidamente e cancelar com segurança no guichê. | `RF-17`, `RF-18`, `RN-03`, `RN-04` |
 
 ---
 
@@ -111,7 +111,7 @@ As Histórias de Usuário descrevem os fluxos sob a ótica de valor para cada at
   * *Requisitos vinculados:* `RF-16` | *Regras:* `RN-04` | *Critérios:* `CA-12`.
 
 * **`HU-11` (equiv. `US-11`) — Localização e Baixa Presencial de Reserva no Balcão:**
-  * **Como** Atendente (`STK-03`), **quero** buscar reservas ativas pelo código localizador ou pelo CPF do cliente na bilheteria e registrar o pagamento presencial, **para que** a reserva seja convertida em venda confirmada (`SOLD`) com emissão do ingresso.
+  * **Como** Atendente (`STK-03`), **quero** buscar reservas ativas pelo código localizador na bilheteria e registrar o pagamento presencial, **para que** a reserva seja convertida em venda confirmada (`SOLD`) com emissão do ingresso.
   * *Requisitos vinculados:* `RF-17`, `RF-18` | *Regras:* `RN-03`, `RN-04` | *Critérios:* `CA-13`, `CA-14`.
 
 ---
@@ -129,16 +129,16 @@ Os Requisitos Funcionais estão numerados de `RF-01` a `RF-18` em **estrita pari
 | **`RF-05`** | Agendar e publicar sessões cinematográficas | Retaguarda (Gerente) | O sistema deve permitir ao Gerente criar sessões vinculando um filme, uma sala, data/hora de início e preço do ingresso, pré-populando os registros de assentos da sessão (`SessionSeat`). | *Must Have* | `RN-05`, `RN-06`, `RN-12` | `HU-04` / `CA-08` |
 | **`RF-06`** | Consultar disponibilidade de assentos com polling de 2s | Bilheteria & Portal | O sistema deve exibir o mapa bidimensional de assentos da sessão e atualizar seu estado (`AVAILABLE`, `RESERVED`, `SOLD`, `BLOCKED`) automaticamente a cada 2 segundos via *polling* HTTP. | *Must Have* | `RN-02`, `RN-04` | `HU-01`, `HU-05` / `CA-02`, `CA-14` |
 | **`RF-07`** | Registrar venda de ingresso presencial com trava ACID | Bilheteria (Atendente) | O sistema deve processar a venda presencial de um ou mais assentos no balcão utilizando transação atômica com trava pessimista (`SELECT FOR UPDATE`), alterando o status para `SOLD`; a emissão do comprovante é tratada em `RF-08`. | *Must Have* | `RN-01`, `RN-10` | `HU-01` / `CA-01` |
-| **`RF-08`** | Emitir comprovante operacional de ingresso | Bilheteria (Atendente) | O sistema deve emitir, ao concluir a venda presencial, um comprovante operacional contendo código identificador único do ingresso, filme, sala, data/hora, poltronas e valor pago. | *Must Have* | `RN-01`, `RN-12` | `HU-01` / `CA-01` |
+| **`RF-08`** | Emitir comprovante operacional de ingresso | Bilheteria (Atendente) | O sistema deve emitir, ao concluir a venda presencial, um comprovante operacional contendo código identificador único do ingresso, filme, sala, data/hora, poltronas e valor pago. | *Must Have* | `RN-01`, `RN-12` | `HU-01` / `CA-15` |
 | **`RF-09`** | Cancelar ingresso e liberar assento com auditoria imutável | Bilheteria (Atendente) | O sistema deve permitir o cancelamento síncrono de um ingresso vendido antes do início da sessão, exigindo justificativa textual, gravando registro imutável na tabela de auditoria (*append-only*) e revertendo o assento para `AVAILABLE`. | *Must Have* | `RN-07`, `RN-12` | `HU-02` / `CA-03` |
 | **`RF-10`** | Proteger dados pessoais de compradores conforme a LGPD | Segurança / LGPD | O sistema deve proteger os dados de compradores e clientes aplicando hash determinístico `HMAC-SHA256` ao CPF para buscas exatas, cifragem autenticada `AES-256-GCM` para armazenamento e função de anonimização *in-place* (*Art. 18 LGPD*). | *Must Have* | `RN-10`, `RN-11` | `HU-01`, `HU-07` / `CA-06` |
 | **`RF-11`** | Monitorar ocupação e emitir trilha de auditoria (Axiom) | Retaguarda / Observabilidade | O sistema deve disponibilizar um dashboard gerencial com a capacidade total, os assentos vendidos/reservados e o percentual de lotação por sessão/sala, além de emitir logs estruturados em JSON para as operações críticas (vendas, reservas, cancelamentos e falhas de autenticação), com *Log Drain* para retenção de 365 dias no Axiom. | *Must Have* | `RN-07`, `RN-08`, `RN-11`, `RN-12` | `HU-02`, `HU-03`, `HU-09` / `CA-03`, `CA-07`, `CA-11` |
-| **`RF-12`** | Consultar programação e sessões no Portal do Cliente | Portal do Cliente | O sistema deve apresentar publicamente o catálogo de filmes em cartaz com filtros por data (7 dias da semana), formato de sala (IMAX, VIP, Clássica) e busca textual por título/sinopse. | *Must Have* | `RN-02`, `RN-04` | `HU-08` / `CA-02`, `CA-09` |
+| **`RF-12`** | Consultar programação e sessões no Portal do Cliente | Portal do Cliente | O sistema deve apresentar publicamente o catálogo de filmes em cartaz com busca por título/sinopse, filtro por gênero e exibição da sinopse do filme. | *Must Have* | `RN-02`, `RN-04` | `HU-08` / `CA-15` |
 | **`RF-13`** | Reservar assento online com trava atômica temporária | Portal do Cliente | O sistema deve permitir ao espectador reservar assentos disponíveis na sessão com trava atômica (`SELECT FOR UPDATE`), atribuindo status `RESERVED` e gerando código localizador único (`CD-XXXX`). | *Must Have* | `RN-01`, `RN-03`, `RN-04` | `HU-08` / `CA-09` |
 | **`RF-14`** | Cadastrar e autenticar cliente com consentimento LGPD | Portal do Cliente | O sistema deve permitir o autocadastro de espectadores no portal com validação de CPF, e-mail, senha segura e coleta obrigatória do termo de consentimento LGPD com carimbo de tempo (*timestamp*). | *Must Have* | `RN-09`, `RN-10` | `HU-07` / `CA-06`, `CA-10` |
 | **`RF-15`** | Despachar voucher de reserva via e-mail transacional | Notificações / Portal | O sistema deve enviar automaticamente um e-mail transacional após a confirmação da reserva contendo o código localizador, dados da sessão, poltronas e horário limite para pagamento presencial, registrando `email_sent_at`. | *Must Have* | `RN-03`, `RN-04` | `HU-09` / `CA-11` |
 | **`RF-16`** | Cancelar reserva pelo próprio cliente via web | Portal do Cliente | O sistema deve permitir ao cliente autenticado consultar a área *"Minhas Reservas"* e cancelar voluntariamente reservas pendentes (`PENDING`), liberando os assentos para `AVAILABLE` imediatamente. | *Must Have* | `RN-04` | `HU-10` / `CA-12` |
-| **`RF-17`** | Localizar e dar baixa em reserva presencial no balcão | Bilheteria (Atendente) | O sistema deve permitir ao Atendente localizar reservas ativas pelo código localizador ou CPF do cliente e confirmar o pagamento presencial, convertendo a reserva em ingresso vendido (`SOLD`). | *Must Have* | `RN-03`, `RN-04` | `HU-11` / `CA-13` |
+| **`RF-17`** | Localizar e dar baixa em reserva presencial no balcão | Bilheteria (Atendente) | O sistema deve permitir ao Atendente localizar reservas ativas pelo código localizador e confirmar o pagamento presencial, convertendo a reserva em ingresso vendido (`SOLD`). | *Must Have* | `RN-03`, `RN-04` | `HU-11` / `CA-13` |
 | **`RF-18`** | Expirar reservas não pagas a 1 hora do início da sessão | Bilheteria & Portal | O sistema deve expirar dinamicamente (*Just-in-Time*) reservas pendentes cujo pagamento presencial não tenha sido confirmado até 60 minutos antes do início da sessão, liberando os assentos para venda no balcão. | *Must Have* | `RN-03`, `RN-04` | `HU-11` / `CA-14` |
 
 ---
@@ -167,10 +167,10 @@ As Regras de Negócio definem as políticas de domínio cinematográfico, restri
 | **`RN-01`** | Exclusividade e Atomicidade de Assento por Sessão | Cada poltrona de uma sessão (`SessionSeat`) pode estar associada a no máximo um ingresso ativo (`SOLD`) ou uma reserva ativa (`RESERVED`). Em caso de disputa concorrente pelo mesmo assento, apenas a primeira transação que adquirir o bloqueio `SELECT FOR UPDATE` será efetivada, retornando erro `HTTP 409 Conflict` para as demais. | `RF-07`, `RF-13`, `RNF-02` | `CA-01`, `CA-09` |
 | **`RN-02`** | Máquina de Estados do Assento na Sessão | Um assento em uma sessão transita exclusivamente pelos estados: `AVAILABLE` (livre para venda ou reserva), `RESERVED` (bloqueado temporariamente por reserva web pendente), `SOLD` (vendido definitivamente na bilheteria ou após baixa de reserva) e `BLOCKED` (interditado para manutenção). | `RF-06`, `RF-07`, `RF-09`, `RF-13`, `RF-16`, `RF-17`, `RF-18` | `CA-01`, `CA-02`, `CA-09`, `CA-12`, `CA-13`, `CA-14` |
 | **`RN-03`** | Antecedência Mínima para Reserva Online (60 Minutos) | Reservas online através do Portal do Cliente só são permitidas quando faltarem **60 minutos ou mais** para o horário de início da sessão (`startsAt`). Quando faltar menos de 60 minutos, a venda ocorre exclusivamente de forma presencial na bilheteria. | `RF-13`, `RF-15`, `RF-17` | `CA-09`, `CA-11`, `CA-13` |
-| **`RN-04`** | Expiração Automática Just-in-Time de Reservas Não Pagas | Toda reserva online com status `PENDING` deve ter seu pagamento presencial confirmado na bilheteria até **60 minutos antes do início da sessão**. Caso não seja confirmada até esse limite, a reserva passa automaticamente ao estado `EXPIRED` em tempo de execução (*Just-in-Time*) e suas poltronas voltam imediatamente ao estado `AVAILABLE`. | `RF-06`, `RF-16`, `RF-17`, `RF-18` | `CA-12`, `CA-13`, `CA-14` |
+| **`RN-04`** | Expiração Automática Just-in-Time de Reservas Não Pagas | Toda reserva online com status `PENDING` deve ter seu pagamento presencial confirmado na bilheteria até **60 minutos antes do início da sessão**. Caso não seja confirmada até esse limite, a reserva é considerada expirada em tempo de execução (*Just-in-Time*) e suas poltronas voltam imediatamente ao estado `AVAILABLE`. | `RF-06`, `RF-16`, `RF-17`, `RF-18` | `CA-12`, `CA-13`, `CA-14` |
 | **`RN-05`** | Integridade do Catálogo e Proteção contra Exclusão Indevida | Um filme só pode ser cadastrado com título e duração positiva ($\ge 1\text{ min}$). Não é permitido excluir um filme ou uma sala que possua sessões cinematográficas vinculadas, nem excluir uma sessão que possua ingressos vendidos. | `RF-03`, `RF-04`, `RF-05` | `CA-08` |
 | **`RN-06`** | Prevenção de Conflito de Horários de Sala e Pré-População | Duas sessões não podem ser agendadas na mesma sala se houver sobreposição entre seus intervalos de exibição (considerando `startsAt` + duração do filme). Ao criar uma sessão, todos os assentos da sala devem ser pré-populados na tabela `session_seats` com status inicial `AVAILABLE`. | `RF-04`, `RF-05` | `CA-08` |
-| **`RN-07`** | Auditoria Imutável de Cancelamento (Append-Only) | Nenhum ingresso vendido (`SOLD`) pode ser cancelado sem o preenchimento de um motivo válido ($\ge 5\text{ caracteres}$) e identificação do operador executante. O registro em `auditoria_cancelamentos` é protegido por *trigger* PostgreSQL que bloqueia operações de `UPDATE` e `DELETE`. | `RF-09`, `RF-11` | `CA-03` |
+| **`RN-07`** | Auditoria Imutável de Cancelamento (Append-Only) | Nenhum ingresso vendido (`SOLD`) pode ser cancelado sem o preenchimento de um motivo válido ($\ge 5\text{ caracteres}$) e identificação do operador executante. O registro em `cancellation_audits` é protegido por *trigger* PostgreSQL que bloqueia operações de `UPDATE` e `DELETE`. | `RF-09`, `RF-11` | `CA-03` |
 | **`RN-08`** | Controle de Acesso Baseado em Papéis (RBAC) | Operações de configuração de retaguarda (gestão de filmes, salas, sessões, operadores, anonimização LGPD e painel gerencial de ocupação) são restritas ao perfil `GERENTE`. O perfil `ATENDENTE` opera exclusivamente nas rotas de bilheteria e baixa de reservas, e o perfil `CLIENTE` opera exclusivamente nas rotas do portal público e de suas próprias reservas. | `RF-01`, `RF-02`, `RF-11` | `CA-05`, `CA-07` |
 | **`RN-09`** | Segurança de Credenciais e Proteção contra Auto-Desativação | Todas as senhas de usuários devem possuir no mínimo 6 caracteres e ser persistidas exclusivamente sob hash `bcrypt` (custo 12). Um usuário com perfil `GERENTE` não pode inativar a própria conta autenticada (*Self-Inactivation Prevention*), e operadores inativados perdem acesso imediatamente. | `RF-01`, `RF-02`, `RF-14` | `CA-05`, `CA-10` |
 | **`RN-10`** | Criptografia em Dupla Camada e Consentimento LGPD | Para todo comprador ou cliente cadastrado, é obrigatório registrar o aceite explícito de tratamento de dados (`lgpd_consent = true` e `consent_at`). O CPF jamais é salvo em texto claro: armazena-se um *blind index* `HMAC-SHA256` para busca exata e o valor cifrado em `AES-256-GCM` para exibição autorizada. | `RF-07`, `RF-10`, `RF-14`, `RNF-03` | `CA-06`, `CA-10` |
@@ -179,65 +179,69 @@ As Regras de Negócio definem as políticas de domínio cinematográfico, restri
 
 ---
 
-## 7. Critérios de Aceite (`CA-01` a `CA-14`) — Seção 5.1.3
+## 7. Critérios de Aceite (`CA-01` a `CA-15`) — Seção 5.1.3
 
-Os Critérios de Aceite (anteriormente referenciados nos testes como `AC-1` a `AC-14`) especificam as condições formais de verificação em formato **Dado que / Quando / Então**:
+Os Critérios de Aceite (anteriormente referenciados nos testes como `AC-1` a `AC-15`) especificam as condições formais de verificação em formato **Dado que / Quando / Então**:
 
 * **`CA-01` (equiv. `AC-1`) — Venda Atômica sem Double-Booking:**
   * **Dado que** dois terminais tentam vender o mesmo assento na mesma sessão simultaneamente, **quando** ambas as requisições de venda são processadas em paralelo, **então** apenas uma deve ter sucesso (`HTTP 201`, status `SOLD`) e a outra deve receber erro de conflito (`HTTP 409`) sem corrupção de estado, garantido por `SELECT FOR UPDATE` em transação Prisma.
   * *Rastreabilidade:* `RF-07`, `RF-08`, `RN-01`, `RNF-02` | `@test:tests/unit/venda-atomica.test.ts`
 
 * **`CA-02` (equiv. `AC-2`) — Atualização do Mapa de Assentos em até 2 Segundos:**
-  * **Dado que** o mapa de assentos de uma sessão está aberto na bilheteria ou no portal, **quando** ocorre uma venda, reserva ou cancelamento de poltrona, **então** o mapa deve refletir a mudança de disponibilidade em no máximo 2 segundos via *polling* do endpoint `GET /api/sessoes/[id]/assentos` a cada `2000ms`.
+  * **Dado que** o mapa de assentos de uma sessão está aberto na bilheteria ou no portal, **quando** o status de um assento muda para `RESERVED`, `SOLD` ou `AVAILABLE`, **então** o sistema deve consultar `GET /api/sessoes/[id]/assentos` a cada `2000ms` e a resposta da consulta seguinte deve refletir o novo status em até 2 segundos.
   * *Rastreabilidade:* `RF-06`, `RN-02`, `RNF-01` | `@test:tests/unit/session-seats-polling.test.ts`
 
 * **`CA-03` (equiv. `AC-3`) — Trilha Imutável de Auditoria de Cancelamento:**
-  * **Dado que** um ingresso vendido precisa ser cancelado pelo atendente, **quando** o cancelamento é submetido com o motivo, **então** o sistema deve persistir um registro imutável na tabela `auditoria_cancelamentos` contendo `ticket_id`, `user_id` executante, `timestamp` UTC, `tenant_id` e motivo informado, antes de liberar o assento para `AVAILABLE`.
-  * *Rastreabilidade:* `RF-09`, `RF-11`, `RN-07` | `@test:tests/unit/cancelamento-auditavel.test.ts`
+  * **Dado que** um ingresso vendido precisa ser cancelado pelo atendente, **quando** o cancelamento é submetido com o motivo, **então** o sistema deve persistir um registro imutável na tabela `cancellation_audits` contendo `ticket_id`, `user_id` executante, `timestamp` UTC, `tenant_id` e motivo informado, antes de liberar o assento para `AVAILABLE`.
+  * *Rastreabilidade:* `RF-09`, `RF-11`, `RN-07` | `@test:tests/unit/cancelamento-auditavel.test.ts`, `tests/unit/database-schema.test.ts`
 
 * **`CA-04` (equiv. `AC-4`) — Isolamento Multi-Tenant Obrigatório na Camada de Dados:**
   * **Dado que** múltiplas redes de cinema utilizam a plataforma, **quando** qualquer query ao banco de dados acessa entidades de negócio (filmes, salas, sessões, ingressos, compradores, reservas), **então** o middleware do Prisma Client deve injetar obrigatoriamente o filtro `WHERE tenant_id = :tenantId`, bloqueando vazamento de dados entre *tenants*.
   * *Rastreabilidade:* `RNF-03`, `RN-12` | `@test:tests/unit/tenancy-isolation.test.ts`
 
-* **`CA-05` (equiv. `AC-5`) — Restrição de Acesso por Papel (RBAC):**
-  * **Dado que** um usuário está autenticado com perfil `ATENDENTE` ou `CLIENTE`, **quando** ele tenta acessar rotas administrativas do Back-Office (gestão de filmes, salas, sessões ou operadores), **então** o sistema deve negar a operação retornando `HTTP 403 Forbidden`, permitindo acesso total apenas ao perfil `GERENTE` do respectivo *tenant*.
-  * *Rastreabilidade:* `RF-01`, `RF-02`, `RN-08`, `RN-09` | `@test:tests/unit/auth-rbac.test.ts`
+* **`CA-05` (equiv. `AC-5`) — Controle de Acesso RBAC e Gestão de Operadores:**
+  * **Dado que** um usuário autenticado possui perfil `ATENDENTE` ou `CLIENTE`, **quando** ele tenta acessar rotas administrativas do Back-Office (gestão de filmes, salas, sessões ou operadores), **então** o sistema deve responder `HTTP 403 Forbidden`, permitindo acesso total apenas ao perfil `GERENTE` do respectivo *tenant*; **dado que** o `GERENTE` gerencia operadores do próprio cinema, **quando** cria, lista, atualiza ou inativa um atendente, **então** a operação deve ser persistida e a inativação deve revogar o acesso do operador, retornando `HTTP 403` nas APIs e redirecionando ao login nas páginas.
+  * *Rastreabilidade:* `RF-01`, `RF-02`, `RN-08`, `RN-09` | `@test:tests/unit/auth-rbac.test.ts`, `tests/unit/users-management.test.ts`
 
-* **`CA-06` (equiv. `AC-6`) — Proteção Criptográfica de CPF e Consentimento LGPD:**
-  * **Dado que** um comprador ou cliente é registrado no ato da compra ou reserva, **quando** seus dados pessoais são persistidos, **então** o sistema deve gravar nome, e-mail, CPF com hash `HMAC-SHA256` para busca e valor cifrado `AES-256-GCM` para exibição, além do consentimento LGPD com `timestamp` UTC.
-  * *Rastreabilidade:* `RF-10`, `RN-10`, `RN-11`, `RNF-03` | `@test:tests/unit/cryptoservice.test.ts`
+* **`CA-06` (equiv. `AC-6`) — Proteção Criptográfica de CPF e Anonimização LGPD:**
+  * **Dado que** um comprador ou cliente é registrado no ato da compra ou cadastro, **quando** seus dados pessoais são persistidos, **então** o CPF não deve ser armazenado em texto puro, sendo gravado como hash `HMAC-SHA256` (`cpf_hash`) e valor cifrado `AES-256-GCM` (`cpf_encrypted`); **quando** a anonimização é solicitada pelo titular, **então** nome, e-mail e CPF cifrado devem ser sobrescritos *in-place*, `anonymized_at` preenchido, os vínculos com os ingressos preservados e uma segunda solicitação rejeitada.
+  * *Rastreabilidade:* `RF-10`, `RN-10`, `RN-11`, `RNF-03` | `@test:tests/unit/cryptoservice.test.ts`, `tests/unit/compliance-anonymization.test.ts`
 
-* **`CA-07` (equiv. `AC-7`) — Cálculo e Isolamento do Painel Gerencial de Ocupação:**
-  * **Dado que** o Gerente acessa o painel de ocupação do dia, **quando** os indicadores são carregados, **então** o sistema deve exibir para cada sessão do dia corrente o percentual exato de assentos vendidos e reservados sobre a capacidade total da sala, exibindo exclusivamente dados do `tenant_id` do gerente autenticado.
-  * *Rastreabilidade:* `RF-11`, `RN-08`, `RN-12` | `@test:tests/unit/session-seats-polling.test.ts`
+* **`CA-07` (equiv. `AC-7`) — Painel de Ocupação e Trilha de Logs Estruturados:**
+  * **Dado que** uma sessão possui assentos vendidos, reservados, bloqueados e livres e que operações críticas são executadas, **quando** o `GERENTE` consulta o painel de ocupação, **então** o sistema deve exibir as contagens por status e o percentual de ocupação calculado como `(vendidos ÷ capacidade) × 100`, arredondado a uma casa decimal; e, para cada operação crítica efetivamente executada (venda, cancelamento, conflito ACID, violação de segurança, autenticação e anonimização), emitir log estruturado em JSON contendo `tenant_id`, `user_id`, timestamp UTC e identificador do recurso, com retenção de 365 dias no Axiom.
+  * *Rastreabilidade:* `RF-11`, `RN-08`, `RN-12`, `RNF-03` | `@test:tests/unit/security-cross-tenant-suite.test.ts`, `tests/unit/observability-logger.test.ts`
 
 * **`CA-08` (equiv. `AC-8`) — Gestão Validada de Catálogo, Salas e Sessões pelo Gerente:**
-  * **Dado que** um usuário com perfil `GERENTE` gerencia a programação, **quando** ele cria, edita ou lista filmes, salas com layout de assentos e sessões cinematográficas, **então** o sistema deve validar todos os campos obrigatórios (`HTTP 422` se ausentes), impedir conflitos de horário na mesma sala e pré-popular os assentos da sessão.
-  * *Rastreabilidade:* `RF-03`, `RF-04`, `RF-05`, `RN-05`, `RN-06` | `@test:tests/unit/catalog-filmes.test.ts`
+  * **Dado que** um usuário com perfil `GERENTE` gerencia a programação, **quando** ele cria, edita ou lista filmes, salas com layout de assentos e sessões cinematográficas, **então** o sistema deve rejeitar com `HTTP 422` qualquer campo obrigatório ausente, rejeitar com `HTTP 409` sessões com sobreposição de horário na mesma sala e pré-popular os assentos da sessão (`SessionSeat`) com status inicial `AVAILABLE`.
+  * *Rastreabilidade:* `RF-03`, `RF-04`, `RF-05`, `RN-05`, `RN-06` | `@test:tests/unit/catalog-filmes.test.ts`, `tests/unit/rooms-layout.test.ts`, `tests/unit/sessions-prepopulation.test.ts`
 
 * **`CA-09` (equiv. `AC-9`) — Reserva Atômica Online e Validação de Antecedência (60 min):**
   * **Dado que** um espectador solicita uma reserva no Portal do Cliente, **quando** faltam 60 minutos ou mais para a sessão e o assento está `AVAILABLE`, **então** o sistema deve executar transação atômica alterando o assento para `RESERVED` com o `reservation_id` associado, e deve rejeitar a operação caso falte menos de 60 minutos para o início da sessão.
   * *Rastreabilidade:* `RF-12`, `RF-13`, `RN-01`, `RN-02`, `RN-03` | `@test:tests/integration/reserva-atomica.test.ts`
 
 * **`CA-10` (equiv. `AC-10`) — Cadastro Seguro e Autenticação do Cliente Final:**
-  * **Dado que** um novo espectador realiza cadastro no Portal do Cliente, **quando** ele submete dados válidos e aceite da LGPD, **então** o sistema deve persistir credenciais seguras (senha com hash `bcrypt`) com perfil `CLIENTE` e dados PII criptografados, habilitando login e sessão autenticada no portal.
-  * *Rastreabilidade:* `RF-01`, `RF-14`, `RN-09`, `RN-10` | `@test:tests/unit/users-management.test.ts`
+  * **Dado que** um novo espectador realiza cadastro no Portal do Cliente, **quando** ele submete dados válidos e aceite da LGPD, **então** o sistema deve persistir credenciais seguras (senha com hash `bcrypt`), gravar o CPF como `HMAC-SHA256` + `AES-256-GCM`, preencher `lgpd_consent_at` e autenticar a sessão com perfil `CLIENTE`.
+  * *Rastreabilidade:* `RF-01`, `RF-14`, `RN-09`, `RN-10` | `@test:tests/unit/cryptoservice.test.ts`, `tests/unit/auth-rbac.test.ts`
 
-* **`CA-11` (equiv. `AC-11`) — Emissão de Voucher e Disparo de E-mail Transacional:**
-  * **Dado que** uma reserva online foi confirmada com sucesso, **quando** a transação é concluída, **então** o sistema deve despachar um e-mail transacional contendo o código identificador único (`CD-XXXX`), data/hora da sessão, sala, assentos e prazo limite para pagamento presencial, gravando o carimbo de tempo em `email_sent_at`.
-  * *Rastreabilidade:* `RF-11`, `RF-15`, `RN-03` | `@test:tests/unit/observability-logger.test.ts`
+* **`CA-11` (equiv. `AC-11`) — Voucher Digital com Localizador Único:**
+  * **Dado que** uma reserva web é concluída, **então** o sistema deve gerar o voucher digital com código localizador `CD-XXXX` e disponibilizá-lo em `GET /api/portal/reservas/{id}` e na página `/portal/reservas/{id}/comprovante`, contendo filme, sala, data e horário da sessão, assentos e valor total, com instruções para pagamento presencial.
+  * *Rastreabilidade:* `RF-15`, `RN-03`, `RN-04` | `@test:tests/integration/reserva-atomica.test.ts`
 
 * **`CA-12` (equiv. `AC-12`) — Cancelamento Voluntário de Reserva pelo Espectador:**
-  * **Dado que** o cliente autenticado possui uma reserva com status `PENDING`, **quando** ele solicita o cancelamento voluntário na área *"Minhas Reservas"*, **então** o sistema deve atualizar o status da reserva para `CANCELLED` e liberar imediatamente as poltronas associadas para o status `AVAILABLE`.
-  * *Rastreabilidade:* `RF-16`, `RN-02`, `RN-04` | `@test:tests/integration/reserva-atomica.test.ts`
+  * **Dado que** o cliente autenticado possui uma reserva com status `PENDING` e `reservation_expires_at` futuro, **quando** ele solicita o cancelamento voluntário na área *"Minhas Reservas"*, **então** o sistema deve atualizar o status da reserva para `CANCELLED` e liberar imediatamente as poltronas associadas para `AVAILABLE`; reservas não pendentes ou expiradas devem ser rejeitadas com `HTTP 400`.
+  * *Rastreabilidade:* `RF-16`, `RN-02`, `RN-04` | `@test:não automatizado (UAT-04)`
 
-* **`CA-13` (equiv. `AC-13`) — Localização e Conversão de Reserva em Venda no Balcão:**
-  * **Dado que** um cliente comparece à bilheteria dentro do prazo de validade da reserva, **quando** o atendente localiza a reserva pelo código localizador ou CPF e confirma o pagamento presencial, **então** o sistema deve converter a reserva em ingresso vendido (`SOLD`), gerando o registro de `Ticket` vinculado ao atendente operador.
-  * *Rastreabilidade:* `RF-17`, `RN-02`, `RN-03` | `@test:tests/integration/reserva-atomica.test.ts`
+* **`CA-13` (equiv. `AC-13`) — Baixa Presencial de Reserva no Balcão:**
+  * **Dado que** o cliente apresenta o código localizador `CD-XXXX` na bilheteria, **quando** o atendente consulta a reserva e confirma o pagamento enquanto `reservation_expires_at` for futuro, **então** a reserva deve mudar para `CONFIRMED` e os assentos para `SOLD`, gerando os registros de `Ticket` vinculados ao atendente; reservas não pendentes ou expiradas devem ser rejeitadas com `HTTP 400`.
+  * *Rastreabilidade:* `RF-17`, `RN-02`, `RN-03` | `@test:não automatizado (UAT-05)`
 
-* **`CA-14` (equiv. `AC-14`) — Expiração Just-in-Time de Reservas Não Quitadas (60 min):**
-  * **Dado que** existe uma reserva com status `PENDING` não paga e faltam menos de 60 minutos para o início da sessão, **quando** o mapa de assentos é consultado ou uma venda de balcão é solicitada, **então** o sistema deve tratar a reserva como expirada (`EXPIRED`) em tempo de execução (*Just-in-Time*), liberando os assentos para venda imediata na bilheteria.
+* **`CA-14` (equiv. `AC-14`) — Expiração Just-in-Time a 60 min da Sessão:**
+  * **Dado que** uma reserva `PENDING` possui `reservation_expires_at` igual ou anterior ao instante atual, **quando** o atendente tenta confirmar o pagamento ou o mapa de assentos é consultado, **então** a baixa presencial deve ser rejeitada com `HTTP 400` e o assento deve ser retornado como `AVAILABLE`, podendo ser reservado ou vendido para outro cliente.
   * *Rastreabilidade:* `RF-06`, `RF-18`, `RN-02`, `RN-04` | `@test:tests/integration/reserva-atomica.test.ts`
+
+* **`CA-15` (equiv. `AC-15`) — Catálogo Público e Comprovante de Ingresso:**
+  * **Dado que** existem filmes em cartaz com sessões futuras e ingressos vendidos, **quando** o espectador acessa o catálogo público ou o operador consulta um ingresso pelo identificador único, **então** (a) o catálogo deve listar os filmes em cartaz, permitir busca por título ou sinopse e filtro por gênero, exibindo a sinopse do filme; e (b) o comprovante deve retornar o identificador único do ingresso, o filme, a sala, o horário da sessão, a poltrona e o valor pago.
+  * *Rastreabilidade:* `RF-08`, `RF-12`, `RN-01`, `RN-12` | `@test:tests/unit/cancelamento-auditavel.test.ts` (comprovante); catálogo público sem teste automatizado dedicado
 
 ---
 
@@ -267,14 +271,14 @@ A tabela abaixo consolida o vínculo bidirecional completo entre **Stakeholder $
 | **`RF-05`** | `STK-02` | `NEC-02` | `HU-04` | `RN-05`, `RN-06`, `RN-12` | `CA-08` | `CT-08`, `CT-13` | `tests/unit/sessions-prepopulation.test.ts` |
 | **`RF-06`** | `STK-03`, `STK-04` | `NEC-03` | `HU-01`, `HU-05` | `RN-02`, `RN-04` | `CA-02` | `CT-02`, `CT-10`, `CT-17` | `tests/unit/session-seats-polling.test.ts` |
 | **`RF-07`** | `STK-01`, `STK-03` | `NEC-01` | `HU-01` | `RN-01`, `RN-10` | `CA-01` | `CT-01`, `CT-09` | `tests/unit/venda-atomica.test.ts`, `tests/unit/concurrency-acid-50-threads.test.ts` |
-| **`RF-08`** | `STK-01`, `STK-03` | `NEC-01` | `HU-01` | `RN-01`, `RN-12` | `CA-01` | `CT-01`, `CT-09` | `tests/unit/venda-atomica.test.ts` |
+| **`RF-08`** | `STK-01`, `STK-03` | `NEC-01` | `HU-01` | `RN-01`, `RN-12` | `CA-15` | `CT-18` | `tests/unit/cancelamento-auditavel.test.ts` |
 | **`RF-09`** | `STK-01`, `STK-05` | `NEC-04` | `HU-02` | `RN-07`, `RN-12` | `CA-03` | `CT-03`, `CT-11`, `CT-18` | `tests/unit/cancelamento-auditavel.test.ts` |
 | **`RF-10`** | `STK-05` | `NEC-04` | `HU-01`, `HU-07` | `RN-10`, `RN-11` | `CA-06` | `CT-06`, `CT-14` | `tests/unit/cryptoservice.test.ts`, `tests/unit/compliance-anonymization.test.ts` |
 | **`RF-11`** | `STK-02`, `STK-05` | `NEC-02`, `NEC-04` | `HU-02`, `HU-03`, `HU-09` | `RN-07`, `RN-08`, `RN-11`, `RN-12` | `CA-03`, `CA-07`, `CA-11` | `CT-03`, `CT-07`, `CT-15`, `CT-23` | `tests/unit/observability-logger.test.ts`, `tests/unit/session-seats-polling.test.ts`, `tests/unit/security-cross-tenant-suite.test.ts` |
-| **`RF-12`** | `STK-04` | `NEC-05` | `HU-08` | `RN-02`, `RN-04` | `CA-02`, `CA-09` | `CT-02`, `CT-21` | `tests/unit/film-modal-sessions.test.ts` |
+| **`RF-12`** | `STK-04` | `NEC-05` | `HU-08` | `RN-02`, `RN-04` | `CA-15` | `CT-21` | Não automatizado (catálogo público; lacuna declarada) |
 | **`RF-13`** | `STK-04` | `NEC-01`, `NEC-06` | `HU-08` | `RN-01`, `RN-03`, `RN-04` | `CA-09` | `CT-21` | `tests/integration/reserva-atomica.test.ts` |
 | **`RF-14`** | `STK-04`, `STK-05` | `NEC-04`, `NEC-06` | `HU-07` | `RN-09`, `RN-10` | `CA-06`, `CA-10` | `CT-06`, `CT-22` | `tests/unit/users-management.test.ts` |
-| **`RF-15`** | `STK-04` | `NEC-07` | `HU-09` | `RN-03`, `RN-04` | `CA-11` | `CT-23` | `tests/unit/observability-logger.test.ts` |
-| **`RF-16`** | `STK-04` | `NEC-07` | `HU-10` | `RN-04` | `CA-12` | `CT-24` | `tests/integration/reserva-atomica.test.ts` |
-| **`RF-17`** | `STK-03`, `STK-04` | `NEC-08` | `HU-11` | `RN-03`, `RN-04` | `CA-13` | `CT-25` | `tests/integration/reserva-atomica.test.ts` |
+| **`RF-15`** | `STK-04` | `NEC-07` | `HU-09` | `RN-03`, `RN-04` | `CA-11` | `CT-23` | `tests/integration/reserva-atomica.test.ts` (voucher) |
+| **`RF-16`** | `STK-04` | `NEC-07` | `HU-10` | `RN-04` | `CA-12` | `CT-24` | Não automatizado (UAT-04) |
+| **`RF-17`** | `STK-03`, `STK-04` | `NEC-08` | `HU-11` | `RN-03`, `RN-04` | `CA-13` | `CT-25` | Não automatizado (UAT-05) |
 | **`RF-18`** | `STK-01`, `STK-03` | `NEC-01`, `NEC-08` | `HU-11` | `RN-03`, `RN-04` | `CA-14` | `CT-26` | `tests/integration/reserva-atomica.test.ts` |

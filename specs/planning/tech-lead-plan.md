@@ -10,7 +10,7 @@ title: "Plano Técnico de Implementação (TechLead) — Decomposição em 23 Ta
 # Plano Técnico de Implementação (TechLead) — Decomposição em 23 Tarefas — CineDoom
 
 > **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
-> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-01` a `RF-18`, `RNF-01` a `RNF-06`, `RN-01` a `RN-12`, `CA-01` a `CA-14`) e [`sprints-e-backlog.md`](sprints-e-backlog.md).
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`RF-01` a `RF-18`, `RNF-01` a `RNF-06`, `RN-01` a `RN-12`, `CA-01` a `CA-15`) e [`sprints-e-backlog.md`](sprints-e-backlog.md).
 
 ## 1. Resumo Executivo
 

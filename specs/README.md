@@ -32,7 +32,7 @@ Os artefatos aqui consolidados foram produzidos pela esteira de engenharia de so
 * **[`security-compliance/compliance-assessment.md`](security-compliance/compliance-assessment.md):** Relatório de Impacto à Proteção de Dados Pessoais (DPIA - Art. 38 LGPD), política de DPO (Art. 41), bases legais (Art. 7º) e direitos dos titulares (Art. 18).
 
 ### 5. Qualidade e Estratégia de Testes
-* **[`quality/test-strategy.md`](quality/test-strategy.md):** Pirâmide de testes, matriz de cobertura dos Critérios de Aceite (`CA-01` a `CA-14`), catálogo dos 26 Casos de Teste (`CT-01` a `CT-26`) no formato *Dado que / Quando / Então* e especificação dos testes de concorrência ACID.
+* **[`quality/test-strategy.md`](quality/test-strategy.md):** Pirâmide de testes, matriz de cobertura dos Critérios de Aceite (`CA-01` a `CA-15`), catálogo dos 26 Casos de Teste (`CT-01` a `CT-26`) no formato *Dado que / Quando / Então* e especificação dos testes de concorrência ACID.
 
 ### 6. Planejamento Operacional e DevOps
 * **[`planning/sprints-e-backlog.md`](planning/sprints-e-backlog.md):** Plano Mestre de Sprints, Backlog e Roadmap oficial do Kanban CineDoom com 33 issues distribuídas (23 em `cinedoom-app` e 10 em `manual-processos-software`), datas de início/término e matriz RACI.
@@ -45,5 +45,5 @@ Os artefatos aqui consolidados foram produzidos pela esteira de engenharia de so
   * **Histórias de Usuário (`HU-01` a `HU-11`)**;
   * **Requisitos Funcionais (`RF-01` a `RF-18`)** e **Requisitos Não Funcionais (`RNF-01` a `RNF-06`)**;
   * **Regras de Negócio (`RN-01` a `RN-12`)**;
-  * **Critérios de Aceite (`CA-01` a `CA-14`)** e **Restrições (`RES-01` a `RES-06`)**;
+  * **Critérios de Aceite (`CA-01` a `CA-15`)** e **Restrições (`RES-01` a `RES-06`)**;
   * **Matriz de Rastreabilidade Ponta a Ponta**.

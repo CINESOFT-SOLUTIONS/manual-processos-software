@@ -10,7 +10,7 @@ title: "Design de Experiência do Usuário (UX), Fluxos de Navegação e Wirefra
 # Design de Experiência do Usuário (UX), Fluxos de Navegação e Wireframes — CineDoom
 
 > **Documento Técnico Oficial — CineSoft Solutions (UFG/INF — Processos de Software 2026/1)**
-> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`HU-01` a `HU-11`, `RF-01` a `RF-18`, `RNF-04`, `RNF-05`, `CA-01` a `CA-14`).
+> Rastreabilidade direta com [`cinedoom-spec.md`](../cinedoom-spec.md) (`HU-01` a `HU-11`, `RF-01` a `RF-18`, `RNF-04`, `RNF-05`, `CA-01` a `CA-15`).
 
 ## Resumo Executivo
 
