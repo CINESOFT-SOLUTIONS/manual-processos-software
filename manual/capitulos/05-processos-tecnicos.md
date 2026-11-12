@@ -42,7 +42,7 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 
 ---
 
-### Restrições Técnicas e Limites de Escopo (`RES-01` a `RES-06`)
+#### Restrições Técnicas e Limites de Escopo (`RES-01` a `RES-06`)
 
 Restrições arquiteturais e itens explicitamente fora do escopo da **Macroentrega 1 (MVP)**. As entregas previstas para as Macroentregas 2 e 3 (gateway de pagamento online, emissão fiscal NFC-e/SAT e bomboniere) são evoluções planejadas no roadmap e **não contradizem** estas restrições, que delimitam exclusivamente o MVP:
 
@@ -55,7 +55,7 @@ Restrições arquiteturais e itens explicitamente fora do escopo da **Macroentre
 
 ---
 
-### Regras de Negócio Estruturantes (`RN-01` a `RN-12`)
+#### Regras de Negócio Estruturantes (`RN-01` a `RN-12`)
 
 As políticas de domínio que atravessam os requisitos estão consolidadas nas regras de negócio: exclusividade atômica do assento e máquina de estados (`RN-01`, `RN-02`); antecedência mínima de 60 minutos e expiração *Just-in-Time* (`RN-03`, `RN-04`); integridade do catálogo e anti-choque de sessões (`RN-05`, `RN-06`); auditoria imutável de cancelamento (`RN-07`); RBAC e segurança de credenciais (`RN-08`, `RN-09`); criptografia, consentimento e anonimização LGPD com retenção fiscal (`RN-10`, `RN-11`); e isolamento multi-tenant (`RN-12`).
 
@@ -124,35 +124,96 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 
 ### 5.2.1 Documento de arquitetura do sistema
 
-O **CineDoom** adota a arquitetura de **Monólito Modular em Next.js 14 (App Router)** fundamentada nos princípios de *Clean Architecture* (`ADR-001`), estruturada em cinco camadas lógicas com inversão de dependência e isolamento vertical por domínio (`src/modules/*` e `src/shared/*`):
+#### Identificação e escopo
 
-1. **Camada de Apresentação e UI Reativa (`src/app/`, `src/components/`):** Combina *React Server Components* para carregamento rápido do catálogo e *Client Components* interativos para o fluxo de reserva em 4 etapas, mapa bidimensional de poltronas (`SeatingGrid` com polling de 2s) e painéis administrativos.
-2. **Camada de Controladores HTTP (`src/app/api/**/route.ts`):** Route Handlers tipados que extraem o contexto de sessão/tenant, validam payloads de entrada com schemas `Zod` e traduzem exceções de domínio em códigos HTTP semânticos (`200`, `201`, `400`, `401`, `403`, `404`, `409`, `422`).
-3. **Camada de Serviços de Aplicação (`Application Services`):** Orquestra os casos de uso e transações de negócio (`SaleService`, `CancellationService`, `ReservationService`, `TemporaryHoldService`, `CounterService`, `UserService`, `AnonymizationService`, `NotificationService`).
-4. **Camada de Domínio e Segurança (`Domain & Security`):** Contém as entidades, invariantes de negócio (antecedência de 60 min, expiração JIT, validação Módulo 11 de CPF) e o `CryptoService` (`HMAC-SHA256` e `AES-256-GCM`).
-5. **Camada de Infraestrutura e Persistência Multi-Tenant (`src/shared/db/prisma.ts`):** Implementa os repositórios Prisma sobre PostgreSQL com extensão automática de contexto (`AsyncLocalStorage`) que injeta a cláusula `WHERE tenant_id` em todas as consultas e gerencia a conexão via pooler transacional.
+| Campo | Definição |
+| :--- | :--- |
+| **Sistema** | CineDoom — plataforma SaaS de bilheteria, back-office e portal do cliente para cinemas independentes e redes regionais |
+| **Repositório de referência** | `cinedoom-app/` — Next.js 14.2.15 (App Router), React 18.3, TypeScript 5.6, Prisma 5.21, PostgreSQL/Neon |
+| **Norma de processo** | ABNT NBR ISO/IEC/IEEE 12207:2021, §6.4.4 e §6.4.5 |
+| **Stakeholders** | Gerente de cinema, atendente de bilheteria, espectador (cliente final) e equipe de operação/segurança |
+| **Fronteira do sistema** | Aplicação web responsiva (desktop e mobile). O MVP **não** processa pagamento online, emissão fiscal, bomboniere ou *streaming* de mídia |
+| **Fora do escopo deste documento** | Detalhamento de telas (`specs/architecture/ui-mockups.md`), modelo de dados completo (`specs/data-model/data-model.md`) e plano de testes (§5.3) |
 
-#### Princípios de Arquitetura e Modelagem: Domain-Driven Design (DDD)
+#### Visão geral da arquitetura
 
-A decomposição e estruturação do software são orientadas pelos fundamentos do **Domain-Driven Design (DDD)**, assegurando que as regras de negócio de exibição cinematográfica sejam refletidas diretamente no código:
+O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação Next.js 14 com *App Router*. A fronteira externa é composta por três atores (gerente, atendente e espectador) e quatro sistemas externos (Neon PostgreSQL, Axiom, serviço de e-mail transacional e Vercel). Internamente, o código organiza-se em quatro zonas com dependência unidirecional:
 
-- **Linguagem Ubíqua (*Ubiquitous Language*):** Vocabulário unificado e compartilhado de forma inequívoca entre desenvolvedores, stakeholders e especificações técnicas. Termos como *Tenant* (cinema cliente), *SessionSeat* (poltrona alocada à sessão), *ReservationStatus* (`PENDING`, `CONFIRMED`, `CANCELLED`, `EXPIRED`), *Ticket* (`SOLD`) e *Double-booking* possuem significado rigoroso e idêntico no modelo de dados, no código TypeScript e nas regras de negócio.
-- **Contextos Delimitados (*Bounded Contexts*):** O sistema organiza-se em fronteiras de domínio verticalmente isoladas (`src/modules/*`), onde cada módulo encapsula seus modelos e casos de uso específicos:
-  - *Contexto de Bilheteria e Ocupação:* Focado na transacionalidade concorrente no guichê, mapa reativo de assentos e travas de venda presencial.
-  - *Contexto de Reservas e Atendimento Web:* Responsável pela jornada do espectador, reserva antecipada e despacho de vouchers transacionais.
-  - *Contexto de Catálogo e Programação:* Gestão de acervo de filmes, layout bidimensional de salas e prevenção de choques de grade.
-  - *Contexto de Governança e Privacidade:* Tratamento de dados pessoais, consentimento e conformidade com o Art. 18 da LGPD.
-- **Entidades e Invariantes de Domínio:** As regras de negócio críticas residem no núcleo da aplicação e no domínio, imunes a bypass na interface gráfica. Invariantes essenciais — como antecedência mínima de 60 minutos para reservas web, expiração automática *Just-in-Time* de assentos não confirmados e garantia de não duplicidade de assentos via bloqueio ACID — são fiscalizadas determinísticamente antes de qualquer gravação.
+| Zona | Responsabilidade | Regra de dependência |
+| :--- | :--- | :--- |
+| **Interface** | Renderização (RSC/Client Components), navegação, modais, cabeçalho autenticado e Route Handlers | Depende de `modules` e `shared` |
+| **Aplicação** | Casos de uso, validação Zod, orquestração transacional e tradução de erros de domínio | Depende de `shared/db` e de outros módulos apenas via `index.ts` |
+| **Domínio e segurança** | Invariantes (antecedência de 60 min, expiração JIT, CPF Módulo 11), RBAC e criptografia | Não depende de `next/*` nem de componentes React |
+| **Infraestrutura transversal** | Conexão Prisma, contexto de tenant via `AsyncLocalStorage`, logging estruturado e guarda de rotas | É dependida pelas demais zonas; não depende de UI |
 
-#### Princípios de Design de Software: SOLID
+#### Catálogo de componentes
 
-O projeto adota sistematicamente os cinco princípios **SOLID** para assegurar manutenibilidade, extensibilidade e modularidade:
+O sistema é composto pelos **11 módulos de domínio** de `src/modules/`. Cada um expõe um contrato público em `index.ts`, e a rastreabilidade entre módulos e requisitos está no §5.1.2.
 
-- **S — Single Responsibility Principle (Princípio da Responsabilidade Única):** Cada serviço e classe executa um papel único e bem delimitado. O `SaleService` trata exclusivamente a venda presencial e emissão de ingressos no balcão; o `ReservationService` gerencia a criação, cancelamento e confirmação de reservas web; e o `CryptoService` isola as operações criptográficas (`AES-256-GCM` e `HMAC-SHA256`).
-- **O — Open/Closed Principle (Princípio Aberto/Fechado):** Módulos são abertos para extensão, mas fechados para modificação. O subsistema de notificações (`NotificationService`) é estruturado sobre uma interface de provedores (`NotificationProvider`): a alternância entre `ConsoleLogger` (fase inicial de desenvolvimento) e `ResendProvider` (despacho de e-mails em produção) ocorre sem alterar as regras de negócio dos casos de uso.
-- **L — Liskov Substitution Principle (Princípio da Substituição de Liskov):** Contratos de persistência e serviços respeitam estritamente as interfaces estabelecidas. Mocks de teste e repositórios Prisma com tenancy automática substituem-se mutuamente nas baterias de verificação sem violar as asserções de negócio.
-- **I — Interface Segregation Principle (Princípio da Segregação de Interfaces):** Evitam-se interfaces genéricas infladas. A comunicação entre controladores e serviços adota DTOs e esquemas declarativos `Zod` estritamente específicos para cada operação (`createReservationSchema`, `sellTicketsSchema`, `createFilmSchema`).
-- **D — Dependency Inversion Principle (Princípio da Inversão de Dependência):** Módulos de alto nível (serviços de aplicação e regras de negócio) não dependem de módulos de baixo nível (frameworks ou bibliotecas de transporte). As rotas de API (`Route Handlers`) apenas orquestram requisições delegando a execução para as abstrações de serviço, mantendo a regra de negócio desacoplada do framework web.
+| Componente | Função |
+| :--- | :--- |
+| `auth` | Autenticação por credenciais, RBAC e gestão de operadores |
+| `backoffice` | Cadastro de filmes, salas (com matriz de assentos) e sessões |
+| `bilheteria` | Venda presencial, cancelamento com auditoria, baixa de reserva web e mapa de assentos |
+| `portal` | Catálogo público, cadastro do cliente, reserva online e cancelamento voluntário |
+| `compradores` | Cadastro e busca de comprador presencial por CPF |
+| `compliance` | Localização e anonimização de titulares (LGPD Art. 18) |
+| `crypto` | Criptografia, hash e validação de CPF |
+| `notificacoes` | Voucher de reserva com provedor de e-mail plugável |
+| `observability` | Log estruturado e rastreabilidade por requisição |
+| `ocupacao` | Indicadores de ocupação por sessão e por sala |
+| `tenancy` | Contexto de tenant e injeção do filtro `tenant_id` no Prisma |
+
+Além dos módulos, `src/shared/` concentra as peças transversais (cliente Prisma, logger e utilitários) e `src/app/` abriga a camada de interface.
+
+#### Interfaces
+
+**a) Interface HTTP.** O sistema expõe **25 Route Handlers** em `src/app/api/`, agrupados por perfil de acesso: rotas públicas (login e catálogo), `CLIENTE` (portal e mapa de assentos), `ATENDENTE` e `GERENTE` (bilheteria) e `GERENTE` (back-office, ocupação e LGPD). A autorização ocorre em `middleware.ts` e é reconfirmada no handler.
+
+**b) Interface entre módulos.** Cada módulo exporta funções e objetos de serviço, com entrada validada por schema Zod e erros de domínio tipados. Nenhum módulo acessa a implementação interna de outro, o que permite testar os casos de uso sem subir o servidor Next.js.
+
+**c) Interface de persistência.** Acesso por Prisma sobre PostgreSQL, com 11 modelos e 6 enums. Todo serviço recebe o `tenantId` e o aplica explicitamente nas consultas; transações e a trava `SELECT ... FOR UPDATE` garantem a exclusividade do assento.
+
+**d) Interfaces externas.** NextAuth (sessão JWT com `userId`, `role` e `tenantId`), Neon (banco), Axiom (logs), Resend (e-mail, simulado no MVP) e Vercel com GitHub Actions (deploy e CI).
+
+**e) Interface de erros.** O serviço lança erro tipado e o Route Handler o traduz em status HTTP: `400` para JSON malformado, `401` sem sessão, `403` para RBAC ou conta inativa, `404` para recurso inexistente, `409` para assento ocupado, e-mail duplicado ou choque de grade, `422` para falha de validação, CPF inválido ou antecedência inferior a 60 minutos e `500` para erro inesperado.
+
+#### Decisões arquiteturais (ADRs)
+
+As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna “Efeito verificável” indica onde a decisão aparece no código ou nos critérios de aceite.
+
+| ADR | Decisão | Efeito verificável |
+| :---: | :--- | :--- |
+| **ADR-001** | Monólito modular em Next.js 14 com módulos verticais | `src/modules/*` e `src/shared/*`; lint `import/no-cycle` |
+| **ADR-002** | Interface reativa com Tailwind CSS e React Server/Client Components | `src/app/`, `src/components/`, `SeatingGrid` como Client Component |
+| **ADR-003** | Backend em TypeScript com Route Handlers | 25 `route.ts`, validação Zod e erros de domínio |
+| **ADR-004** | PostgreSQL com Prisma ORM | `prisma/schema.prisma`; 11 modelos e 6 enums |
+| **ADR-005** | Vercel + Neon + GitHub Actions | `next.config.mjs`, `ci.yml`, `deploy.yml` |
+| **ADR-006** | API RESTful com polling de 2 s no mapa de assentos | `useSessionSeats` e índice `(session_id, status)` |
+| **ADR-007** | Pré-população de `SessionSeat` e trava `SELECT FOR UPDATE` | `session-service.ts` e `sale-service.ts`/`portal-service.ts` |
+| **ADR-008** | CPF com HMAC-SHA256 (busca) e AES-256-GCM (repouso) | `crypto-service.ts`; `cpf_hash` e `cpf_encrypted` |
+| **ADR-009** | Anonimização *in-place* para LGPD Art. 18 | `anonymization-service.ts` e `/api/titulares/anonimizar` |
+| **ADR-010** | Auditoria de cancelamentos *append-only* com trigger | `cancellation-service.ts`, modelo `CancellationAudit` e trigger em `prisma/triggers.sql` |
+| **ADR-011** | Log estruturado no Axiom com retenção de 365 dias | `src/shared/logger/`, `x-request-id` e `CA-03`/`CA-07` |
+| **ADR-012** | Portal do cliente com reserva JIT e notificação desacoplada | `portal-service.ts`, `notification-service.ts` e `CA-11`/`CA-14` |
+
+#### Princípios de modelagem: Domain-Driven Design (DDD)
+
+O domínio do cinema foi modelado segundo o **Domain-Driven Design**, o que se reflete em três propriedades do projeto:
+
+- **Linguagem Ubíqua:** o mesmo vocabulário é usado por desenvolvedores, stakeholders, especificações e código. Termos como *Tenant* (cinema cliente), *SessionSeat* (poltrona de uma sessão), *Reservation* e *Ticket* têm o mesmo significado no schema Prisma, no TypeScript e nas regras de negócio.
+- **Contextos Delimitados:** cada contexto de negócio corresponde a um módulo real — bilheteria e ocupação, portal e notificações, catálogo e programação, privacidade, identidade e acesso, observabilidade.
+- **Invariantes de domínio:** as regras críticas ficam nos serviços, não na interface. A antecedência de 60 minutos, a exclusividade do assento e a auditoria do cancelamento não podem ser contornadas pela UI.
+
+#### Princípios de design de software: SOLID
+
+O projeto aplica os cinco princípios **SOLID**, com evidência verificável no código:
+
+- **S — Single Responsibility Principle:** cada arquivo de serviço tem um papel delimitado. `sale-service.ts` (`SaleService.processSale`) trata exclusivamente a venda presencial e a emissão de ingressos; `portal-service.ts` (`createReservation`, `cancelMyReservation`) trata a reserva web; `crypto-service.ts` isola as operações criptográficas (`AES-256-GCM` e `HMAC-SHA256`); `ocupacao-service.ts` apenas calcula indicadores.
+- **O — Open/Closed Principle:** o subsistema de notificações é aberto para extensão e fechado para modificação por meio da interface `EmailProvider`, implementada por `ConsoleLoggerProvider` e `ResendProvider` e selecionada por `getProvider()`. Trocar o provedor não altera o caso de uso de reserva.
+- **L — Liskov Substitution Principle:** as implementações respeitam os contratos que declaram. `withTenancy` devolve um `TenantPrismaClient` compatível com `PrismaClient`, e os dublês de teste substituem os serviços reais sem alterar os casos de uso.
+- **I — Interface Segregation Principle:** não há interfaces genéricas infladas. Cada operação tem um schema Zod específico — `createSaleSchema`, `createReservationSchema`, `registerClientSchema`, `createFilmSchema`, `createRoomSchema`, `createSessionSchema`, `createUserSchema`, `cancelTicketSchema`, `anonymizeTitularSchema` — e os serviços recebem apenas os campos de que precisam.
+- **D — Dependency Inversion Principle:** as regras de negócio não dependem de `next/*`. Os Route Handlers apenas orquestram sessão, validação e tradução de erros; os serviços dependem de `prisma`/`rawPrisma` e de contratos internos, o que permite testá-los sem o framework web.
 
 ---
 
@@ -160,16 +221,16 @@ O projeto adota sistematicamente os cinco princípios **SOLID** para assegurar m
 
 Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **seis diagramas formais de arquitetura e design** do CineDoom.
 
-#### 1. Diagrama C4 — Nível 2 (Diagrama de Contêineres)
+#### 1. Diagrama C4 - Nível 2 (Diagrama de Contêineres)
 
 O Diagrama de Contêineres ilustra a interação entre os três perfis de usuários (Espectador, Atendente e Gerente), a aplicação web e API serverless hospedada na Vercel, o banco de dados relacional PostgreSQL e os serviços externos de e-mail transacional (Resend) e observabilidade (Axiom):
 
 ```mermaid
 flowchart TB
     subgraph Usuarios["Atores e Dispositivos Clientes"]
-        Esp["Espectador (Cliente B2C)\n[Browser Mobile / Desktop]"]
-        Atd["Atendente de Guichê\n[Terminal Web Bilheteria]"]
-        Ger["Gerente do Cinema\n[Browser Back-office]"]
+        Esp["Público (Cliente)"]
+        Atd["Atendente (Balcão)"]
+        Ger["Gerente (Admin)"]
     end
 
     subgraph Vercel["Plataforma Cloud Vercel (Next.js 14 Monólito Modular)"]
@@ -197,7 +258,92 @@ flowchart TB
     API -->|"JSON Structured Logs"| Axiom
 ```
 
-#### 2. Diagrama de Classes UML (Modelo de Domínio)
+#### 
+#### 2. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
+
+O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (`SELECT FOR UPDATE`), a emissão do voucher transacional e a posterior conversão em ingresso vendido (`SOLD`) no guichê físico:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Esp as Público (Cliente)
+    participant API as Next.js Route Handler / ReservationService
+    participant DB as PostgreSQL (Transação ACID)
+    participant Mail as NotificationService (Resend)
+    actor Atd as Atendente (Balcão)
+
+    Esp->>API: POST /api/portal/reservas (sessionId, seatIds, buyer)
+    activate API
+    API->>API: Valida antecedência (>= 60 min) e ordena seatIds
+    API->>DB: BEGIN TRANSACTION
+    API->>DB: SELECT * FROM session_seats WHERE id IN (...) FOR UPDATE
+    alt Algum assento não está AVAILABLE (e não expirado JIT)
+        DB-->>API: Retorna status != AVAILABLE
+        API->>DB: ROLLBACK
+        API-->>Esp: HTTP 409 Conflict (Poltrona indisponível)
+    else Todos os assentos disponíveis
+        API->>DB: INSERT INTO reservations (code: CD-XXXX, status: PENDING, expiresAt)
+        API->>DB: UPDATE session_seats SET status = 'RESERVED', reservation_id = id
+        API->>DB: COMMIT
+        API->>Mail: sendReservationVoucher(reservationId)
+        Mail->>DB: UPDATE reservations SET email_sent_at = NOW()
+        API-->>Esp: HTTP 201 Created (Voucher CD-XXXX)
+    end
+    deactivate API
+
+    Note over Esp,Atd: Espectador comparece à bilheteria até 60 min antes da sessão
+
+    Atd->>API: POST /api/bilheteria/reservas/confirmar (code: CD-XXXX)
+    activate API
+    API->>DB: BEGIN TRANSACTION + SELECT reservation FOR UPDATE
+    API->>DB: Verifica se NOW() <= expiresAt (Regra JIT 60 min)
+    API->>DB: UPDATE reservations SET status = 'CONFIRMED', confirmed_at = NOW()
+    API->>DB: UPDATE session_seats SET status = 'SOLD'
+    API->>DB: INSERT INTO tickets (status: 'SOLD', operator_id)
+    API->>DB: COMMIT
+    API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
+    deactivate API
+```
+
+#### 3. Diagrama de Casos de Uso UML
+
+O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
+
+```mermaid
+flowchart LR
+    Esp(["👤 Espectador\n(Cliente Final)"])
+    Atd(["🎫 Atendente\n(Guichê Físico)"])
+    Ger(["👔 Gerente\n(Back-office)"])
+
+    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
+        UC1("Ver catálogo e horários")
+        UC2("Cadastrar conta e consentimento LGPD")
+        UC3("Fazer reserva online + voucher")
+        UC4("Cancelar reserva pelo site")
+        UC5("Vender ingresso no balcão")
+        UC6("Encontrar reserva pelo código")
+        UC7("Cancelar ingresso no guichê")
+        UC8("Gerenciar filmes, salas e sessões")
+        UC9("Gerenciar atendentes e ocupação")
+        UC10("Anonimizar dados LGPD")
+    end
+
+    Esp --> UC1
+    Esp --> UC2
+    Esp --> UC3
+    Esp --> UC4
+
+    Atd --> UC1
+    Atd --> UC5
+    Atd --> UC6
+    Atd --> UC7
+
+    Ger --> UC8
+    Ger --> UC9
+    Ger --> UC10
+```
+
+#### 4. Diagrama de Classes UML (Modelo de Domínio)
 
 O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (`Tenant`):
 
@@ -301,89 +447,6 @@ classDiagram
     SessionSeat "1" --> "0..1" Ticket : gera
 ```
 
-#### 3. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
-
-O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (`SELECT FOR UPDATE`), a emissão do voucher transacional e a posterior conversão em ingresso vendido (`SOLD`) no guichê físico:
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Esp as Espectador (Portal Web)
-    participant API as Next.js Route Handler / ReservationService
-    participant DB as PostgreSQL (Transação ACID)
-    participant Mail as NotificationService (Resend)
-    actor Atd as Atendente (Guichê Físico)
-
-    Esp->>API: POST /api/portal/reservas (sessionId, seatIds, buyer)
-    activate API
-    API->>API: Valida antecedência (>= 60 min) e ordena seatIds
-    API->>DB: BEGIN TRANSACTION
-    API->>DB: SELECT * FROM session_seats WHERE id IN (...) FOR UPDATE
-    alt Algum assento não está AVAILABLE (e não expirado JIT)
-        DB-->>API: Retorna status != AVAILABLE
-        API->>DB: ROLLBACK
-        API-->>Esp: HTTP 409 Conflict (Poltrona indisponível)
-    else Todos os assentos disponíveis
-        API->>DB: INSERT INTO reservations (code: CD-XXXX, status: PENDING, expiresAt)
-        API->>DB: UPDATE session_seats SET status = 'RESERVED', reservation_id = id
-        API->>DB: COMMIT
-        API->>Mail: sendReservationVoucher(reservationId)
-        Mail->>DB: UPDATE reservations SET email_sent_at = NOW()
-        API-->>Esp: HTTP 201 Created (Voucher CD-XXXX)
-    end
-    deactivate API
-
-    Note over Esp,Atd: Espectador comparece à bilheteria até 60 min antes da sessão
-
-    Atd->>API: POST /api/bilheteria/reservas/confirmar (code: CD-XXXX)
-    activate API
-    API->>DB: BEGIN TRANSACTION + SELECT reservation FOR UPDATE
-    API->>DB: Verifica se NOW() <= expiresAt (Regra JIT 60 min)
-    API->>DB: UPDATE reservations SET status = 'CONFIRMED', confirmed_at = NOW()
-    API->>DB: UPDATE session_seats SET status = 'SOLD'
-    API->>DB: INSERT INTO tickets (status: 'SOLD', operator_id)
-    API->>DB: COMMIT
-    API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
-    deactivate API
-```
-
-#### 4. Diagrama de Casos de Uso UML
-
-O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
-
-```mermaid
-flowchart LR
-    Esp(["👤 Espectador\n(Cliente Final)"])
-    Atd(["🎫 Atendente\n(Guichê Físico)"])
-    Ger(["👔 Gerente\n(Back-office)"])
-
-    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
-        UC1("Consultar Catálogo, Horários e Mapa 2D")
-        UC2("Cadastrar Conta e Consentimento LGPD")
-        UC3("Reservar Assentos Online e Emitir Voucher")
-        UC4("Cancelar Reserva Voluntariamente (Web)")
-        UC5("Vender Ingressos no Balcão (ACID)")
-        UC6("Localizar Reserva (Código Localizador) e Dar Baixa")
-        UC7("Cancelar Ingresso com Auditoria Imutável")
-        UC8("Gerenciar Filmes, Salas e Grade de Sessões")
-        UC9("Gerenciar Atendentes e Monitorar Ocupação")
-        UC10("Executar Anonimização de Titular (LGPD Art. 18)")
-    end
-
-    Esp --> UC1
-    Esp --> UC2
-    Esp --> UC3
-    Esp --> UC4
-
-    Atd --> UC1
-    Atd --> UC5
-    Atd --> UC6
-    Atd --> UC7
-
-    Ger --> UC8
-    Ger --> UC9
-    Ger --> UC10
-```
 
 #### 5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)
 
