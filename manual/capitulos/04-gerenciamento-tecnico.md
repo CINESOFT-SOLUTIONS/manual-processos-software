@@ -134,9 +134,9 @@ Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, e
 
 *Fonte: CineSoft Solutions (2026).*
 
-> **[INSERIR PRINT]** Quadro Kanban do GitHub Projects com responsável, data-limite e limite de WIP visíveis.
->
-> *Figura 6 – Quadro Kanban do projeto no GitHub Projects. Fonte: CineSoft Solutions (2026).*
+![Quadro Kanban do GitHub Projects com responsável, data-limite e limite de WIP visíveis](../../assets/capitulo-04/prints/kanban-board.png) 
+
+*Figura 6 – Quadro Kanban do projeto no GitHub Projects. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -318,17 +318,12 @@ stop
 - **Registro de status:** o *changelog*, as tags e o histórico de Pull Requests informam o estado de cada item de configuração.
 - **Reversão:** a reversão consiste em publicar novamente a tag anterior no ambiente de produção.
 
-> **[INSERIR PRINT]** Regras de proteção do branch `main` no GitHub.
->
-> *Figura 9 – Regras de proteção do branch `main`. Fonte: CineSoft Solutions (2026).*
 
-> **[INSERIR PRINT]** Execução do GitHub Actions com todas as verificações aprovadas.
->
-> *Figura 10 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
+![Execução do GitHub Actions com todas as verificações aprovadas.](../../assets/capitulo-04/prints/CI.png) 
+*Figura 09 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
 
-> **[INSERIR PRINT]** Página de tags e releases do repositório (`v1.0.0`).
->
-> *Figura 11 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
+![Página de tags e releases do repositório (`v1.0.0`).](../../assets/capitulo-04/prints/releases.png) 
+> *Figura 10 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -357,7 +352,7 @@ Substituida --> [*]
 @enduml
 ```
 
-*Figura 12 – Ciclo de vida de um ADR. Fonte: CineSoft Solutions (2026).*
+*Figura 11 – Ciclo de vida de um ADR. Fonte: CineSoft Solutions (2026).*
 
 ### Matriz de Decisão Ponderada: Arquitetura Base (ADR-001)
 
@@ -411,9 +406,9 @@ As fichas completas dos 12 ADRs, com data e autor, estão em `specs/adrs/`. A ta
 
 *Fonte: CineSoft Solutions (2026).*
 
-> **[INSERIR PRINT]** Pasta `specs/adrs/` no GitHub, exibindo os 12 ADRs.
->
-> *Figura 13 – Registro dos ADRs no repositório. Fonte: CineSoft Solutions (2026).*
+
+![Pasta `specs/adrs/` no GitHub, exibindo os 12 ADRs.](../../assets/capitulo-04/prints/ADRs.png) 
+*Figura 12 – Registro dos ADRs no repositório. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -436,7 +431,7 @@ D --> N : Atualiza metas
 @enduml
 ```
 
-*Figura 14 – Ciclo de medição e decisão. Fonte: CineSoft Solutions (2026).*
+*Figura 13 – Ciclo de medição e decisão. Fonte: CineSoft Solutions (2026).*
 
 **Tabela 28 – Plano de medição**
 
@@ -472,8 +467,7 @@ D --> N : Atualiza metas
 
 Os valores da Tabela 29 referem-se à entrega da `v1.0.0` e são atualizados a cada macroentrega.
 
-> **[INSERIR PRINT]** Painel de *Insights* ou do quadro do GitHub Projects com o tempo de ciclo das issues.
->
-> *Figura 15 – Evidência de medição do fluxo de trabalho. Fonte: CineSoft Solutions (2026).*
+![Quadro do GitHub Projects com o tempo de ciclo das issues.](../../assets/capitulo-04/prints/fluxo.png)
+*Figura 14 – Evidência do fluxo de trabalho. Fonte: CineSoft Solutions (2026).*
 
 ---
