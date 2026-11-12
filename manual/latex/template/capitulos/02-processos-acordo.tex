@@ -4,161 +4,113 @@
 
 \aberturacapitulo{Capítulo 2}{Processos de Acordo}
 
+Este capítulo estabelece como a \textbf{CineSoft Solutions} gerencia suas relações comerciais e técnicas, fundamentando-se nas boas práticas da norma ABNT NBR ISO/IEC/IEEE 12207:2021 para os processos de \textbf{Aquisição} e \textbf{Fornecimento}.
+
+A abordagem adotada busca equilibrar rigor de engenharia e pragmatismo operacional: define claramente o que construir internamente versus o que contratar de terceiros (\emph{Make or Buy}), estrutura a jornada de entrega e suporte da plataforma \textbf{CineDoom} para os cinemas clientes, e mapeia os parceiros de infraestrutura que viabilizam o sistema.
 
 
-\subsecao{2.1 Descrição do processo de aquisição}
+\subsecao{2.1 Processo de Aquisição: Decisões e Gestão de Provedores}
 
-O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 -- Cláusula 6.1.1) estabelece a governança da \textbf{CineSoft Solutions} para decidir entre desenvolver internamente (\emph{Make}) ou contratar/adquirir de terceiros (\emph{Buy}) os componentes, bibliotecas, APIs e serviços de infraestrutura que sustentam o produto \textbf{CineDoom} ao longo de suas três Macroentregas.
-
-
-\subsubsecao{Fronteira e Justificativa de Aquisição}
-
-A estratégia de engenharia da CineSoft Solutions concentra o esforço de desenvolvimento interno estritamente nos ativos que constituem o \textbf{núcleo de valor e diferencial competitivo} do CineDoom: o motor transacional de bilheteria e reservas com bloqueio pessimista ACID (\emph{SELECT FOR UPDATE}), a máquina de estados de assentos com expiração \emph{Just-in-Time}, o isolamento lógico multi-tenant e a camada de conformidade e anonimização da LGPD.
-
-Em contrapartida, serviços de infraestrutura em nuvem, bancos de dados gerenciados, entrega de e-mails transacionais, retenção externa de logs, processamento financeiro PCI-DSS e mensageria fiscal SEFAZ são adquiridos de provedores especializados para reduzir o \emph{time-to-market}, otimizar o Custo Total de Propriedade (TCO) e garantir Acordos de Nível de Serviço (SLA ≥ 99,9\%).
+No papel de adquirente, a CineSoft Solutions adota uma diretriz clara: \textbf{o esforço interno de desenvolvimento é concentrado no coração das regras de negócio do cinema e nos diferenciais competitivos do CineDoom}. Todo serviço em que o mercado já oferece soluções maduras, seguras e com economia de escala é contratado como serviço ou biblioteca, reduzindo tempo de desenvolvimento e custo operacional.
 
 
-\subsubsecao{\texorpdfstring{Análise de Aquisição (\emph{Make or Buy})}{Análise de Aquisição (Make or Buy)}}
+\subsubsecao{\texorpdfstring{O que construímos e o que contratamos (\emph{Make or Buy})}{O que construímos e o que contratamos (Make or Buy)}}
 
-A governança de aquisição da CineSoft Solutions consolida a decisão formal para cada elemento arquitetural do sistema, classificando a abordagem em \textbf{Sim} (solução madura/commodity adquirida pronta), \textbf{Não} (regra de negócio central desenvolvida internamente) ou \textbf{Parcial} (engine ou biblioteca externa combinada com regras de domínio proprietárias):
+\begin{itemize}
+\tightlist
+\item \textbf{Desenvolvimento Interno (\emph{Make}):} O motor de bilheteria e reservas atômicas com bloqueio pessimista (\texttt{SELECT FOR UPDATE}), a máquina de estados de assentos com liberação automática de ingressos expirados, o isolamento lógico multi-tenant entre diferentes redes de cinema e os mecanismos de anonimização exigidos pela LGPD. Esses itens compõem a propriedade intelectual e o diferencial de confiabilidade da CineSoft.
+\item \textbf{Soluções Prontas de Terceiros (\emph{Buy}):} Infraestrutura de banco de dados gerenciado (PostgreSQL no Supabase), hospedagem serverless com distribuição global (Vercel), mensageria de e-mails transacionais (Resend), retenção de logs para auditoria (Axiom), processamento de pagamentos digitais (Stripe/Pagar.me na Macroentrega 2) e mensageria fiscal de notas (Focus NFe na Macroentrega 3).
+\end{itemize}
+
+As tabelas a seguir detalham a justificativa técnica e econômica de cada decisão:
 
 \tabelaabnt{Análise de Aquisição: Componentes de Software e Domínio (\emph{Make or Buy})}{CineSoft Solutions (2026)}{tab:make_or_buy_core}{\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy-core.tex}}
 
 \tabelaabnt{Análise de Aquisição: Infraestrutura Cloud e Serviços Gerenciados (\emph{Make or Buy})}{CineSoft Solutions (2026)}{tab:make_or_buy_infra}{\input{../../../assets/capitulo-02/tabelas/analise-make-or-buy-infra.tex}}
 
 
-\subsubsecao{As Cinco Atividades do Processo de Aquisição (ISO/IEC/IEEE 12207:2017)}
+\subsubsecao{O Ciclo Prático de Aquisição de Provedores}
 
-A CineSoft Solutions conduz a contratação e a governança de serviços e componentes especializados por meio das cinco atividades normativas da norma:
+Para selecionar e manter esses provedores em operação contínua, a CineSoft Solutions estrutura a contratação em cinco etapas práticas:
 
 \begin{enumerate}
 \tightlist
-\item \textbf{Preparação para a Aquisição:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} O Arquiteto de Software e a equipe técnica especificam as necessidades do sistema, volumetria estimada de transações e requisitos de segurança (TLS 1.3, criptografia de dados e conformidade com a LGPD).
-  \item \emph{Saídas:} Especificação Técnica de Aquisição e Matriz de Critérios de Seleção.
-  \end{itemize}
-\item \textbf{Divulgação e Seleção de Fornecedores:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} A equipe levanta e compara soluções consolidadas para cada categoria (ex.: Neon vs.~Supabase; Resend vs.~AWS SES; Vercel vs.~AWS Amplify), pontuando maturidade do SDK, latência na América do Sul e custo escalonado.
-  \item \emph{Saídas:} Parecer Comparativo de Fornecedores e Registro de Seleção.
-  \end{itemize}
-\item \textbf{Estabelecimento e Manutenção do Acordo:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} Formalização contratual via Termos de Serviço Corporativos e Aditivo de Tratamento de Dados (\emph{DPA} para a LGPD), assegurando SLA $\ge 99,9\%$, limites de requisição (\emph{rate-limiting}) e portabilidade de dados.
-  \item \emph{Saídas:} Contrato de Serviço de Nuvem (DPA) e Registro de Credenciais em Cofre Seguro.
-  \end{itemize}
-\item \textbf{Monitoramento do Acordo:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} Integrado ao Controle de Projeto (Capítulo 4), acompanha-se a disponibilidade dos serviços via telemetria (latência p95/p99 e conexões do pooler), páginas públicas de status e conciliação mensal de consumo.
-  \item \emph{Saídas:} Relatório Mensal de SLA/Consumo e Registro de Incidentes do Provedor.
-  \end{itemize}
-\item \textbf{Aceitação do Produto ou Serviço:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} O serviço é validado em ambiente de homologação (\emph{sandbox}) e integrado à esteira de CI/CD, exigindo aprovação em testes de estabilidade antes da liberação em produção acompanhada de plano de contingência (\emph{rollback plan}).
-  \item \emph{Saídas:} Relatório de Testes em Sandbox e Termo de Liberação em Produção (\emph{Go-Live}).
-  \end{itemize}
+\item \textbf{Definição de Requisitos e Critérios:} O Arquiteto e os líderes técnicos mapeiam as restrições de cada necessidade --- limites de latência (priorizando servidores na América do Sul), compatibilidade com Node.js/Next.js, conformidade com a LGPD e facilidade de integração local.
+\item \textbf{Avaliação Técnica e Financeira:} São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus Neon, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
+\item \textbf{Contratação e Formalização:} Assinatura digital dos planos corporativos, formalização de Aditivos de Proteção de Dados (\emph{Data Processing Agreements} -- DPA) para garantir sigilo sob a LGPD e armazenamento seguro de chaves de API em gerenciadores de segredos com rotação periódica.
+\item \textbf{Monitoramento e Acompanhamento de SLA:} A equipe monitora a disponibilidade real dos provedores via telemetria contínua, páginas de status e relatórios mensais de consumo, garantindo que o tempo de resposta e a taxa de erros permaneçam dentro dos padrões acordados.
+\item \textbf{Homologação e Aceite Técnico:} Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (\emph{sandbox}) na esteira de integração contínua (CI/CD), com planos de reversão (\emph{rollback}) já desenhados caso ocorram falhas.
 \end{enumerate}
 
 
-\subsecao{2.2 Descrição do processo de fornecimento}
+\subsecao{2.2 Processo de Fornecimento: Comercialização, Entrega e Operação}
 
-O processo de fornecimento (ABNT NBR ISO/IEC/IEEE 12207:2021 -- Cláusula 6.1.2) regulamenta como a \textbf{CineSoft Solutions} comercializa, implanta, licencia, mantém e suporta a plataforma \textbf{CineDoom} junto aos cinemas clientes e parceiros de negócio.
+Como fornecedora de software, a CineSoft Solutions atende cinemas independentes, cinemas de rua e pequenas redes de exibição que buscam modernizar sua bilheteria física e expandir suas vendas online de forma integrada e sem riscos de sobreposição de assentos.
 
 
-\subsubsecao{Perspectiva de Fornecimento e Ativos Comercializáveis}
+\subsubsecao{Modelos de Negócio e Ativos Disponíveis}
 
-Além da oferta integral da plataforma, a arquitetura modular da CineSoft Solutions permite o fornecimento autônomo de subsistemas de alto valor agregado para diferentes perfis de adquirentes:
+O principal produto fornecido é a plataforma \textbf{CineDoom} em modelo SaaS (\emph{Software as a Service}), cobrada por assinatura mensal mais taxa por sala ativa. No entanto, sua arquitetura modular também permite licenciar componentes específicos para parceiros ou exibidores com sistemas legados:
 
 \tabelaabnt{Perspectiva de Fornecimento e Ativos Comercializáveis}{CineSoft Solutions (2026)}{tab:perspectiva_fornecimento}{\input{../../../assets/capitulo-02/tabelas/perspectiva-fornecimento.tex}}
 
 
-\subsubsecao{As Cinco Atividades do Processo de Fornecimento (ISO/IEC/IEEE 12207:2017)}
+\subsubsecao{Jornada do Cliente: Da Contratação ao Pós-Venda}
 
-A CineSoft Solutions conduz o ciclo comercial e operacional de atendimento ao cliente por meio das cinco atividades normativas:
+A relação entre a CineSoft Solutions e o cinema contratante segue um ciclo transparente e estruturado em cinco etapas:
 
 \begin{enumerate}
 \tightlist
-\item \textbf{Preparação do Fornecimento:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} A equipe de negócios e arquitetura mapeia os perfis de exibidores adquirentes, definindo a estratégia de monetização SaaS, matriz de precificação por sala e modelos de licenciamento de APIs desacopladas.
-  \item \emph{Saídas:} Matriz de Planos Comerciais e Catálogo de Ativos Licenciáveis.
-  \end{itemize}
-\item \textbf{Resposta à Solicitação:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} Ao receber solicitações de cotação ou RFPs de exibidores, a CineSoft avalia a viabilidade técnica e arquitetural da rede (quantidade de salas e integração fiscal), gerando proposta com cronograma e escopo de setup.
-  \item \emph{Saídas:} Proposta Técnica de Implantação e Proposta Comercial de Fornecimento.
-  \end{itemize}
-\item \textbf{Estabelecimento e Manutenção do Acordo:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,5\%, isolamento multi-tenant (\texttt{tenant\_id}), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
-  \item \emph{Saídas:} Contrato de Prestação de Serviço (SaaS) e Aditivo de Privacidade e DPA.
-  \end{itemize}
-\item \textbf{Execução do Acordo:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 770 testes automatizados.
-  \item \emph{Saídas:} Ambiente de Produção Provisionado e Relatório de Validação de CI/CD.
-  \end{itemize}
-\item \textbf{Entrega e Suporte:}
-  \begin{itemize}
-  \tightlist
-  \item \emph{Descrição:} Condução da homologação assistida (\emph{UAT}), assinatura do Termo de Aceite de Implantação (TAI) após comprovação de zero \emph{double-booking} e ativação do suporte técnico contínuo estruturado nos 4 níveis de SLA.
-  \item \emph{Saídas:} Termo de Aceite de Implantação (TAI) e Relatório Mensal de Cumprimento de SLA.
-  \end{itemize}
+\item \textbf{Alinhamento e Diagnóstico Inicial:} A CineSoft compreende o perfil do cinema --- quantidade de salas físicas, categorias de poltronas, volume médio de sessões semanais e necessidade de equipamentos físicos de guichê.
+\item \textbf{Proposta e Escopo de Implantação:} Apresentação da proposta comercial contendo valores claros, cronograma de parametrização e requisitos mínimos de rede e navegadores para os computadores da bilheteria.
+\item \textbf{Formalização Contratual:} Assinatura do Contrato de Licenciamento SaaS e do Termo de Tratamento de Dados (LGPD), definindo os níveis de serviço garantidos (SLA de 99,5\%), a propriedade exclusiva dos dados pelo cinema e as regras de confidencialidade.
+\item \textbf{Implantação e Treinamento:} Provisionamento do ambiente isolado do cinema (\texttt{tenant\_id}), cadastro de salas e filmes, simulação de vendas com a equipe de atendentes e treinamento operacional dos gerentes de bilheteria.
+\item \textbf{Entrada em Operação e Suporte Contínuo:} Liberação assistida do primeiro dia de operação em guichê (\emph{go-live} assistido), assinatura do Termo de Aceite após comprovação prática de ausência de erros ou vendas duplicadas, e início do suporte técnico diário.
 \end{enumerate}
 
 
-\subsubsecao{Termos do Acordo, Entregáveis e Evolução por Macroentregas}
+\subsubsecao{Entregáveis da Implantação e Evolução Funcional}
 
-O fornecimento comercial aos cinemas adquirentes contempla os seguintes entregáveis contratuais e evolução funcional:
+Cada cinema contratante recebe:
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Provisionamento de Tenant Isolado:} Criação da organização no banco de dados de produção com isolamento lógico garantido por \texttt{tenant\_id}, configuração de domínio/acesso e credenciais iniciais de gerência.
+  \textbf{Tenant Exclusivo e Isolado:} Criação do identificador da organização (\texttt{tenant\_id}) no banco de dados com isolamento lógico garantido em todas as consultas.
 \item
-  \textbf{Carga de Dados e Parametrização Inicial:} Mapeamento das salas físicas do cinema (fileiras, colunas e categorias Clássica, IMAX ou VIP) e importação da grade inicial de filmes.
+  \textbf{Configuração de Salas e Catálogo:} Montagem do mapa visual de poltronas de cada sala física (comum, VIP, acessibilidade) e treinamento prático para cadastro de sessões e preços.
 \item
-  \textbf{Documentação Operacional e Capacitação:} Entrega do Manual de Operação de Guichê e sessão de treinamento remoto ou presencial para atendentes e gerentes.
+  \textbf{Manual do Operador e Capacitação:} Guia rápido de utilização do ponto de venda no balcão e no portal web.
 \item
-  \textbf{Roadmap Contratual em 3 Macroentregas:}
+  \textbf{Evolução Contínua em Três Fases (Macroentregas):}
 
   \begin{itemize}
   \tightlist
   \item
-    \emph{Macroentrega 1 (\texttt{Release\ 1.0} --- Implantação Imediata):} Operação completa de back-office, bilheteria física atômica e portal web de reservas com pagamento presencial no balcão.
+    \emph{Fase 1 (Atual):} Bilheteria presencial completa, controle de sessões, catálogo de filmes e portal web de reserva antecipada com pagamento no balcão.
   \item
-    \emph{Macroentrega 2 (\texttt{Release\ 2.0} --- Expansão Digital):} Habilitação de checkout online (PIX e cartão) e disparo de e-mails transacionais com domínio dedicado do exibidor.
+    \emph{Fase 2 (Próxima):} Venda online direta com pagamento imediato via PIX dinâmico e cartão, com emissão de vouchers digitais no e-mail do cliente.
   \item
-    \emph{Macroentrega 3 (\texttt{Release\ 3.0} --- Automação Fiscal e Varejo):} Integração com SEFAZ para emissão automática de NFC-e, módulo de bomboniere e painel self-service de faturamento.
+    \emph{Fase 3 (Futura):} Emissão integrada de notas fiscais (NFC-e na SEFAZ), controle de vendas de bomboniere/pipoca e relatórios consolidados de faturamento.
   \end{itemize}
 \end{itemize}
 
 
-\subsubsecao{Critérios de Aceite Formal pelo Cliente Adquirente}
+\subsubsecao{Critérios de Aceite Formal}
 
-A entrega de cada implantação ou macroentrega é considerada formalmente aceita mediante:
+O cinema cliente formaliza a aceitação do sistema quando os seguintes requisitos são atendidos:
 \begin{enumerate}
 \tightlist
-\item Aprovação integral da bateria de testes automatizados (770 cenários unitários, de integração e isolamento \emph{cross-tenant}) e homologação assistida (\emph{UAT}).
-\item Inexistência de defeitos abertos de severidade \textbf{Crítica} (bloqueio de venda ou corrupção de dados) ou \textbf{Alta}.
-\item Comprovação prática de zero ocorrência de venda dupla (\emph{double-booking}) sob disputa simultânea entre portal web e balcão físico.
-\item Assinatura digital do \textbf{Termo de Aceite de Implantação (TAI)} pelo representante legal do cinema contratante.
+\item Aprovação de todos os 711 testes automatizados do sistema e execução bem-sucedida dos testes práticos de balcão.
+\item Inexistência de qualquer defeito impeditivo ou crítico em aberto.
+\item Comprovação prática de que a trava atômica impede rigorosamente a venda simultânea da mesma poltrona entre a web e o guichê.
+\item Assinatura do Termo de Aceite de Implantação (TAI) pelo responsável do cinema.
 \end{enumerate}
 
 
-\subsubsecao{Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega}
+\subsubsecao{Níveis de Serviço (SLA) e Atendimento}
 
-A CineSoft Solutions assegura disponibilidade mensal mínima de \textbf{99,5\%} da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
+Para manter a bilheteria funcionando sem interrupções nas horas de pico (finais de semana e estreias), a CineSoft estabelece tempos máximos de resposta e resolução:
 
 \tabelaabnt{Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega}{CineSoft Solutions (2026)}{tab:sla_suporte}{%
 {\small
@@ -181,9 +133,9 @@ Evolutiva (P4 --- Perfectiva) & Solicitação de novos relatórios, filtros ou m
 }
 
 
-\subsecao{2.3 Identificação dos fornecedores e parceiros relevantes}
+\subsecao{2.3 Fornecedores e Parceiros de Tecnologia}
 
-A operação contínua e comercial da plataforma CineDoom apoia-se em provedores de tecnologia de primeira linha. A tabela abaixo detalha cada fornecedor crítico, seu papel arquitetural, a estrutura de contratação escalonada entre a validação inicial (Macroentrega 1) e a operação comercial plena (Macroentregas 2 e 3), bem como os impactos em disponibilidade, custo e segurança:
+Para manter a plataforma CineDoom estável, rápida e segura com custos proporcionais à escala dos cinemas, a CineSoft selecionou parceiros especializados para cada camada do sistema:
 
 \tabelaabnt{Identificação dos Fornecedores e Parceiros Relevantes}{CineSoft Solutions (2026)}{tab:fornecedores_parceiros}{%
 {\small
