@@ -1,0 +1,55 @@
+@startuml diagrama-rastreabilidade
+' =============================================================================
+' CADEIA DE RASTREABILIDADE BIDIRECIONAL
+' Macroentrega -> Sprint -> Feature (Issue) -> Necessidade (NEC) -> Requisito
+' (RF) -> Criterio de Aceite (CA) -> Codigo-Fonte -> Teste Automatizado
+'
+' Exemplo real rastreado: Issue #17 (Sprint 1) | NEC-06 -> RF-06 -> CA-02
+' Fonte: manual/capitulos/05-processos-tecnicos.md, secao 5.1.2
+' =============================================================================
+
+top to bottom direction
+
+skinparam shadowing false
+skinparam roundCorner 0
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 11
+skinparam defaultFontColor #111111
+skinparam nodesep 10
+skinparam ranksep 10
+skinparam padding 4
+skinparam linetype polyline
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #71717A
+  BorderThickness 1
+  FontColor #111111
+}
+
+skinparam arrow {
+  Color #27272A
+  FontColor #3A7B99
+  FontSize 8
+  Thickness 1.1
+}
+
+rectangle "Macroentrega 1 — MVP (v1.0)\nEscopo fechado da entrega incremental do CineDoom" as ME1 #E8EEF7
+rectangle "Sprint 1  (23/10 a 28/10)\nFundação técnica e Modelagem" as SP1 #E8EEF7
+rectangle "Issue #17  [FEAT(UI)]  |  @gabrlou  |  26/10 a 29/10\nDesign system e mapa interativo de assentos responsivo" as FEAT #F4F4F5
+rectangle "NEC-06   (STK-04 — Espectador)\nEscolher poltronas exatas no mapa da sala" as NEC #FBF3E2
+rectangle "RF-06  |  Bilheteria  |  Must Have  |  Macroentrega 1\nMapa interativo da sessão com polling a cada 2 s" as RF #E9F1F8
+rectangle "CA-02  |  Sincronização do Mapa por Polling a Cada 2 s\nGET /api/sessoes/{id}/assentos re-executado a cada 2.000 ms" as CA #E8F3EC
+rectangle "Código-Fonte   (cinedoom-app/)\nsrc/modules/bilheteria/components/seating-grid.tsx\nsrc/modules/bilheteria/hooks/use-session-seats.ts\nsrc/app/api/sessoes/[id]/assentos/route.ts" as CODE #F4F4F5
+rectangle "Teste Automatizado   (Vitest)\ntests/unit/session-seats-polling.test.ts\ntests/unit/seating-grid.test.ts\n↳ declaram RF-06  |  CA-02  |  RNF-01" as TEST #EFEBF6
+
+ME1  --> SP1  : "sprint"
+SP1  --> FEAT : "issue"
+FEAT --> NEC  : "atende a"
+NEC  --> RF   : "formalizada em"
+RF   --> CA   : "verificada por"
+CA   --> CODE : "implementada por"
+CODE --> TEST : "coberta por"
+
+@enduml
