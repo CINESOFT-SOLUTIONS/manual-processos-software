@@ -1,21 +1,80 @@
 @startuml
-skinparam monochrome true
+top to bottom direction
+
 skinparam shadowing false
-skinparam defaultFontName Helvetica
-skinparam roundcorner 4
+skinparam roundCorner 0
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 11
+skinparam defaultFontColor #111111
+skinparam defaultTextAlignment center
 
-actor "Espectador / Operador" as User
-node "Plataforma CineDoom (Next.js 16)" {
-  component "Portal Web & Bilheteria" as Web
-  component "Motor de Negócios (Server Actions)" as API
+skinparam nodesep 35
+skinparam ranksep 45
+skinparam padding 8
+
+skinparam rectangle<<container>> {
+    BackgroundColor #FFFFFF
+    BorderColor #888888
+    BorderThickness 1
+    FontColor #333333
 }
-database "PostgreSQL Serverless (Neon)" as DB
-component "Resend API" as Mail
-component "Gateway Stripe / PIX" as Pay
 
-User --> Web : Navega e seleciona assentos
-Web --> API : Chamadas RPC tipadas
-API --> DB : Prisma ORM (ACID)
-API --> Mail : Voucher QR Code
-API --> Pay : Webhooks de liquidação
+skinparam rectangle<<node>> {
+    BackgroundColor #F4F4F5
+    BorderColor #71717A
+    BorderThickness 1
+    FontColor #111111
+}
+
+skinparam database {
+    BackgroundColor #F4F4F5
+    BorderColor #71717A
+    BorderThickness 1
+    FontColor #111111
+}
+
+skinparam arrow {
+    Color #27272A
+    FontColor #111111
+    FontSize 10
+    Thickness 1.1
+}
+
+' 1. Camada de Usuários
+rectangle "Atores e Dispositivos Clientes" <<container>> as Usuarios {
+    rectangle "Público (Cliente)" <<node>> as Esp
+    rectangle "Atendente (Balcão)" <<node>> as Atd
+    rectangle "Gerente (Admin)" <<node>> as Ger
+}
+
+' 2. Camada Vercel
+rectangle "Plataforma Cloud Vercel (Next.js 14 Monólito Modular)" <<container>> as Vercel {
+    rectangle "Portal do Cliente & Catálogo\n[React Server & Client Components]" <<node>> as UI_Portal
+    rectangle "Módulo de Bilheteria & Painel Admin\n[React Client Components / Polling 2s]" <<node>> as UI_Bilh
+    rectangle "Camada de API & Application Services\n[Next.js Route Handlers + Zod + NextAuth JWT]" <<node>> as API
+    rectangle "Prisma Tenancy Extension & CryptoService\n[AsyncLocalStorage + AES-256-GCM / HMAC]" <<node>> as Tenancy
+}
+
+' 3. Camada de Infraestrutura Externa
+rectangle "Infraestrutura de Dados e Serviços SaaS" <<container>> as Externos {
+    database "PostgreSQL Gerenciado\n(Supabase DB)\nPooler 6543 + Triggers ACID" as DB
+    rectangle "Resend API\n[Serviço de E-mail Transacional]" <<node>> as Resend
+    rectangle "Axiom Cloud Log Drain\n[Retenção de Auditoria 365 Dias]" <<node>> as Axiom
+}
+
+' Fluxos
+Esp --> UI_Portal : HTTPS / JSON
+Atd --> UI_Bilh   : HTTPS / Polling 2s
+Ger --> UI_Bilh   : HTTPS / JSON
+
+UI_Portal --> API
+UI_Bilh   --> API
+
+API --> Tenancy
+
+Tenancy --> DB     : TLS / SQL\n(SELECT FOR UPDATE)
+API     --> Resend : HTTPS REST\n(Voucher)
+API     --> Axiom  : JSON\nStructured Logs
+
 @enduml

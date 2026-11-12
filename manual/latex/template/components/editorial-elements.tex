@@ -66,18 +66,22 @@
 \newcounter{editorialfig}
 \setcounter{editorialfig}{0}
 
-\newcommand{\figuracomfonte}[5]{%
+% Uso: \figuracomfonte[<altura maxima>]{<arquivo>}{<largura maxima>}{<titulo>}{<fonte>}{<label>}
+% O parametro opcional [<altura maxima>] controla o espaco vertical reservado
+% a imagem (padrao 0.56\textheight). Diagramas verticais de grande porte
+% (C4, Classes, Sequencia) exigem um valor maior para permanecerem legiveis.
+\newcommand{\figuracomfonte}[6][0.56\textheight]{%
   \par\vspace{8pt}%
   \noindent\begin{minipage}{\textwidth}
     \refstepcounter{editorialfig}%
-    \label{#5}%
-    \addcontentsline{lof}{figure}{\protect\numberline{\theeditorialfig}#3}%
+    \label{#6}%
+    \addcontentsline{lof}{figure}{\protect\numberline{\theeditorialfig}#4}%
     \centering
-    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandNavy}{\textbf{Figura \theeditorialfig}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #3}}\par
+    {\fontsize{9.5pt}{12.5pt}\selectfont\textcolor{BrandNavy}{\textbf{Figura \theeditorialfig}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #4}}\par
     \vspace{5pt}%
-    \includegraphics[max width=#2, max height=0.56\textheight, keepaspectratio]{#1}\par
+    \includegraphics[max width=#3, max height=#1, keepaspectratio]{#2}\par
     \vspace{4pt}%
-    {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #4\par}%
+    {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #5\par}%
   \end{minipage}%
   \par\vspace{8pt}%
 }

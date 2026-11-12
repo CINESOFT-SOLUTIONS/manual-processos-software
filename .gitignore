@@ -15,6 +15,9 @@ ehthumbs.db
 *~
 
 # LaTeX auxiliares
+*.lof
+*.xdv
+*.lot
 *.aux
 *.log
 *.toc

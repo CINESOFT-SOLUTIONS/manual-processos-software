@@ -1,43 +1,72 @@
-@startuml diagrama-casos-de-uso
-!theme plain
-skinparam backgroundColor #FFFFFF
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 10
-skinparam roundCorner 4
-skinparam shadowing false
-skinparam actor {
-  BackgroundColor #FFFFFF
-  BorderColor #1A1A2E
-  FontColor #1A1A2E
-}
-skinparam usecase {
-  BackgroundColor #FFFFFF
-  BorderColor #1A1A2E
-  FontColor #1A1A2E
-}
-skinparam arrowColor #1A1A2E
-
+@startuml
 left to right direction
 
-actor "Espectador Web" as cliente
-actor "Atendente Bilheteria" as atendente
-actor "Gerente do Cinema" as gerente
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 11
+skinparam defaultFontColor #111111
+skinparam defaultTextAlignment center
 
-package "Plataforma CineDoom" {
-  usecase "UC01: Consultar Grade e Filmes" as UC01
-  usecase "UC02: Selecionar e Reservar Poltrona" as UC02
-  usecase "UC03: Venda Presencial no Guichê" as UC03
-  usecase "UC04: Baixa de Voucher de Reserva" as UC04
-  usecase "UC05: Cadastrar Filmes e Sessões" as UC05
-  usecase "UC06: Visualizar Ocupação das Salas" as UC06
+skinparam nodesep 22
+skinparam ranksep 65
+skinparam padding 6
+
+skinparam actorStyle awesome
+skinparam actor {
+    BackgroundColor #F4F4F5
+    BorderColor #71717A
+    FontColor #111111
 }
 
-cliente --> UC01
-cliente --> UC02
-atendente --> UC03
-atendente --> UC04
-gerente --> UC05
-gerente --> UC06
+skinparam rectangle {
+    BackgroundColor #FFFFFF
+    BorderColor #888888
+    BorderThickness 1
+    FontColor #333333
+}
 
-UC03 ..> UC02 : <<reaproveita lock>>
+skinparam usecase {
+    BackgroundColor #F4F4F5
+    BorderColor #71717A
+    BorderThickness 1
+    FontColor #111111
+}
+
+skinparam arrow {
+    Color #27272A
+    Thickness 1.1
+}
+
+actor "Espectador\n(Cliente Final)" as Esp
+actor "Atendente\n(Guichê Físico)" as Atd
+actor "Gerente\n(Back-office)" as Ger
+
+rectangle "Sistema SaaS Multi-Tenant CineDoom" {
+    usecase "Ver catálogo e horários" as UC1
+    usecase "Cadastrar conta e consentimento LGPD" as UC2
+    usecase "Fazer reserva online + voucher" as UC3
+    usecase "Cancelar reserva pelo site" as UC4
+    usecase "Vender ingresso no balcão" as UC5
+    usecase "Encontrar reserva pelo código" as UC6
+    usecase "Cancelar ingresso no guichê" as UC7
+    usecase "Gerenciar filmes, salas e sessões" as UC8
+    usecase "Gerenciar atendentes e ocupação" as UC9
+    usecase "Anonimizar dados LGPD" as UC10
+}
+
+Esp --> UC1
+Esp --> UC2
+Esp --> UC3
+Esp --> UC4
+
+Atd --> UC1
+Atd --> UC5
+Atd --> UC6
+Atd --> UC7
+
+Ger --> UC8
+Ger --> UC9
+Ger --> UC10
+
 @enduml

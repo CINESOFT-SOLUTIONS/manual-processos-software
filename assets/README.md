@@ -57,20 +57,13 @@ manual-processos/assets/
 ├── capitulo-05/                              # Processos Técnicos de Engenharia
 │   ├── diagramas/
 │   │   ├── c4-containers.puml                # Diagrama C4 Nível 2 (Contêineres)
-│   │   ├── c4-containers.svg                 # Vetor SVG C4
 │   │   ├── c4-containers.pdf                 # PDF vetorial C4
-│   │   ├── diagrama-er-banco.puml            # Diagrama Entidade-Relacionamento
-│   │   ├── diagrama-er-banco.svg             # Vetor SVG DER
-│   │   ├── diagrama-er-banco.pdf             # PDF vetorial DER
+│   │   ├── diagrama-sequencia.puml           # Sequência UML da Reserva Atômica e Baixa no Balcão
+│   │   ├── diagrama-sequencia.pdf            # PDF vetorial Sequência
 │   │   ├── diagrama-classes-dominio.puml     # Diagrama de Classes UML de Domínio
-│   │   ├── diagrama-classes-dominio.svg      # Vetor SVG Classes
 │   │   ├── diagrama-classes-dominio.pdf      # PDF vetorial Classes
-│   │   ├── diagrama-estados-assento.puml     # Máquina de Estados da Poltrona
-│   │   ├── diagrama-estados-assento.svg      # Vetor SVG Estados
-│   │   ├── diagrama-estados-assento.pdf      # PDF vetorial Estados
-│   │   ├── diagrama-sequencia-reserva.puml   # Sequência UML da Reserva Atômica
-│   │   ├── diagrama-sequencia-reserva.svg    # Vetor SVG Sequência
-│   │   └── diagrama-sequencia-reserva.pdf    # PDF vetorial Sequência
+│   │   ├── diagrama-casos-de-uso.puml         # Diagrama de Casos de Uso (gerado, não publicado no cap. 5)
+│   │   └── diagrama-casos-de-uso.pdf          # PDF vetorial Casos de Uso
 │   └── tabelas/
 │       ├── catalogo-requisitos.tex           # Catálogo formal de RFs e RNFs
 │       └── verificacao-validacao.tex         # Matriz de Verificação vs Validação

@@ -1,69 +1,134 @@
-@startuml diagrama-classes-dominio
-!theme plain
-skinparam backgroundColor #FFFFFF
-skinparam defaultFontName Helvetica
-skinparam defaultFontSize 10
-skinparam roundCorner 4
+@startuml
+top to bottom direction
+
 skinparam shadowing false
+skinparam roundCorner 0
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 11
+skinparam defaultFontColor #111111
+
+skinparam nodesep 45
+skinparam ranksep 55
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+hide circle
+hide empty methods
+
 skinparam class {
-  BackgroundColor #FFFFFF
-  BorderColor #1A1A2E
-  ArrowColor #1A1A2E
-  FontColor #1A1A2E
-  HeaderBackgroundColor #F4F6F9
+    BackgroundColor #FFFFFF
+    HeaderBackgroundColor #F4F4F5
+    BorderColor #71717A
+    BorderThickness 1
+    FontColor #111111
+    FontStyle bold
+    AttributeFontColor #111111
+    AttributeFontSize 10
 }
 
-class Movie {
-  - id: string
-  - title: string
-  - durationInMinutes: number
-  - classification: string
-  + isValid(): boolean
+skinparam arrow {
+    Color #27272A
+    FontColor #111111
+    FontSize 10
+    Thickness 1.1
 }
 
-class Session {
-  - id: string
-  - movieId: string
-  - roomId: string
-  - startTime: Date
-  - endTime: Date
-  - standardPrice: Money
-  + isAvailableForBooking(): boolean
-  + calculateOverlap(other: Session): boolean
+class Tenant {
+    +UUID id
+    +String name
+    +String slug
+    +Boolean active
+}
+
+class User {
+    +UUID id
+    +UUID tenantId
+    +String name
+    +String email
+    +String passwordHash
+    +Role role
+    +String cpfHash
+    +String cpfEncrypted
+    +Boolean active
+}
+
+class Film {
+    +UUID id
+    +UUID tenantId
+    +String title
+    +String synopsis
+    +String genre
+    +Int duration
+    +String classification
+    +String posterUrl
+}
+
+class Room {
+    +UUID id
+    +UUID tenantId
+    +String name
+    +Int rows
+    +Int columns
+    +Int capacity
 }
 
 class Seat {
-  - id: string
-  - roomId: string
-  - row: string
-  - number: number
-  - type: SeatType
-  + isVip(): boolean
+    +UUID id
+    +UUID roomId
+    +String rowLabel
+    +Int number
+    +String seatCode
+}
+
+class Session {
+    +UUID id
+    +UUID tenantId
+    +UUID filmId
+    +UUID roomId
+    +DateTime startsAt
+    +Decimal price
+}
+
+class SessionSeat {
+    +UUID id
+    +UUID sessionId
+    +UUID seatId
+    +SessionSeatStatus status
+    +UUID reservationId
+}
+
+class Reservation {
+    +UUID id
+    +String code
+    +UUID tenantId
+    +UUID sessionId
+    +UUID userId
+    +ReservationStatus status
+    +Decimal totalPrice
+    +DateTime expiresAt
+    +DateTime emailSentAt
 }
 
 class Ticket {
-  - id: string
-  - sessionId: string
-  - seatId: string
-  - orderId: string
-  - status: TicketStatus
-  - price: Money
-  + cancel(): void
-  + confirm(): void
+    +UUID id
+    +UUID tenantId
+    +UUID sessionSeatId
+    +UUID operatorId
+    +TicketStatus status
+    +Decimal pricePaid
+    +String buyerCpfHash
 }
 
-class Order {
-  - id: string
-  - customerId: string
-  - items: Ticket[]
-  - total: Money
-  - status: OrderStatus
-  + addItem(ticket: Ticket): void
-  + checkout(): PaymentToken
-}
+Tenant "1" --> "*" User : possui
+Tenant "1" --> "*" Film : mantém
+Tenant "1" --> "*" Room : gerencia
+Room "1" *-- "*" Seat : contém
+Film "1" --> "*" Session : exibido em
+Room "1" --> "*" Session : sedia
+Session "1" *-- "*" SessionSeat : pré-popula
+Seat "1" --> "*" SessionSeat : referencia
+Reservation "1" --> "1..5" SessionSeat : bloqueia
+SessionSeat "1" --> "0..1" Ticket : gera
 
-Session "1" o-- "*" Ticket : contains
-Order "1" *-- "1..*" Ticket : purchases
-Movie "1" <-- "*" Session : features
-Seat "1" <-- "*" Ticket : occupies
 @enduml

@@ -32,14 +32,11 @@ Todos os artefatos estão centralizados e organizados por capítulo em `manual-p
 | **5. Processos Técnicos** | ART-020 | Catálogo Formal de Requisitos do Sistema (RF e RNF) | Tabela Estruturada | ✅ Concluído | `assets/capitulo-05/tabelas/catalogo-requisitos.tex` |
 | **5. Processos Técnicos** | ART-021 | Matriz de Rastreabilidade Ponta a Ponta | Tabela Estruturada | ✅ Concluído | `assets/capitulo-05/tabelas/matriz-rastreabilidade.tex` |
 | **5. Processos Técnicos** | ART-022 | Especificação de Critérios de Aceitação Formal | Tabela Estruturada | ✅ Concluído | `assets/capitulo-05/tabelas/criterios-aceitacao.tex` |
-| **5. Processos Técnicos** | ART-023 | **Diagrama C4 Nível 2 (Contêineres da Aplicação)** | Diagrama PlantUML/SVG | ✅ Concluído | `assets/capitulo-05/diagramas/c4-containers.*` |
-| **5. Processos Técnicos** | ART-024 | **Diagrama de Classes UML (Modelo de Domínio CineDoom)** | Diagrama PlantUML/SVG | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-classes-dominio.*` |
-| **5. Processos Técnicos** | ART-025 | **Diagrama de Sequência UML (Reserva Atômica)** | Diagrama PlantUML/SVG | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-sequencia-reserva.*` |
-| **5. Processos Técnicos** | ART-026 | **Diagrama de Casos de Uso UML (Atores e Ações)** | Diagrama PlantUML/SVG | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-casos-de-uso.*` |
-| **5. Processos Técnicos** | ART-027 | **Diagrama de Máquina de Estados UML (Poltrona)** | Diagrama PlantUML/SVG | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-estados-assento.*` |
-| **5. Processos Técnicos** | ART-028 | **Diagrama Entidade-Relacionamento (DER PostgreSQL)** | Diagrama PlantUML/SVG | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-er-banco.*` |
-| **5. Processos Técnicos** | ART-029 | **Print da Suíte de Testes Automatizados (Vitest 748)** | Screenshot / Evidência | ✅ Concluído | `assets/capitulo-05/prints/print-testes-unitarios-vitest.png` |
-| **5. Processos Técnicos** | ART-030 | Quadro Comparativo de Verificação vs. Validação | Tabela Estruturada | ✅ Concluído | `assets/capitulo-05/tabelas/verificacao-validacao.tex` |
-| **6. Avaliação Processo**| ART-031 | Tabela de Diagnóstico do Manual (4 Perguntas MPS.BR) | Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/diagnostico-processo.tex` |
-| **6. Avaliação Processo**| ART-032 | Tabela do Plano de Melhoria de Processo (PMP 5 Campos)| Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/plano-melhoria-pmp.tex` |
-| **6. Avaliação Processo**| ART-033 | **Print do Kanban com a Melhoria Aplicada** | Screenshot / Evidência | ✅ Concluído | `assets/capitulo-06/prints/print-evidencia-melhoria-kanban.png` |
+| **5. Processos Técnicos** | ART-023 | **Diagrama C4 Nível 2 (Contêineres da Aplicação)** | Diagrama PlantUML/PDF | ✅ Concluído | `assets/capitulo-05/diagramas/c4-containers.*` |
+| **5. Processos Técnicos** | ART-024 | **Diagrama de Classes UML (Modelo de Domínio CineDoom)** | Diagrama PlantUML/PDF | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-classes-dominio.*` |
+| **5. Processos Técnicos** | ART-025 | **Diagrama de Sequência UML (Reserva Atômica e Baixa no Balcão)** | Diagrama PlantUML/PDF | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-sequencia.*` |
+| **5. Processos Técnicos** | ART-026 | **Print da Suíte de Testes Automatizados (Vitest 748)** | Screenshot / Evidência | ✅ Concluído | `assets/capitulo-05/prints/print-testes-unitarios-vitest.png` |
+| **5. Processos Técnicos** | ART-027 | Quadro Comparativo de Verificação vs. Validação | Tabela Estruturada | ✅ Concluído | `assets/capitulo-05/tabelas/verificacao-validacao.tex` |
+| **6. Avaliação Processo**| ART-028 | Tabela de Diagnóstico do Manual (4 Perguntas MPS.BR) | Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/diagnostico-processo.tex` |
+| **6. Avaliação Processo**| ART-029 | Tabela do Plano de Melhoria de Processo (PMP 5 Campos)| Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/plano-melhoria-pmp.tex` |
+| **6. Avaliação Processo**| ART-030 | **Print do Kanban com a Melhoria Aplicada** | Screenshot / Evidência | ✅ Concluído | `assets/capitulo-06/prints/print-evidencia-melhoria-kanban.png` |

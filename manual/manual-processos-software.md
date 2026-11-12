@@ -626,7 +626,7 @@ Cada macroentrega pode envolver diversas Sprints, e os incrementos produzidos ao
 
 Para garantir estabilidade em produção e permitir desenvolvimento paralelo sem conflitos, a organização adota um fluxo de ramificação estruturado no Git:
 
-- **`main`:** ramo estável que reflete o código atualmente implantado em produção (`https://cinedoom.com`). Commits diretos são bloqueados; apenas Pull Requests testados e aprovados vindos de `staging` são integrados.
+- **`main`:** ramo estável que reflete o código atualmente implantado em produção (`https://cinedoom.vercel.app/`). Commits diretos são bloqueados; apenas Pull Requests testados e aprovados vindos de `staging` são integrados.
 - **`staging`:** ambiente de pré-produção e homologação, que recebe as versões consolidadas de `develop` para validação com usuários e testes de ponta a ponta.
 - **`develop`:** ramo principal de integração contínua do dia a dia, onde as novas funcionalidades são unificadas e testadas pela esteira automática.
 - **`feat/*` e `fix/*`:** ramos temporários criados a partir de `develop` para uma história específica ou correção de não conformidade, excluídos após o merge do Pull Request.
@@ -668,7 +668,7 @@ A infraestrutura foi desenhada para viabilizar um SaaS multi-tenant sem a sobrec
 
 - **Operação 100% em Nuvem:** Adoção de serviços gerenciados com alta disponibilidade e cobrança por uso, mantendo o custo fixo próximo de zero na fase inicial de validação.
 - **Consistência Transacional Estrita:** Banco relacional com suporte a travas de concorrência (`SELECT FOR UPDATE`), essencial para impedir reserva duplicada da mesma poltrona entre web e guichê.
-- **Segregação de Ambientes:** Isolamento rigoroso entre desenvolvimento local, *preview* por *Pull Request*, homologação (*staging*) e produção, com segredos protegidos fora do código-fonte.
+- **Segregação de Ambientes:** Isolamento rigoroso entre desenvolvimento local, homologação (*Preview*) e produção, com segredos protegidos fora do código-fonte.
 
 ### A Organização no GitHub (`CINESOFT-SOLUTIONS`)
 
@@ -708,11 +708,10 @@ A tabela a seguir consolida os recursos selecionados para sustentar o ciclo de v
 
 ### Ambientes de Execução e Manutenção Contínua
 
-O ciclo de vida do CineDoom opera em quatro ambientes segregados:
+O ciclo de vida do CineDoom opera em três ambientes segregados:
 - **Desenvolvimento Local:** Onde os desenvolvedores escrevem código, executam migrações e rodam os testes automatizados.
-- **Preview por *Pull Request*:** Ambiente efêmero gerado automaticamente pela Vercel para validação funcional e visual antes do merge.
-- **Homologação (`staging`):** Instância `https://hml.cinedoom.com`, alimentada pela branch `staging`, onde ocorrem os testes de aceitação (UAT) e o aceite formal.
-- **Produção (`main`):** Instância estável (`https://cinedoom.com`) acessível pelos cinemas e clientes finais, atualizada exclusivamente após aprovação da esteira de CI/CD.
+- **Preview (Homologação):** Gerado automaticamente a cada Pull Request na Vercel para validação funcional e visual da equipe antes do merge.
+- **Produção:** Instância estável (`https://cinedoom.vercel.app`) acessível pelos cinemas e clientes finais, atualizada exclusivamente após aprovação da esteira de CI/CD.
 
 A sustentação dessa infraestrutura é mantida por três rotinas contínuas da liderança técnica:
 1. **Segurança de Credenciais:** Tokens e chaves de API residem exclusivamente em cofres de variáveis protegidas (GitHub Secrets e painel da Vercel).
@@ -943,7 +942,7 @@ A organização assegura que todo o conhecimento técnico, arquitetural e proces
 | Ativo | Conteúdo | Local | Responsável |
 | :--- | :--- | :--- | :--- |
 | Especificações (SDD) | Requisitos funcionais, regras de negócio e contratos Zod | `specs/` | Engenheiro de Requisitos |
-| ADRs | Decisões de arquitetura, `ADR-001` a `ADR-012` | `specs/adrs/` | Tech Lead |
+| ADRs | Decisões de arquitetura, `ADR-001` a `ADR-012` | Repositório Git | Tech Lead |
 | Modelos de dados e planos de teste | Esquemas, cenários e critérios de aceitação | Repositório Git | Tech Lead e Engenheiro de Qualidade |
 | Manual de processos | Processos, papéis e planos | Repositório Git | Gerente do Projeto |
 | Guias técnicos e lições aprendidas | Soluções de problemas recorrentes | Repositório Git (guias internos) | Todos os integrantes |
@@ -1238,7 +1237,7 @@ STG --> MAIN : Aprovação de release\n+ tag SemVer
 
 | Branch | Função | Regras |
 | :--- | :--- | :--- |
-| `main` | Produção (`https://cinedoom.com/`) | Proibido *force push*; somente código aprovado pelo CI; cada release recebe tag |
+| `main` | Produção (`https://cinedoom.vercel.app/`) | Proibido *force push*; somente código aprovado pelo CI; cada release recebe tag |
 | `staging` | Homologação e aceite | Espelha a produção; promoção somente após validação |
 | `develop` | Integração das entregas da Sprint | Recebe somente Pull Requests aprovados |
 | `feat/*` e `fix/*` | Trabalho por requisito ou correção (ex.: `feat/RF-06-venda-atomica`) | Criadas a partir de `develop`; vinculadas a uma issue |
@@ -1676,7 +1675,7 @@ O projeto aplica os cinco princípios **SOLID**, com evidência verificável no 
 
 ### 5.2.2 Diagramas de design
 
-Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **seis diagramas formais de arquitetura e design** do CineDoom.
+Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **três diagramas formais de arquitetura e design** do CineDoom.
 
 #### 1. Diagrama C4 - Nível 2 (Diagrama de Contêineres)
 
@@ -1763,49 +1762,9 @@ sequenceDiagram
     deactivate API
 ```
 
-> **Diagrama vetorial (PDF):** [diagrama-sequencia-reserva.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.pdf) - Fonte PlantUML: [diagrama-sequencia-reserva.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.puml)
+> **Diagrama vetorial (PDF):** [diagrama-sequencia.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia.pdf) - Fonte PlantUML: [diagrama-sequencia.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia.puml)
 
-#### 3. Diagrama de Casos de Uso UML
-
-O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
-
-```mermaid
-flowchart LR
-    Esp(["👤 Espectador\n(Cliente Final)"])
-    Atd(["🎫 Atendente\n(Guichê Físico)"])
-    Ger(["👔 Gerente\n(Back-office)"])
-
-    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
-        UC1("Ver catálogo e horários")
-        UC2("Cadastrar conta e consentimento LGPD")
-        UC3("Fazer reserva online + voucher")
-        UC4("Cancelar reserva pelo site")
-        UC5("Vender ingresso no balcão")
-        UC6("Encontrar reserva pelo código")
-        UC7("Cancelar ingresso no guichê")
-        UC8("Gerenciar filmes, salas e sessões")
-        UC9("Gerenciar atendentes e ocupação")
-        UC10("Anonimizar dados LGPD")
-    end
-
-    Esp --> UC1
-    Esp --> UC2
-    Esp --> UC3
-    Esp --> UC4
-
-    Atd --> UC1
-    Atd --> UC5
-    Atd --> UC6
-    Atd --> UC7
-
-    Ger --> UC8
-    Ger --> UC9
-    Ger --> UC10
-```
-
-> **Diagrama vetorial (PDF):** [diagrama-casos-de-uso.pdf](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.pdf) - Fonte PlantUML: [diagrama-casos-de-uso.puml](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.puml)
-
-#### 4. Diagrama de Classes UML (Modelo de Domínio)
+#### 3. Diagrama de Classes UML (Modelo de Domínio)
 
 O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (`Tenant`):
 
@@ -1911,104 +1870,6 @@ classDiagram
 
 > **Diagrama vetorial (PDF):** [diagrama-classes-dominio.pdf](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.pdf) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
 
-#### 5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)
-
-O Diagrama de Estados formaliza todas as transições válidas de uma poltrona (`SessionSeat`) desde a criação da sessão até o encerramento:
-
-```mermaid
-stateDiagram-v2
-    [*] --> AVAILABLE : Criação da Sessão (Pré-população)
-
-    AVAILABLE --> RESERVED : Reserva Web Confirmada (>= 60 min antes)\nou Bloqueio Temporário (10 min)
-    AVAILABLE --> SOLD : Venda Direta no Balcão Presencial\n(SELECT FOR UPDATE)
-
-    RESERVED --> SOLD : Baixa Presencial no Balcão\n(Pagamento Confirmado pelo Atendente)
-    RESERVED --> AVAILABLE : Cancelamento Voluntário pelo Cliente\nou Expiração Just-in-Time (< 60 min da sessão)
-
-    SOLD --> AVAILABLE : Cancelamento Síncrono no Guichê\n(Grava Trilha em cancellation_audits)
-```
-
-> **Diagrama vetorial (PDF):** [diagrama-estados-assento.pdf](../../assets/capitulo-05/diagramas/diagrama-estados-assento.pdf) - Fonte PlantUML: [diagrama-estados-assento.puml](../../assets/capitulo-05/diagramas/diagrama-estados-assento.puml)
-
-#### 6. Diagrama Entidade-Relacionamento (DER — Modelo Relacional PostgreSQL)
-
-O DER especifica a estrutura física das tabelas relacionais, chaves primárias (`PK`), chaves estrangeiras (`FK`) e restrições de unicidade no PostgreSQL:
-
-```mermaid
-erDiagram
-    TENANTS ||--o{ USERS : "tenant_id"
-    TENANTS ||--o{ FILMS : "tenant_id"
-    TENANTS ||--o{ ROOMS : "tenant_id"
-    TENANTS ||--o{ SESSIONS : "tenant_id"
-    TENANTS ||--o{ RESERVATIONS : "tenant_id"
-    TENANTS ||--o{ TICKETS : "tenant_id"
-
-    ROOMS ||--|{ SEATS : "room_id"
-    FILMS ||--o{ SESSIONS : "film_id"
-    ROOMS ||--o{ SESSIONS : "room_id"
-
-    SESSIONS ||--|{ SESSION_SEATS : "session_id"
-    SEATS ||--o{ SESSION_SEATS : "seat_id"
-
-    USERS ||--o{ RESERVATIONS : "user_id"
-    SESSIONS ||--o{ RESERVATIONS : "session_id"
-    RESERVATIONS ||--|{ SESSION_SEATS : "reservation_id"
-
-    SESSION_SEATS ||--o| TICKETS : "session_seat_id"
-    USERS ||--o{ TICKETS : "operator_id"
-    TICKETS ||--o| CANCELLATION_AUDITS : "ticket_id"
-
-    TENANTS {
-        uuid id PK
-        varchar name
-        varchar slug UK
-        boolean active
-    }
-    USERS {
-        uuid id PK
-        uuid tenant_id FK
-        varchar email
-        varchar password_hash
-        enum role
-        varchar cpf_hash
-        text cpf_encrypted
-    }
-    SESSIONS {
-        uuid id PK
-        uuid tenant_id FK
-        uuid film_id FK
-        uuid room_id FK
-        timestamptz starts_at
-        numeric price
-    }
-    SESSION_SEATS {
-        uuid id PK
-        uuid session_id FK
-        uuid seat_id FK
-        enum status
-        uuid reservation_id FK
-    }
-    RESERVATIONS {
-        uuid id PK
-        varchar code UK
-        uuid tenant_id FK
-        uuid session_id FK
-        enum status
-        timestamptz expires_at
-        timestamptz email_sent_at
-    }
-    CANCELLATION_AUDITS {
-        uuid id PK
-        uuid tenant_id FK
-        uuid ticket_id FK
-        uuid operator_id FK
-        text reason
-        timestamptz cancelled_at
-    }
-```
-
-> **Diagrama vetorial (PDF):** [diagrama-er-banco.pdf](../../assets/capitulo-05/diagramas/diagrama-er-banco.pdf) - Fonte PlantUML: [diagrama-er-banco.puml](../../assets/capitulo-05/diagramas/diagrama-er-banco.puml)
-
 ---
 
 ### 5.2.3 Justificativa das escolhas tecnológicas
@@ -2104,7 +1965,7 @@ Os resultados confirmam que o sistema atende às necessidades reais dos stakehol
 
 ### 5.4.4 Plano de transição/implantação do sistema
 
-A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207:2021 (Seção 6.4.10), encadeadas de forma controlada a partir das branches do repositório.
+A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207 (Seção 6.4.10), encadeadas de forma controlada a partir das branches do repositório.
 
 #### Etapa 1 — Planejamento da transição
 

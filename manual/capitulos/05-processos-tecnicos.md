@@ -219,7 +219,7 @@ O projeto aplica os cinco princípios **SOLID**, com evidência verificável no 
 
 ### 5.2.2 Diagramas de design
 
-Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **seis diagramas formais de arquitetura e design** do CineDoom.
+Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **três diagramas formais de arquitetura e design** do CineDoom.
 
 #### 1. Diagrama C4 - Nível 2 (Diagrama de Contêineres)
 
@@ -306,49 +306,9 @@ sequenceDiagram
     deactivate API
 ```
 
-> **Diagrama vetorial (PDF):** [diagrama-sequencia-reserva.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.pdf) - Fonte PlantUML: [diagrama-sequencia-reserva.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.puml)
+> **Diagrama vetorial (PDF):** [diagrama-sequencia.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia.pdf) - Fonte PlantUML: [diagrama-sequencia.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia.puml)
 
-#### 3. Diagrama de Casos de Uso UML
-
-O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
-
-```mermaid
-flowchart LR
-    Esp(["👤 Espectador\n(Cliente Final)"])
-    Atd(["🎫 Atendente\n(Guichê Físico)"])
-    Ger(["👔 Gerente\n(Back-office)"])
-
-    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
-        UC1("Ver catálogo e horários")
-        UC2("Cadastrar conta e consentimento LGPD")
-        UC3("Fazer reserva online + voucher")
-        UC4("Cancelar reserva pelo site")
-        UC5("Vender ingresso no balcão")
-        UC6("Encontrar reserva pelo código")
-        UC7("Cancelar ingresso no guichê")
-        UC8("Gerenciar filmes, salas e sessões")
-        UC9("Gerenciar atendentes e ocupação")
-        UC10("Anonimizar dados LGPD")
-    end
-
-    Esp --> UC1
-    Esp --> UC2
-    Esp --> UC3
-    Esp --> UC4
-
-    Atd --> UC1
-    Atd --> UC5
-    Atd --> UC6
-    Atd --> UC7
-
-    Ger --> UC8
-    Ger --> UC9
-    Ger --> UC10
-```
-
-> **Diagrama vetorial (PDF):** [diagrama-casos-de-uso.pdf](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.pdf) - Fonte PlantUML: [diagrama-casos-de-uso.puml](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.puml)
-
-#### 4. Diagrama de Classes UML (Modelo de Domínio)
+#### 3. Diagrama de Classes UML (Modelo de Domínio)
 
 O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (`Tenant`):
 
@@ -453,104 +413,6 @@ classDiagram
 ```
 
 > **Diagrama vetorial (PDF):** [diagrama-classes-dominio.pdf](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.pdf) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
-
-#### 5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)
-
-O Diagrama de Estados formaliza todas as transições válidas de uma poltrona (`SessionSeat`) desde a criação da sessão até o encerramento:
-
-```mermaid
-stateDiagram-v2
-    [*] --> AVAILABLE : Criação da Sessão (Pré-população)
-
-    AVAILABLE --> RESERVED : Reserva Web Confirmada (>= 60 min antes)\nou Bloqueio Temporário (10 min)
-    AVAILABLE --> SOLD : Venda Direta no Balcão Presencial\n(SELECT FOR UPDATE)
-
-    RESERVED --> SOLD : Baixa Presencial no Balcão\n(Pagamento Confirmado pelo Atendente)
-    RESERVED --> AVAILABLE : Cancelamento Voluntário pelo Cliente\nou Expiração Just-in-Time (< 60 min da sessão)
-
-    SOLD --> AVAILABLE : Cancelamento Síncrono no Guichê\n(Grava Trilha em cancellation_audits)
-```
-
-> **Diagrama vetorial (PDF):** [diagrama-estados-assento.pdf](../../assets/capitulo-05/diagramas/diagrama-estados-assento.pdf) - Fonte PlantUML: [diagrama-estados-assento.puml](../../assets/capitulo-05/diagramas/diagrama-estados-assento.puml)
-
-#### 6. Diagrama Entidade-Relacionamento (DER — Modelo Relacional PostgreSQL)
-
-O DER especifica a estrutura física das tabelas relacionais, chaves primárias (`PK`), chaves estrangeiras (`FK`) e restrições de unicidade no PostgreSQL:
-
-```mermaid
-erDiagram
-    TENANTS ||--o{ USERS : "tenant_id"
-    TENANTS ||--o{ FILMS : "tenant_id"
-    TENANTS ||--o{ ROOMS : "tenant_id"
-    TENANTS ||--o{ SESSIONS : "tenant_id"
-    TENANTS ||--o{ RESERVATIONS : "tenant_id"
-    TENANTS ||--o{ TICKETS : "tenant_id"
-
-    ROOMS ||--|{ SEATS : "room_id"
-    FILMS ||--o{ SESSIONS : "film_id"
-    ROOMS ||--o{ SESSIONS : "room_id"
-
-    SESSIONS ||--|{ SESSION_SEATS : "session_id"
-    SEATS ||--o{ SESSION_SEATS : "seat_id"
-
-    USERS ||--o{ RESERVATIONS : "user_id"
-    SESSIONS ||--o{ RESERVATIONS : "session_id"
-    RESERVATIONS ||--|{ SESSION_SEATS : "reservation_id"
-
-    SESSION_SEATS ||--o| TICKETS : "session_seat_id"
-    USERS ||--o{ TICKETS : "operator_id"
-    TICKETS ||--o| CANCELLATION_AUDITS : "ticket_id"
-
-    TENANTS {
-        uuid id PK
-        varchar name
-        varchar slug UK
-        boolean active
-    }
-    USERS {
-        uuid id PK
-        uuid tenant_id FK
-        varchar email
-        varchar password_hash
-        enum role
-        varchar cpf_hash
-        text cpf_encrypted
-    }
-    SESSIONS {
-        uuid id PK
-        uuid tenant_id FK
-        uuid film_id FK
-        uuid room_id FK
-        timestamptz starts_at
-        numeric price
-    }
-    SESSION_SEATS {
-        uuid id PK
-        uuid session_id FK
-        uuid seat_id FK
-        enum status
-        uuid reservation_id FK
-    }
-    RESERVATIONS {
-        uuid id PK
-        varchar code UK
-        uuid tenant_id FK
-        uuid session_id FK
-        enum status
-        timestamptz expires_at
-        timestamptz email_sent_at
-    }
-    CANCELLATION_AUDITS {
-        uuid id PK
-        uuid tenant_id FK
-        uuid ticket_id FK
-        uuid operator_id FK
-        text reason
-        timestamptz cancelled_at
-    }
-```
-
-> **Diagrama vetorial (PDF):** [diagrama-er-banco.pdf](../../assets/capitulo-05/diagramas/diagrama-er-banco.pdf) - Fonte PlantUML: [diagrama-er-banco.puml](../../assets/capitulo-05/diagramas/diagrama-er-banco.puml)
 
 ---
 
