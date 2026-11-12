@@ -1,0 +1,38 @@
+@startuml
+scale 800 width 600
+autonumber
+
+actor Público as "Cliente (Portal)"
+participante API as "API (Next.js)"
+participante Banco as "Banco de Dados"
+participante E-mail as "Serviço de E-mail"
+ator Atendente as "Atendente (Balcão)"
+
+Público->>API: Solicitar reserva (filme, assentos, dados)
+activate API
+API->>API: Verificar se tem 60 min antes
+API->>Banco: Bloquear assentos (SELECT FOR UPDATE)
+alt Assento não disponível
+    Banco-->>API: Retornar erro
+    API-->>Público: Erro 409 (Assento indisponível)
+else Assentos disponíveis
+    API->>Banco: Criar reserva (status PENDING)
+    API->>Banco: Bloquear assentos como RESERVED
+    API->>E-mail: Enviar voucher
+    E-mail->>Banco: Gravar data do e-mail
+    API-->>Público: Retornar voucher (Código CD-XXXX)
+end
+deactivate API
+
+note over Público,Atendente: Comparecer ao balcão até 60 min antes
+
+Atendente->>API: Confirmar reserva (código)
+activate API
+API->>Banco: Verificar prazo (60 min)
+API->>Banco: Alterar status para CONFIRMED
+API->>Banco: Mudar assentos para SOLD
+API->>Banco: Criar ticket (status SOLD)
+API->>Banco: Confirmar transação
+API-->>Atendente: Retornar OK (Ingressos emitidos)
+deactivate API
+@enduml

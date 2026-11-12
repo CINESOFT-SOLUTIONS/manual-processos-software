@@ -1,0 +1,34 @@
+@startuml
+scale 800 width 600
+
+actor Esp as "Público (Cliente)"
+actor Atd as "Atendente (Guichê)"
+actor Ger as "Gerente (Admin)"
+
+rectangle CineDoom "Sistema" {
+    UC01 "Ver catálogo e horários"
+    UC02 "Cadastrar e dar consentimento LGPD"
+    UC03 "Fazer reserva online + voucher"
+    UC04 "Cancelar reserva pelo site"
+    UC05 "Vender ingresso no balcão"
+    UC06 "Encontrar reserva pelo código"
+    UC07 "Cancelar ingresso no guichê"
+    UC08 "Gerenciar filmes, salas e sessões"
+    UC09 "Gerenciar atendentes e ocupação"
+    UC10 "Anonimizar dados LGPD"
+}
+
+Público --> UC01
+Público --> UC02
+Público --> UC03
+Público --> UC04
+
+Atendente --> UC01
+Atendente --> UC05
+Atendente --> UC06
+Atendente --> UC07
+
+Gerente --> UC08
+Gerente --> UC09
+Gerente --> UC10
+@enduml
