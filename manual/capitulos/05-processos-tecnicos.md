@@ -42,7 +42,7 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 
 ---
 
-### Restrições Técnicas e Limites de Escopo (`RES-01` a `RES-06`)
+#### Restrições Técnicas e Limites de Escopo (`RES-01` a `RES-06`)
 
 Restrições arquiteturais e itens explicitamente fora do escopo da **Macroentrega 1 (MVP)**. As entregas previstas para as Macroentregas 2 e 3 (gateway de pagamento online, emissão fiscal NFC-e/SAT e bomboniere) são evoluções planejadas no roadmap e **não contradizem** estas restrições, que delimitam exclusivamente o MVP:
 
@@ -55,7 +55,7 @@ Restrições arquiteturais e itens explicitamente fora do escopo da **Macroentre
 
 ---
 
-### Regras de Negócio Estruturantes (`RN-01` a `RN-12`)
+#### Regras de Negócio Estruturantes (`RN-01` a `RN-12`)
 
 As políticas de domínio que atravessam os requisitos estão consolidadas nas regras de negócio: exclusividade atômica do assento e máquina de estados (`RN-01`, `RN-02`); antecedência mínima de 60 minutos e expiração *Just-in-Time* (`RN-03`, `RN-04`); integridade do catálogo e anti-choque de sessões (`RN-05`, `RN-06`); auditoria imutável de cancelamento (`RN-07`); RBAC e segurança de credenciais (`RN-08`, `RN-09`); criptografia, consentimento e anonimização LGPD com retenção fiscal (`RN-10`, `RN-11`); e isolamento multi-tenant (`RN-12`).
 
@@ -124,35 +124,96 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 
 ### 5.2.1 Documento de arquitetura do sistema
 
-O **CineDoom** adota a arquitetura de **Monólito Modular em Next.js 14 (App Router)** fundamentada nos princípios de *Clean Architecture* (`ADR-001`), estruturada em cinco camadas lógicas com inversão de dependência e isolamento vertical por domínio (`src/modules/*` e `src/shared/*`):
+#### Identificação e escopo
 
-1. **Camada de Apresentação e UI Reativa (`src/app/`, `src/components/`):** Combina *React Server Components* para carregamento rápido do catálogo e *Client Components* interativos para o fluxo de reserva em 4 etapas, mapa bidimensional de poltronas (`SeatingGrid` com polling de 2s) e painéis administrativos.
-2. **Camada de Controladores HTTP (`src/app/api/**/route.ts`):** Route Handlers tipados que extraem o contexto de sessão/tenant, validam payloads de entrada com schemas `Zod` e traduzem exceções de domínio em códigos HTTP semânticos (`200`, `201`, `400`, `401`, `403`, `404`, `409`, `422`).
-3. **Camada de Serviços de Aplicação (`Application Services`):** Orquestra os casos de uso e transações de negócio (`SaleService`, `CancellationService`, `ReservationService`, `TemporaryHoldService`, `CounterService`, `UserService`, `AnonymizationService`, `NotificationService`).
-4. **Camada de Domínio e Segurança (`Domain & Security`):** Contém as entidades, invariantes de negócio (antecedência de 60 min, expiração JIT, validação Módulo 11 de CPF) e o `CryptoService` (`HMAC-SHA256` e `AES-256-GCM`).
-5. **Camada de Infraestrutura e Persistência Multi-Tenant (`src/shared/db/prisma.ts`):** Implementa os repositórios Prisma sobre PostgreSQL com extensão automática de contexto (`AsyncLocalStorage`) que injeta a cláusula `WHERE tenant_id` em todas as consultas e gerencia a conexão via pooler transacional.
+| Campo | Definição |
+| :--- | :--- |
+| **Sistema** | CineDoom — plataforma SaaS de bilheteria, back-office e portal do cliente para cinemas independentes e redes regionais |
+| **Repositório de referência** | `cinedoom-app/` — Next.js 14.2.15 (App Router), React 18.3, TypeScript 5.6, Prisma 5.21, PostgreSQL/Neon |
+| **Norma de processo** | ABNT NBR ISO/IEC/IEEE 12207:2021, §6.4.4 e §6.4.5 |
+| **Stakeholders** | Gerente de cinema, atendente de bilheteria, espectador (cliente final) e equipe de operação/segurança |
+| **Fronteira do sistema** | Aplicação web responsiva (desktop e mobile). O MVP **não** processa pagamento online, emissão fiscal, bomboniere ou *streaming* de mídia |
+| **Fora do escopo deste documento** | Detalhamento de telas (`specs/architecture/ui-mockups.md`), modelo de dados completo (`specs/data-model/data-model.md`) e plano de testes (§5.3) |
 
-#### Princípios de Arquitetura e Modelagem: Domain-Driven Design (DDD)
+#### Visão geral da arquitetura
 
-A decomposição e estruturação do software são orientadas pelos fundamentos do **Domain-Driven Design (DDD)**, assegurando que as regras de negócio de exibição cinematográfica sejam refletidas diretamente no código:
+O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação Next.js 14 com *App Router*. A fronteira externa é composta por três atores (gerente, atendente e espectador) e quatro sistemas externos (Neon PostgreSQL, Axiom, serviço de e-mail transacional e Vercel). Internamente, o código organiza-se em quatro zonas com dependência unidirecional:
 
-- **Linguagem Ubíqua (*Ubiquitous Language*):** Vocabulário unificado e compartilhado de forma inequívoca entre desenvolvedores, stakeholders e especificações técnicas. Termos como *Tenant* (cinema cliente), *SessionSeat* (poltrona alocada à sessão), *ReservationStatus* (`PENDING`, `CONFIRMED`, `CANCELLED`, `EXPIRED`), *Ticket* (`SOLD`) e *Double-booking* possuem significado rigoroso e idêntico no modelo de dados, no código TypeScript e nas regras de negócio.
-- **Contextos Delimitados (*Bounded Contexts*):** O sistema organiza-se em fronteiras de domínio verticalmente isoladas (`src/modules/*`), onde cada módulo encapsula seus modelos e casos de uso específicos:
-  - *Contexto de Bilheteria e Ocupação:* Focado na transacionalidade concorrente no guichê, mapa reativo de assentos e travas de venda presencial.
-  - *Contexto de Reservas e Atendimento Web:* Responsável pela jornada do espectador, reserva antecipada e despacho de vouchers transacionais.
-  - *Contexto de Catálogo e Programação:* Gestão de acervo de filmes, layout bidimensional de salas e prevenção de choques de grade.
-  - *Contexto de Governança e Privacidade:* Tratamento de dados pessoais, consentimento e conformidade com o Art. 18 da LGPD.
-- **Entidades e Invariantes de Domínio:** As regras de negócio críticas residem no núcleo da aplicação e no domínio, imunes a bypass na interface gráfica. Invariantes essenciais — como antecedência mínima de 60 minutos para reservas web, expiração automática *Just-in-Time* de assentos não confirmados e garantia de não duplicidade de assentos via bloqueio ACID — são fiscalizadas determinísticamente antes de qualquer gravação.
+| Zona | Responsabilidade | Regra de dependência |
+| :--- | :--- | :--- |
+| **Interface** | Renderização (RSC/Client Components), navegação, modais, cabeçalho autenticado e Route Handlers | Depende de `modules` e `shared` |
+| **Aplicação** | Casos de uso, validação Zod, orquestração transacional e tradução de erros de domínio | Depende de `shared/db` e de outros módulos apenas via `index.ts` |
+| **Domínio e segurança** | Invariantes (antecedência de 60 min, expiração JIT, CPF Módulo 11), RBAC e criptografia | Não depende de `next/*` nem de componentes React |
+| **Infraestrutura transversal** | Conexão Prisma, contexto de tenant via `AsyncLocalStorage`, logging estruturado e guarda de rotas | É dependida pelas demais zonas; não depende de UI |
 
-#### Princípios de Design de Software: SOLID
+#### Catálogo de componentes
 
-O projeto adota sistematicamente os cinco princípios **SOLID** para assegurar manutenibilidade, extensibilidade e modularidade:
+O sistema é composto pelos **11 módulos de domínio** de `src/modules/`. Cada um expõe um contrato público em `index.ts`, e a rastreabilidade entre módulos e requisitos está no §5.1.2.
 
-- **S — Single Responsibility Principle (Princípio da Responsabilidade Única):** Cada serviço e classe executa um papel único e bem delimitado. O `SaleService` trata exclusivamente a venda presencial e emissão de ingressos no balcão; o `ReservationService` gerencia a criação, cancelamento e confirmação de reservas web; e o `CryptoService` isola as operações criptográficas (`AES-256-GCM` e `HMAC-SHA256`).
-- **O — Open/Closed Principle (Princípio Aberto/Fechado):** Módulos são abertos para extensão, mas fechados para modificação. O subsistema de notificações (`NotificationService`) é estruturado sobre uma interface de provedores (`NotificationProvider`): a alternância entre `ConsoleLogger` (fase inicial de desenvolvimento) e `ResendProvider` (despacho de e-mails em produção) ocorre sem alterar as regras de negócio dos casos de uso.
-- **L — Liskov Substitution Principle (Princípio da Substituição de Liskov):** Contratos de persistência e serviços respeitam estritamente as interfaces estabelecidas. Mocks de teste e repositórios Prisma com tenancy automática substituem-se mutuamente nas baterias de verificação sem violar as asserções de negócio.
-- **I — Interface Segregation Principle (Princípio da Segregação de Interfaces):** Evitam-se interfaces genéricas infladas. A comunicação entre controladores e serviços adota DTOs e esquemas declarativos `Zod` estritamente específicos para cada operação (`createReservationSchema`, `sellTicketsSchema`, `createFilmSchema`).
-- **D — Dependency Inversion Principle (Princípio da Inversão de Dependência):** Módulos de alto nível (serviços de aplicação e regras de negócio) não dependem de módulos de baixo nível (frameworks ou bibliotecas de transporte). As rotas de API (`Route Handlers`) apenas orquestram requisições delegando a execução para as abstrações de serviço, mantendo a regra de negócio desacoplada do framework web.
+| Componente | Função |
+| :--- | :--- |
+| `auth` | Autenticação por credenciais, RBAC e gestão de operadores |
+| `backoffice` | Cadastro de filmes, salas (com matriz de assentos) e sessões |
+| `bilheteria` | Venda presencial, cancelamento com auditoria, baixa de reserva web e mapa de assentos |
+| `portal` | Catálogo público, cadastro do cliente, reserva online e cancelamento voluntário |
+| `compradores` | Cadastro e busca de comprador presencial por CPF |
+| `compliance` | Localização e anonimização de titulares (LGPD Art. 18) |
+| `crypto` | Criptografia, hash e validação de CPF |
+| `notificacoes` | Voucher de reserva com provedor de e-mail plugável |
+| `observability` | Log estruturado e rastreabilidade por requisição |
+| `ocupacao` | Indicadores de ocupação por sessão e por sala |
+| `tenancy` | Contexto de tenant e injeção do filtro `tenant_id` no Prisma |
+
+Além dos módulos, `src/shared/` concentra as peças transversais (cliente Prisma, logger e utilitários) e `src/app/` abriga a camada de interface.
+
+#### Interfaces
+
+**a) Interface HTTP.** O sistema expõe **25 Route Handlers** em `src/app/api/`, agrupados por perfil de acesso: rotas públicas (login e catálogo), `CLIENTE` (portal e mapa de assentos), `ATENDENTE` e `GERENTE` (bilheteria) e `GERENTE` (back-office, ocupação e LGPD). A autorização ocorre em `middleware.ts` e é reconfirmada no handler.
+
+**b) Interface entre módulos.** Cada módulo exporta funções e objetos de serviço, com entrada validada por schema Zod e erros de domínio tipados. Nenhum módulo acessa a implementação interna de outro, o que permite testar os casos de uso sem subir o servidor Next.js.
+
+**c) Interface de persistência.** Acesso por Prisma sobre PostgreSQL, com 11 modelos e 6 enums. Todo serviço recebe o `tenantId` e o aplica explicitamente nas consultas; transações e a trava `SELECT ... FOR UPDATE` garantem a exclusividade do assento.
+
+**d) Interfaces externas.** NextAuth (sessão JWT com `userId`, `role` e `tenantId`), Neon (banco), Axiom (logs), Resend (e-mail, simulado no MVP) e Vercel com GitHub Actions (deploy e CI).
+
+**e) Interface de erros.** O serviço lança erro tipado e o Route Handler o traduz em status HTTP: `400` para JSON malformado, `401` sem sessão, `403` para RBAC ou conta inativa, `404` para recurso inexistente, `409` para assento ocupado, e-mail duplicado ou choque de grade, `422` para falha de validação, CPF inválido ou antecedência inferior a 60 minutos e `500` para erro inesperado.
+
+#### Decisões arquiteturais (ADRs)
+
+As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna “Efeito verificável” indica onde a decisão aparece no código ou nos critérios de aceite.
+
+| ADR | Decisão | Efeito verificável |
+| :---: | :--- | :--- |
+| **ADR-001** | Monólito modular em Next.js 14 com módulos verticais | `src/modules/*` e `src/shared/*`; lint `import/no-cycle` |
+| **ADR-002** | Interface reativa com Tailwind CSS e React Server/Client Components | `src/app/`, `src/components/`, `SeatingGrid` como Client Component |
+| **ADR-003** | Backend em TypeScript com Route Handlers | 25 `route.ts`, validação Zod e erros de domínio |
+| **ADR-004** | PostgreSQL com Prisma ORM | `prisma/schema.prisma`; 11 modelos e 6 enums |
+| **ADR-005** | Vercel + Neon + GitHub Actions | `next.config.mjs`, `ci.yml`, `deploy.yml` |
+| **ADR-006** | API RESTful com polling de 2 s no mapa de assentos | `useSessionSeats` e índice `(session_id, status)` |
+| **ADR-007** | Pré-população de `SessionSeat` e trava `SELECT FOR UPDATE` | `session-service.ts` e `sale-service.ts`/`portal-service.ts` |
+| **ADR-008** | CPF com HMAC-SHA256 (busca) e AES-256-GCM (repouso) | `crypto-service.ts`; `cpf_hash` e `cpf_encrypted` |
+| **ADR-009** | Anonimização *in-place* para LGPD Art. 18 | `anonymization-service.ts` e `/api/titulares/anonimizar` |
+| **ADR-010** | Auditoria de cancelamentos *append-only* com trigger | `cancellation-service.ts`, modelo `CancellationAudit` e trigger em `prisma/triggers.sql` |
+| **ADR-011** | Log estruturado no Axiom com retenção de 365 dias | `src/shared/logger/`, `x-request-id` e `CA-03`/`CA-07` |
+| **ADR-012** | Portal do cliente com reserva JIT e notificação desacoplada | `portal-service.ts`, `notification-service.ts` e `CA-11`/`CA-14` |
+
+#### Princípios de modelagem: Domain-Driven Design (DDD)
+
+O domínio do cinema foi modelado segundo o **Domain-Driven Design**, o que se reflete em três propriedades do projeto:
+
+- **Linguagem Ubíqua:** o mesmo vocabulário é usado por desenvolvedores, stakeholders, especificações e código. Termos como *Tenant* (cinema cliente), *SessionSeat* (poltrona de uma sessão), *Reservation* e *Ticket* têm o mesmo significado no schema Prisma, no TypeScript e nas regras de negócio.
+- **Contextos Delimitados:** cada contexto de negócio corresponde a um módulo real — bilheteria e ocupação, portal e notificações, catálogo e programação, privacidade, identidade e acesso, observabilidade.
+- **Invariantes de domínio:** as regras críticas ficam nos serviços, não na interface. A antecedência de 60 minutos, a exclusividade do assento e a auditoria do cancelamento não podem ser contornadas pela UI.
+
+#### Princípios de design de software: SOLID
+
+O projeto aplica os cinco princípios **SOLID**, com evidência verificável no código:
+
+- **S — Single Responsibility Principle:** cada arquivo de serviço tem um papel delimitado. `sale-service.ts` (`SaleService.processSale`) trata exclusivamente a venda presencial e a emissão de ingressos; `portal-service.ts` (`createReservation`, `cancelMyReservation`) trata a reserva web; `crypto-service.ts` isola as operações criptográficas (`AES-256-GCM` e `HMAC-SHA256`); `ocupacao-service.ts` apenas calcula indicadores.
+- **O — Open/Closed Principle:** o subsistema de notificações é aberto para extensão e fechado para modificação por meio da interface `EmailProvider`, implementada por `ConsoleLoggerProvider` e `ResendProvider` e selecionada por `getProvider()`. Trocar o provedor não altera o caso de uso de reserva.
+- **L — Liskov Substitution Principle:** as implementações respeitam os contratos que declaram. `withTenancy` devolve um `TenantPrismaClient` compatível com `PrismaClient`, e os dublês de teste substituem os serviços reais sem alterar os casos de uso.
+- **I — Interface Segregation Principle:** não há interfaces genéricas infladas. Cada operação tem um schema Zod específico — `createSaleSchema`, `createReservationSchema`, `registerClientSchema`, `createFilmSchema`, `createRoomSchema`, `createSessionSchema`, `createUserSchema`, `cancelTicketSchema`, `anonymizeTitularSchema` — e os serviços recebem apenas os campos de que precisam.
+- **D — Dependency Inversion Principle:** as regras de negócio não dependem de `next/*`. Os Route Handlers apenas orquestram sessão, validação e tradução de erros; os serviços dependem de `prisma`/`rawPrisma` e de contratos internos, o que permite testá-los sem o framework web.
 
 ---
 
@@ -160,16 +221,16 @@ O projeto adota sistematicamente os cinco princípios **SOLID** para assegurar m
 
 Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **seis diagramas formais de arquitetura e design** do CineDoom.
 
-#### 1. Diagrama C4 — Nível 2 (Diagrama de Contêineres)
+#### 1. Diagrama C4 - Nível 2 (Diagrama de Contêineres)
 
 O Diagrama de Contêineres ilustra a interação entre os três perfis de usuários (Espectador, Atendente e Gerente), a aplicação web e API serverless hospedada na Vercel, o banco de dados relacional PostgreSQL e os serviços externos de e-mail transacional (Resend) e observabilidade (Axiom):
 
 ```mermaid
 flowchart TB
     subgraph Usuarios["Atores e Dispositivos Clientes"]
-        Esp["Espectador (Cliente B2C)\n[Browser Mobile / Desktop]"]
-        Atd["Atendente de Guichê\n[Terminal Web Bilheteria]"]
-        Ger["Gerente do Cinema\n[Browser Back-office]"]
+        Esp["Público (Cliente)"]
+        Atd["Atendente (Balcão)"]
+        Ger["Gerente (Admin)"]
     end
 
     subgraph Vercel["Plataforma Cloud Vercel (Next.js 14 Monólito Modular)"]
@@ -197,7 +258,97 @@ flowchart TB
     API -->|"JSON Structured Logs"| Axiom
 ```
 
-#### 2. Diagrama de Classes UML (Modelo de Domínio)
+> **Vetor editavel (SVG):** [c4-containers.svg](../../assets/capitulo-05/diagramas/c4-containers.svg) - Fonte PlantUML: [c4-containers.puml](../../assets/capitulo-05/diagramas/c4-containers.puml)
+
+#### 2. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
+
+O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (`SELECT FOR UPDATE`), a emissão do voucher transacional e a posterior conversão em ingresso vendido (`SOLD`) no guichê físico:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Esp as Público (Cliente)
+    participant API as Next.js Route Handler / ReservationService
+    participant DB as PostgreSQL (Transação ACID)
+    participant Mail as NotificationService (Resend)
+    actor Atd as Atendente (Balcão)
+
+    Esp->>API: POST /api/portal/reservas (sessionId, seatIds, buyer)
+    activate API
+    API->>API: Valida antecedência (>= 60 min) e ordena seatIds
+    API->>DB: BEGIN TRANSACTION
+    API->>DB: SELECT * FROM session_seats WHERE id IN (...) FOR UPDATE
+    alt Algum assento não está AVAILABLE (e não expirado JIT)
+        DB-->>API: Retorna status != AVAILABLE
+        API->>DB: ROLLBACK
+        API-->>Esp: HTTP 409 Conflict (Poltrona indisponível)
+    else Todos os assentos disponíveis
+        API->>DB: INSERT INTO reservations (code: CD-XXXX, status: PENDING, expiresAt)
+        API->>DB: UPDATE session_seats SET status = 'RESERVED', reservation_id = id
+        API->>DB: COMMIT
+        API->>Mail: sendReservationVoucher(reservationId)
+        Mail->>DB: UPDATE reservations SET email_sent_at = NOW()
+        API-->>Esp: HTTP 201 Created (Voucher CD-XXXX)
+    end
+    deactivate API
+
+    Note over Esp,Atd: Espectador comparece à bilheteria até 60 min antes da sessão
+
+    Atd->>API: POST /api/bilheteria/reservas/confirmar (code: CD-XXXX)
+    activate API
+    API->>DB: BEGIN TRANSACTION + SELECT reservation FOR UPDATE
+    API->>DB: Verifica se NOW() <= expiresAt (Regra JIT 60 min)
+    API->>DB: UPDATE reservations SET status = 'CONFIRMED', confirmed_at = NOW()
+    API->>DB: UPDATE session_seats SET status = 'SOLD'
+    API->>DB: INSERT INTO tickets (status: 'SOLD', operator_id)
+    API->>DB: COMMIT
+    API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
+    deactivate API
+```
+
+> **Vetor editavel (SVG):** [diagrama-sequencia-reserva.svg](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.svg) - Fonte PlantUML: [diagrama-sequencia-reserva.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.puml)
+
+#### 3. Diagrama de Casos de Uso UML
+
+O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
+
+```mermaid
+flowchart LR
+    Esp(["👤 Espectador\n(Cliente Final)"])
+    Atd(["🎫 Atendente\n(Guichê Físico)"])
+    Ger(["👔 Gerente\n(Back-office)"])
+
+    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
+        UC1("Ver catálogo e horários")
+        UC2("Cadastrar conta e consentimento LGPD")
+        UC3("Fazer reserva online + voucher")
+        UC4("Cancelar reserva pelo site")
+        UC5("Vender ingresso no balcão")
+        UC6("Encontrar reserva pelo código")
+        UC7("Cancelar ingresso no guichê")
+        UC8("Gerenciar filmes, salas e sessões")
+        UC9("Gerenciar atendentes e ocupação")
+        UC10("Anonimizar dados LGPD")
+    end
+
+    Esp --> UC1
+    Esp --> UC2
+    Esp --> UC3
+    Esp --> UC4
+
+    Atd --> UC1
+    Atd --> UC5
+    Atd --> UC6
+    Atd --> UC7
+
+    Ger --> UC8
+    Ger --> UC9
+    Ger --> UC10
+```
+
+> **Vetor editavel (SVG):** [diagrama-casos-de-uso.svg](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.svg) - Fonte PlantUML: [diagrama-casos-de-uso.puml](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.puml)
+
+#### 4. Diagrama de Classes UML (Modelo de Domínio)
 
 O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (`Tenant`):
 
@@ -301,89 +452,7 @@ classDiagram
     SessionSeat "1" --> "0..1" Ticket : gera
 ```
 
-#### 3. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
-
-O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (`SELECT FOR UPDATE`), a emissão do voucher transacional e a posterior conversão em ingresso vendido (`SOLD`) no guichê físico:
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Esp as Espectador (Portal Web)
-    participant API as Next.js Route Handler / ReservationService
-    participant DB as PostgreSQL (Transação ACID)
-    participant Mail as NotificationService (Resend)
-    actor Atd as Atendente (Guichê Físico)
-
-    Esp->>API: POST /api/portal/reservas (sessionId, seatIds, buyer)
-    activate API
-    API->>API: Valida antecedência (>= 60 min) e ordena seatIds
-    API->>DB: BEGIN TRANSACTION
-    API->>DB: SELECT * FROM session_seats WHERE id IN (...) FOR UPDATE
-    alt Algum assento não está AVAILABLE (e não expirado JIT)
-        DB-->>API: Retorna status != AVAILABLE
-        API->>DB: ROLLBACK
-        API-->>Esp: HTTP 409 Conflict (Poltrona indisponível)
-    else Todos os assentos disponíveis
-        API->>DB: INSERT INTO reservations (code: CD-XXXX, status: PENDING, expiresAt)
-        API->>DB: UPDATE session_seats SET status = 'RESERVED', reservation_id = id
-        API->>DB: COMMIT
-        API->>Mail: sendReservationVoucher(reservationId)
-        Mail->>DB: UPDATE reservations SET email_sent_at = NOW()
-        API-->>Esp: HTTP 201 Created (Voucher CD-XXXX)
-    end
-    deactivate API
-
-    Note over Esp,Atd: Espectador comparece à bilheteria até 60 min antes da sessão
-
-    Atd->>API: POST /api/bilheteria/reservas/confirmar (code: CD-XXXX)
-    activate API
-    API->>DB: BEGIN TRANSACTION + SELECT reservation FOR UPDATE
-    API->>DB: Verifica se NOW() <= expiresAt (Regra JIT 60 min)
-    API->>DB: UPDATE reservations SET status = 'CONFIRMED', confirmed_at = NOW()
-    API->>DB: UPDATE session_seats SET status = 'SOLD'
-    API->>DB: INSERT INTO tickets (status: 'SOLD', operator_id)
-    API->>DB: COMMIT
-    API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
-    deactivate API
-```
-
-#### 4. Diagrama de Casos de Uso UML
-
-O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
-
-```mermaid
-flowchart LR
-    Esp(["👤 Espectador\n(Cliente Final)"])
-    Atd(["🎫 Atendente\n(Guichê Físico)"])
-    Ger(["👔 Gerente\n(Back-office)"])
-
-    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
-        UC1("Consultar Catálogo, Horários e Mapa 2D")
-        UC2("Cadastrar Conta e Consentimento LGPD")
-        UC3("Reservar Assentos Online e Emitir Voucher")
-        UC4("Cancelar Reserva Voluntariamente (Web)")
-        UC5("Vender Ingressos no Balcão (ACID)")
-        UC6("Localizar Reserva (Código Localizador) e Dar Baixa")
-        UC7("Cancelar Ingresso com Auditoria Imutável")
-        UC8("Gerenciar Filmes, Salas e Grade de Sessões")
-        UC9("Gerenciar Atendentes e Monitorar Ocupação")
-        UC10("Executar Anonimização de Titular (LGPD Art. 18)")
-    end
-
-    Esp --> UC1
-    Esp --> UC2
-    Esp --> UC3
-    Esp --> UC4
-
-    Atd --> UC1
-    Atd --> UC5
-    Atd --> UC6
-    Atd --> UC7
-
-    Ger --> UC8
-    Ger --> UC9
-    Ger --> UC10
-```
+> **Vetor editavel (SVG):** [diagrama-classes-dominio.svg](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.svg) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
 
 #### 5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)
 
@@ -401,6 +470,8 @@ stateDiagram-v2
 
     SOLD --> AVAILABLE : Cancelamento Síncrono no Guichê\n(Grava Trilha em cancellation_audits)
 ```
+
+> **Vetor editavel (SVG):** [diagrama-estados-assento.svg](../../assets/capitulo-05/diagramas/diagrama-estados-assento.svg) - Fonte PlantUML: [diagrama-estados-assento.puml](../../assets/capitulo-05/diagramas/diagrama-estados-assento.puml)
 
 #### 6. Diagrama Entidade-Relacionamento (DER — Modelo Relacional PostgreSQL)
 
@@ -479,6 +550,8 @@ erDiagram
     }
 ```
 
+> **Vetor editavel (SVG):** [diagrama-er-banco.svg](../../assets/capitulo-05/diagramas/diagrama-er-banco.svg) - Fonte PlantUML: [diagrama-er-banco.puml](../../assets/capitulo-05/diagramas/diagrama-er-banco.puml)
+
 ---
 
 ### 5.2.3 Justificativa das escolhas tecnológicas
@@ -498,8 +571,12 @@ O banco relacional armazena exclusivamente a referência textual (`poster_url VA
 
 ### 5.3.1 Padrões de codificação e engenharia adotados
 - **Estruturação Modular:** Organização em fatias de domínio (`src/modules/{auth,backoffice,bilheteria,compradores,compliance,crypto,notificacoes,observability,ocupacao,portal,tenancy}`) e utilitários compartilhados (`src/shared/`).
-- **Convenções de Nomenclatura:** Arquivos em `kebab-case.ts`, componentes e classes em `PascalCase`, métodos e variáveis em `camelCase` e constantes globais em `UPPER_SNAKE_CASE`.
-- **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle: error`).
+- **Convenções de Nomenclatura:** Os arquivos seguem convenções específicas por tipo:
+  - Arquivos de serviço e utils: `PascalCase` (ex.: `sale-service.ts`, `crypto-service.ts`)
+  - Arquivos de schema: `kebab-case` (ex.: `sale-schema.ts`, `anonymization-schema.ts`)
+  - Métodos, variáveis e parâmetros: `camelCase`
+  - Constantes globais: ainda não adotadas em todo o código; verificar existência em `src/shared/`
+- **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle` com `maxDepth: 5`).
 - **Metodologia Test-Driven Development (TDD):** A equipe adotou a disciplina do desenvolvimento orientado a testes (*Test-Driven Development*), seguindo o ciclo iterativo **Red $\to$ Green $\to$ Refactor**, com ênfase prioritária nas regras de negócio críticas e transações de alta concorrência:
   1. *Fase Red (Teste de Falha Inicial):* Antes de implementar as rotas e regras finais de negócio, os testes automatizados foram construídos para falhar intencionalmente, espelhando os critérios de aceite (`CA-01` a `CA-15`). Foram antecipadamente criados os testes de corrida concorrente com 50 threads disputando o mesmo assento e os 500 cenários de invasão *cross-tenant*.
   2. *Fase Green (Implementação da Solução Mínima):* Desenvolveu-se a lógica de bloqueio pessimista (`SELECT FOR UPDATE`), ordenação determinística de chaves para prevenção de deadlocks e extensão multi-tenant no Prisma até atingir aprovação plena com sinal verde.
@@ -521,24 +598,13 @@ A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizand
 - **Criptografia e Conformidade LGPD (`cryptoservice.test.ts` e `compliance-anonymization.test.ts`):** 40 testes validando cifragem `AES-256-GCM`, busca `HMAC-SHA256`, validação Módulo 11 de CPF e expurgo irreversível *in-place*.
 - **Fluxos de Negócio e Interface (`reserva-atomica.test.ts`, `seating-grid.test.ts`, `users-management.test.ts`, `cancelamento-auditavel.test.ts`):** Validação completa de reservas, mapa 2D de poltronas, RBAC e triggers de auditoria.
 
-### ~~5.3.4 Rastreabilidade entre código e requisitos~~
-Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos normativos (ex.: `feat(auth): adicionar gerador aleatorio de CPF valido (Modulo 11)` e comentários `// Requisito: RF-07 | CA-01 | ADR-007`), permitindo auditoria imediata no histórico do Git.
-
 ---
 
 ## 5.4 Verificação, Validação e Transição
 
 ### 5.4.1 Plano de verificação e validação
 
-A CineSoft Solutions distingue e aplica complementarmente as atividades de **Verificação** e **Validação** (Cláusulas 6.4.9 e 6.4.11 da ISO 12207):
-
-| Critério de Comparação | Verificação (*Verification*) | Validação (*Validation*) |
-| :--- | :--- | :--- |
-| **Pergunta Central** | *"Estamos construindo o produto corretamente?"* | *"Estamos construindo o produto certo?"* |
-| **Foco Principal** | Conformidade técnica com as especificações, ADRs e regras de código | Adequação funcional e de usabilidade às reais necessidades dos cinemas e espectadores |
-| **Quando Ocorre** | Continuamente em cada commit e Pull Request | Ao final de cada Sprint e na homologação em produção com usuários reais |
-| **Quem Realiza** | Equipe de engenharia da CineSoft e pipeline automatizado (GitHub Actions) | Stakeholders, operadores de cinema-piloto e espectadores finais reais |
-| **Exemplos Aplicados no CineDoom** | Compilação TypeScript (`tsc`), linter `no-cycle` e execução dos **711 testes no Vitest** | Testes de aceitação (*UAT*) no ambiente `cinedoom.vercel.app` com cadastros e reservas reais |
+A verificação é feita no pipeline de CI (GitHub Actions) a cada commit e Pull Request, com compilação TypeScript, linter e 711 testes automatizados. A validação é feita na homologação em staging e na produção, com fluxos ponta a ponta e testes de aceitação (UAT) por usuários reais.
 
 #### Critérios Formais de Entrada e Saída de V&V (*Entry & Exit Criteria*)
 
@@ -554,13 +620,20 @@ A CineSoft Solutions distingue e aplica complementarmente as atividades de **Ver
 - **Espectador (`STK-04`):** Experiência fluida em dispositivos móveis e desktop para filtrar filmes, visualizar todas as colunas do mapa da sala, reservar poltronas e consultar o voucher em *"Minhas Reservas"*.
 - **Encarregado de Dados / DPO (`STK-05`):** Criptografia de CPF (`HMAC-SHA256` + `AES-256-GCM`), consentimento LGPD com *timestamp*, anonimização *in-place* (Art. 18) e retenção da trilha de auditoria por 365 dias comprovadas em produção.
 
+> **Nota:** As funcionalidades administrativas (configuração de salas, gestão de equipe) e os fluxos de exceção (cancelamento de ingresso, cancelamento online) são cobertas pelos critérios de aceite `CA-03`, `CA-08`, `CA-12` e `CA-14`, mantendo a rastreabilidade completa na matriz do item 5.1.2.
+
 ### 5.4.3 Relatório de testes de aceitação (Homologação e Produção)
 
-Todos os cenários de aceitação da Macroentrega 1 (`v1.0.0`) foram executados e homologados com usuários reais no ambiente de produção (`https://cinedoom.vercel.app/`):
+A validação do CineDoom seguiu duas fases de testes com usuários reais, conforme o contexto de uso:
+
+- **Teste Alfa:** ambiente controlado com usuários selecionados (equipe interna e parceiros).
+- **Teste Beta:** ambiente real de produção com grupo ampliado antes do lançamento oficial.
+
+Os resultados confirmam que o sistema atende às necessidades reais dos stakeholders no seu contexto de uso — não apenas ao que foi especificado. Os cenários abaixo representam o **critério final de aprovação** da Macroentrega 1 (`v1.0.0`):
 
 | ID Cenário | Critério(s) | Descrição do Cenário Homologado | Evidência Observada em Produção | Status |
 | :---: | :---: | :--- | :--- | :---: |
-| **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco Supabase. | **Aprovado** |
+| **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco PostgreSQL gerenciado. | **Aprovado** |
 | **UAT-02** | `CA-09`, `CA-11` | Seleção de poltronas no mapa 2D (mobile e desktop), reserva atômica e geração de voucher. | 11 reservas confirmadas (múltiplos ingressos de R$ 30 a R$ 75) sem falhas de layout. | **Aprovado** |
 | **UAT-03** | `CA-01`, `CA-02` | Disputa simultânea de assentos e atualização do mapa por polling a cada 2 s. | 20 assentos vendidos (`SOLD`) e 10 reservados (`RESERVED`) com zero venda dupla. | **Aprovado** |
 | **UAT-04** | `CA-12` | Consulta de histórico em *"Minhas Reservas"* e cancelamento voluntário pelo cliente. | Liberação imediata das poltronas para `AVAILABLE` após cancelamento web. | **Aprovado** |
@@ -571,34 +644,101 @@ Todos os cenários de aceitação da Macroentrega 1 (`v1.0.0`) foram executados 
 | **UAT-09** | `CA-07` | Consulta ao painel de ocupação por sessão e verificação da trilha de logs das operações críticas. | Percentuais de vendidos/reservados/livres corretos e logs JSON no Axiom com `tenant_id`, `user_id`, timestamp UTC e retenção de 365 dias. | **Aprovado** |
 | **UAT-10** | `CA-08` | Cadastro e edição de filmes, salas com layout de assentos e sessões com sobreposição de horário e campos ausentes. | Rejeição com `HTTP 422`, bloqueio do choque de horário na mesma sala e assentos pré-populados como `AVAILABLE`. | **Aprovado** |
 
-### 5.4.4 Plano de transição/implantação do sistema e procedimento de rollback
+### 5.4.4 Plano de transição/implantação do sistema
 
-A transição para produção segue um protocolo automatizado e seguro:
-1. **Pré-Deploy e Migração:** Execução da pipeline no GitHub Actions validando `prisma migrate deploy` e os 711 testes antes de autorizar o build na Vercel.
-2. **Smoke Test Pós-Implantação:** Verificação imediata da rota de saúde (`/api/health`), carregamento do catálogo público e teste de autenticação em produção.
-3. **Procedimento Formal de Rollback (Tempo de Recuperação $< 5\text{ min}$):**
-   - *Camada de Aplicação:* Caso qualquer anomalia P1 seja detectada após o deploy, o líder de DevOps aciona o recurso **Instant Rollback** no painel da Vercel (ou reverte o commit em `main`), restaurando o build imutável anterior em menos de 30 segundos sem tempo de inatividade (*zero-downtime*).
-   - *Camada de Banco de Dados:* Todas as migrações da Macroentrega 1 são retrocompatíveis (*expand-and-contract*). Em caso de corrupção crítica, aciona-se a restauração *Point-in-Time (PITR)* do PostgreSQL gerenciado.
+A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207 (Seção 6.4.13), encadeadas de forma controlada a partir das branches do repositório.
+
+#### Etapa 1 — Planejamento da transição
+
+Cada destino de implantação está amarrado a uma branch e a um ambiente próprio, de forma que a publicação só ocorre após o merge aprovado:
+
+| Branch | Ambiente | URL | Critério de sucesso da publicação |
+| :--- | :--- | :--- | :--- |
+| `develop` | Desenvolvimento | `https://dev.cinedoom.com` | Validação automatizada verde e catálogo consultável |
+| `staging` | Homologação | `https://hml.cinedoom.com` | UAT-01 a UAT-10 homologados (item 5.4.3) |
+| `main` | Produção | `https://cinedoom.com` | Aceite formal dos stakeholders (etapa 6) |
+
+- **Responsáveis:** o Tech Lead responde pela revisão de código e pelo merge; o líder de DevOps responde pela publicação e pelo monitoramento dos ambientes; no aceite, participam o gerente (`STK-01`/`STK-02`) e o encarregado de dados (`STK-05`).
+- **Cronograma:** a publicação é sequencial, ao final de cada Sprint de 2 semanas, com uma única versão em trânsito por ambiente.
+- **Critérios de sucesso (*Release Gate*):** todos os testes automatizados verdes (711 testes), build de produção concluído sem erros, smoke test sem falhas e aceite formal registrado.
+
+#### Etapa 2 — Preparação do ambiente
+
+O ambiente de destino é preparado **antes** de qualquer publicação, seguindo quatro cuidados:
+
+- **Compilação reprodutível:** a versão entregue em cada ambiente é sempre reconstruída a partir do mesmo código versionado e do mesmo conjunto de dependências travadas. Assim, o que foi homologado é exatamente o que vai para produção.
+- **Configuração por ambiente:** cada ambiente recebe suas próprias credenciais e chaves (banco de dados, autenticação, criptografia de CPF, e-mail e observabilidade), injetadas de forma segura pelo repositório e nunca gravadas no código. A versão publicada é ainda rotulada com o ambiente de destino, o que permite identificar a origem de qualquer alerta.
+- **Banco de dados sob controle:** o modelo de dados e a trigger de auditoria imutável (`prisma/triggers.sql`, ADR-010) são aplicados **manualmente e com revisão**, antes da abertura de tráfego. A esteira de publicação não altera o banco por conta própria — nenhum deploy muda o banco sem aprovação humana.
+- **Paridade entre ambientes:** a aplicação é empacotada em contêineres e o banco local é provisionado com a mesma versão usada em produção, com verificação automática de disponibilidade e dados persistidos em disco. Assim, o ambiente local e o de homologação reproduzem fielmente o ambiente de produção.
+
+Além disso, cada Pull Request é publicado em um ambiente de prévia temporário, com uma base de dados isolada (cópia dos dados reais do Neon), de modo que nenhuma alteração em avaliação alcance a produção.
+
+#### Etapa 3 — Treinamento dos usuários
+
+- **Gestores e atendentes (`STK-02`, `STK-03`):** a capacitação é conduzida a partir do roteiro de demonstração do produto (`ROTEIRO_DEMO.md`), que percorre o painel de ocupação do gerente, a venda no balcão e a baixa de reserva por código localizador com usuários de demonstração já semeados.
+- **Espectadores (`STK-04`):** dispensam treinamento formal — o portal é autosserviço (cadastro com CPF, mapa de poltronas e voucher em *"Minhas Reservas"*), e o próprio portal funciona como material de apoio.
+- **Encarregado de dados (`STK-05`):** briefing sobre consentimento LGPD, cifragem de CPF, auditoria imutável e anonimização do Art. 18 antes da abertura do ambiente.
+
+#### Etapa 4 — Implantação controlada
+
+- **Estratégia faseada (não *big bang*):** a publicação percorre os três ambientes na ordem `develop` $\to$ `staging` $\to$ `main`; nenhum ambiente avança sem o *Release Gate* aprovado.
+- **Publicação automatizada por branch:** cada branch tem seu próprio ambiente e sua própria URL, e a esteira publica sozinha assim que o merge é aceito. Como uma publicação em andamento não é interrompida por um novo *push*, o ambiente nunca fica pela metade.
+- **Proteção da produção:** a branch de produção é bloqueada contra reescrita de histórico e só recebe merge com revisão técnica aprovada e marcação de versão (SemVer), conforme a estratégia de versionamento do capítulo 4.
+- **Ensaio antes da homologação:** cada Pull Request é exercitado em ambiente isolado, com dados reais copiados, funcionando como prévia da próxima publicação.
+
+#### Etapa 5 — Verificação pós-implantação
+
+- **Smoke test logo após a publicação:** são verificados o catálogo público, o painel de ocupação e o login com usuário real, na URL do ambiente recém-publicado.
+- **Monitoramento:** os logs estruturados da aplicação são centralizados no Axiom e alertam o líder de DevOps sobre erros e indisponibilidades.
+- **Validação funcional:** é reexecutado o fluxo ponta a ponta $\text{cadastro} \to \text{reserva} \to \text{baixa no balcão} \to \text{painel gerencial}$ no ambiente publicado.
+
+#### Etapa 6 — Aceite formal
+
+O aceite exige UAT-01 a UAT-10 **aprovados** (item 5.4.3), smoke test sem falhas, nenhum alerta crítico em aberto e o registro do aceite por `STK-01`/`STK-02` (operação), `STK-03` (atendente), `STK-04` (espectador) e `STK-05` (LGPD). Assinado o aceite, a versão recebe a marcação SemVer (`v1.0.0` da Macroentrega 1) e a fase de desenvolvimento é encerrada, abrindo a Macroentrega 2.
 
 ---
 
 ## 5.5 Operação, Manutenção e Descontinuação
 
 ### 5.5.1 Procedimentos de operação e monitoramento
-A operação em produção é monitorada continuamente por meio de:
-- **Telemetria e Logs Estruturados (Axiom):** Registro em JSON de todas as vendas, reservas, cancelamentos e falhas de autenticação, com mascaramento automático de dados sensíveis e retenção de 365 dias.
-- **Monitoramento de Banco e Conexões:** Acompanhamento da saúde do pooler transacional (`porta 6543`), uso de memória e latência de queries no painel do Supabase/Neon.
+
+A operação em produção é contínua e cobre três frentes simultâneas: o suporte aos usuários dos cinemas, o acompanhamento do desempenho do serviço e o tratamento de incidentes operacionais (Seção 6.4.14 da ISO 12207:2017).
+
+- **Suporte contínuo ao usuário:** canal único de abertura de chamados pelo gerente do cinema, com triagem pela criticidade e pelos prazos da Tabela 5 do capítulo 2 (P1: resposta em até 15 minutos e resolução em até 2 horas). Nos casos críticos o escalonamento ao Tech Lead é imediato.
+- **Coleta de logs e correlação:** o logger estruturado registra em JSON as vendas, os cancelamentos auditados, os conflitos de concorrência ACID, as tentativas de acesso entre cinemas, as falhas de autenticação, os acessos negados por perfil e as anonimizações LGPD. Cada requisição recebe um identificador único (`x-request-id`) que permite rastrear o incidente de ponta a ponta, e o mascaramento automático remove dados sensíveis. A retenção é de 365 dias (ADR-011).
+- **Monitoramento de desempenho:** latência e código de retorno de cada requisição, com alerta automático para erro 5xx, além da saúde do pooler transacional do PostgreSQL gerenciado (porta `6543`) e dos índices compostos por `tenant_id` (R-02).
+- **Tratamento de incidentes operacionais:** o alerta centralizado dispara a triagem; nos incidentes críticos a versão anterior do sistema é promovida em menos de 5 minutos, o cinema é comunicado e o incidente é registrado para análise posterior.
+- **Garantia dos parâmetros e requisitos:** o serviço é acompanhado contra a latência máxima de venda e reserva do `RNF-01` (p95 < 800 ms e p99 < 1.500 ms), a meta de disponibilidade de 99,5% pactuada no contrato (capítulo 2) e a exigência de zero venda duplicada do `RNF-02`, com verificação consolidada no relatório mensal de acompanhamento de SLA.
 
 ### 5.5.2 Plano de manutenção
-A CineSoft Solutions classifica e executa a manutenção contínua da plataforma nas quatro categorias normativas da ISO 12207:
-1. **Manutenção Corretiva:** Correção prioritária de defeitos reportados por usuários ou detectados via logs (ex.: ajuste de alinhamento horizontal da coluna 1 no mapa de assentos em telas estreitas).
-2. **Manutenção Adaptativa:** Adequação do sistema a atualizações de navegadores, novas versões do Node.js/Next.js ou mudanças nas regras estaduais de emissão fiscal.
-3. **Manutenção Perfectiva (Evolutiva):** Implementação de melhorias de usabilidade, performance e entrega dos novos módulos planejados nas **Macroentregas 2 e 3**.
-4. **Manutenção Preventiva:** Otimização periódica de índices SQL, rotação programada de chaves criptográficas (`NEXTAUTH_SECRET`, `CINEDOOM_CPF_KEY`) e atualização de dependências de segurança.
+
+Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiza essas alterações nas quatro modalidades da ISO 12207 (Seção 6.4.15), sempre pelo mesmo fluxo: a alteração entra como *branch* `fix/*` ou `feat/*`, passa pelo Pull Request com a validação automatizada do capítulo 4 e só é promovida depois de homologada em `staging`.
+
+| Modalidade | Quando é acionada | Como é feita | Responsável |
+| :--- | :--- | :--- | :--- |
+| **Corretiva** | Defeito apontado pelo cinema ou identificado nos logs (conflito de venda, e-mail de voucher que não chega) | *Branch* `fix/*` → Pull Request → promoção faseada | Desenvolvedor do módulo, com revisão do Tech Lead |
+| **Adaptativa** | Mudança fora do controle da equipe: nova versão do Node.js ou do Next.js, alteração nas regras fiscais estaduais (R-07), instabilidade do provedor de e-mail (R-05) ou do banco de dados (R-02) | Atualização da versão e ajuste do ponto afetado, com a suíte de testes completa | Desenvolvedor e líder de DevOps |
+| **Perfectiva** | Evolução prevista no roadmap: emissão fiscal, portal gerencial e armazenamento de mídias das Macroentregas 2 e 3 | *Branch* `feat/*` ligada ao requisito correspondente | Product Owner e equipe |
+| **Preventiva** | Revisão mensal do registro de riscos do capítulo 4 | *Pull Request* de manutenção versionada: índices do banco por `tenant_id` (R-02), revisão de dependências e ajuste de acessibilidade | Tech Lead |
+
+- **Prioridade e registro:** toda manutenção é classificada pela criticidade do capítulo 2 (P1 a P3) e registrada no *changelog*, gerado a partir das mensagens padronizadas de commit (capítulo 4). Defeitos P1 acionam a reversão da versão em menos de 5 minutos.
+- **Limite conhecido:** a rotação da chave de sessão pode ser feita a qualquer momento. Já a rotação da chave que cifra o CPF dos compradores **não pode** — como os valores já gravados não são versionados por chave, a troca deixaria os CPF antigos ilegíveis. Esse procedimento está previsto para a Macroentrega 2, junto da re-criptografia dos dados.
 
 ### 5.5.3 Estratégia de descontinuação e migração de dados
-Caso um cinema cliente encerre seu contrato SaaS ou o produto seja descontinuado no futuro, o processo de encerramento (Cláusula 6.4.14) assegura conformidade legal estrita:
-1. **Notificação Prévia e Exportação Portável:** Comunicação formal com 60 dias de antecedência e entrega de arquivo criptografado (JSON/CSV e dump SQL filtrado por `tenant_id`) contendo todo o histórico operacional e contábil do cinema.
-2. **Expurgo e Anonimização LGPD:** Execução em lote do `AnonymizationService` para expurgar permanentemente todos os dados pessoais identificáveis (nomes, e-mails e CPFs cifrados) dos espectadores daquele tenant, preservando apenas estatísticas agregadas não identificáveis até a desativação definitiva da instância.
+
+O encerramento do CineDoom — seja o fim do contrato de um cinema, seja a descontinuação do produto — segue quatro etapas planejadas (Seção 6.4.16 da ISO 12207:2017). A regra que orienta todo o processo é simples: **o histórico do cinema é preservado e os dados pessoais são apagados, nunca o contrário**.
+
+| Etapa | O que acontece | Como é feita |
+| :--- | :--- | :--- |
+| **1. Planejamento e aviso** | Decisão de encerrar, definição do prazo e comunicação oficial | Notificação formal ao cinema e aos atendentes, aviso de desligamento do serviço, encerramento do contrato e da taxa de suporte |
+| **2. Arquivamento dos dados** | Guardar o que precisa ser guardado e apagar o que é pessoal | Extração do histórico do cinema e anonimização, um a um, dos dados dos espectadores |
+| **3. Desativação controlada** | Cortar o acesso sem destruir nada | Inativação das contas dos atendentes, desativação da instância do cinema e do portal |
+| **4. Encerramento da infraestrutura** | Desligar o que estiver ligado | Desativação do ambiente e do banco após o prazo legal, com o arquivo de auditoria preservado |
+
+- **Como os dados pessoais são apagados:** a anonimização substitui nome, e-mail e CPF por valores fictícios, mas mantém o registro do espectador e todos os ingressos vinculados. É o que permite ao cinema guardar o histórico fiscal exigido pelo Código de Defesa do Consumidor mesmo depois do encerramento. Os cancelamentos são imutáveis por definição: o banco recusa qualquer alteração ou apagamento nessa trilha.
+- **A extração é rotina do time de DevOps:** o produto não oferece tela de exportação, então o histórico do cinema é extraído diretamente do banco, filtrado pelo cinema, e entregue em arquivo cifrado.
+- **O que nunca é feito:** apagar o cinema do banco. O próprio modelo de dados impede a exclusão de um cinema que tenha espectadores, reservas ou ingressos — a garantia está nas regras de integridade do banco. O encerramento é sempre desativação, não exclusão.
+- **Quem executa:** o gerente do cinema solicita o encerramento; o encarregado de dados (`STK-05`, DPO) conduz a anonimização e valida a guarda legal; o líder de DevOps realiza a extração do histórico e a desativação do ambiente; o gerente da CineSoft formaliza o aviso e o encerramento do contrato.
+- **Prazos:** o acesso ao sistema cessa no fim do contrato, e a infraestrutura só é desligada depois de cumprido o prazo legal de guarda — 5 anos para os dados fiscais e contábeis e 365 dias para os logs de auditoria.
 
 ---
