@@ -37,6 +37,7 @@ Todos os artefatos estão centralizados e organizados por capítulo em `manual-p
 | **5. Processos Técnicos** | ART-025 | **Diagrama de Sequência UML (Reserva Atômica e Baixa no Balcão)** | Diagrama PlantUML/PDF | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-sequencia.*` |
 | **5. Processos Técnicos** | ART-026 | **Print da Suíte de Testes Automatizados (Vitest 748)** | Screenshot / Evidência | ✅ Concluído | `assets/capitulo-05/prints/print-testes-unitarios-vitest.png` |
 | **5. Processos Técnicos** | ART-027 | Quadro Comparativo de Verificação vs. Validação | Tabela Estruturada | ✅ Concluído | `assets/capitulo-05/tabelas/verificacao-validacao.tex` |
-| **6. Avaliação Processo**| ART-028 | Tabela de Diagnóstico do Manual (4 Perguntas MPS.BR) | Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/diagnostico-processo.tex` |
-| **6. Avaliação Processo**| ART-029 | Tabela do Plano de Melhoria de Processo (PMP 5 Campos)| Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/plano-melhoria-pmp.tex` |
-| **6. Avaliação Processo**| ART-030 | **Print do Kanban com a Melhoria Aplicada** | Screenshot / Evidência | ✅ Concluído | `assets/capitulo-06/prints/print-evidencia-melhoria-kanban.png` |
+| **5. Processos Técnicos** | ART-028 | **Diagrama de Cadeia de Rastreabilidade (Macroentrega → Sprint → Necessidade → RF → CA → Código → Teste)** | Diagrama PlantUML/PDF | ✅ Concluído | `assets/capitulo-05/diagramas/diagrama-rastreabilidade.*` |
+| **6. Avaliação Processo**| ART-029 | Tabela de Diagnóstico do Manual (4 Perguntas MPS.BR) | Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/diagnostico-processo.tex` |
+| **6. Avaliação Processo**| ART-030 | Tabela do Plano de Melhoria de Processo (PMP 5 Campos)| Tabela Estruturada | ✅ Concluído | `assets/capitulo-06/tabelas/plano-melhoria-pmp.tex` |
+| **6. Avaliação Processo**| ART-031 | **Print do Kanban com a Melhoria Aplicada** | Screenshot / Evidência | ✅ Concluído | `assets/capitulo-06/prints/print-evidencia-melhoria-kanban.png` |

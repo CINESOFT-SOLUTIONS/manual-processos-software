@@ -35,3 +35,6 @@ manual/latex/*.pdf
 
 # Binários locais de scripts
 scripts/bin/
+
+# PlantUML jar (baixado localmente por scripts/gerar-diagramas.sh)
+scripts/lib/

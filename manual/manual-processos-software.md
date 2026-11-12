@@ -1521,18 +1521,44 @@ As políticas de domínio que atravessam os requisitos estão consolidadas nas r
 
 A integridade da engenharia de software da CineSoft Solutions é garantida por uma matriz de rastreabilidade **bidirecional**: cada linha parte da necessidade do stakeholder (`STK`/`NEC`), passa pelo requisito (`RF`/`RNF`/`RES`) e pelo critério de aceite (`CA`), chega ao código-fonte e retorna pelo caso de teste, que declara explicitamente qual requisito e critério verifica.
 
-| Necessidade / Stakeholder | Requisito(s) | Critério de Aceite | Código-Fonte (`cinedoom-app/`) | Caso de Teste (`tests/`) |
-| :--- | :---: | :---: | :--- | :--- |
-| `STK-02` / `NEC-02` (Controle de Acesso e Equipe) | `RF-01`, `RF-02` | `CA-05` | `src/modules/auth/`, `src/middleware.ts`, `src/app/api/backoffice/usuarios/` | `tests/unit/auth-rbac.test.ts` (→ `RF-01`, `CA-05`); `tests/unit/users-management.test.ts` (→ `RF-02`, `CA-05`) |
-| `STK-02` / `NEC-02` (Gestão de Acervo e Salas) | `RF-03`, `RF-04`, `RF-05`, `RES-05` | `CA-08` | `src/modules/backoffice/` (film-service, room-service, session-service), `src/app/api/{filmes,salas,sessoes}/` | `tests/unit/catalog-filmes.test.ts` (→ `RF-03`, `CA-08`); `tests/unit/rooms-layout.test.ts` (→ `RF-04`, `CA-08`); `tests/unit/sessions-prepopulation.test.ts` (→ `RF-05`, `CA-08`) |
-| `STK-03`, `STK-04` / `NEC-03`, `NEC-06` (Mapa Reativo e Guichê) | `RF-06`, `RNF-01`, `RNF-04` | `CA-02` | `src/modules/bilheteria/components/seating-grid.tsx`, `src/modules/bilheteria/hooks/use-session-seats.ts`, `src/app/api/sessoes/[id]/assentos/` | `tests/unit/seating-grid.test.ts` (→ `RF-06`, `RNF-04`, `CA-02`); `tests/unit/session-seats-polling.test.ts` (→ `RF-06`, `RNF-01`, `CA-02`) |
-| `STK-01`, `STK-03` / `NEC-01`, `NEC-03` (Venda Atômica ACID) | `RF-07`, `RF-08`, `RNF-02`, `RES-01`, `RES-02`, `RES-04` | `CA-01`, `CA-15` | `src/modules/bilheteria/sale-service.ts`, `src/modules/bilheteria/counter-service.ts`, `src/app/api/vendas/`, `src/app/api/ingressos/`, `prisma/schema.prisma` | `tests/unit/venda-atomica.test.ts` (→ `RF-07`, `RNF-02`, `CA-01`); `tests/unit/concurrency-acid-50-threads.test.ts` (→ `RF-07`, `RNF-02`, `CA-01`); `tests/unit/cancelamento-auditavel.test.ts` (→ `RF-08`, `CA-15`) |
-| `STK-03`, `STK-05` / `NEC-04`, `NEC-08` (Cancelamento Imutável) | `RF-09` | `CA-03` | `src/modules/bilheteria/cancellation-service.ts`, `src/app/api/ingressos/[id]/cancelar/`, `prisma/triggers.sql`, `prisma/schema.prisma` | `tests/unit/cancelamento-auditavel.test.ts` (→ `RF-09`, `CA-03`); `tests/unit/database-schema.test.ts` (→ `RF-09`, `CA-03`) |
-| `STK-05` / `NEC-04` (Privacidade e LGPD Art. 18) | `RF-10`, `RNF-03` | `CA-06` | `src/modules/crypto/crypto-service.ts`, `src/modules/compliance/`, `src/modules/compradores/buyer-service.ts` | `tests/unit/cryptoservice.test.ts` (→ `RF-10`, `RNF-03`, `CA-06`); `tests/unit/compliance-anonymization.test.ts` (→ `RF-10`, `CA-06`) |
-| `STK-01` / `NEC-01` (Isolamento Multi-Tenant SaaS) | `RNF-03`, `RNF-06` | `CA-04` | `src/modules/tenancy/prisma-tenancy-extension.ts`, `src/modules/tenancy/tenancy-context.ts`, `src/shared/db/prisma.ts` | `tests/unit/tenancy-isolation.test.ts` (→ `RNF-03`, `CA-04`); `tests/unit/security-cross-tenant-suite.test.ts` (→ `RNF-03`, `CA-04`); `tests/unit/modules.test.ts` (→ `RNF-06`); `tests/unit/ci-workflow.test.ts` (→ `RNF-06`) |
-| `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `src/app/api/ocupacao/painel/`, `src/modules/ocupacao/ocupacao-service.ts`, `src/shared/logger/index.ts` | `tests/unit/observability-logger.test.ts` (→ `RF-11`, `CA-07`); `tests/unit/security-cross-tenant-suite.test.ts` (→ `RF-11`, `CA-07`) |
-| `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12`, `RF-13`, `RF-14`, `RNF-04`, `RNF-05`, `RES-01`, `RES-03`, `RES-06` | `CA-09`, `CA-10`, `CA-15` | `src/modules/portal/portal-service.ts`, `src/app/portal/`, `src/app/api/portal/`, `src/app/layout.tsx` | `tests/integration/reserva-atomica.test.ts` (→ `RF-13`, `CA-09`); `tests/unit/cryptoservice.test.ts` (→ `RF-14`, `CA-10`); `tests/unit/auth-rbac.test.ts` (→ `RF-14`, `CA-10`); `tests/unit/seating-grid.test.ts` (→ `RNF-04`) |
-| `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15`, `RF-16`, `RF-17`, `RF-18`, `RES-01`, `RES-02` | `CA-11` a `CA-14` | `src/modules/notificacoes/notification-service.ts`, `src/app/api/portal/reservas/`, `src/app/api/bilheteria/reservas/`, `src/modules/bilheteria/counter-service.ts` | `tests/integration/reserva-atomica.test.ts` (→ `RF-15` voucher, `RF-16` consulta, `RF-18`, `CA-11`, `CA-14`); `não automatizado: RF-15` (e-mail/`email_sent_at`), `RF-16`/`CA-12` (cancelamento web), `RF-17`/`CA-13` (baixa presencial) |
+Para tornar essa cadeia verificável, o diagrama a seguir percorre um **exemplo completo e real**, da macroentrega planejada até o teste de código que a comprova:
+
+```mermaid
+flowchart TD
+    ME1["<b>Macroentrega 1 — MVP (v1.0)</b><br/>Escopo fechado da entrega incremental do CineDoom"]
+    SP1["<b>Sprint 1</b> (23/10 a 28/10)<br/>Fundação técnica e Modelagem"]
+    FEAT["<b>Issue #17</b> [FEAT(UI)] | @gabrlou | 26/10 a 29/10<br/>Design system e mapa interativo de assentos responsivo"]
+    NEC["<b>NEC-06</b> (STK-04 — Espectador)<br/>Escolher poltronas exatas no mapa da sala"]
+    RF["<b>RF-06</b> | Bilheteria | Must Have | Macroentrega 1<br/>Mapa interativo da sessão com polling a cada 2 s"]
+    CA["<b>CA-02</b> | Sincronização do Mapa por Polling a Cada 2 s<br/>GET /api/sessoes/{id}/assentos re-executado a cada 2.000 ms"]
+    CODE["<b>Código-Fonte</b> (cinedoom-app/)<br/>src/modules/bilheteria/components/seating-grid.tsx<br/>src/modules/bilheteria/hooks/use-session-seats.ts<br/>src/app/api/sessoes/[id]/assentos/route.ts"]
+    TEST["<b>Teste Automatizado</b> (Vitest)<br/>tests/unit/session-seats-polling.test.ts<br/>tests/unit/seating-grid.test.ts<br/>↳ declaram RF-06 | CA-02 | RNF-01"]
+
+    ME1 -->|sprint| SP1
+    SP1 -->|issue| FEAT
+    FEAT -->|atende a| NEC
+    NEC -->|formalizada em| RF
+    RF -->|verificada por| CA
+    CA -->|implementada por| CODE
+    CODE -->|coberta por| TEST
+```
+
+> **Diagrama vetorial (PDF):** [diagrama-rastreabilidade.pdf](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.pdf) - Fonte PlantUML: [diagrama-rastreabilidade.puml](../../assets/capitulo-05/diagramas/diagrama-rastreabilidade.puml)
+
+O quadro a seguir resume, de forma compacta, as dez linhas da matriz completa; a coluna de código-fonte, suprimida aqui para preservar a legibilidade, é mantida no artefato `assets/capitulo-05/tabelas/matriz-rastreabilidade.tex`:
+
+| Necessidade / Stakeholder | Requisito(s) | Critério de Aceite | Caso de Teste (`tests/`) |
+| :--- | :---: | :---: | :--- |
+| `STK-02` / `NEC-02` (Controle de Acesso e Equipe) | `RF-01`, `RF-02` | `CA-05` | `auth-rbac.test.ts` (→ `RF-01`, `CA-05`); `users-management.test.ts` (→ `RF-02`, `CA-05`) |
+| `STK-02` / `NEC-02` (Gestão de Acervo e Salas) | `RF-03` a `RF-05`, `RES-05` | `CA-08` | `catalog-filmes.test.ts` (→ `RF-03`); `rooms-layout.test.ts` (→ `RF-04`); `sessions-prepopulation.test.ts` (→ `RF-05`) |
+| `STK-03`, `STK-04` / `NEC-03`, `NEC-06` (Mapa Reativo e Guichê) | `RF-06`, `RNF-01`, `RNF-04` | `CA-02` | `seating-grid.test.ts` (→ `RF-06`, `RNF-04`); `session-seats-polling.test.ts` (→ `RF-06`, `RNF-01`) |
+| `STK-01`, `STK-03` / `NEC-01`, `NEC-03` (Venda Atômica ACID) | `RF-07`, `RF-08`, `RNF-02`, `RES-01`, `RES-02`, `RES-04` | `CA-01`, `CA-15` | `venda-atomica.test.ts` (→ `RF-07`, `CA-01`); `concurrency-acid-50-threads.test.ts` (→ `RF-07`, `CA-01`); `cancelamento-auditavel.test.ts` (→ `RF-08`, `CA-15`) |
+| `STK-03`, `STK-05` / `NEC-04`, `NEC-08` (Cancelamento Imutável) | `RF-09` | `CA-03` | `cancelamento-auditavel.test.ts` (→ `RF-09`); `database-schema.test.ts` (→ `RF-09`) |
+| `STK-05` / `NEC-04` (Privacidade e LGPD Art. 18) | `RF-10`, `RNF-03` | `CA-06` | `cryptoservice.test.ts` (→ `RF-10`); `compliance-anonymization.test.ts` (→ `RF-10`) |
+| `STK-01` / `NEC-01` (Isolamento Multi-Tenant SaaS) | `RNF-03`, `RNF-06` | `CA-04` | `tenancy-isolation.test.ts` (→ `RNF-03`); `security-cross-tenant-suite.test.ts` (→ `RNF-03`); `modules.test.ts`, `ci-workflow.test.ts` (→ `RNF-06`) |
+| `STK-02`, `STK-05` / `NEC-02`, `NEC-04` (Painel de Ocupação e Logs) | `RF-11` | `CA-07` | `observability-logger.test.ts` (→ `RF-11`); `security-cross-tenant-suite.test.ts` (→ `RF-11`) |
+| `STK-04` / `NEC-05`, `NEC-06` (Portal e Reserva Web) | `RF-12` a `RF-14`, `RNF-04`, `RNF-05`, `RES-01`, `RES-03`, `RES-06` | `CA-09`, `CA-10`, `CA-15` | `reserva-atomica.test.ts` (→ `RF-13`, `CA-09`); `cryptoservice.test.ts` (→ `RF-14`, `CA-10`); `auth-rbac.test.ts` (→ `RF-14`, `CA-10`); `seating-grid.test.ts` (→ `RNF-04`) |
+| `STK-04`, `STK-03` / `NEC-07`, `NEC-08` (Voucher, Cancelamento Web, Baixa e JIT) | `RF-15` a `RF-18`, `RES-01`, `RES-02` | `CA-11` a `CA-14` | `reserva-atomica.test.ts` (→ `RF-15`, `RF-16`, `RF-18`, `CA-11`, `CA-14`); **sem automação**: `RF-15` (e-mail/`email_sent_at`), `RF-16`/`CA-12` (cancelamento web), `RF-17`/`CA-13` (baixa presencial) |
 
 **`RNF-05` e `RES-01` a `RES-06` não têm linha própria porque não pertencem a uma única tela ou módulo**: são regras e qualidades que valem para várias partes do sistema ao mesmo tempo.
 

@@ -1,18 +1,43 @@
+% =============================================================================
+% ARTEFATO: Matriz de Rastreabilidade Bidirecional Completa (CineDoom)
+% Capitulo 5 - secao 5.1.2 (Rastreabilidade de requisitos)
+%
+% Este arquivo contem a versao COMPLETA da matriz, incluindo a coluna de
+% codigo-fonte. No corpo do manual (5.1.2) a matriz aparece em versao compacta
+% (4 colunas) para preservar a legibilidade, remeter a este artefato.
+%
+% Requer os pacotes: booktabs, colortbl, tabularx, array
+% =============================================================================
+
 \begin{center}
 \small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.6cm} >{\arraybackslash}m{3.0cm} >{\arraybackslash}m{3.2cm} Y}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}m{2.6cm} >{\raggedright\arraybackslash}m{1.7cm} >{\raggedright\arraybackslash}m{1.3cm} >{\raggedright\arraybackslash}m{4.0cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Requisito} & \textbf{Módulo / Serviço} & \textbf{Suíte de Testes (Vitest)} & \textbf{Critério de Aceite Verificado} \\
+\textbf{Necessidade / Stakeholder} & \textbf{Requisito(s)} & \textbf{Aceite} & \textbf{Codigo-Fonte (cinedoom-app/)} & \textbf{Suíte de Teste (tests/)} \\
 \midrule
-\arrayrulecolor{BrandGrayRule}
-RF-01 (Catálogo) & \texttt{catalog.service.ts} & \texttt{catalog.test.ts} & Listagem sem choque de salas e horários. \\
+\arrayrulecolor{GithubGrayRule}
+\texttt{STK-02} / \texttt{NEC-02} (Controle de Acesso e Equipe) & \texttt{RF-01}, \texttt{RF-02} & \texttt{CA-05} & \texttt{src/modules/auth/}, \texttt{src/middleware.ts}, \texttt{src/app/api/backoffice/usuarios/} & \texttt{auth-rbac.test.ts} (→ \texttt{RF-01}, \texttt{CA-05}); \texttt{users-management.test.ts} (→ \texttt{RF-02}, \texttt{CA-05}) \\
 \midrule
-RF-02 (Trava Assento) & \texttt{booking.service.ts} & \texttt{concurrency.test.ts} & Zero venda dupla em 100 requisições simultâneas. \\
+\texttt{STK-02} / \texttt{NEC-02} (Gestao de Acervo e Salas) & \texttt{RF-03} a \texttt{RF-05}, \texttt{RES-05} & \texttt{CA-08} & \texttt{src/modules/backoffice/} (film-service, room-service, session-service), \texttt{src/app/api/} & \texttt{catalog-filmes.test.ts} (→ \texttt{RF-03}); \texttt{rooms-layout.test.ts} (→ \texttt{RF-04}); \texttt{sessions-prepopulation.test.ts} (→ \texttt{RF-05}) \\
 \midrule
-RF-03 (Baixa Bilheteria) & \texttt{pos.service.ts} & \texttt{pos.test.ts} & Tempo de fechamento no guichê inferior a 30s. \\
+\texttt{STK-03}, \texttt{STK-04} / \texttt{NEC-03}, \texttt{NEC-06} (Mapa Reativo e Guiche) & \texttt{RF-06}, \texttt{RNF-01}, \texttt{RNF-04} & \texttt{CA-02} & \texttt{src/modules/bilheteria/components/seating-grid.tsx}, \texttt{src/modules/bilheteria/hooks/use-session-seats.ts}, \texttt{src/app/api/sessoes/[id]/assentos/} & \texttt{seating-grid.test.ts} (→ \texttt{RF-06}, \texttt{RNF-04}, \texttt{CA-02}); \texttt{session-seats-polling.test.ts} (→ \texttt{RF-06}, \texttt{RNF-01}, \texttt{CA-02}) \\
 \midrule
-RF-04 (Voucher E-mail) & \texttt{notification.service.ts} & \texttt{email.test.ts} & Payload entregue à API Resend com token QR. \\
+\texttt{STK-01}, \texttt{STK-03} / \texttt{NEC-01}, \texttt{NEC-03} (Venda Atomica ACID) & \texttt{RF-07}, \texttt{RF-08}, \texttt{RNF-02}, \texttt{RES-01}, \texttt{RES-02}, \texttt{RES-04} & \texttt{CA-01}, \texttt{CA-15} & \texttt{src/modules/bilheteria/sale-service.ts}, \texttt{src/modules/bilheteria/counter-service.ts}, \texttt{src/app/api/vendas/}, \texttt{src/app/api/ingressos/}, \texttt{prisma/schema.prisma} & \texttt{venda-atomica.test.ts} (→ \texttt{RF-07}, \texttt{RNF-02}, \texttt{CA-01}); \texttt{concurrency-acid-50-threads.test.ts} (→ \texttt{RF-07}, \texttt{RNF-02}, \texttt{CA-01}); \texttt{cancelamento-auditavel.test.ts} (→ \texttt{RF-08}, \texttt{CA-15}) \\
+\midrule
+\texttt{STK-03}, \texttt{STK-05} / \texttt{NEC-04}, \texttt{NEC-08} (Cancelamento Imutavel) & \texttt{RF-09} & \texttt{CA-03} & \texttt{src/modules/bilheteria/cancellation-service.ts}, \texttt{src/app/api/ingressos/[id]/cancelar/}, \texttt{prisma/triggers.sql}, \texttt{prisma/schema.prisma} & \texttt{cancelamento-auditavel.test.ts} (→ \texttt{RF-09}, \texttt{CA-03}); \texttt{database-schema.test.ts} (→ \texttt{RF-09}, \texttt{CA-03}) \\
+\midrule
+\texttt{STK-05} / \texttt{NEC-04} (Privacidade e LGPD Art. 18) & \texttt{RF-10}, \texttt{RNF-03} & \texttt{CA-06} & \texttt{src/modules/crypto/crypto-service.ts}, \texttt{src/modules/compliance/}, \texttt{src/modules/compradores/buyer-service.ts} & \texttt{cryptoservice.test.ts} (→ \texttt{RF-10}, \texttt{RNF-03}, \texttt{CA-06}); \texttt{compliance-anonymization.test.ts} (→ \texttt{RF-10}, \texttt{CA-06}) \\
+\midrule
+\texttt{STK-01} / \texttt{NEC-01} (Isolamento Multi-Tenant SaaS) & \texttt{RNF-03}, \texttt{RNF-06} & \texttt{CA-04} & \texttt{src/modules/tenancy/prisma-tenancy-extension.ts}, \texttt{src/modules/tenancy/tenancy-context.ts}, \texttt{src/shared/db/prisma.ts} & \texttt{tenancy-isolation.test.ts} (→ \texttt{RNF-03}, \texttt{CA-04}); \texttt{security-cross-tenant-suite.test.ts} (→ \texttt{RNF-03}, \texttt{CA-04}); \texttt{modules.test.ts}, \texttt{ci-workflow.test.ts} (→ \texttt{RNF-06}) \\
+\midrule
+\texttt{STK-02}, \texttt{STK-05} / \texttt{NEC-02}, \texttt{NEC-04} (Painel de Ocupacao e Logs) & \texttt{RF-11} & \texttt{CA-07} & \texttt{src/app/api/ocupacao/painel/}, \texttt{src/modules/ocupacao/ocupacao-service.ts}, \texttt{src/shared/logger/index.ts} & \texttt{observability-logger.test.ts} (→ \texttt{RF-11}, \texttt{CA-07}); \texttt{security-cross-tenant-suite.test.ts} (→ \texttt{RF-11}, \texttt{CA-07}) \\
+\midrule
+\texttt{STK-04} / \texttt{NEC-05}, \texttt{NEC-06} (Portal e Reserva Web) & \texttt{RF-12} a \texttt{RF-14}, \texttt{RNF-04}, \texttt{RNF-05}, \texttt{RES-01}, \texttt{RES-03}, \texttt{RES-06} & \texttt{CA-09}, \texttt{CA-10}, \texttt{CA-15} & \texttt{src/modules/portal/portal-service.ts}, \texttt{src/app/portal/}, \texttt{src/app/api/portal/}, \texttt{src/app/layout.tsx} & \texttt{reserva-atomica.test.ts} (→ \texttt{RF-13}, \texttt{CA-09}); \texttt{cryptoservice.test.ts} (→ \texttt{RF-14}, \texttt{CA-10}); \texttt{auth-rbac.test.ts} (→ \texttt{RF-14}, \texttt{CA-10}); \texttt{seating-grid.test.ts} (→ \texttt{RNF-04}) \\
+\midrule
+\texttt{STK-04}, \texttt{STK-03} / \texttt{NEC-07}, \texttt{NEC-08} (Voucher, Cancelamento Web, Baixa e JIT) & \texttt{RF-15} a \texttt{RF-18}, \texttt{RES-01}, \texttt{RES-02} & \texttt{CA-11} a \texttt{CA-14} & \texttt{src/modules/notificacoes/notification-service.ts}, \texttt{src/app/api/portal/reservas/}, \texttt{src/app/api/bilheteria/reservas/}, \texttt{src/modules/bilheteria/counter-service.ts} & \texttt{reserva-atomica.test.ts} (→ \texttt{RF-15} voucher, \texttt{RF-16} consulta, \texttt{RF-18}, \texttt{CA-11}, \texttt{CA-14}); \textbf{sem automacao:} \texttt{RF-15} (e-mail/\texttt{email\_sent\_at}), \texttt{RF-16}/\texttt{CA-12} (cancelamento web), \texttt{RF-17}/\texttt{CA-13} (baixa presencial) \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}
 \end{center}

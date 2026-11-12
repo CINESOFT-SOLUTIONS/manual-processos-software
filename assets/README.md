@@ -62,6 +62,8 @@ manual-processos/assets/
 │   │   ├── diagrama-sequencia.pdf            # PDF vetorial Sequência
 │   │   ├── diagrama-classes-dominio.puml     # Diagrama de Classes UML de Domínio
 │   │   ├── diagrama-classes-dominio.pdf      # PDF vetorial Classes
+│   │   ├── diagrama-rastreabilidade.puml      # Cadeia de Rastreabilidade (Macroentrega → Teste)
+│   │   ├── diagrama-rastreabilidade.pdf       # PDF vetorial Cadeia de Rastreabilidade
 │   │   ├── diagrama-casos-de-uso.puml         # Diagrama de Casos de Uso (gerado, não publicado no cap. 5)
 │   │   └── diagrama-casos-de-uso.pdf          # PDF vetorial Casos de Uso
 │   └── tabelas/
