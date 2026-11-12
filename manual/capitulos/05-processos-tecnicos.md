@@ -561,7 +561,11 @@ O banco relacional armazena exclusivamente a referência textual (`poster_url VA
 
 ### 5.3.1 Padrões de codificação e engenharia adotados
 - **Estruturação Modular:** Organização em fatias de domínio (`src/modules/{auth,backoffice,bilheteria,compradores,compliance,crypto,notificacoes,observability,ocupacao,portal,tenancy}`) e utilitários compartilhados (`src/shared/`).
-- **Convenções de Nomenclatura:** Arquivos em `kebab-case.ts`, componentes e classes em `PascalCase`, métodos e variáveis em `camelCase` e constantes globais em `UPPER_SNAKE_CASE`.
+- **Convenções de Nomenclatura:** Os arquivos seguem convenções específicas por tipo:
+  - Arquivos de serviço e utils: `PascalCase` (ex.: `sale-service.ts`, `crypto-service.ts`)
+  - Arquivos de schema e config: `kebab-case` (ex.: `sale-schema.ts`, `prisma-config.ts`)
+  - Métodos, variáveis e parâmetros: `camelCase`
+  - Constantes globais: ainda não adotadas em todo o código; verificar existência em `src/shared/`
 - **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle: error`).
 - **Metodologia Test-Driven Development (TDD):** A equipe adotou a disciplina do desenvolvimento orientado a testes (*Test-Driven Development*), seguindo o ciclo iterativo **Red $\to$ Green $\to$ Refactor**, com ênfase prioritária nas regras de negócio críticas e transações de alta concorrência:
   1. *Fase Red (Teste de Falha Inicial):* Antes de implementar as rotas e regras finais de negócio, os testes automatizados foram construídos para falhar intencionalmente, espelhando os critérios de aceite (`CA-01` a `CA-15`). Foram antecipadamente criados os testes de corrida concorrente com 50 threads disputando o mesmo assento e os 500 cenários de invasão *cross-tenant*.
