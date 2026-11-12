@@ -13,7 +13,7 @@ Como o plano padrão da Vercel retém logs por apenas 1 hora, a arquitetura do C
 3. **Política de Retenção:**
    - **Retenção configurada:** `365 dias` (12 meses).
    - **Estratégia de Expurgamento:** FIFO automático após 365 dias.
-4. **Endpoint de Ingestão OpenTelemetry:**
+4. **Endpoint de Ingestão HTTP (JSON):**
    - URL: `https://api.axiom.co/v1/datasets/cinedoom-production-logs/ingest`
    - Formato de payload: JSON estruturado delimitado por nova linha (NDJSON).
 

@@ -4,190 +4,206 @@
 
 \aberturacapitulo{Capítulo 3}{Processos Organizacionais Habilitadores}
 
+Este capítulo apresenta a estrutura organizacional, as políticas de engenharia e os recursos que sustentam a operação da \textbf{CineSoft Solutions} no desenvolvimento contínuo da plataforma \textbf{CineDoom}. As práticas aqui descritas alinham-se aos processos organizacionais da norma ABNT NBR ISO/IEC/IEEE 12207:2021, demonstrando como a organização fornece governança, infraestrutura centralizada, equipe capacitada e controle de qualidade para que o projeto atinja seus objetivos com previsibilidade.
 
 
-\subsecao{3.1 Modelo de ciclo de vida adotado e justificado}
+\subsecao{3.1 Modelo de Ciclo de Vida do Projeto}
 
-A \textbf{CineSoft Solutions} adota o modelo de ciclo de vida \textbf{Iterativo e Incremental Ágil} (ABNT NBR ISO/IEC/IEEE 12207:2021 -- Cláusula 6.2.1), combinando Sprints de desenvolvimento com fluxo contínuo no quadro Kanban e integração/entrega contínua (CI/CD).
-
-
-\subsubsecao{Estrutura das Fases, Cerimônias e Macroentregas}
-
-O ciclo de vida do produto \textbf{CineDoom} é organizado em \textbf{três Macroentregas evolutivas (Releases Comerciais)}, cada qual subdividida em iterações (Sprints) que percorrem obrigatoriamente cinco etapas de engenharia: \textbf{Elicitação e Refinamento de Requisitos → Arquitetura e Design → Implementação e Integração → Verificação e Validação Automatizada → Implantação em Produção (Release)}.
-
-As cerimônias operacionais da equipe compreendem: 1. \textbf{Sprint Planning:} Seleção e quebra das tarefas no GitHub Projects, estimativa de esforço e atribuição de responsáveis e prazos. 2. \textbf{Daily Check-in Assíncrono/Síncrono:} Alinhamento diário sobre o avanço das branches, identificação de impedimentos técnicos e revisão de métricas da pipeline. 3. \textbf{Code Review \& Quality Gate:} Revisão por pares obrigatória em cada Pull Request antes da mesclagem em \texttt{develop}, \texttt{staging} e \texttt{main}. 4. \textbf{Sprint Review \& Homologação:} Demonstração do incremento funcional em ambiente de staging/produção e coleta de feedback com usuários reais e stakeholders. 5. \textbf{Sprint Retrospective:} Avaliação contínua do processo e registro de ações de melhoria (conforme documentado no Capítulo 6).
+A CineSoft Solutions adota como padrão organizacional o modelo de ciclo de vida \textbf{Iterativo e Incremental Ágil}, combinando o planejamento de entregas em \emph{Sprints} de 2 semanas com o acompanhamento contínuo de fluxo no quadro Kanban e validação automatizada em integração contínua (CI/CD).
 
 
-\subsubsecao{Justificativa da Escolha do Modelo}
+\subsubsecao{Fases de Engenharia e Evolução em Três Macroentregas}
 
+O ciclo de vida do CineDoom é estruturado em \textbf{três Macroentregas evolutivas (Releases)}. Cada iteração percorre obrigatoriamente cinco etapas fundamentais de engenharia de software: Elicitação de Requisitos, Arquitetura e Decisões Técnicas (ADRs), Implementação com Revisão de Código, Testes Automatizados na Esteira de CI e Publicação com Monitoramento Contínuo.
+
+No dia a dia operacional, a equipe estabelece cerimônias diretas e focadas na produtividade:
 \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
 \tightlist
-\item
-  \textbf{Decomposição Modular de Risco:} O domínio de exibição cinematográfica permite desacoplar o núcleo transacional crítico (motor ACID de assentos e multi-tenancy) de integrações externas evolutivas (gateways de pagamento e mensageria fiscal).
-\item
-  \textbf{Time-to-Market e Validação Antecipada:} A entrega da \textbf{Macroentrega 1 (\texttt{v1.0.0\ —\ MVP\ Operacional})} coloca o sistema em operação real em cinemas-piloto rapidamente, gerando valor imediato na bilheteria presencial e no portal de reservas enquanto financia a evolução das Macroentregas 2 e 3.
-\item
-  \textbf{Adaptabilidade a Mudanças Regulatórias e de Mercado:} A abordagem iterativa permite incorporar ajustes de usabilidade mobile, políticas de privacidade da LGPD e novos modelos de salas (IMAX, VIP) sem retrabalho arquitetural.
+\item \textbf{Planejamento da Sprint (\emph{Sprint Planning}):} Seleção e detalhamento dos itens do backlog no quadro do projeto, definindo responsáveis e critérios de aceitação claros.
+\item \textbf{Alinhamento Diário (\emph{Daily Check-in}):} Comunicação ágil (predominantemente assíncrona no chat da equipe e síncrona sob demanda) para identificar e eliminar impedimentos técnicos.
+\item \textbf{Revisão Técnica Obrigatória (\emph{Code Review}):} Nenhuma alteração é integrada à base comum sem a análise e aprovação de outro desenvolvedor em um Pull Request.
+\item \textbf{Demonstração e Homologação (\emph{Sprint Review}):} Validação prática das funcionalidades implementadas em ambiente de demonstração antes da liberação.
+\item \textbf{Retrospectiva de Melhoria Contínua (\emph{Retrospective}):} Avaliação periódica do processo de trabalho, gerando ajustes práticos nas rotinas da equipe.
 \end{enumerate}
 
 
-\subsecao{3.2 Inventário de infraestrutura e ferramentas necessárias}
+\subsubsecao{Fluxo de Trabalho no Git (Política Corporativa de Branches)}
 
-A gestão de infraestrutura (Cláusula 6.2.2) assegura que a CineSoft Solutions disponha de ferramentas padronizadas e ambientes resilientes para desenvolver, testar, implantar e operar o CineDoom:
+Para garantir estabilidade em produção e permitir desenvolvimento paralelo sem conflitos, a organização adota um fluxo de ramificação estruturado no Git:
+\begin{itemize}
+\tightlist
+\item \textbf{\texttt{main}:} Ramo estável que reflete o código atualmente implantado em produção (\url{https://cinedoom.vercel.app}). Commits diretos são estritamente bloqueados; apenas Pull Requests testados e aprovados vindos de \texttt{staging} podem ser integrados aqui.
+\item \textbf{\texttt{staging}:} Ambiente de pré-produção e homologação. Recebe as versões consolidadas vindas de \texttt{develop} para validação com usuários e testes de ponta a ponta.
+\item \textbf{\texttt{develop}:} Ramo principal de integração contínua do dia a dia. É onde as novas funcionalidades são unificadas e testadas pela esteira automática.
+\item \textbf{\texttt{feat/*} ou \texttt{fix/*}:} Ramos temporários criados a partir de \texttt{develop} para desenvolver uma história específica ou corrigir uma não conformidade, sendo excluídos após o merge do Pull Request.
+\end{itemize}
 
-\tabelaabnt{Inventário de Infraestrutura e Ferramentas}{CineSoft Solutions (2026)}{tab:infra_ferramentas}{%
+
+\subsubsecao{Critérios de Escolha do Modelo}
+
+\begin{itemize}
+\tightlist
+\item \textbf{Mitigação Progressiva de Riscos:} O núcleo de maior complexidade --- o motor de reservas com bloqueio atômico para impedir venda duplicada e o isolamento seguro dos dados de cada cinema --- foi implementado e estressado logo na primeira fase, evitando retrabalho nas integrações futuras.
+\item \textbf{Geração de Valor Imediato (\emph{Time-to-Market}):} A Macroentrega 1 entrega uma versão funcional para cinemas-piloto realizarem vendas físicas e aceitarem reservas pela web, permitindo validar o produto em operação real.
+\item \textbf{Adaptabilidade Contínua:} O formato iterativo permitiu aperfeiçoar a interface do mapa de poltronas para telas menores e ajustar fluxos de atendimento de balcão com base no feedback direto de operadores.
+\end{itemize}
+
+
+\subsecao{3.2 Infraestrutura e Ferramentas Organizacionais}
+
+Para garantir que a equipe técnica opere com alta produtividade e segurança, a CineSoft Solutions estabeleceu uma infraestrutura corporativa centralizada, apoiada em uma Organização formal no GitHub e em serviços gerenciados em nuvem.
+
+
+\subsubsecao{A Organização Corporativa no GitHub (\texttt{CINESOFT-SOLUTIONS})}
+
+A infraestrutura de desenvolvimento foi consolidada sob a organização \textbf{\texttt{CINESOFT-SOLUTIONS}} no GitHub (\url{https://github.com/CINESOFT-SOLUTIONS}), que centraliza:
+
+\begin{enumerate}
+\tightlist
+\item \textbf{Repositórios Segregados:} \texttt{cinedoom-app} (código-fonte da aplicação, migrações de banco, componentes e suítes de testes automatizados) e \texttt{manual-processos-software} (documentação formal de engenharia, especificações de requisitos e manuais de processo via \emph{Docs-as-Code}).
+\item \textbf{Governança de Acesso e Segurança:} Controle centralizado de permissões dos membros da equipe e proteção de branches com regras que impedem push forçado e commits diretos nos ramos protegidos (\texttt{main}, \texttt{staging} e \texttt{develop}).
+\item \textbf{Gestão de Projeto com GitHub Projects v2:} Quadro Kanban corporativo unificado, permitindo rastrear o progresso das tarefas, issues e marcos (\emph{milestones}) de cada Sprint.
+\item \textbf{Pipeline Automatizada com GitHub Actions:} Fluxo \texttt{ci.yml} (disparado em push e Pull Request para validação estática, compilação de tipos, lint e execução de testes) e fluxo \texttt{deploy.yml} (automação da promoção entre ambientes).
+\end{enumerate}
+
+
+\subsubsecao{Inventário de Ferramentas e Serviços}
+
+\tabelaabnt{Inventário de Ferramentas e Infraestrutura da CineSoft Solutions}{CineSoft Solutions (2026)}{tab:infra_ferramentas}{%
 {\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} >{\fontSemiBold\arraybackslash}m{4.0cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Categoria} & \textbf{Ferramenta / Infraestrutura} & \textbf{Finalidade no Projeto} \\
+\textbf{Categoria} & \textbf{Ferramenta / Plataforma} & \textbf{Papel e Utilização no Projeto} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Gestão e Código & GitHub \& GitHub Projects v2 & Hospedagem do código-fonte (Git), controle de branches protegidas, gestão do quadro Kanban, issues, milestones e revisão de Pull Requests. \\
+Organização e Código & GitHub (\texttt{CINESOFT-SOLUTIONS}) & Organização corporativa que hospeda repositórios, controle de permissões de membros e quadros de gestão (Projects v2). \\
 \midrule
-CI/CD e Automação & GitHub Actions & Pipeline automatizada de integração e entrega contínua (validação de schema Prisma, TypeScript \texttt{tsc}, ESLint \texttt{no-cycle}, 770 testes e build). \\
+Integração e Entrega & GitHub Actions & Execução de pipelines automáticas de validação (tipagem, lint, testes e build) e esteiras de deploy por ambiente. \\
 \midrule
-Hospedagem e Computação & Vercel Serverless \& Edge Network & Execução das rotas de API e Server Components do Next.js 14, distribuição global de assets na borda (CDN) e ambientes isolados de \emph{Preview} e \emph{Production}. \\
+Hospedagem e Execução & Vercel & Hospedagem da aplicação Next.js 14 com distribuição na borda (CDN), links de demonstração para Pull Requests e deploy em produção. \\
 \midrule
-Banco de Dados e ORM & Supabase / Neon PostgreSQL + Prisma & Persistência relacional ACID em nuvem, pooler de conexões transacional (\emph{Supavisor} porta \texttt{6543}), migrações versionadas e triggers de auditoria imutável. \\
+Banco de Dados Relacional & PostgreSQL (Supabase) + Prisma & Banco relacional em nuvem com transações ACID (\texttt{SELECT FOR UPDATE}), pooling de conexões e migrações versionadas. \\
 \midrule
-Design e Prototipação & Figma + Tailwind CSS + Lucide & Prototipação de alta fidelidade, construção do Design System escuro (\emph{Dark Cinema UI}) e componentes responsivos acessíveis (WCAG 2.1 AA). \\
+Design e Identidade Visual & Figma + Tailwind CSS + Lucide & Prototipação das telas, Design System no tema escuro (\emph{Dark Cinema UI}) e componentes visuais acessíveis e responsivos. \\
 \midrule
-Testes e Qualidade & Vitest + ESLint + TypeScript 5 & Execução rápida de testes unitários, de integração e de concorrência (50 threads simultâneas), análise estática de código e prevenção de dependências circulares. \\
+Testes e Qualidade & Vitest + TypeScript 5 & Execução rápida de testes automatizados com cobertura de regras de negócio, testes de concorrência e isolamento multi-tenant. \\
 \midrule
-Observabilidade e Mensageria & Axiom Cloud + Resend API & Ingestão contínua de logs estruturados com retenção legal de 365 dias (LGPD) e despacho transacional de vouchers de reserva por e-mail. \\
+Auditoria e Notificações & Axiom Cloud + Resend API & Retenção segura de logs para fins de conformidade e auditoria, e disparo confiável de vouchers de reserva para os clientes. \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
 
 
-\subsecao{3.3 Justificativa estratégica e viabilidade do projeto}
+\subsecao{3.3 Justificativa Estratégica e Viabilidade do Projeto}
 
-A gestão de portfólio (Cláusula 6.2.3) avalia o alinhamento do \textbf{CineDoom} aos objetivos estratégicos da \textbf{CineSoft Solutions} sob quatro dimensões de viabilidade:
+O investimento no desenvolvimento do CineDoom decorre de uma decisão estratégica da CineSoft Solutions para atender a um segmento de mercado historicamente desassistido por soluções tecnológicas acessíveis.
+
+
+\subsubsecao{Oportunidade e Alinhamento Estratégico}
+
+O mercado brasileiro de exibição cinematográfica conta com centenas de salas independentes, cinemas de rua, centros culturais e redes regionais que frequentemente operam com processos manuais (planilhas) ou dependem de sistemas legados de alto custo, que cobram taxas excessivas sobre cada ingresso emitido. 
+
+O CineDoom posiciona a CineSoft Solutions como fornecedora de um SaaS moderno, cobrado por mensalidade fixa previsível, democratizando a tecnologia de reserva online e gestão de bilheteria para exibidores de pequeno e médio porte.
+
+
+\subsubsecao{Dimensões de Viabilidade}
 
 \begin{itemize}
 \tightlist
-\item
-  \textbf{Alinhamento Estratégico e de Mercado:} O mercado brasileiro de exibição conta com centenas de cinemas independentes, salas de rua, centros culturais e redes regionais de pequeno e médio porte que sofrem com sistemas legados caros (cobrados por participação pesada na bilheteria) ou controles manuais em planilhas. O CineDoom posiciona a CineSoft Solutions como fornecedora de um SaaS moderno, leve e acessível para esse segmento.
-\item
-  \textbf{Viabilidade Técnica:} A stack selecionada (Next.js 14 App Router, TypeScript estrito, Prisma ORM e PostgreSQL) possui maturidade industrial comprovada. A arquitetura de Monólito Modular com extensão de tenancy no Prisma elimina a sobrecarga operacional de microsserviços mantendo isolamento lógico rigoroso e garantia ACID nativa.
-\item
-  \textbf{Viabilidade Operacional:} A operação 100\% baseada em navegador web (desktop nos guichês físicos e mobile responsivo para espectadores) dispensa instalação de executáveis locais nas bilheterias dos cinemas clientes, reduzindo drasticamente o custo de suporte e implantação (\emph{onboarding}).
-\item
-  \textbf{Viabilidade Econômica e Financeira (TCO vs.~Receita SaaS):}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{Fase de Validação e Homologação (Macroentrega 1):} A arquitetura \emph{serverless} permite operar ambientes de piloto e homologação com custo fixo inicial próximo de zero, pagando apenas conforme o crescimento da demanda.
-  \item
-    \textbf{Fase de Escala Comercial (Macroentregas 2 e 3):} A estrutura de custos fixos da infraestrutura comercial paga --- somando \textbf{Supabase/Neon Pro} (\textasciitilde US 25/mês), \textbf{Vercel Pro} (\textasciitilde US 20/mês), \textbf{Resend Pro} (\textasciitilde US 20/mês) e \textbf{Axiom Cloud} (\textasciitilde US 25/mês), totalizando cerca de \textbf{US 90/mês (\textasciitilde R 480/mês)} para sustentar dezenas de cinemas simultaneamente --- é integralmente coberta já pela assinatura mensal do \textbf{primeiro cliente B2B contratante} (ticket médio estimado de R 590 a R 1.290/mês por complexo exibidor), proporcionando margem bruta recorrente superior a \textbf{80\%}.
-  \end{itemize}
+\item \textbf{Viabilidade Técnica:} A arquitetura adotada combina Next.js 14, TypeScript e PostgreSQL sobre Prisma ORM. A escolha de um monólito modular com isolamento lógico multi-tenant no banco relacional eliminou a alta complexidade e os custos de infraestrutura de microsserviços distribuídos, garantindo transações atômicas nativas e fácil manutenção.
+\item \textbf{Viabilidade Operacional:} Por ser uma aplicação que opera integralmente no navegador web (tanto nos computadores da bilheteria quanto nos smartphones dos clientes), não há necessidade de instalar ou atualizar programas nas máquinas físicas dos cinemas, o que reduz custos operacionais de implantação e simplifica o suporte.
+\item \textbf{Viabilidade Financeira:} A infraestrutura de produção em nuvem --- somando planos corporativos de banco de dados, hospedagem, e-mail transacional e auditoria --- totaliza cerca de \textbf{US\$\ 90/mês (\textasciitilde R\$\ 480/mês)}. Esse custo é integralmente coberto já com a mensalidade do \textbf{primeiro cinema contratante} (ticket médio previsto de R\$\ 590 a R\$\ 1.290/mês por complexo), gerando sustentabilidade financeira e margem operacional saudável para a empresa.
 \end{itemize}
 
 
-\subsecao{3.4 Papéis, competências e plano de capacitação (RACI)}
+\subsecao{3.4 Papéis, Competências e Plano de Capacitação (RACI)}
 
-A gestão de recursos humanos (Cláusula 6.2.4) estrutura os papéis técnicos da equipe da CineSoft Solutions, mapeia as competências requeridas para a stack tecnológica e define a matriz formal de responsabilidades.
+A equipe da CineSoft Solutions é organizada de maneira multidisciplinar, distribuindo competências técnicas complementares para cobrir todas as necessidades do ciclo de vida da plataforma.
 
 
-\subsubsecao{Composição da Equipe e Competências Requeridas}
+\subsubsecao{Composição da Equipe Técnica}
 
-\tabelaabnt{Composição da Equipe e Competências Técnicas Requeridas}{CineSoft Solutions (2026)}{tab:equipe_competencias}{%
+\tabelaabnt{Composição da Equipe e Especialidades Técnicas}{CineSoft Solutions (2026)}{tab:equipe_competencias}{%
 {\small
 \begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.8cm} >{\arraybackslash}m{3.8cm} Y}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Integrante} & \textbf{Cargo na CineSoft} & \textbf{Competências Técnicas no Stack} \\
+\textbf{Integrante} & \textbf{Função Principal} & \textbf{Foco Técnico e Especialidades} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Gabriel Henrique Lourenço Dias & \textbf{Tech Lead \& Arquiteto de Software} & Arquitetura Next.js 14, modelagem PostgreSQL avançada, transações ACID (\texttt{SELECT FOR UPDATE}), multi-tenancy e testes de concorrência. \\
+Gabriel Henrique Lourenço Dias & \textbf{Tech Lead \& Arquiteto de Software} & Arquitetura Next.js 14, modelagem de banco relacional, transações concorrentes ACID (\texttt{SELECT FOR UPDATE}), multi-tenancy e testes. \\
 \midrule
-Carlos Eduardo Freire da Silva & \textbf{Engenheiro de Backend, Segurança \& DevOps} & Criptografia aplicada (\texttt{HMAC-SHA256}, \texttt{AES-256-GCM}), LGPD, APIs RESTful com Zod, pipelines GitHub Actions e deploy Vercel. \\
+Carlos Eduardo Freire da Silva & \textbf{Engenheiro de Backend, DevOps \& Sec} & Criptografia aplicada e conformidade LGPD, APIs com validação Zod, automação de CI/CD no GitHub Actions e monitoramento. \\
 \midrule
-Kayque Vicente Silva & \textbf{Engenheiro de Qualidade (QA) \& GP} & Gestão ágil de projetos (ISO 12207 / MPS.BR), análise de riscos, automação de testes no Vitest, verificação e validação (V\&V). \\
+Kayque Vicente Silva & \textbf{Engenheiro de Qualidade (QA) \& GP} & Gestão de cronograma e escopo, automação de testes no Vitest, controle de métricas de qualidade e garantia de critérios de aceitação. \\
 \midrule
-Yury Nogueira de Oliveira Silva & \textbf{Engenheiro de Requisitos, UX \& Compliance} & Engenharia de requisitos (MoSCoW, BDD), modelagem C4/UML, modelagem STRIDE, UI/UX e auditoria de processos. \\
+Yury Nogueira de Oliveira Silva & \textbf{Engenheiro de Requisitos, UX \& Compliance} & Elicitação de regras de negócio, modelagem de casos de uso e arquitetura, usabilidade (UI/UX) e conformidade normativa. \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }
 }
 
 
-\subsubsecao{Matriz RACI Consolidada por Membro da Equipe}
+\subsubsecao{Matriz de Responsabilidades por Atividade (RACI)}
 
-Conforme as diretrizes de governança organizacional, a tabela abaixo relaciona diretamente cada membro da CineSoft Solutions às macroatividades do ciclo de vida do CineDoom:
+A matriz abaixo estabelece a governança sobre as principais atividades técnicas e organizacionais do projeto:
 
-\tabelaabnt{Matriz RACI de Responsabilidades por Membro da Equipe}{CineSoft Solutions (2026)}{tab:matriz_raci}{\input{../../../assets/capitulo-03/tabelas/matriz-raci.tex}}
+\tabelaabnt{Matriz de Responsabilidades por Atividade (RACI)}{CineSoft Solutions (2026)}{tab:matriz_raci}{\input{../../../assets/capitulo-03/tabelas/matriz-raci.tex}}
 
-\emph{Legenda:} \textbf{R} = Responsável pela execução (\emph{Responsible}); \textbf{A} = Aprovador final / Dono da conta (\emph{Accountable}); \textbf{C} = Consultado (\emph{Consulted}); \textbf{I} = Informado (\emph{Informed}).
-
-
-\subsubsecao{Plano de Capacitação Técnica Contínua}
-
-Para suprir lacunas técnicas e manter a alta produtividade ao longo das três Macroentregas, a CineSoft Solutions executa trilhas internas de capacitação prática (\emph{hands-on workshops}): 1. \textbf{Concorrência e Isolamento em Bancos Relacionais:} Treinamento em bloqueios pessimistas (\texttt{SELECT\ ...\ FOR\ UPDATE}), prevenção de \emph{deadlocks} por ordenação determinística de chaves e configuração de \emph{connection pooling} com Supavisor/PgBouncer. 2. \textbf{Segurança Aplicada e Engenharia de Privacidade (LGPD):} Capacitação em criptografia simétrica autenticada (\texttt{AES-256-GCM}), indexação cega por \texttt{HMAC-SHA256} e técnicas de anonimização irreversível \emph{in-place}. 3. \textbf{Arquitetura Serverless e Testes Automatizados de Alta Carga:} Práticas de desenvolvimento em Next.js App Router, isolamento de contexto com \texttt{AsyncLocalStorage} e simulação de baterias de estresse concorrente no Vitest. 4. \textbf{Integrações Financeiras e Fiscais (Preparação Macroentregas 2 e 3):} Estudo técnico de webhooks idempotentes do Stripe (PCI-DSS) e mensageria assíncrona de notas fiscais eletrônicas (NFC-e/SEFAZ).
+\emph{Legenda:} \textbf{R} = Responsável pela execução (\emph{Responsible}); \textbf{A} = Aprovador final (\emph{Accountable}); \textbf{C} = Consultado (\emph{Consulted}); \textbf{I} = Informado (\emph{Informed}).
 
 
-\subsecao{3.5 Plano de qualidade com critérios e métricas}
+\subsubsecao{Plano de Capacitação Contínua}
 
-A gestão da qualidade organizacional (Cláusula 6.2.5) define padrões objetivos e bloqueios automatizados (\emph{Quality Gates}) para assegurar que nenhuma alteração degrade a estabilidade do CineDoom em produção:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
+Para manter a equipe alinhada às melhores práticas de mercado e capacitada para os desafios das próximas Macroentregas, foram estruturadas sessões de treinamento prático interno (\emph{workshops}):
+\begin{itemize}
 \tightlist
-\item
-  \textbf{Padronização Estática e Arquitetural:}
+\item \textbf{Transações e Concorrência em Bancos de Dados:} Técnicas de ordenação determinística de chaves para prevenção de travamentos mútuos (\emph{deadlocks}) e uso de travas pessimistas sob picos de acesso simultâneo.
+\item \textbf{Engenharia de Privacidade e LGPD:} Criptografia autenticada para dados sensíveis, geração de índices de busca anônimos e rotinas de anonimização irreversível sem corromper históricos de venda.
+\item \textbf{Simulação de Alta Concorrência com Vitest:} Construção de cenários de estresse automatizados disparando múltiplas requisições simultâneas contra o motor de reservas.
+\item \textbf{Integrações de Pagamento e Fiscais:} Estudo de fluxos de conciliação de webhooks de pagamento (PIX e cartão) e padrões de contingência para emissão de notas fiscais (NFC-e na SEFAZ).
+\end{itemize}
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Tipagem estrita obrigatória (\texttt{TypeScript\ strict:\ true}) sem erros de compilação (\texttt{npm\ run\ typecheck}).
-  \item
-    Proibição de dependências circulares entre módulos validada automaticamente via regra \texttt{import/no-cycle} do ESLint.
-  \end{itemize}
-\item
-  \textbf{Cobertura e Aprovação de Testes Automatizados:}
 
-  \begin{itemize}
-  \tightlist
-  \item
-    \textbf{100\% de aprovação obrigatória} nas \textbf{26 suítes de teste (770 testes automatizados)} cobrindo regras de domínio, criptografia, reserva atômica, expiração JIT e 500 cenários de isolamento \emph{cross-tenant}.
-  \item
-    Cobertura mínima de \textbf{100\% nas funções críticas de negócio} (emissão de ingressos, bloqueio de assentos, cancelamento auditado e anonimização LGPD).
-  \end{itemize}
-\item
-  \textbf{Política de Revisão de Código (\emph{Code Review}):}
+\subsecao{3.5 Plano de Qualidade: Diretrizes, Critérios e Métricas}
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Nenhuma alteração é enviada diretamente para a branch \texttt{main}. Todo código deve passar por validação da esteira do GitHub Actions e revisão técnica antes da promoção entre \texttt{develop}, \texttt{staging} e \texttt{main}.
-  \end{itemize}
-\item
-  \textbf{Critérios de Estabilidade Pré-Deploy:}
+A política de qualidade da CineSoft Solutions estabelece barreiras automatizadas (\emph{Quality Gates}) e princípios de desenvolvimento para garantir que nenhuma alteração degrade a segurança ou a estabilidade da plataforma em produção.
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Zero vulnerabilidades críticas abertas, zero erros de build e validação de \emph{smoke test} no ambiente de \emph{Preview/Staging} antes da liberação para os cinemas clientes.
-  \end{itemize}
+
+\subsubsecao{Diretrizes e Princípios de Engenharia Adotados}
+
+A organização estabelece quatro pilares técnicos que orientam a escrita de código em todos os repositórios:
+\begin{itemize}
+\tightlist
+\item \textbf{Spec-Driven Development (SDD):} Nenhuma funcionalidade é implementada sem especificação prévia documentada em \texttt{specs/} com schemas de entrada e saída validados por contratos formais (Zod).
+\item \textbf{Domain-Driven Design (DDD):} Organização do sistema por contextos bem delimitados (\emph{Bounded Contexts}), isolando a lógica de negócio do cinema (sessões, ingressos, bloqueios temporários) de preocupações externas de infraestrutura e persistência.
+\item \textbf{Princípios SOLID:} Aplicação contínua de código modular com responsabilidade única, desacoplamento de serviços e injeção de dependências, facilitando testes e manutenções futuras.
+\item \textbf{Test-Driven Development (TDD) e Pirâmide de Testes:} Construção prioritária de testes automatizados para regras críticas de domínio antes ou conjuntamente à implementação do código de produção.
+\end{itemize}
+
+
+\subsubsecao{Critérios de Qualidade e Bloqueios Automatizados (\emph{Quality Gates})}
+
+Para que qualquer código seja integrado aos ramos principais (\texttt{develop}, \texttt{staging} e \texttt{main}), os seguintes critérios devem ser atendidos na esteira do GitHub Actions:
+\begin{enumerate}
+\tightlist
+\item \textbf{Validação Estática e Compilação:} Tipagem estrita no TypeScript sem erros (\texttt{tsc --noEmit}) e ausência de dependências circulares entre arquivos (\texttt{eslint no-cycle}).
+\item \textbf{Execução Completa da Suíte de Testes:} \textbf{100\% de aprovação obrigatória nos testes automatizados do Vitest}, incluindo testes unitários de regras de negócio, testes de concorrência com 50 threads simultâneas e 500 cenários de teste de isolamento entre cinemas (\emph{cross-tenant}).
+\item \textbf{Revisão Humana de Código:} Exigência de pelo menos uma aprovação de outro desenvolvedor em todo Pull Request.
+\item \textbf{Verificação de Build:} Compilação bem-sucedida do pacote de produção no ambiente do runner antes da autorização de deploy.
 \end{enumerate}
 
 
-\subsecao{3.6 Estratégia de gestão do conhecimento}
+\subsecao{3.6 Estratégia de Gestão do Conhecimento}
 
-A gestão do conhecimento (Cláusula 6.2.6) garante que o capital intelectual da CineSoft Solutions seja documentado, versionado e acessível a toda a organização, prevenindo dependência de indivíduos isolados (\emph{bus factor}):
+A organização assegura que todo o conhecimento técnico, arquitetural e processual do CineDoom seja documentado, versionado e facilmente acessível, reduzindo a dependência de pessoas isoladas e preservando o capital intelectual da empresa.
 
 \begin{itemize}
 \tightlist
-\item
-  \textbf{Abordagem \emph{Docs-as-Code} (Fonte Única da Verdade):} Todas as especificações de requisitos, modelos de dados, planos de testes, manuais operacionais e diretrizes residem no controle de versão Git (\texttt{specs/} e \texttt{manual/}), evoluindo no mesmo ritmo do código-fonte.
-\item
-  \textbf{Registro Formal de Decisões de Arquitetura (ADRs):} Qualquer decisão estrutural (escolha de banco, estratégia de lock, criptografia de CPF, modelo de polling ou provedor de e-mail) é imortalizada em fichas padronizadas (\texttt{ADR-001} a \texttt{ADR-012}), contendo contexto, alternativas descartadas, decisão e trade-offs.
-\item
-  \textbf{Rastreabilidade viva no Código:} Os arquivos de serviço, rotas de API e suítes de teste contêm cabeçalhos padronizados referenciando os requisitos (\texttt{RF-XX}), regras de negócio (\texttt{RN-XX}) e ADRs correspondentes.
-\item
-  \textbf{Base de Lições Aprendidas e Runbooks Operacionais:} Ao término de cada Sprint e Macroentrega, incidentes técnicos resolvidos (como ajustes de connection pooling, alinhamento responsivo de mapas de sala e otimizações de queries) são documentados em \emph{runbooks} para acelerar diagnósticos futuros pela equipe de suporte.
+\item \textbf{Abordagem \emph{Docs-as-Code}:} Todas as especificações funcionais, modelos de dados, planos de teste e manuais de processo residem no repositório Git junto à documentação técnica, sendo atualizados e revisados no mesmo fluxo de Pull Requests do código.
+\item \textbf{Registro Formal de Decisões de Arquitetura (ADRs):} Decisões estruturais relevantes da plataforma (como a seleção do banco relacional gerenciado, o uso de bloqueios pessimistas em vez de filas e a estratégia de multi-tenancy) são documentadas em fichas formais (\texttt{ADR-001} a \texttt{ADR-012}), registrando o contexto, as opções avaliadas e as consequências da decisão.
+\item \textbf{Rastreabilidade nos Artefatos de Código:} Os serviços, controladores e arquivos de teste contêm referências explícitas aos requisitos funcionais (\texttt{RF-XX}), regras de negócio (\texttt{RN-XX}) e critérios de aceitação correspondentes.
+\item \textbf{Base de Lições Aprendidas e Guias Técnicos:} Resoluções de desafios encontrados durante os ciclos de desenvolvimento (como parametrização de limites de conexões no banco ou ajustes de concorrência) são registradas em guias internos para agilizar a resolução de novos chamados e guiar novos desenvolvedores.
 \end{itemize}

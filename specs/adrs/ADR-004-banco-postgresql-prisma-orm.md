@@ -21,7 +21,7 @@ Gabriel Lourenço (@gabrlou), Equipe CineSoft
 Venda e reserva de ingressos de cinema exigem estrita consistência transacional (ACID) para impedir conflito de assentos (double-booking).
 
 ## Decisão
-PostgreSQL 16+ gerenciado no Neon Serverless com Prisma ORM para modelagem, migrações tipadas e consultas parametrizadas seguras.
+PostgreSQL 16 gerenciado no Supabase (com pool de conexões) e Prisma ORM para modelagem, migrações determinísticas e consultas parametrizadas seguras.
 
 ## Consequências
 ### Positivas

@@ -1,18 +1,21 @@
 # Capítulo 2 – Processos de Acordo
 
-## 2.1 Descrição do processo de aquisição
+Este capítulo estabelece como a **CineSoft Solutions** gerencia suas relações comerciais e técnicas, fundamentando-se nas boas práticas da norma ABNT NBR ISO/IEC/IEEE 12207:2021 para os processos de **Aquisição** e **Fornecimento**. 
 
-O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** no papel de organização adquirente, definindo o que desenvolver internamente e o que contratar de terceiros para sustentar o produto **CineDoom**.
+A abordagem adotada busca equilibrar rigor de engenharia e pragmatismo operacional: define claramente o que construir internamente versus o que contratar de terceiros (*Make or Buy*), estrutura a jornada de entrega e suporte da plataforma **CineDoom** para os cinemas clientes, e mapeia os parceiros de infraestrutura que viabilizam o sistema.
 
-### Fronteira e Justificativa de Aquisição
+---
 
-A estratégia de engenharia da CineSoft Solutions concentra o desenvolvimento interno nos componentes que formam o **núcleo de valor e diferencial competitivo** da plataforma: o motor de bilheteria e reservas com trava atômica (`SELECT FOR UPDATE`), a máquina de estados de assentos com expiração *Just-in-Time*, o isolamento multi-tenant e o módulo de proteção de dados (LGPD).
+## 2.1 Processo de Aquisição: Decisões e Gestão de Provedores
 
-Em contrapartida, serviços de infraestrutura em nuvem, bancos de dados gerenciados, disparo de e-mails transacionais, retenção de logs, processamento de pagamentos e mensageria fiscal são adquiridos de provedores especializados para reduzir o tempo de desenvolvimento, diminuir custos operacionais e garantir alta disponibilidade (SLA $\ge 99,9\%$).
+No papel de adquirente, a CineSoft Solutions adota uma diretriz clara: **o esforço interno de desenvolvimento é concentrado no coração das regras de negócio do cinema e nos diferenciais competitivos do CineDoom**. Todo serviço em que o mercado já oferece soluções maduras, seguras e com economia de escala é contratado como serviço ou biblioteca, reduzindo tempo de desenvolvimento e custo operacional.
 
-### Tabela de Análise de Aquisição (*Make or Buy*)
+### O que construímos e o que contratamos (*Make or Buy*)
 
-A governança de aquisição da CineSoft Solutions consolida a decisão formal para cada elemento arquitetural do sistema, classificando a abordagem em **Sim** (solução madura/commodity adquirida pronta), **Não** (regra de negócio central desenvolvida internamente) ou **Parcial** (engine ou biblioteca externa combinada com regras de domínio proprietárias):
+- **Desenvolvimento Interno (*Make*):** O motor de bilheteria e reservas atômicas com bloqueio pessimista (`SELECT FOR UPDATE`), a máquina de estados de assentos com liberação automática de ingressos expirados, o isolamento lógico multi-tenant entre diferentes redes de cinema e os mecanismos de anonimização exigidos pela LGPD. Esses itens compõem a propriedade intelectual e o diferencial de confiabilidade da CineSoft.
+- **Soluções Prontas de Terceiros (*Buy*):** Infraestrutura de banco de dados gerenciado (PostgreSQL no Supabase), hospedagem serverless com distribuição global (Vercel), mensageria de e-mails transacionais (Resend), retenção de logs para auditoria (Axiom), processamento de pagamentos digitais (Stripe/Pagar.me na Macroentrega 2) e mensageria fiscal de notas (Focus NFe na Macroentrega 3).
+
+As tabelas a seguir detalham a justificativa técnica e econômica de cada decisão:
 
 **Tabela 2 – Análise de Aquisição: Componentes de Software e Domínio (Make or Buy)**
 
@@ -40,90 +43,69 @@ A governança de aquisição da CineSoft Solutions consolida a decisão formal p
 
 *Fonte: CineSoft Solutions (2026).*
 
-### As Cinco Atividades do Processo de Aquisição (ISO/IEC/IEEE 12207:2017)
+### O Ciclo Prático de Aquisição de Provedores
 
-A CineSoft Solutions conduz a contratação e a governança de serviços e componentes especializados por meio das cinco atividades normativas da norma:
+Para selecionar e manter esses provedores em operação contínua, a CineSoft Solutions estrutura a contratação em cinco etapas práticas:
 
-1. **Preparação para a Aquisição:**
-   - *Descrição:* O Arquiteto de Software e a equipe técnica especificam as necessidades do sistema, volumetria estimada de transações e requisitos de segurança (TLS 1.3, criptografia de dados e conformidade com a LGPD).
-   - *Saídas:* Especificação Técnica de Aquisição e Matriz de Critérios de Seleção.
-2. **Divulgação e Seleção de Fornecedores:**
-   - *Descrição:* A equipe levanta e compara soluções consolidadas para cada categoria (ex.: Neon vs. Supabase; Resend vs. AWS SES; Vercel vs. AWS Amplify), pontuando maturidade do SDK, latência na América do Sul e custo escalonado.
-   - *Saídas:* Parecer Comparativo de Fornecedores e Registro de Seleção.
-3. **Estabelecimento e Manutenção do Acordo:**
-   - *Descrição:* Formalização contratual via Termos de Serviço Corporativos e Aditivo de Tratamento de Dados (*DPA* para a LGPD), assegurando SLA $\ge 99,9\%$, limites de requisição (*rate-limiting*) e portabilidade de dados.
-   - *Saídas:* Contrato de Serviço de Nuvem (DPA) e Registro de Credenciais em Cofre Seguro.
-4. **Monitoramento do Acordo:**
-   - *Descrição:* Integrado ao Controle de Projeto (Capítulo 4), acompanha-se a disponibilidade dos serviços via telemetria (latência p95/p99 e conexões do pooler), páginas públicas de status e conciliação mensal de consumo.
-   - *Saídas:* Relatório Mensal de SLA/Consumo e Registro de Incidentes do Provedor.
-5. **Aceitação do Produto ou Serviço:**
-   - *Descrição:* O serviço é validado em ambiente de homologação (*sandbox*) e integrado à esteira de CI/CD, exigindo aprovação em testes de estabilidade antes da liberação em produção acompanhada de plano de contingência (*rollback plan*).
-   - *Saídas:* Relatório de Testes em Sandbox e Termo de Liberação em Produção (*Go-Live*).
+1. **Definição de Requisitos e Critérios:** O Arquiteto e os líderes técnicos mapeiam as restrições de cada necessidade — limites de latência (priorizando servidores na América do Sul), compatibilidade com Node.js/Next.js, conformidade com a LGPD e facilidade de integração local.
+2. **Avaliação Técnica e Financeira:** São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus Neon, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
+3. **Contratação e Formalização:** Assinatura digital dos planos corporativos, formalização de Aditivos de Proteção de Dados (*Data Processing Agreements* – DPA) para garantir sigilo sob a LGPD e armazenamento seguro de chaves de API em gerenciadores de segredos com rotação periódica.
+4. **Monitoramento e Acompanhamento de SLA:** A equipe monitora a disponibilidade real dos provedores via telemetria contínua, páginas de status e relatórios mensais de consumo, garantindo que o tempo de resposta e a taxa de erros permaneçam dentro dos padrões acordados.
+5. **Homologação e Aceite Técnico:** Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (*sandbox*) na esteira de integração contínua (CI/CD), com planos de reversão (*rollback*) já desenhados caso ocorram falhas.
 
 ---
 
-## 2.2 Descrição do processo de fornecimento
+## 2.2 Processo de Fornecimento: Comercialização, Entrega e Operação
 
-O processo de fornecimento (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.2) regulamenta como a **CineSoft Solutions** comercializa, implanta, licencia, mantém e suporta a plataforma **CineDoom** junto aos cinemas clientes e parceiros de negócio.
+Como fornecedora de software, a CineSoft Solutions atende cinemas independentes, cinemas de rua e pequenas redes de exibição que buscam modernizar sua bilheteria física e expandir suas vendas online de forma integrada e sem riscos de sobreposição de assentos.
 
-### Perspectiva de Fornecimento e Ativos Comercializáveis
+### Modelos de Negócio e Ativos Disponíveis
 
-Além da oferta integral da plataforma, a arquitetura modular da CineSoft Solutions permite o fornecimento autônomo de subsistemas de alto valor agregado para diferentes perfis de adquirentes:
+O principal produto fornecido é a plataforma **CineDoom** em modelo SaaS (*Software as a Service*), cobrada por assinatura mensal mais taxa por sala ativa. No entanto, sua arquitetura modular também permite licenciar componentes específicos para parceiros ou exibidores com sistemas legados:
 
 **Tabela 4 – Perspectiva de Fornecimento e Ativos Comercializáveis**
 
-| Elemento com potencial | Possível adquirente | Modelo de acordo |
-| :--- | :--- | :--- |
-| **Plataforma Integrada CineDoom (Bilheteria + Back-office + Portal Web)** | Cinemas de rua, circuitos independentes, centros culturais e redes exibidoras de pequeno e médio porte | **Assinatura SaaS B2B:**<br>• **Mensalidade base:** **R$ 790,00 / mês** (complexo com até 2 salas ativas, hospedagem em nuvem e suporte técnico).<br>• **Sala adicional:** **R$ 120,00 / mês** por sala ativa.<br>• **Setup e Implantação:** **R$ 1.500,00** (taxa única de parametrização, carga de dados e treinamento operacional). |
-| **Engine de Mapa Bidimensional e Trava Atômica de Assentos (API)** | Produtoras de teatro, casas de espetáculos, auditórios universitários e plataformas regionais de eventos | **Licenciamento de API Transacional (Pay-as-you-go):**<br>• **Tarifa por transação:** **R$ 0,08** por assento emitido (**R$ 0,05** acima de 10.000 assentos/mês).<br>• **Franquia mínima:** **R$ 200,00 / mês** (inclui franquia de 2.500 assentos e SLA de 99,9%). |
-| **Módulo de Governança, Criptografia de CPF e Anonimização LGPD** | Software houses parceiras de varejo e entretenimento que necessitam adequar sistemas legados ao Art. 18 da LGPD | **Licenciamento de SDK Corporativo / Biblioteca:**<br>• **Assinatura Anual:** **R$ 8.900,00 / ano** (atualizações regulatórias e suporte normativo).<br>• **Licença Perpétua:** **R$ 16.000,00** (código compilado + 10 horas de consultoria técnica de integração). |
-| **Portal White-Label de Reserva Antecipada com Expiração JIT** | Redes de cinemas que já possuem ERP fiscal próprio de balcão, mas carecem de canal digital moderno para espectadores | **Fornecimento de Módulo SaaS White-Label:**<br>• **Mensalidade:** **R$ 490,00 / mês** por cinema exibidor (domínio dedicado e certificado SSL inclusos).<br>• **Setup visual:** **R$ 800,00** (taxa única de adaptação da identidade visual da marca). |
+| Ativo potencial                 | Possíveis adquirentes                                                                          | Modelo de fornecimento e preço estimado                                                                          |
+| ------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Plataforma CineDoom (completa)  | Cinemas independentes, cinemas de rua e pequenas redes de exibição.                            | SaaS B2B: R$ 790/mês de assinatura-base, acrescidos de R$ 120/mês por sala ativa e R$ 1.500 de implantação.      |
+| Engine de Trava Atômica (API)   | Plataformas de venda de ingressos, teatros e sistemas de reservas de eventos.                  | Licenciamento de API: R$ 0,08 por assento confirmado, com cobrança mínima de R$ 200/mês.                         |
+| Módulo de Governança LGPD (SDK) | Empresas de desenvolvimento de software e plataformas de entretenimento.                       | Licenciamento de SDK: R$ 8.900/ano ou R$ 16.000 por licença perpétua, incluindo 10 horas de consultoria técnica. |
+| Portal White-Label de Reservas  | Exibidores que utilizam sistemas administrativos próprios e desejam oferecer reservas on-line. | SaaS White-Label: R$ 490/mês por exibidor, com domínio próprio, SSL e taxa de implantação de R$ 800.             |
 
-*Fonte: CineSoft Solutions (2026).*
+*Fonte: CineSoft Solutions (2026). Valores comerciais estimados para fins de planejamento.*
 
-### As Cinco Atividades do Processo de Fornecimento (ISO/IEC/IEEE 12207:2017)
+### Jornada do Cliente: Da Contratação ao Pós-Venda
 
-A CineSoft Solutions conduz o ciclo comercial e operacional de atendimento ao cliente por meio das cinco atividades normativas:
+A relação entre a CineSoft Solutions e o cinema contratante segue um ciclo transparente e estruturado em cinco etapas:
 
-1. **Preparação do Fornecimento:**
-   - *Descrição:* A equipe de negócios e arquitetura mapeia os perfis de exibidores adquirentes, definindo a estratégia de monetização SaaS, matriz de precificação por sala e modelos de licenciamento de APIs desacopladas.
-   - *Saídas:* Matriz de Planos Comerciais e Catálogo de Ativos Licenciáveis.
-2. **Resposta à Solicitação:**
-   - *Descrição:* Ao receber solicitações de cotação ou RFPs de exibidores, a CineSoft avalia a viabilidade técnica e arquitetural da rede (quantidade de salas e integração fiscal), gerando proposta com cronograma e escopo de setup.
-   - *Saídas:* Proposta Técnica de Implantação e Proposta Comercial de Fornecimento.
-3. **Estabelecimento e Manutenção do Acordo:**
-   - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,9%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
-   - *Saídas:* Contrato de Prestação de Serviço (SaaS) e Aditivo de Privacidade e DPA.
-4. **Execução do Acordo:**
-   - *Descrição:* Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 711 testes automatizados.
-   - *Saídas:* Ambiente de Produção Provisionado e Relatório de Validação de CI/CD.
-5. **Entrega e Suporte:**
-   - *Descrição:* Condução da homologação assistida (*UAT*), assinatura do Termo de Aceite de Implantação (TAI) após comprovação de zero *double-booking* e ativação do suporte técnico contínuo estruturado nos 4 níveis de SLA.
-   - *Saídas:* Termo de Aceite de Implantação (TAI) e Relatório Mensal de Cumprimento de SLA.
+1. **Alinhamento e Diagnóstico Inicial:** A CineSoft compreende o perfil do cinema — quantidade de salas físicas, categorias de poltronas, volume médio de sessões semanais e necessidade de equipamentos físicos de guichê.
+2. **Proposta e Escopo de Implantação:** Apresentação da proposta comercial contendo valores claros, cronograma de parametrização e requisitos mínimos de rede e navegadores para os computadores da bilheteria.
+3. **Formalização Contratual:** Assinatura do Contrato de Licenciamento SaaS e do Termo de Tratamento de Dados (LGPD), definindo os níveis de serviço garantidos (SLA de 99,5%), a propriedade exclusiva dos dados pelo cinema e as regras de confidencialidade.
+4. **Implantação e Treinamento:** Provisionamento do ambiente isolado do cinema (`tenant_id`), cadastro de salas e filmes, simulação de vendas com a equipe de atendentes e treinamento operacional dos gerentes de bilheteria.
+5. **Entrada em Operação e Suporte Contínuo:** Liberação assistida do primeiro dia de operação em guichê (*go-live* assistido), assinatura do Termo de Aceite após comprovação prática de ausência de erros ou vendas duplicadas, e início do suporte técnico diário.
 
-### Termos do Acordo, Entregáveis e Evolução por Macroentregas
+### Entregáveis da Implantação e Evolução Funcional
 
-O fornecimento comercial aos cinemas adquirentes contempla os seguintes entregáveis contratuais e evolução funcional:
+Cada cinema contratante recebe:
+- **Tenant Exclusivo e Isolado:** Criação do identificador da organização (`tenant_id`) no banco de dados com isolamento lógico garantido em todas as consultas.
+- **Configuração de Salas e Catálogo:** Montagem do mapa visual de poltronas de cada sala física (comun, VIP, acessibilidade) e treinamento prático para cadastro de sessões e preços.
+- **Manual do Operador e Capacitação:** Guia rápido de utilização do ponto de venda no balcão e no portal web.
+- **Evolução Contínua em Três Fases (Macroentregas):**
+  - *Fase 1 (Atual):* Bilheteria presencial completa, controle de sessões, catálogo de filmes e portal web de reserva antecipada com pagamento no balcão.
+  - *Fase 2 (Próxima):* Venda online direta com pagamento imediato via PIX dinâmico e cartão, com emissão de vouchers digitais no e-mail do cliente.
+  - *Fase 3 (Futura):* Emissão integrada de notas fiscais (NFC-e na SEFAZ), controle de vendas de bomboniere/pipoca e relatórios consolidados de faturamento.
 
-- **Provisionamento de Tenant Isolado:** Criação da organização no banco de dados de produção com isolamento lógico garantido por `tenant_id`, configuração de domínio/acesso e credenciais iniciais de gerência.
-- **Carga de Dados e Parametrização Inicial:** Mapeamento das salas físicas do cinema (fileiras, colunas e categorias Clássica, IMAX ou VIP) e importação da grade inicial de filmes.
-- **Documentação Operacional e Capacitação:** Entrega do Manual de Operação de Guichê e sessão de treinamento remoto ou presencial para atendentes e gerentes.
-- **Roadmap Contratual em 3 Macroentregas:**
-  - *Macroentrega 1 (`Release 1.0` — Implantação Imediata):* Operação completa de back-office, bilheteria física atômica e portal web de reservas com pagamento presencial no balcão.
-  - *Macroentrega 2 (`Release 2.0` — Expansão Digital):* Habilitação de checkout online (PIX e cartão) e disparo de e-mails transacionais com domínio dedicado do exibidor.
-  - *Macroentrega 3 (`Release 3.0` — Automação Fiscal e Varejo):* Integração com SEFAZ para emissão automática de NFC-e, módulo de bomboniere e painel self-service de faturamento.
+### Critérios de Aceite Formal
 
-### Critérios de Aceite Formal pelo Cliente Adquirente
+O cinema cliente formaliza a aceitação do sistema quando os seguintes requisitos são atendidos:
+1. Aprovação de todos os 711 testes automatizados do sistema e execução bem-sucedida dos testes práticos de balcão.
+2. Inexistência de qualquer defeito impeditivo ou crítico em aberto.
+3. Comprovação prática de que a trava atômica impede rigorosamente a venda simultânea da mesma poltrona entre a web e o guichê.
+4. Assinatura do Termo de Aceite de Implantação (TAI) pelo responsável do cinema.
 
-A entrega de cada implantação ou macroentrega é considerada formalmente aceita mediante:
-1. Aprovação integral da bateria de testes automatizados (711 testes unitários, de integração e isolamento *cross-tenant*) e homologação assistida (*UAT*).
-2. Inexistência de defeitos abertos de severidade **Crítica** (bloqueio de venda ou corrupção de dados) ou **Alta**.
-3. Comprovação prática de zero ocorrência de venda dupla (*double-booking*) sob disputa simultânea entre portal web e balcão físico.
-4. Assinatura digital do **Termo de Aceite de Implantação (TAI)** pelo representante legal do cinema contratante.
+### Níveis de Serviço (SLA) e Atendimento
 
-### Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega
-
-A CineSoft Solutions assegura disponibilidade mensal mínima de **99,9%** da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
+Para manter a bilheteria funcionando sem interrupções nas horas de pico (finais de semana e estreias), a CineSoft estabelece tempos máximos de resposta e resolução:
 
 **Tabela 5 – Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega**
 
@@ -138,22 +120,20 @@ A CineSoft Solutions assegura disponibilidade mensal mínima de **99,9%** da pla
 
 ---
 
-## 2.3 Identificação dos fornecedores e parceiros relevantes
+## 2.3 Fornecedores e Parceiros de Tecnologia
 
-A operação contínua e comercial da plataforma CineDoom apoia-se em provedores de tecnologia de primeira linha. A tabela abaixo detalha cada fornecedor crítico, seu papel arquitetural, a estrutura de contratação escalonada entre a validação inicial (Macroentrega 1) e a operação comercial plena (Macroentregas 2 e 3), bem como os impactos em disponibilidade, custo e segurança:
+Para manter a plataforma CineDoom estável, rápida e segura com custos proporcionais à escala dos cinemas, a CineSoft selecionou parceiros especializados para cada camada do sistema:
 
 **Tabela 6 – Identificação dos Fornecedores e Parceiros Relevantes**
 
-| Fornecedor / Parceiro | Categoria e Serviço Prestado | Plano e Estrutura de Custo Comercial | Impacto Operacional, Disponibilidade e Mitigação de Riscos |
+| Fornecedor | Categoria e serviço | Plano e custo comercial | Impacto e mitigação de riscos |
 | :--- | :--- | :--- | :--- |
-| **Vercel Inc.** | **PaaS & Edge CDN:** Hospedagem da aplicação Next.js 14, execução de funções serverless e distribuição global de ativos estáticos. | **Vercel Pro:**<br>**US$ 20,00 / mês** por desenvolvedor (1 TB de banda e execução concorrente expandida; piloto inicial gratuito em *Hobby Tier*). | **Disponibilidade e Performance:** SLA de 99,99% na borda. Impacta diretamente o acesso ao portal e à bilheteria. Mitigação: build determinístico e rollback instantâneo de release em 1 clique. |
-| **Supabase Inc. / Neon Tech** | **DBaaS PostgreSQL:** Persistência relacional ACID, gerenciamento de conexões via *Supavisor* (porta `6543`) e triggers de auditoria. | **Plano Pro Comercial:**<br>**US$ 25,00 a US$ 69,00 / mês** (compute dedicado, 8 GB+ de disco SSD, backups diários e *Point-in-Time Recovery — PITR*). | **Segurança e Integridade:** Crítico para evitar perda de vendas e garantir locks `SELECT FOR UPDATE`. Mitigação: replicação automática, conexões TLS obrigatórias e scripts de migração versionados no Prisma. |
-| **Resend Technologies** | **Comunicação Transacional (SaaS):** API REST para entrega de vouchers de reserva e confirmações de ingresso com autenticação DKIM/SPF. | **Resend Pro:**<br>**US$ 20,00 / mês** (franquia de 50.000 e-mails/mês, domínios corporativos verificados `@cinedoom.com.br` e sem limite diário). | **Experiência do Cliente:** Impacta o recebimento do comprovante por e-mail (`CA-11`). Mitigação: desacoplamento via interface `EmailProvider` e exibição imediata do voucher na tela e na área *"Minhas Reservas"*. |
-| **Axiom Inc.** | **Observabilidade e Log Drain:** Ingestão contínua de logs estruturados JSON e retenção de longo prazo para auditoria. | **Axiom Cloud Plan:**<br>**US$ 25,00 / mês** (ingestão de até 1 TB/mês e retenção estendida de 365 dias para auditoria legal). | **Conformidade Legal (LGPD):** Essencial para rastreabilidade forense e retenção de 1 ano sem onerar o banco transacional. Mitigação: mascaramento prévio de PII antes do envio do log. |
-| **GitHub Inc.** | **Engenharia e CI/CD:** Repositórios Git privados, gestão de backlog (GitHub Projects) e esteira automatizada (GitHub Actions). | **GitHub Team:**<br>**US$ 4,00 / usuário / mês** (3.000 minutos de Actions, branches protegidas e *Codeowners*). | **Qualidade e Governança:** Sustenta a integração contínua e o bloqueio de código defeituoso. Baixo impacto em tempo de execução de produção. |
-| **Stripe Inc. / Pagar.me** *(Macroentrega 2)* | **Gateway Financeiro PCI-DSS:** Processamento de pagamentos online via PIX dinâmico e cartões de crédito no Portal do Cliente. | **Taxa Transacional (Pay-go):**<br>**0,99% (PIX) / 3,99% + R$ 0,39 (Cartão)** por transação aprovada (sem mensalidade fixa). | **Segurança Financeira:** Elimina o tráfego de dados sensíveis de cartão nos servidores da CineSoft. Mitigação: webhooks idempotentes e fallback de pagamento presencial no balcão. |
-| **Focus NFe / PlugNotas** *(Macroentrega 3)* | **Mensageria Fiscal (SaaS):** Emissão, assinatura digital e transmissão de NFC-e junto às SEFAZ estaduais. | **Plano Empresarial:**<br>**R$ 149,00 / mês** por CNPJ emissor (para até 2.000 notas fiscais/mês, com fila de contingência offline). | **Conformidade Tributária:** Desacopla a CineSoft das variações técnicas de cada estado brasileiro, garantindo emissão assíncrona sem travar a fila física da bilheteria. |
+| **Vercel Inc.** | **PaaS & CDN Edge:** Next.js 14 e serverless | **US$ 20/mês** por dev (Vercel Pro; piloto Hobby grátis) | SLA 99,99% na borda. Mitigação: build determinístico e rollback instantâneo. |
+| **Supabase / Neon** | **DBaaS PostgreSQL:** Persistência ACID e pooling | **US$ 25 a US$ 69/mês** (Plano Pro compute dedicado) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma. |
+| **Resend** | **E-mail transacional:** API de vouchers (DKIM/SPF) | **US$ 20/mês** (franquia de 50.000 e-mails/mês) | Impacta envio de voucher (`CA-11`). Mitigação: exibição imediata em tela. |
+| **Axiom Inc.** | **Log drain:** Observabilidade e auditoria LGPD | **US$ 25/mês** (1 TB/mês; retenção de 365 dias) | Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII. |
+| **GitHub Inc.** | **CI/CD & Git:** Repositórios e GitHub Actions | **US$ 4/usuário/mês** (Plano Team e branch rules) | Sustenta testes automatizados. Mitigação: bloqueio de merge sem testes. |
+| **Stripe / Pagar.me** *(M2)* | **Gateway financeiro:** Checkout PIX e cartão | **0,99% PIX / 3,99% + R$ 0,39 Cartão** (sem mensalidade) | Certificação PCI-DSS. Mitigação: webhooks idempotentes e balcão físico. |
+| **Focus NFe** *(M3)* | **Mensageria fiscal:** Emissão de NFC-e SEFAZ | **R$ 149/mês** (até 2.000 notas fiscais/mês) | Conformidade tributária. Mitigação: fila assíncrona com contingência offline. |
 
 *Fonte: CineSoft Solutions (2026).*
-
----

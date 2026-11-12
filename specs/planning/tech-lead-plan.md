@@ -14,7 +14,7 @@ title: "Plano Técnico de Implementação (TechLead) — Decomposição em 23 Ta
 
 ## 1. Resumo Executivo
 
-Decomposição técnica da implementação da plataforma **CineDoom** em **23 tarefas de engenharia (`TASK-1` a `TASK-23`)**, totalizando **116 horas estimadas**. O plano cobre a configuração do monorepo, esquema relacional ACID multi-tenant no Neon PostgreSQL, autenticação e autorização RBAC (`ATENDENTE`, `GERENTE` e `CLIENTE`), proteção criptográfica de PII/LGPD (`HMAC-SHA256` + `AES-256-GCM`), módulos de Gestão (Back-office), Bilheteria com trava atômica (`SELECT FOR UPDATE`), cancelamento auditável *append-only*, Painel de Ocupação, Portal do Cliente com reservas online e expiração *Just-in-Time*, observabilidade no Axiom e pirâmide de testes automatizados (Vitest + Playwright).
+Decomposição técnica da implementação da plataforma **CineDoom** em **23 tarefas de engenharia (`TASK-1` a `TASK-23`)**, totalizando **116 horas estimadas**. O plano cobre a configuração do monorepo, esquema relacional ACID multi-tenant no Supabase PostgreSQL, autenticação e autorização RBAC (`ATENDENTE`, `GERENTE` e `CLIENTE`), proteção criptográfica de PII/LGPD (`HMAC-SHA256` + `AES-256-GCM`), módulos de Gestão (Back-office), Bilheteria com trava atômica (`SELECT FOR UPDATE`), cancelamento auditável *append-only*, Painel de Ocupação, Portal do Cliente com reservas online e expiração *Just-in-Time*, observabilidade no Axiom e pirâmide de testes automatizados (Vitest + Playwright).
 
 ---
 
@@ -32,7 +32,7 @@ Decomposição técnica da implementação da plataforma **CineDoom** em **23 ta
 | ID | Título da Tarefa | Papel / Especialidade | Estimativa (h) | Depende de | Requisitos (`RF`/`RNF`) | Critérios de Aceite (`CA` / `AC`) |
 |----|------------------|-----------------------|----------------|------------|-------------------------|-----------------------------------|
 | **TASK-1** | Estruturação do projeto (*scaffolding*), Clean Architecture e configuração de monorepo | DevOps | 4 | — | `RNF-06` | — |
-| **TASK-2** | Modelagem do esquema de dados e migrações Prisma (Neon PostgreSQL) | DataArchitect | 6 | TASK-1 | `RNF-02`, `RNF-03` | `CA-04 (AC-4)`, `CA-08 (AC-8)` |
+| **TASK-2** | Modelagem do esquema de dados e migrações Prisma (Supabase PostgreSQL) | DataArchitect | 6 | TASK-1 | `RNF-02`, `RNF-03` | `CA-04 (AC-4)`, `CA-08 (AC-8)` |
 | **TASK-3** | Extensão Prisma multi-tenant — isolamento lógico por linha (`tenant_id`) | SoftwareArchitect | 5 | TASK-2 | `RNF-03`, `RN-12` | `CA-04 (AC-4)` |
 | **TASK-4** | Autenticação e controle de acesso RBAC via NextAuth.js | Security | 6 | TASK-2 | `RF-01`, `RN-01` | `CA-05 (AC-5)` |
 | **TASK-5** | Proteção de PII/LGPD — módulo de CPF com `HMAC-SHA256` + `AES-256-GCM` | Security | 5 | TASK-2 | `RF-09`, `RNF-03`, `RN-07` | `CA-06 (AC-6)` |
@@ -63,9 +63,9 @@ Decomposição técnica da implementação da plataforma **CineDoom** em **23 ta
 - **Especialidade:** DevOps | **Estimativa:** 4 h | **Requisitos:** `RNF-06`
 - Configuração do Next.js 14 App Router com `pnpm`, estrutura de diretórios em *Feature Slices* (`bilheteria`, `catalogo`, `identidade`, `ocupacao`, `portal`, `compradores`, `tenancy`), `.env.example` documentado, Tailwind CSS, TypeScript em modo estrito (`strict: true`) e regra `ESLint import/no-cycle` para garantir zero dependências circulares entre módulos.
 
-### TASK-2. Modelagem do esquema de dados e migrações Prisma (Neon PostgreSQL)
+### TASK-2. Modelagem do esquema de dados e migrações Prisma (Supabase PostgreSQL)
 - **Especialidade:** DataArchitect | **Estimativa:** 6 h | **Depende de:** TASK-1 | **Critérios:** `CA-04 (AC-4)`, `CA-08 (AC-8)`
-- Modelagem completa do esquema Prisma com as 11 entidades (`Tenant`, `User`, `Film`, `Room`, `Seat`, `Session`, `SessionSeat`, `Reservation`, `Ticket`, `Buyer`, `CancellationAudit`); coluna `tenant_id` em todas as entidades de domínio; trigger PostgreSQL `BEFORE UPDATE OR DELETE` em `cancellation_audits` para garantir imutabilidade; migração inicial para o Neon PostgreSQL.
+- Modelagem completa do esquema Prisma com as 11 entidades (`Tenant`, `User`, `Film`, `Room`, `Seat`, `Session`, `SessionSeat`, `Reservation`, `Ticket`, `Buyer`, `CancellationAudit`); coluna `tenant_id` em todas as entidades de domínio; trigger PostgreSQL `BEFORE UPDATE OR DELETE` em `cancellation_audits` para garantir imutabilidade; migração inicial para o Supabase PostgreSQL.
 
 ### TASK-3. Extensão Prisma multi-tenant — isolamento lógico por linha (`tenant_id`)
 - **Especialidade:** SoftwareArchitect | **Estimativa:** 5 h | **Depende de:** TASK-2 | **Critérios:** `CA-04 (AC-4)`

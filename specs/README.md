@@ -10,7 +10,7 @@ Os artefatos aqui consolidados foram produzidos pela esteira de engenharia de so
 
 ### 1. Decisões Arquiteturais (ADRs)
 * **[`adrs/README.md`](adrs/README.md):** Catálogo formal de 12 decisões técnicas registradas (ISO 12207 – Cláusula 6.3.3) em arquivos Markdown individuais com metadados YAML:
-  * Monólito modular em Next.js 14, Tailwind CSS, PostgreSQL Neon com Prisma ORM.
+  * Monólito modular em Next.js 14, Tailwind CSS, PostgreSQL 16 no Supabase com Prisma ORM.
   * Pré-população de `SessionSeat` para trava pessimista `SELECT FOR UPDATE` (anti-double booking).
   * Criptografia em duas camadas para CPF: HMAC-SHA256 (busca) e AES-256-GCM (armazenamento).
   * Soft-anonymization *in-place* para LGPD Art. 18 sem quebra de integridade referencial com o CDC.
@@ -37,7 +37,7 @@ Os artefatos aqui consolidados foram produzidos pela esteira de engenharia de so
 ### 6. Planejamento Operacional e DevOps
 * **[`planning/sprints-e-backlog.md`](planning/sprints-e-backlog.md):** Plano Mestre de Sprints, Backlog e Roadmap oficial do Kanban CineDoom com 33 issues distribuídas (23 em `cinedoom-app` e 10 em `manual-processos-software`), datas de início/término e matriz RACI.
 * **[`planning/tech-lead-plan.md`](planning/tech-lead-plan.md):** Detalhamento de 23 tarefas técnicas de desenvolvimento (`TASK-1` a `TASK-23`), caminho crítico e estimativa total de 116 horas.
-* **[`planning/devops-spec.md`](planning/devops-spec.md):** Configuração de CI/CD (GitHub Actions), provisionamento na Vercel, banco Neon e observabilidade via Axiom.
+* **[`planning/devops-spec.md`](planning/devops-spec.md):** Configuração de CI/CD (GitHub Actions), provisionamento na Vercel, banco Supabase PostgreSQL e observabilidade via Axiom.
 
 ### 7. Engenharia de Requisitos, Regras de Negócio e Rastreabilidade
 * **[`cinedoom-spec.md`](cinedoom-spec.md):** Especificação formal completa (SRS) padronizada em português conforme a Seção 6.4 da ISO/IEC/IEEE 12207:2021, separada em:

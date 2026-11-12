@@ -14,7 +14,7 @@ title: "Arquitetura da Solução (C4 Níveis 1 e 2) — CineDoom"
 
 ## Resumo Executivo
 
-Plataforma SaaS integrada de bilheteria presencial, back-office gerencial e portal do cliente para cinemas independentes e redes regionais no Brasil: monólito modular construído em **Next.js 14 (App Router) + Prisma ORM + Neon PostgreSQL Serverless**, com isolamento multi-tenant lógico por linha (`tenant_id`), trava ACID pessimista anti-double-booking via `SELECT FOR UPDATE`, atualização de mapa de assentos por polling a cada 2 segundos, controle de acesso baseado em papéis (`ATENDENTE`, `GERENTE` e `CLIENTE`) via NextAuth.js, proteção criptográfica de PII/LGPD com CPF cifrado em **`AES-256-GCM`** e indexado via **`HMAC-SHA256`**, notificações transacionais de reserva e implantação contínua na Vercel com ambientes de *preview* isolados por branch.
+Plataforma SaaS integrada de bilheteria presencial, back-office gerencial e portal do cliente para cinemas independentes e redes regionais no Brasil: monólito modular construído em **Next.js 14 (App Router) + Prisma ORM + Supabase PostgreSQL**, com isolamento multi-tenant lógico por linha (`tenant_id`), trava ACID pessimista anti-double-booking via `SELECT FOR UPDATE`, atualização de mapa de assentos por polling a cada 2 segundos, controle de acesso baseado em papéis (`ATENDENTE`, `GERENTE` e `CLIENTE`) via NextAuth.js, proteção criptográfica de PII/LGPD com CPF cifrado em **`AES-256-GCM`** e indexado via **`HMAC-SHA256`**, notificações transacionais de reserva e implantação contínua na Vercel com ambientes de *preview* isolados por branch.
 
 ---
 
@@ -30,15 +30,15 @@ Plataforma SaaS integrada de bilheteria presencial, back-office gerencial e port
   - Microsserviços em NestJS — *rejeitada:* sobrecarga operacional de rede, orquestração e transações distribuídas desproporcional para o escopo do MVP.
   - Frontend Next.js + Backend API separado — *rejeitada:* duplica pipelines de deploy, configuração de CORS e sincronização de contratos tipados sem ganho prático.
 
-### AD-2. PostgreSQL Serverless via Neon como banco primário e único repositório relacional (`ADR-002`)
+### AD-2. PostgreSQL 16 via Supabase como banco primário e único repositório relacional (`ADR-004`, `ADR-005`)
 
 - **Reversível:** Não
-- **Racional:** Suporte transacional ACID nativo com `SELECT FOR UPDATE` para impedir vendas ou reservas duplas (`RNF-02`, `CA-01`, `CA-09`); isolamento row-level por `tenant_id`; *database branching* instantâneo por Pull Request integrado à Vercel; escalonamento automático dentro da cota do Free Tier (`RES-01`).
+- **Racional:** Suporte transacional ACID nativo com `SELECT FOR UPDATE` para impedir vendas ou reservas duplas (`RNF-02`, `CA-01`, `CA-09`); isolamento row-level por `tenant_id`; pool de conexões gerenciado (`DATABASE_URL`) para a aplicação e conexões diretas (`DIRECT_URL`) para migrações Prisma; escalonamento automático e alta confiabilidade operacional (`RES-01`).
 - **Atributo de Qualidade (ISO/IEC 25010):** Confiabilidade (*Reliability*)
 - **Estratégia (*Build vs. Buy*):** Contratação de PaaS gerenciado (*Buy*)
 - **Alternativas consideradas:**
   - PlanetScale MySQL — *rejeitada:* limitações históricas em chaves estrangeiras e fluxos de bloqueio pessimista em branches serverless.
-  - Supabase PostgreSQL — *rejeitada:* plenamente funcional, porém o Neon oferece integração nativa de *branching* efêmero por PR diretamente no fluxo da Vercel.
+  - Instância autogerenciada de PostgreSQL em VM — *rejeitada:* sobrecarga operacional de manutenção e configuração incompatível com os objetivos do projeto.
 
 ### AD-3. Isolamento multi-tenant lógico por linha (`tenant_id`) em esquema compartilhado (`ADR-003`)
 
@@ -48,7 +48,7 @@ Plataforma SaaS integrada de bilheteria presencial, back-office gerencial e port
 - **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 - **Alternativas consideradas:**
   - *Schema-per-tenant* — *rejeitada:* custo operacional elevado em ambiente serverless e complexidade de execução de migrações em dezenas de esquemas.
-  - *Database-per-tenant* — *rejeitada:* inviável financeiramente no tier de entrada do Neon para redes de pequeno porte.
+  - *Database-per-tenant* — *rejeitada:* inviável financeiramente e operacionalmente para redes de pequeno porte.
 
 ### AD-4. NextAuth.js com Prisma Adapter e controle de acesso RBAC (`ATENDENTE`, `GERENTE`, `CLIENTE`) via JWT (`ADR-004`, `ADR-014`)
 
@@ -90,14 +90,14 @@ Plataforma SaaS integrada de bilheteria presencial, back-office gerencial e port
   - WebSockets nativos — *rejeitada:* funções serverless da Vercel não mantêm estado de conexão persistente.
   - Server-Sent Events (SSE) — *rejeitada:* sujeito a limites de timeout de execução em funções serverless.
 
-### AD-8. Implantação contínua na Vercel com *preview environments* e *database branching* no Neon (`ADR-010`)
+### AD-8. Implantação contínua na Vercel com *preview environments* e banco Supabase (`ADR-005`)
 
 - **Reversível:** Sim
-- **Racional:** Integração nativa zero-config para Next.js; cada Pull Request gera um ambiente isolado na Vercel conectado a um branch efêmero do banco Neon, permitindo validação completa de migrações e testes E2E antes do merge para produção.
+- **Racional:** Integração nativa zero-config para Next.js; cada Pull Request gera um ambiente de pré-visualização isolado na Vercel com testes E2E e validação de migrações antes do merge para produção.
 - **Atributo de Qualidade (ISO/IEC 25010):** Manutenibilidade (*Maintainability*)
 - **Estratégia (*Build vs. Buy*):** Contratação de PaaS (*Buy*)
 - **Alternativas consideradas:**
-  - Fly.io / Railway — *rejeitada:* exige gerenciamento manual de contêineres Docker e não possui *branching* de banco integrado nativamente ao fluxo de PRs da Vercel.
+  - Fly.io / Railway — *rejeitada:* exige gerenciamento manual de contêineres Docker e sobrecarga operacional desnecessária.
 
 ### AD-9. Portal do Cliente com reserva atômica sem gateway financeiro e expiração *Just-in-Time* (`ADR-012`)
 
@@ -126,13 +126,13 @@ C4Context
   Person(atendente, "Atendente de Bilheteria", "Realiza vendas presenciais, dá baixa em reservas web e processa cancelamentos auditáveis")
   Person(gerente, "Gerente de Cinema", "Gerencia catálogo de filmes, salas, sessões, operadores e monitora o painel de ocupação")
   System(cinedoom, "Plataforma CineDoom", "Monólito modular SaaS B2B2C de bilheteria, back-office e portal de reservas com isolamento multi-tenant")
-  System_Ext(neon, "Neon PostgreSQL Serverless", "Banco de dados relacional gerenciado com transações ACID e branching por ambiente")
+  System_Ext(db, "Supabase PostgreSQL", "Banco de dados relacional gerenciado com transações ACID e pool de conexões")
   System_Ext(email, "Serviço de E-mail Transacional (Resend)", "Disparo de vouchers de reserva com código alfanumérico")
   System_Ext(axiom, "Axiom Log Drain", "Plataforma de observabilidade e retenção de logs de auditoria por 365 dias")
   Rel(espectador, cinedoom, "Consulta sessões, reserva assentos e cancela reservas pendentes", "HTTPS / Browser")
   Rel(atendente, cinedoom, "Vende ingressos, converte reservas em tickets e cancela vendas", "HTTPS / Browser")
   Rel(gerente, cinedoom, "Configura programação, gerencia equipe e acompanha ocupação", "HTTPS / Browser")
-  Rel(cinedoom, neon, "Persiste dados isolados por tenant_id com trava ACID SELECT FOR UPDATE", "Prisma / TLS")
+  Rel(cinedoom, db, "Persiste dados isolados por tenant_id com trava ACID SELECT FOR UPDATE", "Prisma / TLS")
   Rel(cinedoom, email, "Envia comprovante e instruções da reserva", "HTTPS / API")
   Rel(cinedoom, axiom, "Exporta logs estruturados sem PII em texto claro", "HTTPS / Log Drain")
 ```
@@ -149,8 +149,7 @@ C4Container
   Container(api, "Camada de API (Route Handlers)", "Next.js Route Handlers / TypeScript / Zod", "Endpoints REST para vendas ACID, reservas online, baixa presencial, cancelamento auditável, polling e CRUD gerencial")
   Container(auth, "Provedor de Identidade e RBAC", "NextAuth.js / JWT / Middleware", "Autenticação stateful e controle de acesso por perfil (CLIENTE, ATENDENTE, GERENTE) e tenant_id")
   Container(orm, "Camada de Persistência e Tenancy", "Prisma ORM + Client Extension + CryptoService", "Injeção global de WHERE tenant_id, cifragem AES-256-GCM / HMAC-SHA256 e transações SELECT FOR UPDATE")
-  Container(pooler, "Neon Connection Pooler", "PgBouncer Gerenciado", "Pool de conexões de baixa latência para leituras e polling de mapa de assentos")
-  ContainerDb(db, "Neon PostgreSQL Serverless", "PostgreSQL 16", "Armazenamento relacional ACID de tenants, usuários, filmes, salas, sessões, assentos, reservas, ingressos, compradores e auditoria append-only")
+  ContainerDb(db, "Supabase PostgreSQL", "PostgreSQL 16", "Armazenamento relacional ACID de tenants, usuários, filmes, salas, sessões, assentos, reservas, ingressos, compradores e auditoria append-only")
   Rel(espectador, webapp, "Acessa Portal do Cliente", "HTTPS")
   Rel(atendente, webapp, "Opera terminal de Bilheteria", "HTTPS")
   Rel(gerente, webapp, "Administra Back-Office e Painel", "HTTPS")
@@ -158,9 +157,7 @@ C4Container
   Rel(webapp, auth, "Valida sessão e perfil de acesso", "NextAuth")
   Rel(api, auth, "Revalida token JWT, role e tenant_id", "NextAuth")
   Rel(api, orm, "Executa casos de uso com isolamento de tenant", "TypeScript")
-  Rel(orm, pooler, "Consultas de leitura e polling", "TCP / TLS")
-  Rel(orm, db, "Transações ACID de escrita (SELECT FOR UPDATE)", "Prisma / TLS")
-  Rel(pooler, db, "Conexões gerenciadas", "TCP / TLS")
+  Rel(orm, db, "Consultas, transações ACID e persistência", "Prisma / TLS")
 ```
 
 ---
@@ -172,10 +169,9 @@ C4Container
 | **C-1** | Aplicação Web Next.js | Renderização SSR e componentes reativos para o Portal do Cliente, Mapa de Assentos com polling de 2s, Painel de Ocupação e Back-Office; middleware de borda para proteção de rotas. | C-2, C-3, C-5 |
 | **C-2** | Camada de API (Route Handlers) | Endpoints REST para venda ACID (`RF-06`), reserva online (`RF-13`), baixa presencial (`RF-17`), cancelamento auditável (`RF-08`, `RF-16`), polling de assentos (`RF-05`) e CRUD gerencial (`RF-02` a `RF-04`). | C-3, C-4 |
 | **C-3** | Provedor NextAuth.js & RBAC | Autenticação com credenciais, emissão e validação de JWT contendo `tenant_id` e `role` (`ATENDENTE`, `GERENTE`, `CLIENTE`). | C-4, C-5 |
-| **C-4** | Prisma ORM + Extensão de Tenancy | Cliente de banco tipado com *Client Extension* que injeta `WHERE tenant_id` automaticamente (`RN-12`) e executa transações com `SELECT FOR UPDATE` (`RN-05`, `RN-08`). | C-5, C-6 |
-| **C-5** | Neon PostgreSQL Serverless | Persistência relacional durável das 11 entidades do modelo de dados, incluindo trigger de imutabilidade em `cancellation_audits` (`RN-06`). | — |
-| **C-6** | Neon Connection Pooler | Gerenciamento de pool de conexões via PgBouncer para absorver a carga de polling de 2 segundos dos terminais ativos (`RNF-01`). | C-5 |
-| **C-7** | Vercel Edge Network | Hospedagem serverless do monólito Next.js, distribuição de assets estáticos via CDN e criação de ambientes de *preview* por branch. | C-1, C-2 |
+| **C-4** | Prisma ORM + Extensão de Tenancy | Cliente de banco tipado com *Client Extension* que injeta `WHERE tenant_id` automaticamente (`RN-12`) e executa transações com `SELECT FOR UPDATE` (`RN-05`, `RN-08`). | C-5 |
+| **C-5** | Supabase PostgreSQL | Persistência relacional durável das 11 entidades do modelo de dados, com pool de conexões e trigger de imutabilidade em `cancellation_audits` (`RN-06`). | — |
+| **C-6** | Vercel Edge Network | Hospedagem serverless do monólito Next.js, distribuição de assets estáticos via CDN e criação de ambientes de *preview* por branch. | C-1, C-2 |
 
 ---
 
@@ -183,8 +179,8 @@ C4Container
 
 | ID | Descrição do Risco | Probabilidade | Impacto | Estratégia de Mitigação Implementada |
 |----|--------------------|---------------|---------|--------------------------------------|
-| **R-1** | *Cold start* do Neon Serverless elevar a latência da transação de venda acima do alvo p95 < 800ms (`RNF-01`). | Média | Alto | Uso do Neon Connection Pooler habilitado por padrão, índices compostos otimizados e monitoramento contínuo de percentis p95/p99. |
-| **R-2** | Polling de 2s em múltiplos terminais esgotar o limite de conexões concorrentes do banco em dias de estreia. | Média | Alto | Roteamento de leituras pelo PgBouncer do Neon e cabeçalhos `Cache-Control: no-store` enxutos no endpoint de assentos. |
+| **R-1** | Sobrecarga de conexões elevar a latência da transação de venda acima do alvo p95 < 800ms (`RNF-01`). | Média | Alto | Uso de pool de conexões gerenciado habilitado por padrão, conexão direta para migrações (`DIRECT_URL`), índices compostos otimizados e monitoramento contínuo de percentis p95/p99. |
+| **R-2** | Polling de 2s em múltiplos terminais esgotar o limite de conexões concorrentes do banco em dias de estreia. | Média | Alto | Roteamento de leituras por conexão pooled no Supabase e cabeçalhos `Cache-Control: no-store` enxutos no endpoint de assentos. |
 | **R-3** | Omissão acidental de filtro `tenant_id` em consulta SQL bruta causar vazamento entre cinemas concorrentes. | Baixa | Alto | *Prisma Client Extension* global (`ADR-003`) combinada com bateria automatizada de **500 cenários cross-tenant** no CI (`CA-04`, `CT-04`, `CT-18`). |
 | **R-4** | Vazamento ou necessidade de rotação da chave simétrica de cifragem de CPF (`AES-256-GCM`). | Baixa | Alto | Armazenamento exclusivo em *Vercel Environment Secrets* e procedimento documentado de rotação anual com re-cifragem em lote (`ADR-008`). |
 | **R-5** | Contenção ou *deadlock* em `SELECT FOR UPDATE` sob 50 requisições concorrentes para a mesma poltrona. | Baixa | Alto | Uso de `FOR UPDATE NOWAIT` / timeout de 3s e ordenação determinística de IDs de assentos na transação, retornando `HTTP 409 Conflict` imediato (`CA-01`, `CT-01`). |
@@ -194,7 +190,7 @@ C4Container
 ## 5. Criptografia em Repouso e em Trânsito
 
 - **Criptografia na Camada de Aplicação (`ADR-008`, `RF-09`, `CA-06`):** O CPF do comprador é cifrado antes da persistência utilizando **`AES-256-GCM`** (com vetor de inicialização aleatório de 96 bits e tag de autenticação de 128 bits) através da chave `CPF_ENCRYPTION_KEY`. Para buscas exatas sem descriptografia, armazena-se na coluna `cpf_hash` o resumo determinístico **`HMAC-SHA256`** gerado com a chave secreta `CINEDOOM_CPF_HMAC_KEY`.
-- **Criptografia de Infraestrutura:** O Neon PostgreSQL Serverless cifra todos os volumes de armazenamento e snapshots em repouso com **AES-256**. Toda a comunicação entre navegador, Vercel Edge e Neon ocorre exclusivamente sob **TLS 1.3**.
+- **Criptografia de Infraestrutura:** O Supabase PostgreSQL cifra todos os volumes de armazenamento e backups em repouso com **AES-256**. Toda a comunicação entre navegador, Vercel Edge e Supabase ocorre exclusivamente sob **TLS 1.3** / SSL.
 
 ---
 

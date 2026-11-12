@@ -27,7 +27,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
   1. **Controllers (Apresentação / HTTP):** Route Handlers enxutos em `src/app/api/**` que tratam requisições HTTP, validam sessão NextAuth, aplicam RBAC e extraem o contexto de Tenancy.
   2. **Services (Aplicação):** Orquestração de casos de uso e validação de esquemas Zod em `application/`, interagindo exclusivamente com interfaces abstratas de repositório.
   3. **Interfaces de Repositório (Domínio):** Contratos puros (`ISaleRepository`, `IFilmRepository`, `IUserRepository`, `ICounterRepository`, etc.) definidos em `domain/`.
-  4. **Prisma Repositories (Infraestrutura):** Implementações concretas em `infrastructure/` que encapsulam as consultas SQL e travas ACID no Neon PostgreSQL.
+  4. **Prisma Repositories (Infraestrutura):** Implementações concretas em `infrastructure/` que encapsulam as consultas SQL e travas ACID no Supabase PostgreSQL.
 - **Atributo de Qualidade (ISO/IEC 25010):** Manutenibilidade e Testabilidade (*Maintainability / Testability*)
 - **Estratégia (*Build vs. Buy*):** Construção própria (*Make*)
 - **Alternativas consideradas:**
@@ -116,7 +116,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 ### AD-12. Gestão de mídias de cartazes via desacoplamento de URLs e CDN Edge
 
 - **Reversível:** Sim
-- **Racional:** Armazena exclusivamente a referência `poster_url` (`VARCHAR(500)`) na entidade `Film`, rejeitando objetos binários (`BLOB/bytea`) no PostgreSQL para preservar a cota do Neon (`RES-01`) e a velocidade das consultas; distribui os cartazes estáticos pela CDN Edge da Vercel.
+- **Racional:** Armazena exclusivamente a referência `poster_url` (`VARCHAR(500)`) na entidade `Film`, rejeitando objetos binários (`BLOB/bytea`) no PostgreSQL para preservar a cota do banco de dados no Supabase (`RES-01`) e a velocidade das consultas; distribui os cartazes estáticos pela CDN Edge da Vercel.
 - **Atributo de Qualidade (ISO/IEC 25010):** Eficiência de Desempenho e Custo (*Performance Efficiency / Cost*)
 - **Estratégia (*Build vs. Buy*):** Híbrida (*Buy* CDN / *Make* referência URL)
 
@@ -139,7 +139,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 | **C-11** | `CompradoresModule` | Registra comprador no ato da venda e processa anonimização *in-place* (Art. 18 LGPD) via `/api/titulares/anonimizar` (`RF-09`, `CA-06`, `ADR-009`). | `CryptoService`, `TenancyContext`, `PrismaClientSingleton` |
 | **C-12** | `OcupacaoModule` | Calcula indicadores agregados de ocupação por sessão do dia corrente (`OccupancyService` / `GET /api/ocupacao/painel`) isolados por tenant (`RF-10`, `CA-07`). | `OccupancyService`, `TenancyContext`, `PrismaOccupancyRepository` |
 | **C-13** | `SeatMapPollingClient` | Client Component React com `useEffect` + `setInterval(2000ms)` atualizando reativamente o mapa de poltronas (`RF-05`, `CA-02`). | — |
-| **C-14** | `PrismaClientSingleton` | Instância singleton de `PrismaClient` estendida com `TenancyContext` e conectada ao pooler do Neon Serverless. | — |
+| **C-14** | `PrismaClientSingleton` | Instância singleton de `PrismaClient` estendida com `TenancyContext` e conectada ao banco Supabase PostgreSQL via pool de conexões. | — |
 | **C-15** | `ProvisionamentoInternalCLI` | Script administrativo (`pnpm run provisionar-tenant`) para criação controlada de novos cinemas tenants e conta inicial de `GERENTE` (`RES-03`). | `PrismaClientSingleton`, `CryptoService` |
 | **C-16** | `PortalModule` | Módulo do Portal do Cliente: rotas públicas de catálogo e grade de exibição (`/portal/**`) e orquestração do checkout de reserva (`RF-12`, `RF-13`). | `TenancyContext`, `PrismaClientSingleton`, `AuthModule` |
 | **C-17** | `ReservaTransactionHandler` | Executa `Prisma.$transaction` com `SELECT FOR UPDATE` em `session_seats`; valida antecedência mínima (> 60 min), cria `Reservation` (`PENDING`) com código `CD-XXXX` e marca assento como `RESERVED` (`RF-13`, `RN-08`, `CA-09`). | `PrismaClientSingleton`, `TenancyContext`, `NotificationService` |
@@ -153,7 +153,7 @@ Especificação detalhada da arquitetura de software (C4 Níveis 3 e 4) para o m
 
 | ID | Descrição do Risco Técnico | Probabilidade | Impacto | Mitigação Implementada no Código |
 |----|----------------------------|---------------|---------|----------------------------------|
-| **R-1** | *Cold start* em conexão serverless elevar a latência do endpoint de venda acima de 800ms (`RNF-01`). | Média | Alto | Uso de connection pooling via PgBouncer gerenciado pelo Neon e queries enxutas dentro da transação ACID. |
+| **R-1** | *Cold start* em conexão serverless elevar a latência do endpoint de venda acima de 800ms (`RNF-01`). | Média | Alto | Uso de connection pooling gerenciado no Supabase e queries enxutas dentro da transação ACID. |
 | **R-2** | Consultas SQL brutas (`$queryRaw`) não serem interceptadas automaticamente pela *Prisma Client Extension*. | Alta | Alto | Parametrização explícita e obrigatória de `tenant_id` em toda chamada `$queryRaw` do `VendaTransactionHandler`, auditada pela suíte de 500 cenários (`CA-04`). |
 | **R-3** | Reversão de hash de CPF por *rainbow table* caso fosse utilizado SHA-256 simples. | Média | Alto | Substituição definitiva por **`HMAC-SHA256`** com segredo `CINEDOOM_CPF_HMAC_KEY` no `CryptoService` (`ADR-008`, `CT-06`). |
 | **R-4** | Sobrecarga de leituras pelo polling de 2 segundos em sessões de grande procura. | Média | Médio | Índice composto `(session_id, status)` na tabela `session_seats` e resposta JSON minimalista (`CT-10`). |

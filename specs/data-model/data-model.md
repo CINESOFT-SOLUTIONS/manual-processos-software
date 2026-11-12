@@ -14,7 +14,7 @@ title: "Especificação do Modelo de Dados e Esquema Relacional — CineDoom"
 
 ## Resumo Executivo
 
-Modelo de dados relacional para a plataforma B2B SaaS **CineDoom**: 11 entidades cobrindo isolamento multi-tenant (`Tenant`), autenticação e controle de acesso RBAC para Atendente, Gerente e Espectador (`User`), catálogo cinematográfico (`Film`), salas e layout físico de poltronas (`Room` e `Seat`), sessões de exibição com mapa de status pré-populado (`Session` e `SessionSeat` para trava pessimista `SELECT FOR UPDATE` anti-double-booking e reserva temporária), reservas online com expiração *Just-in-Time* (`Reservation`), venda de ingressos (`Ticket`), compradores com dados pessoais protegidos conforme a LGPD (`Buyer`) e trilha de auditoria imutável de cancelamentos (`CancellationAudit`). O isolamento lógico é garantido por `tenant_id` em esquema compartilhado (*shared schema*) no PostgreSQL Neon Serverless (`RES-02`, `RN-12`, `CA-04`).
+Modelo de dados relacional para a plataforma B2B SaaS **CineDoom**: 11 entidades cobrindo isolamento multi-tenant (`Tenant`), autenticação e controle de acesso RBAC para Atendente, Gerente e Espectador (`User`), catálogo cinematográfico (`Film`), salas e layout físico de poltronas (`Room` e `Seat`), sessões de exibição com mapa de status pré-populado (`Session` e `SessionSeat` para trava pessimista `SELECT FOR UPDATE` anti-double-booking e reserva temporária), reservas online com expiração *Just-in-Time* (`Reservation`), venda de ingressos (`Ticket`), compradores com dados pessoais protegidos conforme a LGPD (`Buyer`) e trilha de auditoria imutável de cancelamentos (`CancellationAudit`). O isolamento lógico é garantido por `tenant_id` em esquema compartilhado (*shared schema*) no PostgreSQL 16 gerenciado no Supabase (`RES-02`, `RN-12`, `CA-04`).
 
 ---
 
@@ -249,11 +249,11 @@ Modelo de dados relacional para a plataforma B2B SaaS **CineDoom**: 11 entidades
 
 ---
 
-## 4. Esquema DDL (PostgreSQL Neon Serverless)
+## 4. Esquema DDL (Supabase PostgreSQL 16)
 
 ```sql
 -- ============================================================
--- CineDoom SaaS — DDL PostgreSQL (Neon Serverless)
+-- CineDoom SaaS — DDL PostgreSQL (Supabase)
 -- ============================================================
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;

@@ -21,7 +21,7 @@ Carlos Eduardo (@carloseduduu), Kayque Vicente (@K4yquee)
 A retenção legal de logs de auditoria e segurança exigida pela LGPD é de no mínimo 365 dias, enquanto a Vercel retém apenas 1 hora no plano básico.
 
 ## Decisão
-Integração do Log Drain da Vercel com a plataforma Axiom para ingestão OpenTelemetry nativa de eventos estruturados.
+Integração do Log Drain da Vercel com a plataforma Axiom para ingestão de eventos estruturados em JSON.
 
 ## Consequências
 ### Positivas

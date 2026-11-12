@@ -40,7 +40,7 @@ O cronograma total compreende 21 dias corridos, divididos em 3 Sprints funcionai
        Fundação & Modelagem        Core Business & Backoffice   Auditoria, QA & LaTeX        Defesa
 ```
 
-- **Sprint 1 (23/10 a 28/10):** Fundação técnica, setup Next.js/Tailwind, banco Prisma/Neon, observabilidade Axiom, apresentação inicial e governança ISO (Cap. 1 a 3).
+- **Sprint 1 (23/10 a 28/10):** Fundação técnica, setup Next.js/Tailwind, banco Prisma/Supabase, observabilidade Axiom, apresentação inicial e governança ISO (Cap. 1 a 3).
 - **Sprint 2 (28/10 a 04/11):** Multi-tenancy, autenticação RBAC, criptografia PII, CRUDs de catálogo/salas/sessões, bilheteria atômica ACID (AC-1) e engenharia de requisitos/arquitetura C4 (Cap. 4 e 5.1/5.2).
 - **Sprint 3 (04/11 a 11/11):** Cancelamento auditável (AC-3), painel gerencial (AC-7), suíte cross-tenant (AC-4), testes de concorrência com 50 threads, V&V, relatório ABNT LaTeX e slides Beamer.
 - **Marco Final (12/11/2026):** Apresentação oral e defesa perante a banca examinadora da Profa. Dra. Juliana Pereira de Souza Zinader.
@@ -54,9 +54,9 @@ O cronograma total compreende 21 dias corridos, divididos em 3 Sprints funcionai
 | Issue | Título da Tarefa | Responsável | Data Início | Data Término | Dependência | Critério de Aceite |
 | :---: | :--- | :---: | :---: | :---: | :--- | :--- |
 | **#1** | `[FEAT(INFRA)] Project scaffolding & monorepo setup (Next.js 14, Tailwind, TypeScript)` | `@gabrlou` | 2026-10-23 | 2026-10-25 | Nenhuma (Kickoff) | TASK-1 |
-| **#2** | `[FEAT(DB)] Database schema Prisma, migrations e setup Neon DB com trigger append-only` | `@gabrlou` | 2026-10-25 | 2026-10-27 | Issue #1 | TASK-2, AC-3 |
+| **#2** | `[FEAT(DB)] Database schema Prisma, migrations e setup Supabase PostgreSQL com trigger append-only` | `@gabrlou` | 2026-10-25 | 2026-10-27 | Issue #1 | TASK-2, AC-3 |
 | **#15** | `[FEAT(DEVOPS)] Observability — Axiom Log Drain + estrutura de auditoria e mascaramento PII` | `@carloseduduu` | 2026-10-24 | 2026-10-26 | Issue #1 | TASK-15, AC-3 |
-| **#16** | `[FEAT(DEVOPS)] CI/CD pipeline, ESLint no-cycle e preview environments com Neon branching` | `@carloseduduu` | 2026-10-26 | 2026-10-28 | Issue #1 | TASK-16 |
+| **#16** | `[FEAT(DEVOPS)] CI/CD pipeline, ESLint no-cycle e preview environments na Vercel com isolamento de banco` | `@carloseduduu` | 2026-10-26 | 2026-10-28 | Issue #1 | TASK-16 |
 | **#17** | `[FEAT(UI)] Design system, componentes Tailwind e mapa interativo de assentos responsivo` | `@gabrlou` | 2026-10-26 | 2026-10-29 | Issue #1 | TASK-17, AC-1, AC-2 |
 | **#3** | `[FEAT(CORE)] Multi-tenancy — Prisma Client Extension com isolamento estrito por tenant_id` | `@gabrlou` | 2026-10-28 | 2026-10-30 | Issue #2 | TASK-3, AC-4 |
 | **#4** | `[FEAT(AUTH)] NextAuth.js credentials, JWT com tenant_id e middleware RBAC por role` | `@gabrlou` | 2026-10-29 | 2026-11-01 | Issue #3 | TASK-4, AC-5 |

@@ -479,10 +479,10 @@ Além da oferta integral da plataforma, a arquitetura modular da CineSoft Soluti
 
 | Elemento com potencial | Possível adquirente | Modelo de acordo |
 | :--- | :--- | :--- |
-| **Plataforma Integrada CineDoom (Bilheteria + Back-office + Portal Web)** | Cinemas de rua, circuitos independentes, centros culturais e redes exibidoras de pequeno e médio porte | **Assinatura SaaS B2B:**<br>• **Mensalidade base:** **R$ 790,00 / mês** (complexo com até 2 salas ativas, hospedagem em nuvem e suporte técnico).<br>• **Sala adicional:** **R$ 120,00 / mês** por sala ativa.<br>• **Setup e Implantação:** **R$ 1.500,00** (taxa única de parametrização, carga de dados e treinamento operacional). |
-| **Engine de Mapa Bidimensional e Trava Atômica de Assentos (API)** | Produtoras de teatro, casas de espetáculos, auditórios universitários e plataformas regionais de eventos | **Licenciamento de API Transacional (Pay-as-you-go):**<br>• **Tarifa por transação:** **R$ 0,08** por assento emitido (**R$ 0,05** acima de 10.000 assentos/mês).<br>• **Franquia mínima:** **R$ 200,00 / mês** (inclui franquia de 2.500 assentos e SLA de 99,9%). |
-| **Módulo de Governança, Criptografia de CPF e Anonimização LGPD** | Software houses parceiras de varejo e entretenimento que necessitam adequar sistemas legados ao Art. 18 da LGPD | **Licenciamento de SDK Corporativo / Biblioteca:**<br>• **Assinatura Anual:** **R$ 8.900,00 / ano** (atualizações regulatórias e suporte normativo).<br>• **Licença Perpétua:** **R$ 16.000,00** (código compilado + 10 horas de consultoria técnica de integração). |
-| **Portal White-Label de Reserva Antecipada com Expiração JIT** | Redes de cinemas que já possuem ERP fiscal próprio de balcão, mas carecem de canal digital moderno para espectadores | **Fornecimento de Módulo SaaS White-Label:**<br>• **Mensalidade:** **R$ 490,00 / mês** por cinema exibidor (domínio dedicado e certificado SSL inclusos).<br>• **Setup visual:** **R$ 800,00** (taxa única de adaptação da identidade visual da marca). |
+| **Plataforma CineDoom (Completa)** | Cinemas de rua, circuitos independentes e redes de médio porte | **Assinatura SaaS B2B:** **R$ 790/mês** base + **R$ 120/mês** por sala ativa (+ R$ 1.500 setup). |
+| **Engine de Trava Atômica (API)** | Teatros, casas de espetáculos e plataformas de eventos | **API Transacional:** **R$ 0,08** por assento emitido (franquia mínima de R$ 200/mês com SLA 99,5%). |
+| **Módulo de Governança LGPD (SDK)** | Software houses de varejo e entretenimento | **Licença de SDK:** **R$ 8.900/ano** (ou **R$ 16.000** perpétua com 10h de consultoria inclusas). |
+| **Portal White-Label de Reservas** | Cinemas com ERP fiscal próprio de balcão | **Módulo SaaS White-Label:** **R$ 490/mês** por exibidor (domínio próprio e SSL inclusos; R$ 800 setup). |
 
 *Fonte: CineSoft Solutions (2026).*
 
@@ -497,7 +497,7 @@ A CineSoft Solutions conduz o ciclo comercial e operacional de atendimento ao cl
    - *Descrição:* Ao receber solicitações de cotação ou RFPs de exibidores, a CineSoft avalia a viabilidade técnica e arquitetural da rede (quantidade de salas e integração fiscal), gerando proposta com cronograma e escopo de setup.
    - *Saídas:* Proposta Técnica de Implantação e Proposta Comercial de Fornecimento.
 3. **Estabelecimento e Manutenção do Acordo:**
-   - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,9%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
+   - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,5%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
    - *Saídas:* Contrato de Prestação de Serviço (SaaS) e Aditivo de Privacidade e DPA.
 4. **Execução do Acordo:**
    - *Descrição:* Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 711 testes automatizados.
@@ -528,7 +528,7 @@ A entrega de cada implantação ou macroentrega é considerada formalmente aceit
 
 ### Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega
 
-A CineSoft Solutions assegura disponibilidade mensal mínima de **99,9%** da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
+A CineSoft Solutions assegura disponibilidade mensal mínima de **99,5%** da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
 
 **Tabela 5 – Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega**
 
@@ -549,15 +549,15 @@ A operação contínua e comercial da plataforma CineDoom apoia-se em provedores
 
 **Tabela 6 – Identificação dos Fornecedores e Parceiros Relevantes**
 
-| Fornecedor / Parceiro | Categoria e Serviço Prestado | Plano e Estrutura de Custo Comercial | Impacto Operacional, Disponibilidade e Mitigação de Riscos |
+| Fornecedor | Categoria e serviço | Plano e custo comercial | Impacto e mitigação de riscos |
 | :--- | :--- | :--- | :--- |
-| **Vercel Inc.** | **PaaS & Edge CDN:** Hospedagem da aplicação Next.js 14, execução de funções serverless e distribuição global de ativos estáticos. | **Vercel Pro:**<br>**US$ 20,00 / mês** por desenvolvedor (1 TB de banda e execução concorrente expandida; piloto inicial gratuito em *Hobby Tier*). | **Disponibilidade e Performance:** SLA de 99,99% na borda. Impacta diretamente o acesso ao portal e à bilheteria. Mitigação: build determinístico e rollback instantâneo de release em 1 clique. |
-| **Supabase Inc. / Neon Tech** | **DBaaS PostgreSQL:** Persistência relacional ACID, gerenciamento de conexões via *Supavisor* (porta `6543`) e triggers de auditoria. | **Plano Pro Comercial:**<br>**US$ 25,00 a US$ 69,00 / mês** (compute dedicado, 8 GB+ de disco SSD, backups diários e *Point-in-Time Recovery — PITR*). | **Segurança e Integridade:** Crítico para evitar perda de vendas e garantir locks `SELECT FOR UPDATE`. Mitigação: replicação automática, conexões TLS obrigatórias e scripts de migração versionados no Prisma. |
-| **Resend Technologies** | **Comunicação Transacional (SaaS):** API REST para entrega de vouchers de reserva e confirmações de ingresso com autenticação DKIM/SPF. | **Resend Pro:**<br>**US$ 20,00 / mês** (franquia de 50.000 e-mails/mês, domínios corporativos verificados `@cinedoom.com.br` e sem limite diário). | **Experiência do Cliente:** Impacta o recebimento do comprovante por e-mail (`CA-11`). Mitigação: desacoplamento via interface `EmailProvider` e exibição imediata do voucher na tela e na área *"Minhas Reservas"*. |
-| **Axiom Inc.** | **Observabilidade e Log Drain:** Ingestão contínua de logs estruturados JSON e retenção de longo prazo para auditoria. | **Axiom Cloud Plan:**<br>**US$ 25,00 / mês** (ingestão de até 1 TB/mês e retenção estendida de 365 dias para auditoria legal). | **Conformidade Legal (LGPD):** Essencial para rastreabilidade forense e retenção de 1 ano sem onerar o banco transacional. Mitigação: mascaramento prévio de PII antes do envio do log. |
-| **GitHub Inc.** | **Engenharia e CI/CD:** Repositórios Git privados, gestão de backlog (GitHub Projects) e esteira automatizada (GitHub Actions). | **GitHub Team:**<br>**US$ 4,00 / usuário / mês** (3.000 minutos de Actions, branches protegidas e *Codeowners*). | **Qualidade e Governança:** Sustenta a integração contínua e o bloqueio de código defeituoso. Baixo impacto em tempo de execução de produção. |
-| **Stripe Inc. / Pagar.me** *(Macroentrega 2)* | **Gateway Financeiro PCI-DSS:** Processamento de pagamentos online via PIX dinâmico e cartões de crédito no Portal do Cliente. | **Taxa Transacional (Pay-go):**<br>**0,99% (PIX) / 3,99% + R$ 0,39 (Cartão)** por transação aprovada (sem mensalidade fixa). | **Segurança Financeira:** Elimina o tráfego de dados sensíveis de cartão nos servidores da CineSoft. Mitigação: webhooks idempotentes e fallback de pagamento presencial no balcão. |
-| **Focus NFe / PlugNotas** *(Macroentrega 3)* | **Mensageria Fiscal (SaaS):** Emissão, assinatura digital e transmissão de NFC-e junto às SEFAZ estaduais. | **Plano Empresarial:**<br>**R$ 149,00 / mês** por CNPJ emissor (para até 2.000 notas fiscais/mês, com fila de contingência offline). | **Conformidade Tributária:** Desacopla a CineSoft das variações técnicas de cada estado brasileiro, garantindo emissão assíncrona sem travar a fila física da bilheteria. |
+| **Vercel Inc.** | **PaaS & CDN Edge:** Next.js 14 e serverless | **US$ 20/mês** por dev (Vercel Pro; piloto Hobby grátis) | SLA 99,99% na borda. Mitigação: build determinístico e rollback instantâneo. |
+| **Supabase / Neon** | **DBaaS PostgreSQL:** Persistência ACID e pooling | **US$ 25 a US$ 69/mês** (Plano Pro compute dedicado) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma. |
+| **Resend** | **E-mail transacional:** API de vouchers (DKIM/SPF) | **US$ 20/mês** (franquia de 50.000 e-mails/mês) | Impacta envio de voucher (`CA-11`). Mitigação: exibição imediata em tela. |
+| **Axiom Inc.** | **Log drain:** Observabilidade e auditoria LGPD | **US$ 25/mês** (1 TB/mês; retenção de 365 dias) | Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII. |
+| **GitHub Inc.** | **CI/CD & Git:** Repositórios e GitHub Actions | **US$ 4/usuário/mês** (Plano Team e branch rules) | Sustenta testes automatizados. Mitigação: bloqueio de merge sem testes. |
+| **Stripe / Pagar.me** *(M2)* | **Gateway financeiro:** Checkout PIX e cartão | **0,99% PIX / 3,99% + R$ 0,39 Cartão** (sem mensalidade) | Certificação PCI-DSS. Mitigação: webhooks idempotentes e balcão físico. |
+| **Focus NFe** *(M3)* | **Mensageria fiscal:** Emissão de NFC-e SEFAZ | **R$ 149/mês** (até 2.000 notas fiscais/mês) | Conformidade tributária. Mitigação: fila assíncrona com contingência offline. |
 
 *Fonte: CineSoft Solutions (2026).*
 
