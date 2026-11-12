@@ -1,334 +1,170 @@
 % =============================================================================
 % CAPÍTULO 4: PROCESSOS DE GERENCIAMENTO TÉCNICO
+% Conteúdo sincronizado com manual/capitulos/04-gerenciamento-tecnico.md (fonte da verdade).
+% As tabelas são importadas de assets/capitulo-04/tabelas/.
 % =============================================================================
 
 \aberturacapitulo{Capítulo 4}{Processos de Gerenciamento Técnico}
 
-
-
 \subsecao{4.1 Plano de projeto: escopo, cronograma, recursos e entregas}
 
-O processo de planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 -- Cláusula 6.3.1) estabelece a Estrutura Analítica do Projeto (EAP/WBS), o roadmap comercial em \textbf{três Macroentregas}, o cronograma detalhado de Sprints, a alocação nominal de responsáveis e a rotina formal para monitorar o progresso e corrigir eventuais desvios.
+O planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 -- cláusula 6.3.1) define o escopo, as macroentregas, o cronograma, os recursos, as premissas e a rotina de acompanhamento do CineDoom. A baseline do plano é aprovada pela direção da CineSoft Solutions (Seção 3.3). Alterações de escopo, prazo ou recursos são propostas pelo Gerente de Projeto (Kayque Vicente), aprovadas pela direção e registradas na ata de revisão da Sprint.
 
+\subsubsecao{Estrutura Analítica do Projeto (EAP)}
 
-\subsubsecao{Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis)}
+A Figura 7 decompõe o produto em três níveis: Nível 1 (produto), Nível 2 (macroentregas e governança) e Nível 3 (pacotes de trabalho verificáveis).
 
-O diagrama abaixo decompõe o produto \textbf{CineDoom} em três níveis hierárquicos (Nível 1: Produto; Nível 2: Macroentregas e Governança; Nível 3: Pacotes de Trabalho e Entregáveis verificáveis):
+\figuracomfonte{capitulo-04/diagramas/eap-projeto-3-niveis.pdf}{0.96\textwidth}{Estrutura Analítica do Projeto (EAP) do CineDoom}{CineSoft Solutions (2026)}{fig:estrutura_analitica_do_projeto_eap_do_cinedoom}
 
-\figuracomfonte{capitulo-04/diagramas/eap-projeto-3-niveis.pdf}{0.96\textwidth}{Estrutura Analítica do Projeto (EAP) do CineDoom}{CineSoft Solutions (2026)}{fig:eap_projeto}
+\subsubsecao{Escopo e Marcos por Macroentrega}
 
+O ciclo de vida do CineDoom é dividido em três macroentregas, cada uma com critério de aceite verificável.
 
-\subsubsecao{Escopo e Marcos Comerciais por Macroentrega (Milestones)}
+\tabelaabnt{Macroentregas, escopo e critérios de aceite}{CineSoft Solutions (2026)}{tab:macroentregas_escopo_e_criterios_de_aceite}{\input{../../../assets/capitulo-04/tabelas/cronograma-marcos.tex}}
 
-A estratégia de produto da CineSoft Solutions divide o ciclo de vida do CineDoom em três grandes marcos contratuais de entrega:
+A M2 depende da conclusão da M1 e da definição do gateway de pagamento. A M3 depende da M2, pois a emissão fiscal exige o fluxo de pagamento consolidado. Essas dependências compõem o caminho crítico do projeto.
 
-\tabelaabnt{Escopo e Marcos Comerciais por Macroentrega (Milestones)}{CineSoft Solutions (2026)}{tab:marcos_macroentregas}{%
-{\footnotesize
-\setlength{\tabcolsep}{3pt}%
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.0cm} C{1.6cm} Y >{\arraybackslash}m{2.4cm} C{2.0cm} C{2.2cm}}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Marco (Milestone)} & \textbf{Versão} & \textbf{Escopo Funcional e Infraestrutura} & \textbf{Responsável} & \textbf{Prazo} & \textbf{Status} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-Macroentrega 1 (MVP Operacional) & \texttt{v1.0.0} & Núcleo Multi-tenant, RBAC (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}), criptografia CPF (\texttt{HMAC} + \texttt{AES}), CRUDs de filmes/salas/sessões, bilheteria ACID, portal de reservas, expiração JIT, anonimização LGPD e deploy (\texttt{RF-01} a \texttt{RF-18}). & \textbf{Gabriel Lourenço} & Out/2026 -- Nov/2026 & \textbf{Concluído (Produção)} \\
-\midrule
-Macroentrega 2 (Escala \& Pagamentos) & \texttt{v2.0.0} & Gateway financeiro online (PIX dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do \textbf{Resend Pro} (\texttt{@cinedoom.com.br}), upgrade para \textbf{Supabase Pro} (PITR e réplicas) e \textbf{Vercel Pro}. & \textbf{Carlos Eduardo} & Dez/2026 -- Jan/2027 & \textbf{Planejado (Próxima Fase)} \\
-\midrule
-Macroentrega 3 (Enterprise \& Fiscal) & \texttt{v3.0.0} & Emissão fiscal eletrônica automatizada (\textbf{NFC-e / SAT} via Focus NFe / SEFAZ), bomboniere e estoque, fidelidade, \textbf{Console Global de Tenants} e BI financeiro. & \textbf{Kayque V. \& Yury N.} & Fev/2027 -- Abr/2027 & \textbf{Backlog Evolutivo} \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
+\subsubsecao{Cronograma}
 
+A Figura 8 apresenta o cronograma macro. A M1 foi executada em três Sprints de duas semanas.
 
-\subsubsecao{\texorpdfstring{Cronograma Detalhado de Execução da Macroentrega 1 (\texttt{v1.0.0})}{Cronograma Detalhado de Execução da Macroentrega 1 (v1.0.0)}}
+\figuracomfonte{capitulo-04/diagramas/cronograma-macroentregas.pdf}{0.96\textwidth}{Cronograma macro das macroentregas}{CineSoft Solutions (2026)}{fig:cronograma_macro_das_macroentregas}
 
-A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenharia com pacotes de trabalho atribuídos nominalmente aos engenheiros da CineSoft Solutions:
-
-\tabelaabnt{Cronograma Executivo e Pacotes de Trabalho por Sprint}{CineSoft Solutions (2026)}{tab:cronograma_sprints}{%
-{\footnotesize
-\setlength{\tabcolsep}{2.5pt}%
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.8cm} Y >{\fontSemiBold\arraybackslash}m{2.4cm} C{1.7cm} C{1.7cm}}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Sprint / Iteração} & \textbf{Pacotes de Trabalho e Requisitos Entregues} & \textbf{Responsáveis} & \textbf{Início} & \textbf{Término} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-Sprint 1 --- Fundação, Arquitetura e Segurança & Setup Next.js 14/TypeScript (\texttt{\#1}), modelagem Prisma/PostgreSQL e trigger append-only (\texttt{\#2}), extensão Multi-tenant (\texttt{\#3}), autenticação NextAuth/RBAC (\texttt{\#4}), criptografia PII de CPF (\texttt{\#5}), Log Drain Axiom (\texttt{\#16}) e pipeline CI/CD (\texttt{\#17}). & \textbf{Gabriel L.} \& \textbf{Carlos E.} (Apoio: \textbf{Yury N.}) & 29/09/2026 & 12/10/2026 \\
-\midrule
-Sprint 2 --- Back-office, Salas e Bilheteria ACID & Design System e mapa interativo 2D (\texttt{\#9}), CRUDs de filmes, salas e sessões com pré-população (\texttt{\#6}, \texttt{\#7}, \texttt{\#8}), polling a 2s (\texttt{\#10}), venda atômica com \texttt{SELECT\ FOR\ UPDATE} (\texttt{\#11}) e gestão de atendentes (\texttt{\#14}). & \textbf{Gabriel L.} \& \textbf{Carlos E.} (QA: \textbf{Kayque V.}) & 13/10/2026 & 26/10/2026 \\
-\midrule
-Sprint 3 --- Portal do Cliente, LGPD e QA & Portal público e reserva web com expiração JIT (\texttt{\#21}), autenticação de espectador (\texttt{\#22}), \texttt{NotificationService} (\texttt{\#23}), cancelamento auditado (\texttt{\#12}), painel de ocupação (\texttt{\#13}), anonimização (\texttt{\#15}), seed/onboarding (\texttt{\#20}) e suíte de 770 testes (\texttt{\#18}, \texttt{\#19}). & \textbf{Gabriel, Carlos, Kayque \& Yury} & 27/10/2026 & 09/11/2026 \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
-
+\tabelaabnt{Execução das Sprints da Macroentrega 1}{CineSoft Solutions (2026)}{tab:execucao_das_sprints_da_macroentrega_1}{\input{../../../assets/capitulo-04/tabelas/execucao-sprints.tex}}
 
 \subsubsecao{Recursos}
 
-\tabelaabnt{Plano de Recursos Humanos e Operacionais}{CineSoft Solutions (2026)}{tab:plano_recursos}{\input{../../../assets/capitulo-04/tabelas/planos-recursos.tex}}
+A equipe é composta por quatro engenheiros (Seção 3.4). A infraestrutura é \emph{serverless}, com planos gratuitos na M1 e planos pagos a partir da M2.
 
-O plano é viável com os recursos disponíveis: a equipe de \textbf{4 engenheiros} atua em dedicação integral, a infraestrutura é \emph{serverless} com cobrança \emph{pay-as-you-go} (planos gratuitos na Macroentrega 1, com \textbf{US\$ 0 de custo fixo} e cobrança apenas por uso excedente) e o custo operacional estimado dos serviços base --- \textbf{US\$ 90/mês} (aproximadamente R\$ 480/mês) nas Macroentregas 2 e 3 --- é integralmente coberto pela receita do primeiro contrato B2B, cujo ticket previsto é de \textbf{R\$ 910 a R\$ 1.270/mês} por complexo exibidor (Cap. 3.3, Viabilidade Econômica e Financeira).
+\tabelaabnt{Recursos de infraestrutura e custo estimado}{CineSoft Solutions (2026)}{tab:recursos_de_infraestrutura_e_custo_estimado}{\input{../../../assets/capitulo-04/tabelas/planos-recursos.tex}}
 
-\subsubsecao{Rotina de Acompanhamento e Tratamento de Desvios e Atrasos}
+Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, emissão e transação) e por isso ficam fora do subtotal.
 
-Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle: 1. \textbf{Monitoramento Diário no Quadro Kanban (GitHub Projects):} Todo cartão de tarefa deve conter obrigatoriamente \textbf{responsável nominal}, \textbf{data-limite (deadline)}, \textbf{estimativa} e \textbf{critério de aceite}. Tarefas paradas na coluna \emph{In Progress} por mais de \textbf{48 horas} sem commits ou atualização de status acionam um alerta automático de impedimento (\emph{blocker}). 2. \textbf{Revisão Semanal de Sprint e Burndown:} Ao final de cada semana, o Gerente de Projeto (\textbf{Kayque Vicente}) e o Tech Lead (\textbf{Gabriel Lourenço}) auditam o percentual de pacotes concluídos versus planejados. 3. \textbf{Protocolo de Tratamento de Desvios e Atrasos:} - \textbf{Desvio Leve (atraso ≤ 24h em tarefa não crítica):} Realocação de par técnico (\emph{pair programming}) entre os desenvolvedores de backend e frontend para destravar a entrega dentro da mesma Sprint. - \textbf{Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):} Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos \emph{Must Have} de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
-
-\tabelaabnt{Protocolo de Tratamento de Desvios}{CineSoft Solutions (2026)}{tab:protocolo_desvios}{%
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.8cm} >{\arraybackslash}m{4.2cm} Y >{\arraybackslash}m{3.0cm}}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Tipo de desvio} & \textbf{Critério} & \textbf{Ação} & \textbf{Registro} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-Leve & Atraso de até 24h em tarefa fora do caminho crítico & Pareamento técnico (\emph{pair programming}) dentro da mesma Sprint & Quadro Kanban \\
-\midrule
-Moderado ou crítico & Bloqueio no caminho crítico ou dependência externa & Repriorização MoSCoW, protegendo os requisitos \emph{Must Have} de integridade transacional e LGPD, e adiamento do item secundário & Ata de revisão da Sprint, com ciência da direção \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
-
-\figuracomfonte{capitulo-04/prints/kanban-board.png}{0.92\textwidth}{Quadro Kanban do GitHub Projects com responsável, data-limite e limite de WIP visíveis}{CineSoft Solutions (2026)}{fig:kanban_projeto}
-
-
-\subsecao{4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas}
-O processo de gestão de riscos (Cláusula 6.3.4) identifica continuamente ameaças técnicas, operacionais, de segurança e de fornecedores externos que possam afetar a disponibilidade ou a integridade financeira e legal do CineDoom.
-
-
-\subsubsecao{Critérios de Classificação e Reavaliação Contínua}
+\subsubsecao{Premissas e Restrições}
 
 \begin{itemize}
 \tightlist
-\item
-  \textbf{Probabilidade de Ocorrência:} \textbf{Alta} (forte tendência de ocorrer em operação normal ou picos de estreia), \textbf{Média} (pode ocorrer sob condições específicas de carga ou falha de terceiros) ou \textbf{Baixa} (evento raro ou já contido por barreiras nativas).
-\item
-  \textbf{Impacto no Negócio:} \textbf{Alto} (indisponibilidade da bilheteria, venda dupla de poltronas, perda financeira ou violação da LGPD), \textbf{Médio} (degradação parcial de funcionalidade secundária com contorno disponível) ou \textbf{Baixo} (inconveniência visual sem bloqueio operacional).
-\item
-  \textbf{Matriz de Prioridade:} A combinação de Probabilidade × Impacto define a prioridade de tratamento como \textbf{Crítico} (exige barreira arquitetural imediata e teste automatizado obrigatório), \textbf{Alto} (exige mitigação ativa e monitoramento) ou \textbf{Médio} (monitorado com plano de contingência).
-\item
-  \textbf{Ciclo de Reavaliação:} O \emph{Risk Register} é revisado formalmente ao final de cada Sprint e antes do início de cada nova Macroentrega.
+\item \textbf{Premissas:} equipe de quatro engenheiros disponível durante todo o projeto; primeiro cinema contratante até a M2; câmbio de referência para a conversão de US\$ 90/mês em cerca de R\$ 480/mês.
+\item \textbf{Restrições:} os limites dos planos gratuitos na M1; a dependência de serviços de terceiros (gateway, SEFAZ); o prazo fixo das macroentregas.
+\item \textbf{Viabilidade:} com essas premissas, estima-se que o custo dos serviços base seja coberto pela mensalidade do primeiro cinema contratante, de R\$ 910 a R\$ 1.270/mês (Seção 3.3).
 \end{itemize}
 
+\subsubsecao{Rotina de Acompanhamento e Tratamento de Desvios}
 
-\subsubsecao{\texorpdfstring{Matriz de Riscos do Produto (\emph{Risk Register})}{Matriz de Riscos do Produto (Risk Register)}}
+\begin{enumerate}
+\tightlist
+\item \textbf{Monitoramento diário:} todo cartão no GitHub Projects possui responsável nominal, data-limite, estimativa e critério de aceite. Tarefa parada em \emph{In Progress} por mais de 48 horas sem atualização é sinalizada como impedimento.
+\item \textbf{Revisão semanal:} o Gerente de Projeto e o Tech Lead comparam os pacotes concluídos com os planejados.
+\item \textbf{Tratamento de desvios:} conforme a Tabela 18.
+\end{enumerate}
 
-\tabelaabnt{Matriz de Riscos do Produto e Ações Preventivas (Risk Register)}{CineSoft Solutions (2026)}{tab:registro_riscos}{\input{../../../assets/capitulo-04/tabelas/registro-riscos.tex}}
+\tabelaabnt{Protocolo de tratamento de desvios}{CineSoft Solutions (2026)}{tab:protocolo_de_tratamento_de_desvios}{\input{../../../assets/capitulo-04/tabelas/protocolo-desvios.tex}}
 
+\figuracomfonte{capitulo-04/prints/kanban-board.png}{0.92\textwidth}{Quadro Kanban do projeto no GitHub Projects}{CineSoft Solutions (2026)}{fig:quadro_kanban_do_projeto_no_github_projects}
+
+\subsecao{4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas}
+
+A gestão de riscos (cláusula 6.3.4) identifica, analisa, trata e monitora as ameaças técnicas, operacionais, de segurança e de fornecedores que afetem a disponibilidade, a integridade financeira ou a conformidade legal do CineDoom. O Gerente de Projeto mantém o registro de riscos (\emph{Risk Register}), que é revisado ao final de cada Sprint e antes de cada macroentrega. Riscos críticos são comunicados à direção.
+
+\subsubsecao{Critérios de Classificação}
+
+\tabelaabnt{Escalas de probabilidade e impacto}{CineSoft Solutions (2026)}{tab:escalas_de_probabilidade_e_impacto}{\input{../../../assets/capitulo-04/tabelas/escalas-probabilidade-impacto.tex}}
+
+\tabelaabnt{Matriz de prioridade (probabilidade × impacto)}{CineSoft Solutions (2026)}{tab:matriz_de_prioridade_probabilidade_impacto}{\input{../../../assets/capitulo-04/tabelas/matriz-prioridade.tex}}
+
+Riscos \textbf{Críticos} exigem barreira arquitetural e teste automatizado obrigatório. Riscos \textbf{Altos} exigem mitigação ativa e monitoramento. Riscos \textbf{Médios} e \textbf{Baixos} são monitorados, com plano de contingência.
+
+\subsubsecao{Registro de Riscos}
+
+\tabelaabnt{Identificação e análise dos riscos}{CineSoft Solutions (2026)}{tab:identificacao_e_analise_dos_riscos}{\input{../../../assets/capitulo-04/tabelas/registro-riscos.tex}}
+
+\tabelaabnt{Tratamento e monitoramento dos riscos}{CineSoft Solutions (2026)}{tab:tratamento_e_monitoramento_dos_riscos}{\input{../../../assets/capitulo-04/tabelas/tratamento-riscos.tex}}
+
+O risco residual é avaliado a cada revisão. Um risco é encerrado quando a barreira correspondente passa a ser verificada automaticamente e o gatilho não ocorre ao longo de uma macroentrega.
 
 \subsecao{4.3 Plano de gestão de configuração: controle de versões, branches e releases}
 
-O processo de gestão de configuração (Cláusula 6.3.5) assegura a integridade, o rastreamento e a reprodutibilidade de todos os ativos de software da CineSoft Solutions.
+A gestão de configuração (cláusula 6.3.5) assegura a integridade, o rastreamento e a reprodutibilidade dos ativos de software. O Tech Lead (Gabriel Lourenço) é o aprovador do controle de configuração, e o Engenheiro de DevOps (Carlos Eduardo) executa os processos de release (Seção 3.4).
 
+\subsubsecao{Itens de Configuração}
 
-\subsubsecao{Itens de Configuração (CIs) Controlados}
+\tabelaabnt{Itens de configuração controlados}{CineSoft Solutions (2026)}{tab:itens_de_configuracao_controlados}{\input{../../../assets/capitulo-04/tabelas/itens-configuracao.tex}}
 
-São submetidos a controle formal de versão no GitHub: 1. Código-fonte da aplicação web e APIs (\texttt{src/}). 2. Esquema relacional, \emph{seed} e \emph{triggers} do banco de dados (\texttt{prisma/schema.prisma}, \texttt{prisma/seed.ts} e \texttt{prisma/triggers.sql}). 3. Suíte de testes unitários, de integração e de segurança (\texttt{tests/}). 4. Pipelines de automação e configuração de deploy (\texttt{.github/workflows/ci.yml}, \texttt{.github/workflows/deploy.yml} e \texttt{vercel.json}). 5. Especificações técnicas, ADRs (\texttt{specs/adrs/}) e Manual de Processos (\texttt{specs/} e \texttt{manual/}).
+\subsubsecao{Estratégia de Branches}
 
+O fluxo usa três branches permanentes e branches efêmeras por funcionalidade (Figura 10).
 
-\subsubsecao{Estratégia de Branches e Regras de Pull Request}
+\figuracomfonte{capitulo-04/diagramas/fluxo-git-branches.pdf}{0.96\textwidth}{Estratégia de branches}{CineSoft Solutions (2026)}{fig:estrategia_de_branches}
 
-A CineSoft Solutions adota um fluxo estruturado em três branches permanentes (\texttt{develop}, \texttt{staging} e \texttt{main}) aliado a branches efêmeras por funcionalidade:
+\tabelaabnt{Branches e regras de proteção}{CineSoft Solutions (2026)}{tab:branches_e_regras_de_protecao}{\input{../../../assets/capitulo-04/tabelas/branches-protecao.tex}}
 
-\begin{itemize}
-\tightlist
-\item
-  \textbf{\texttt{main} (Produção Protegida):} Reflete exclusivamente o código estável em execução para os cinemas clientes (\texttt{https://cinedoom.com/}). Proíbe \emph{force push} e exige que toda alteração tenha passado pela validação completa da esteira de CI.
-\item
-  \textbf{\texttt{staging} (Homologação e Pré-Produção):} Ambiente espelhado para validação integrada e testes de aceitação antes da promoção para produção.
-\item
-  \textbf{\texttt{develop} (Integração de Engenharia):} Branch base para consolidação diária das entregas aprovadas da Sprint.
-\item
-  \textbf{\texttt{feat/*} e \texttt{fix/*} (Branches de Trabalho):} Criadas a partir de \texttt{develop} para cada requisito ou correção (ex.: \texttt{feat/RF-06-venda-atomica}).
-\item
-  \textbf{Regras Obrigatórias de Pull Request:} Todo PR requer (1) compilação TypeScript limpa (\texttt{tsc\ -\/-noEmit}), (2) zero erros de ESLint (\texttt{import/no-cycle}), (3) \textbf{100\% dos 770 testes passando no Vitest} com o gate de cobertura do domínio, (4) auditoria de dependências de produção sem vulnerabilidades altas/críticas fora do baseline documentado e (5) revisão técnica aprovada por outro engenheiro da equipe.
-\end{itemize}
+Todo Pull Request deve passar pelos \emph{Quality Gates} da Seção 3.5 (compilação, testes, cobertura, segurança, revisão por outro integrante e build). Toda mudança em item de configuração entra por Pull Request vinculado a uma issue.
 
-\figuracomfonte{capitulo-04/diagramas/fluxo-git-branches.pdf}{0.96\textwidth}{Estratégia de branches e fluxo de promoção entre ambientes}{CineSoft Solutions (2026)}{fig:fluxo_branches}
+\subsubsecao{Baselines, Versionamento e Releases}
 
+Cada tag \texttt{vMAJOR.\quebra{}MINOR.\quebra{}PATCH} aplicada a \texttt{main} constitui uma \textbf{baseline} de release.
 
-\subsubsecao{Versionamento Semântico (SemVer) e Convenção de Commits}
+\tabelaabnt{Versionamento semântico e convenção de commits}{CineSoft Solutions (2026)}{tab:versionamento_semantico_e_convencao_de_commits}{\input{../../../assets/capitulo-04/tabelas/versionamento-commits.tex}}
+
+O fluxo de release, incluindo a reversão e a correção urgente, segue a Figura 11.
+
+\figuracomfonte{capitulo-04/diagramas/fluxo-release.pdf}{0.96\textwidth}{Fluxo de release, reversão e correção urgente}{CineSoft Solutions (2026)}{fig:fluxo_de_release_reversao_e_correcao_urgente}
+
+\subsubsecao{Auditoria e Registro de Status}
 
 \begin{itemize}
 \tightlist
-\item
-  \textbf{Padrão SemVer (\texttt{MAJOR.MINOR.PATCH}):}
-
-  \begin{itemize}
-  \tightlist
-  \item
-    \texttt{MAJOR} (\texttt{v1.0.0}, \texttt{v2.0.0}, \texttt{v3.0.0}): Transição entre as \textbf{3 Macroentregas} ou mudanças estruturais de arquitetura.
-  \item
-    \texttt{MINOR} (\texttt{v1.1.0}, \texttt{v1.2.0}): Adição de novas funcionalidades retrocompatíveis dentro de uma Macroentrega.
-  \item
-    \texttt{PATCH} (\texttt{v1.0.1}, \texttt{v1.0.2}): Correções de bugs, ajustes de responsividade ou melhorias de performance sem quebra de contrato.
-  \end{itemize}
-\item
-  \textbf{Conventional Commits:} Mensagens padronizadas no formato \texttt{\textless{}tipo\textgreater{}(\textless{}escopo\textgreater{}):\ \textless{}descrição\ concisa\textgreater{}} (tipos permitidos: \texttt{feat}, \texttt{fix}, \texttt{refactor}, \texttt{test}, \texttt{docs}, \texttt{chore}, \texttt{ci}), garantindo geração automatizada de \emph{changelogs} e rastreabilidade direta com as issues.
+\item \textbf{Auditoria:} antes de cada release, o Engenheiro de Qualidade verifica se a tag corresponde ao código aprovado e se os gates passaram.
+\item \textbf{Registro de status:} o \emph{changelog}, as tags e o histórico de Pull Requests informam o estado de cada item de configuração.
+\item \textbf{Reversão:} a reversão consiste em publicar novamente a tag anterior no ambiente de produção.
 \end{itemize}
 
-O fluxo de release segue cinco passos: a funcionalidade nasce em uma branch \texttt{feat/RF-XX} a partir de \texttt{develop}; o Pull Request vinculado a uma issue executa os \emph{Quality Gates}; após aprovação, o merge segue para \texttt{develop}, é promovido para \texttt{staging} e homologado; então é promovido para \texttt{main} com tag SemVer e publicado na Vercel. Se um defeito crítico for detectado em produção, a versão anterior é republicada (\emph{rollback}) e a correção nasce em uma branch \texttt{fix/*} a partir de \texttt{main}, repetindo o fluxo. Antes de cada release, o Engenheiro de Qualidade verifica se a tag corresponde ao código aprovado e se os gates passaram; o \emph{changelog}, as tags e o histórico de Pull Requests registram o estado de cada item de configuração.
+\figuracomfonte{capitulo-04/prints/CI.png}{0.92\textwidth}{Execução do pipeline de integração contínua}{CineSoft Solutions (2026)}{fig:execucao_do_pipeline_de_integracao_continua}
 
-\figuracomfonte{capitulo-04/prints/CI.png}{0.92\textwidth}{Execução do pipeline de integração contínua}{CineSoft Solutions (2026)}{fig:execucao_ci}
-
-\figuracomfonte{capitulo-04/prints/releases.png}{0.92\textwidth}{Página de tags e releases do repositório (\texttt{v1.0.0})}{CineSoft Solutions (2026)}{fig:releases_repo}
-
+\figuracomfonte{capitulo-04/prints/releases.png}{0.92\textwidth}{Baseline da versão \texttt{v1.0.0} no GitHub}{CineSoft Solutions (2026)}{fig:baseline_da_versao_v1_0_0_no_github}
 
 \subsecao{4.4 Registro de decisões técnicas relevantes (ADRs)}
 
-O processo de gestão de decisões (Cláusula 6.3.3) fundamenta as escolhas arquiteturais de alto impacto por meio de análise multicritério e fichas estruturadas de \emph{Architecture Decision Records (ADRs)}.
+A gestão de decisões (cláusula 6.3.3) fundamenta as escolhas de alto impacto em análise multicritério e em fichas estruturadas de \emph{Architecture Decision Records} (ADRs), mantidas em \texttt{specs/adrs/}.
 
+\subsubsecao{Processo de Decisão}
 
-\subsubsecao{\texorpdfstring{Matriz de Decisão Ponderada (\emph{Pugh Matrix}) --- Escolha da Arquitetura Base (\texttt{ADR-001})}{Matriz de Decisão Ponderada (Pugh Matrix) --- Escolha da Arquitetura Base (ADR-001)}}
+\begin{itemize}
+\tightlist
+\item \textbf{Quando registrar:} toda decisão que afete a arquitetura, a segurança, o banco de dados, a infraestrutura ou o custo exige um ADR.
+\item \textbf{Quem decide:} o Tech Lead aprova, e o ADR é revisado em Pull Request por outro integrante.
+\item \textbf{Conteúdo mínimo:} contexto, alternativas consideradas, decisão, justificativa e consequências.
+\item \textbf{Ciclo de vida:} o ADR passa pelos estados da Figura 14. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
+\end{itemize}
 
-Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions avaliou três alternativas tecnológicas contra cinco critérios ponderados de negócio e engenharia (escala de \texttt{1} a \texttt{5}, onde \texttt{5} é a melhor aderência):
+\figuracomfonte{capitulo-04/diagramas/ciclo-vida-adr.pdf}{0.96\textwidth}{Ciclo de vida de um ADR}{CineSoft Solutions (2026)}{fig:ciclo_de_vida_de_um_adr}
 
-\tabelaabnt{Matriz de Decisão Ponderada (Pugh Matrix) — Arquitetura Base}{CineSoft Solutions (2026)}{tab:pugh_arquitetura}{%
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.6cm} C{1.5cm} Y Y Y}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Critério de Avaliação} & \textbf{Peso} & \textbf{Alt. A: Monólito (Adotado)} & \textbf{Alt. B: Microsserviços} & \textbf{Alt. C: SPA + Backend VM} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-1. Atomicidade Transacional (Anti-Double-Booking) & 30\% & \textbf{5} (Transação ACID única no banco relacional) & \textbf{2} (Consistência eventual complexa) & \textbf{5} (Transação ACID direta em banco único) \\
-\midrule
-2. Produtividade da Equipe (4 Engenheiros) & 25\% & \textbf{5} (Repositório único e tipagem ponta a ponta) & \textbf{1} (Alta sobrecarga de orquestração) & \textbf{3} (Duplicação de DTOs e dois pipelines) \\
-\midrule
-3. Custo Operacional (TCO Inicial e Escala SaaS) & 20\% & \textbf{5} (Serverless pay-as-you-go sem ociosidade) & \textbf{2} (Custo fixo elevado de clusters 24/7) & \textbf{3} (Custo fixo de VMs dedicadas) \\
-\midrule
-4. Isolamento Lógico Multi-Tenant e LGPD & 15\% & \textbf{5} (Middleware + Prisma Extension centralizado) & \textbf{3} (Propagação de tenant em N serviços) & \textbf{4} (Isolamento backend, gestão de CORS) \\
-\midrule
-5. Desempenho de Borda e SEO do Catálogo & 10\% & \textbf{5} (Server Components + Edge CDN nativos) & \textbf{4} (Requer API Gateway na borda) & \textbf{2} (CSR puro prejudica primeira carga) \\
-\midrule
-\rowcolor{BrandTableHeader}
-\textbf{Pontuação Ponderada Final} & \textbf{100\%} & \textbf{5,00 (Vencedora — Adotada)} & \textbf{2,10 (Descartada)} & \textbf{3,65 (Descartada)} \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
+\subsubsecao{Matriz de Decisão Ponderada: Arquitetura Base (ADR-001)}
 
+A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco critérios ponderados (nota de 1 a 5, sendo 5 a melhor aderência).
 
-\subsubsecao{\texorpdfstring{Fichas Estruturadas de Decisões Arquiteturais (\texttt{ADR-001} a \texttt{ADR-012})}{Fichas Estruturadas de Decisões Arquiteturais (ADR-001 a ADR-012)}}
+\tabelaabnt{Matriz de decisão ponderada da arquitetura base}{CineSoft Solutions (2026)}{tab:matriz_de_decisao_ponderada_da_arquitetura_base}{\input{../../../assets/capitulo-04/tabelas/matriz-pugh-decisao.tex}}
 
-Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralmente em \texttt{specs/adrs/} e sintetizadas abaixo com seus cinco elementos formais:
+\tabelaabnt{Ficha do ADR-001}{CineSoft Solutions (2026)}{tab:ficha_do_adr_001}{\input{../../../assets/capitulo-04/tabelas/ficha-adr-001.tex}}
 
-\tabelaabnt{Quadro Sinóptico de Decisões de Arquitetura: Stack e Persistência (ADR-001 a ADR-006)}{CineSoft Solutions (2026)}{tab:adrs_stack}{%
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.6cm} C{1.6cm} Y Y Y}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Decisão (ADR)} & \textbf{Status} & \textbf{Contexto do Problema} & \textbf{Solução Adotada} & \textbf{Consequências / Trade-offs} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-\textbf{ADR-001:} Monólito Modular em Next.js 14 & Aprovada & Integração Portal, Bilheteria e Back-office com time enxuto. & Monólito Modular com módulos de domínio verticais (\texttt{src/modules/*}) e ESLint \texttt{no-cycle}. & (+) Transações ACID simples e tipagem unificada; (-) Exige disciplina de linter. \\
-\midrule
-\textbf{ADR-002:} Interface Reativa Tailwind CSS & Aprovada & Construção do mapa 2D de assentos responsivo desktop/mobile. & Tailwind CSS com tema escuro cinematográfico (\emph{Dark UI}). & (+) Bundle leve e alta performance; (-) Classes utilitárias extensas no JSX. \\
-\midrule
-\textbf{ADR-003:} Backend Route Handlers TS & Aprovada & Validação rigorosa de payloads e contratos cliente-servidor. & Route Handlers RESTful tipados com validação por schemas \texttt{Zod}. & (+) Zero divergência de tipos e serverless nativo; (-) Acoplado ao framework. \\
-\midrule
-\textbf{ADR-004:} Banco PostgreSQL com Prisma ORM & Aprovada & Venda/reserva exige integridade relacional e lock pessimista. & PostgreSQL gerenciado no Supabase com Prisma ORM e transações interativas. & (+) Conformidade ACID plena e migrações seguras; (-) \texttt{queryRaw} para locks. \\
-\midrule
-\textbf{ADR-005:} Cloud Serverless Vercel + Supabase & Aprovada & Alta disponibilidade do piloto à escala com TCO enxuto. & Vercel na borda, PostgreSQL gerenciado no Supabase com pooler e GitHub Actions. & (+) Deploy atômico e zero manutenção de SO; (-) Exige pooler de conexões. \\
-\midrule
-\textbf{ADR-006:} API RESTful e Polling 2s no Mapa & Aprovada & Manter mapa de assentos sincronizado em arquitetura serverless. & Polling RESTful leve a cada 2s na rota de assentos da sessão. & (+) Sem conexões ociosas em serverless; (-) Latência máxima de 2s na visualização. \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
+\subsubsecao{Índice de Decisões (ADR-001 a ADR-012)}
 
-\tabelaabnt{Quadro Sinóptico de Decisões de Arquitetura: Concorrência e Resiliência (ADR-007 a ADR-012)}{CineSoft Solutions (2026)}{tab:adrs_resiliencia}{%
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.6cm} C{1.6cm} Y Y Y}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Decisão (ADR)} & \textbf{Status} & \textbf{Contexto do Problema} & \textbf{Solução Adotada} & \textbf{Consequências / Trade-offs} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-\textbf{ADR-007:} Pré-população e \texttt{FOR UPDATE} & Aprovada & Impedir venda dupla de assentos sob concorrência simultânea. & Pré-popular \texttt{SessionSeat} e aplicar \texttt{SELECT FOR UPDATE} ordenado por ID. & (+) Elimina \emph{phantom reads} e concorrência; (-) Mais linhas por sessão. \\
-\midrule
-\textbf{ADR-008:} Criptografia PII de CPF & Aprovada & Proteger CPF de compradores (LGPD Art. 46) com busca no balcão. & Hash \texttt{HMAC-SHA256} para busca e cifra \texttt{AES-256-GCM} para leitura. & (+) Imune a \emph{rainbow tables} e seguro; (-) Não permite busca parcial. \\
-\midrule
-\textbf{ADR-009:} Anonimização In-Place (Art. 18) & Aprovada & Atender direito de eliminação LGPD sem violar registros contábeis. & Sobrescrita \emph{in-place} de dados pessoais preservando os registros contábeis. & (+) Concilia LGPD e integridade contábil; (-) Operação irreversível para o titular. \\
-\midrule
-\textbf{ADR-010:} Auditoria Append-Only no PostgreSQL & Aprovada & Proteger registros de cancelamento contra exclusão ou alteração. & Trigger PostgreSQL que aborta qualquer \texttt{UPDATE} ou \texttt{DELETE} na auditoria. & (+) Imutabilidade garantida no SGBD a custo zero; (-) Exige migração SQL bruta. \\
-\midrule
-\textbf{ADR-011:} Log Drain Axiom (365 Dias) & Aprovada & Retenção legal de logs de acesso por 1 ano fora do limite efêmero. & Exportação de logs estruturados em JSON para Axiom com retenção de 1 ano. & (+) Conformidade legal sem inflar o banco; (-) Dependência de telemetria externa. \\
-\midrule
-\textbf{ADR-012:} Portal com Expiração JIT & Aprovada & Reservas online sem gateway de pagamento e sem assentos travados. & Expiração \emph{Just-in-Time} na leitura e transação balcão (limite 60 min). & (+) Precisão imediata sem cronjobs externos; (-) Verificação embutida nas queries. \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
+As fichas completas dos 12 ADRs, com data e autor, estão em \texttt{specs/adrs/}. A tabela abaixo as relaciona aos riscos e requisitos que sustentam.
 
-As decisões percorrem um ciclo de vida formal: uma necessidade estrutural abre um ADR em estado \emph{Proposta}; o documento é submetido a Pull Request e entra em \emph{Em revisão}; o Tech Lead aprova ou rejeita; uma decisão aprovada pode ser substituída por um novo ADR que referencia o anterior, e o histórico é preservado. O índice completo, com data e autor, está em \texttt{specs/adrs/}.
+\tabelaabnt{Índice dos ADRs}{CineSoft Solutions (2026)}{tab:indice_dos_adrs}{\input{../../../assets/capitulo-04/tabelas/indice-adrs.tex}}
 
-\figuracomfonte{capitulo-04/prints/ADRs.png}{0.92\textwidth}{Pasta \texttt{specs/adrs/} no GitHub, exibindo os 12 ADRs}{CineSoft Solutions (2026)}{fig:adrs_repo}
-
+\figuracomfonte{capitulo-04/prints/ADRs.png}{0.92\textwidth}{Registro dos ADRs no repositório}{CineSoft Solutions (2026)}{fig:registro_dos_adrs_no_repositorio}
 
 \subsecao{4.5 Métricas de acompanhamento do projeto}
 
-O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI, do Vitest e dos painéis de \emph{billing} dos provedores de nuvem para monitorar a saúde técnica e financeira da entrega:
+O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 16 resume o ciclo de medição.
 
-\tabelaabnt{Indicadores e Métricas de Monitoramento do Projeto}{CineSoft Solutions (2026)}{tab:metricas_projeto}{%
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.8cm} >{\arraybackslash}m{3.2cm} C{2.2cm} C{2.4cm} Y}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Categoria} & \textbf{Indicador Objetivo} & \textbf{Meta} & \textbf{Resultado (M1)} & \textbf{Ação / Monitoramento} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-Métrica de Fluxo & Lead Time de Issues e PRs & $\le$ 48 horas por tarefa & Média de 18 a 32 horas & Monitorado no GitHub Projects. Pareamento se exceder 48h. \\
-\midrule
-Métrica de Fluxo & WIP Limit por engenheiro & Máximo de 2 tarefas & Respeitado ($\le$ 2 por membro) & Revisão diária no Kanban para evitar gargalos. \\
-\midrule
-Métrica de Qualidade & Suíte de Testes Automatizados & 100\% de aprovação & 26 arquivos / 770 testes (100\%) & Bloqueio automático no GitHub Actions. \\
-\midrule
-Métrica de Qualidade & Cobertura nas Regras de Domínio & $\ge$ 70\% de \emph{statements}, funções e linhas e $\ge$ 80\% de \emph{branches} & 71,2\% de \emph{statements}, 83,4\% de \emph{branches} e 76,3\% de funções & Ação corretiva no registro de não conformidades (Seção 3.5). \\
-\midrule
-Métrica de Qualidade & Densidade de Defeitos & 0 defeitos críticos & 0 defeitos críticos em prod & Telemetria contínua; defeito P1 aciona a reversão para a versão anterior. \\
-\midrule
-Métrica de Progresso & Cumprimento de Escopo (M1) & 100\% dos RF-01 a RF-18 & 18/18 RFs e 15/15 ACs & Auditado na Matriz de Rastreabilidade. \\
-\midrule
-Métrica de Custo & OPEX Mensal dos Serviços Base & $\le$ US\$ 90/mês (M2/M3) & US\$ 0 na Macroentrega 1 & Revisão mensal de faturas de Vercel, Supabase e Axiom. \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
+\figuracomfonte{capitulo-04/diagramas/ciclo-medicao.pdf}{0.96\textwidth}{Ciclo de medição e decisão}{CineSoft Solutions (2026)}{fig:ciclo_de_medicao_e_decisao}
 
-\tabelaabnt{Resultados na Macroentrega 1 (\texttt{v1.0.0}) e Ação em Caso de Desvio}{CineSoft Solutions (2026)}{tab:resultados_m1}{%
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{4.0cm} >{\arraybackslash}m{5.0cm} Y}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Indicador} & \textbf{Resultado aferido} & \textbf{Ação em caso de desvio} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-Lead time & Média de 18 a 32 horas por issue & Acima de 48h, o Gerente de Projeto aciona pareamento técnico. \\
-\midrule
-WIP por engenheiro & Limite respeitado & Revisão do quadro na reunião diária. \\
-\midrule
-Suíte de testes & 26 arquivos e 770 testes aprovados (100\%) & O PR com teste falho não é integrado. \\
-\midrule
-Cobertura nas regras de domínio & 71,2\% de \emph{statements}, 83,4\% de \emph{branches} e 76,3\% de funções (gate: 70/80/70) & Abrir ação corretiva no registro de não conformidades (Seção 3.5). \\
-\midrule
-Defeitos críticos em produção & 0 (apenas ajustes cosméticos e de responsividade) & Defeito crítico aciona a reversão para a versão anterior e correção urgente. \\
-\midrule
-Cumprimento do escopo & 18 de 18 requisitos e 15 de 15 critérios de aceite & Ajuste de escopo conforme o protocolo de desvios. \\
-\midrule
-Riscos críticos sem mitigação & Medição iniciada a partir deste plano & Escalar à direção. \\
-\midrule
-Custo mensal & US\$ 0 (planos gratuitos) & Desvio acima de 10\% do teto aciona revisão de planos. \\
-\midrule
-Rollbacks por release & Medição iniciada a partir deste plano & Análise de causa na retrospectiva. \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
+\tabelaabnt{Plano de medição}{CineSoft Solutions (2026)}{tab:plano_de_medicao}{\input{../../../assets/capitulo-04/tabelas/plano-medicao.tex}}
 
-Os valores da Tabela \ref{tab:resultados_m1} referem-se à entrega da \texttt{v1.0.0} e são atualizados a cada macroentrega.
+\tabelaabnt{Resultados na Macroentrega 1 (\texttt{v1.0.0}) e ação em caso de desvio}{CineSoft Solutions (2026)}{tab:resultados_na_macroentrega_1_v1_0_0_e_acao_em_ca}{\input{../../../assets/capitulo-04/tabelas/resultados-m1.tex}}
 
-\figuracomfonte{capitulo-04/prints/fluxo.png}{0.92\textwidth}{Quadro do GitHub Projects com o tempo de ciclo das issues}{CineSoft Solutions (2026)}{fig:fluxo_trabalho}
+Os valores da Tabela 30 referem-se à entrega da \texttt{v1.0.0} e são atualizados a cada macroentrega.
+
+\figuracomfonte{capitulo-04/prints/fluxo.png}{0.92\textwidth}{Evidência do fluxo de trabalho}{CineSoft Solutions (2026)}{fig:evidencia_do_fluxo_de_trabalho}

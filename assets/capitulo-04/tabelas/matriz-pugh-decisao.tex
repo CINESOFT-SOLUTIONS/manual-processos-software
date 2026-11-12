@@ -1,21 +1,21 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{4.2cm} C{2.6cm} C{2.4cm} C{2.2cm} C{2.6cm}}
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\hsize=1.000\hsize\sloppy\arraybackslash}X C{1.05cm} C{2.44cm} C{2.69cm} C{1.69cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Critério de Avaliação (Peso)} & \textbf{Baseline (NextAuth)} & \textbf{Supabase Auth} & \textbf{Clerk} & \textbf{Auth.js v5 (Adotado)} \\
+\textbf{Critério} & \textbf{Peso} & \textbf{A: Monólito modular (Next.js 14 e Prisma)} & \textbf{B: Microsserviços (Node/Go e Kafka)} & \textbf{C: SPA separada e backend em VM} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Controle Total e Custos (30\%) & 0 & -1 & -2 & \textbf{+2} \\
+Atomicidade transacional (anti-\emph{double-booking}) & 30\% & 5 & 2 & 5 \\
 \midrule
-Integração com Postgres/Prisma (25\%) & 0 & +1 & 0 & \textbf{+2} \\
+Produtividade da equipe de 4 engenheiros & 25\% & 5 & 1 & 3 \\
 \midrule
-Conformidade LGPD Local (25\%) & 0 & 0 & -1 & \textbf{+1} \\
+Custo operacional (TCO inicial e escala) & 20\% & 5 & 2 & 3 \\
 \midrule
-Latência de Sessão e SSR (20\%) & 0 & -1 & 0 & \textbf{+1} \\
+Isolamento multi-tenant e segurança LGPD & 15\% & 5 & 3 & 4 \\
 \midrule
-\rowcolor{BrandTableHeader}
-\textbf{Pontuação Ponderada Final} & \textbf{0.0} & \textbf{-0.3} & \textbf{-0.85} & \textbf{+1.55} \\
+Desempenho de borda e SEO do catálogo & 10\% & 5 & 4 & 2 \\
+\midrule
+\textbf{Pontuação ponderada} & \textbf{100\%} & \textbf{5,00 (adotada)} & \textbf{2,10} & \textbf{3,65} \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}
-\end{center}
+\end{tabularx}%
+}

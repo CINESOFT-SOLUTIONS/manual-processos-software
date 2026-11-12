@@ -1,0 +1,27 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\hsize=1.057\hsize\sloppy\arraybackslash}X L{2.19cm} >{\hsize=0.698\hsize\centering\arraybackslash}X >{\hsize=1.245\hsize\sloppy\arraybackslash}X C{2.44cm}}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Indicador} & \textbf{Necessidade atendida} & \textbf{Meta} & \textbf{Fonte e frequência} & \textbf{Responsável} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{Lead time} (da abertura da issue ao merge em \texttt{develop}) & Fluxo & ≤ 48h por pacote & GitHub Projects, semanal & Kayque Vicente \\
+\midrule
+\textbf{WIP por engenheiro} & Fluxo & ≤ 2 tarefas & Quadro Kanban, diária & Kayque Vicente \\
+\midrule
+\textbf{Aprovação da suíte de testes} & Qualidade & 100\% & GitHub Actions, a cada PR & Kayque Vicente \\
+\midrule
+\textbf{Cobertura nas regras de domínio} & Qualidade & ≥ 70\% (\emph{statements}, funções e linhas) e ≥ 80\% (\emph{branches}) (Seção 3.5) & Relatório do Vitest, a cada PR & Kayque Vicente \\
+\midrule
+\textbf{Defeitos críticos em produção} & Qualidade & 0 & Telemetria e registro de incidentes, por macroentrega & Carlos Eduardo \\
+\midrule
+\textbf{Cumprimento do escopo} & Progresso & 100\% dos requisitos do marco & Matriz de rastreabilidade (Seção 5.1.2), por Sprint & Kayque Vicente \\
+\midrule
+\textbf{Riscos críticos sem mitigação ativa} & Risco & 0 & Registro de riscos (Tabela 22), por Sprint & Kayque Vicente \\
+\midrule
+\textbf{Custo mensal dos serviços base} & Custo & ≤ US\$ 90/mês na M2 e na M3 & Painéis de cobrança, mensal & Carlos Eduardo \\
+\midrule
+\textbf{Rollbacks por release} & Configuração & Tendência decrescente & Tags e histórico de deploy, por release & Carlos Eduardo \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

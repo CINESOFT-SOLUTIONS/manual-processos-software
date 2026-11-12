@@ -1,0 +1,21 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\hsize=1.146\hsize\sloppy\arraybackslash}X >{\hsize=0.955\hsize\sloppy\arraybackslash}X >{\hsize=0.898\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Item} & \textbf{Localização} & \textbf{Controle} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Código-fonte da aplicação e APIs & \texttt{src/} & Git, via Pull Request \\
+\midrule
+Esquema, \emph{seed} e \emph{triggers} do banco & \texttt{prisma/\allowbreak{}schema.\allowbreak{}prisma}, \texttt{prisma/\allowbreak{}seed.ts} e \texttt{prisma/\allowbreak{}triggers.\allowbreak{}sql} & Git, via Pull Request \\
+\midrule
+Testes automatizados & \texttt{tests/} & Git, via Pull Request \\
+\midrule
+Pipelines e configuração de deploy & \texttt{.\allowbreak{}github/\allowbreak{}workflows/} e \texttt{vercel.json} & Git, via Pull Request \\
+\midrule
+Especificações, ADRs e manual & \texttt{specs/} e \texttt{manual/} & Git, via Pull Request \\
+\midrule
+Segredos e variáveis de ambiente & Variáveis dos serviços (Seção 3.2) & Fora do repositório; acesso restrito \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

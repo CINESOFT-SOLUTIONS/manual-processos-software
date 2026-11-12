@@ -1,0 +1,17 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\hsize=0.770\hsize\sloppy\arraybackslash}X >{\hsize=1.936\hsize\sloppy\arraybackslash}X >{\hsize=0.560\hsize\centering\arraybackslash}X >{\hsize=0.734\hsize\centering\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Severidade / Modalidade} & \textbf{Descrição do Cenário} & \textbf{Tempo de 1ª Resposta} & \textbf{Meta de Resolução / Contorno} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Crítica (P1 --- Corretiva Urgente) & Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. & Até \textbf{15 minutos} & Até \textbf{2 horas} (reversão documentada para a versão anterior) \\
+\midrule
+Alta (P2 --- Corretiva Prioritária) & Degradação no painel gerencial, falha no envio de voucher por e-mail ou lentidão acima do SLA. & Até \textbf{1 hora} & Até \textbf{8 horas} \\
+\midrule
+Normal (P3 --- Adaptativa / Preventiva) & Ajustes de compatibilidade de navegador, dúvidas operacionais ou otimização preventiva de índices. & Até \textbf{4 horas úteis} & Até \textbf{24 horas úteis} \\
+\midrule
+Evolutiva (P4 --- Perfectiva) & Solicitação de novos relatórios, filtros ou melhorias de usabilidade no Portal do Cliente. & Até \textbf{2 dias úteis} & Planejada na próxima \emph{Sprint / Release} \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

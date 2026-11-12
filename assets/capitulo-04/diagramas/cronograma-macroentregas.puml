@@ -1,0 +1,14 @@
+@startgantt
+printscale weekly
+Project starts 2026-09-29
+[Sprint 1 - Fundação e Segurança] starts 2026-09-29 and lasts 14 days
+[Sprint 2 - Back-office e Bilheteria ACID] starts 2026-10-13 and lasts 14 days
+[Sprint 3 - Portal, LGPD e QA] starts 2026-10-27 and lasts 14 days
+[Marco: v1.0.0 em produção] happens 2026-11-09
+[Macroentrega 2 - Pagamentos e Cloud Pro] starts 2026-12-01 and ends 2027-01-31
+[Macroentrega 3 - Fiscal e Enterprise] starts 2027-02-01 and ends 2027-04-30
+[Sprint 1 - Fundação e Segurança] -> [Sprint 2 - Back-office e Bilheteria ACID]
+[Sprint 2 - Back-office e Bilheteria ACID] -> [Sprint 3 - Portal, LGPD e QA]
+[Sprint 3 - Portal, LGPD e QA] -> [Macroentrega 2 - Pagamentos e Cloud Pro]
+[Macroentrega 2 - Pagamentos e Cloud Pro] -> [Macroentrega 3 - Fiscal e Enterprise]
+@endgantt

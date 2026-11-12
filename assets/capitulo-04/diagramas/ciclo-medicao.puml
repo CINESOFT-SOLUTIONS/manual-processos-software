@@ -1,0 +1,12 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+rectangle "Necessidade de\ninformação" as N
+rectangle "Coleta automatizada\n(GitHub, CI, Vitest, cobrança)" as C
+rectangle "Análise na revisão\nsemanal da Sprint" as A
+rectangle "Decisão: manter, ajustar\nou escalar à direção" as D
+N --> C
+C --> A
+A --> D
+D --> N : Atualiza metas
+@enduml

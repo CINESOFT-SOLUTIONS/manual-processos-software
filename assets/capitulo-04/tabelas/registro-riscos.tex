@@ -1,23 +1,31 @@
 {\footnotesize
-\begin{tabularx}{\textwidth}{C{1.2cm} >{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} C{1.3cm} C{1.3cm} C{1.5cm} Y}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\centering\arraybackslash}m{1.05cm} >{\hsize=1.407\hsize\sloppy\arraybackslash}X >{\hsize=0.593\hsize\sloppy\arraybackslash}X C{1.19cm} C{1.52cm} C{2.02cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{ID} & \textbf{Risco Identificado} & \textbf{Prob.} & \textbf{Imp.} & \textbf{Prior.} & \textbf{Estratégia de Mitigação e Resposta} \\
+\textbf{ID} & \textbf{Risco} & \textbf{Categoria} & \textbf{Prob.} & \textbf{Impacto} & \textbf{Prioridade} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-\textbf{R-01} & Concorrência e Venda Dupla (\emph{Double-Booking}) & Alta & Alto & \textbf{Crítico} & Bloqueio pessimista \texttt{SELECT ... FOR UPDATE}, ordenação determinística de assentos e 50 threads de concorrência no Vitest (\texttt{CA-01}). \\
+R-01 & Venda dupla de assento (\emph{double-booking}) por compras simultâneas no portal e no guichê em estreias & Técnico & Média & Alto & \textbf{Crítico} \\
 \midrule
-\textbf{R-02} & Vazamento de Dados (CPF) e Sanções LGPD & Média & Alto & \textbf{Crítico} & Cifra em repouso (\texttt{AES-256-GCM}), indexação cega (\texttt{HMAC-SHA256}), mascaramento de logs e anonimização \emph{in-place} (Art.~18 / \texttt{CA-06}). \\
+R-02 & Exaustão do pool de conexões ou indisponibilidade do banco por instâncias \emph{serverless} em picos & Infraestrutura & Média & Alto & \textbf{Crítico} \\
 \midrule
-\textbf{R-03} & Falhas de Conexão no Guichê Presencial & Média & Alto & \textbf{Alto} & Transações atômicas curtas, expiração de reservas JIT e fila de retry transacional na bilheteria. \\
+R-03 & Exposição de CPF ou vazamento de dados entre cinemas (\emph{cross-tenant}) & Segurança e LGPD & Baixa & Alto & \textbf{Alto} \\
 \midrule
-\textbf{R-04} & Sobrecarga do Banco em Abertura de Vendas & Alta & Médio & \textbf{Alto} & \emph{Connection pooler} dedicado (\emph{Supavisor} porta 6543) com timeout de 10s e cache estático na borda (Vercel CDN). \\
+R-04 & Retenção ociosa de poltronas (\emph{no-show}) em reservas web & Negócio & Alta & Médio & \textbf{Alto} \\
 \midrule
-\textbf{R-05} & Divergência de Escopo entre Sprints & Média & Médio & \textbf{Médio} & Gestão de backlog no GitHub Projects com critérios de aceite explícitos (\texttt{CA-01} a \texttt{CA-14}) e revisão semanal. \\
+R-05 & Falha na entrega de e-mails de vouchers ou bloqueio por filtros anti-spam & Dependência externa & Média & Médio & \textbf{Médio} \\
 \midrule
-\textbf{R-06} & Indisponibilidade do Provedor de E-mail & Baixa & Médio & \textbf{Médio} & Desacoplamento via interface \texttt{EmailProvider}, persistência do voucher no banco e fallback para \texttt{ConsoleLogger}. \\
+R-06 & Atraso por dependência entre módulos (UI responsiva e contratos de API) & Projeto & Média & Médio & \textbf{Médio} \\
 \midrule
-\textbf{R-07} & Dependência de Gateway de Pagamento Online & Alta & Alto & \textbf{Alto} & Na M1, pagamento presencial no balcão; na M2, Stripe/Pagar.me com webhooks idempotentes. \\
+R-07 & Instabilidade da SEFAZ ou do gateway de pagamento no horário de pico (M2 e M3) & Dependência externa & Média & Alto & \textbf{Crítico} \\
+\midrule
+R-08 & Concentração de conhecimento em pessoas-chave (Seção 3.4) & Organizacional & Média & Médio & \textbf{Médio} \\
+\midrule
+R-09 & Estouro dos limites dos planos gratuitos ou pagos, elevando o custo acima do previsto & Financeiro & Média & Médio & \textbf{Médio} \\
+\midrule
+R-10 & Vulnerabilidade em dependências de terceiros & Segurança & Baixa & Alto & \textbf{Alto} \\
+\midrule
+R-11 & Lacuna de competência em pagamentos e NFC-e atrasar a M2 e a M3 & Projeto & Média & Médio & \textbf{Médio} \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }

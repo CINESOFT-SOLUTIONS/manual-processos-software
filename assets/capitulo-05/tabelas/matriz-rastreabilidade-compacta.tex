@@ -1,0 +1,41 @@
+{\footnotesize
+\begin{xltabular}{\textwidth}{>{\hsize=1.010\hsize\sloppy\arraybackslash}X >{\hsize=0.652\hsize\centering\arraybackslash}X >{\hsize=0.525\hsize\centering\arraybackslash}X >{\hsize=1.813\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Necessidade / Stakeholder} & \textbf{Requisito(s)} & \textbf{Critério de Aceite} & \textbf{Caso de Teste (\texttt{tests/})} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\endfirsthead
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Necessidade / Stakeholder} & \textbf{Requisito(s)} & \textbf{Critério de Aceite} & \textbf{Caso de Teste (\texttt{tests/})} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\endhead
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\reservafontetabelalonga{4}
+\endfoot
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\linhafontetabelalonga{4}
+\endlastfoot
+\texttt{STK-02} / \texttt{NEC-02} (Controle de Acesso e Equipe) & \texttt{RF-01}, \texttt{RF-02} & \texttt{CA-05} & \texttt{auth-\allowbreak{}rbac.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-01}, \texttt{CA-05}); \texttt{users-\allowbreak{}management.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-02}, \texttt{CA-05}) \\
+\midrule
+\texttt{STK-02} / \texttt{NEC-02} (Gestão de Acervo e Salas) & \texttt{RF-03} a \texttt{RF-05}, \texttt{RES-05} & \texttt{CA-08} & \texttt{catalog-\allowbreak{}filmes.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-03}); \texttt{rooms-\allowbreak{}layout.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-04}); \texttt{sessions-\allowbreak{}prepopulation.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-05}) \\
+\midrule
+\texttt{STK-03}, \texttt{STK-04} / \texttt{NEC-03}, \texttt{NEC-06} (Mapa Reativo e Guichê) & \texttt{RF-06}, \texttt{RNF-01}, \texttt{RNF-04} & \texttt{CA-02} & \texttt{seating-\allowbreak{}grid.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-06}, \texttt{RNF-04}); \texttt{session-\allowbreak{}seats-\allowbreak{}polling.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-06}, \texttt{RNF-01}) \\
+\midrule
+\texttt{STK-01}, \texttt{STK-03} / \texttt{NEC-01}, \texttt{NEC-03} (Venda Atômica ACID) & \texttt{RF-07}, \texttt{RF-08}, \texttt{RNF-02}, \texttt{RES-01}, \texttt{RES-02}, \texttt{RES-04} & \texttt{CA-01}, \texttt{CA-15} & \texttt{venda-\allowbreak{}atomica.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-07}, \texttt{CA-01}); \texttt{concurrency-\allowbreak{}acid-\allowbreak{}50-\allowbreak{}threads.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-07}, \texttt{CA-01}); \texttt{cancelamento-\allowbreak{}auditavel.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-08}, \texttt{CA-15}) \\
+\midrule
+\texttt{STK-03}, \texttt{STK-05} / \texttt{NEC-04}, \texttt{NEC-08} (Cancelamento Imutável) & \texttt{RF-09} & \texttt{CA-03} & \texttt{cancelamento-\allowbreak{}auditavel.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-09}); \texttt{database-\allowbreak{}schema.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-09}) \\
+\midrule
+\texttt{STK-05} / \texttt{NEC-04} (Privacidade e LGPD Art. 18) & \texttt{RF-10}, \texttt{RNF-03} & \texttt{CA-06} & \texttt{cryptoservice.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-10}); \texttt{compliance-\allowbreak{}anonymization.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-10}) \\
+\midrule
+\texttt{STK-01} / \texttt{NEC-01} (Isolamento Multi-Tenant SaaS) & \texttt{RNF-03}, \texttt{RNF-06} & \texttt{CA-04} & \texttt{tenancy-\allowbreak{}isolation.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RNF-03}); \texttt{security-\allowbreak{}cross-\allowbreak{}tenant-\allowbreak{}suite.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RNF-03}); \texttt{modules.test.ts}, \texttt{ci-\allowbreak{}workflow.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RNF-06}) \\
+\midrule
+\texttt{STK-02}, \texttt{STK-05} / \texttt{NEC-02}, \texttt{NEC-04} (Painel de Ocupação e Logs) & \texttt{RF-11} & \texttt{CA-07} & \texttt{observability-\allowbreak{}logger.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-11}); \texttt{security-\allowbreak{}cross-\allowbreak{}tenant-\allowbreak{}suite.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-11}) \\
+\midrule
+\texttt{STK-04} / \texttt{NEC-05}, \texttt{NEC-06} (Portal e Reserva Web) & \texttt{RF-12} a \texttt{RF-14}, \texttt{RNF-04}, \texttt{RNF-05}, \texttt{RES-01}, \texttt{RES-03}, \texttt{RES-06} & \texttt{CA-09}, \texttt{CA-10}, \texttt{CA-15} & \texttt{reserva-\allowbreak{}atomica.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-13}, \texttt{CA-09}); \texttt{cryptoservice.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-14}, \texttt{CA-10}); \texttt{auth-\allowbreak{}rbac.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-14}, \texttt{CA-10}); \texttt{seating-\allowbreak{}grid.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RNF-04}) \\
+\midrule
+\texttt{STK-04}, \texttt{STK-03} / \texttt{NEC-07}, \texttt{NEC-08} (Voucher, Cancelamento Web, Baixa e JIT) & \texttt{RF-15} a \texttt{RF-18}, \texttt{RES-01}, \texttt{RES-02} & \texttt{CA-11} a \texttt{CA-14} & \texttt{reserva-\allowbreak{}atomica.\allowbreak{}test.\allowbreak{}ts} (→ \texttt{RF-15}, \texttt{RF-16}, \texttt{RF-18}, \texttt{CA-11}, \texttt{CA-14}); \textbf{sem automação}: \texttt{RF-15} (e-mail/\texttt{email\_\allowbreak{}sent\_\allowbreak{}at}), \texttt{RF-16}/\texttt{CA-12} (cancelamento web), \texttt{RF-17}/\texttt{CA-13} (baixa presencial) \\
+\end{xltabular}%
+}

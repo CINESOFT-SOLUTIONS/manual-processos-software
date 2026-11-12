@@ -1,21 +1,21 @@
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\raggedright\arraybackslash}m{3.4cm} >{\centering\arraybackslash}m{2.0cm} Y >{\raggedright\arraybackslash}m{3.2cm}}
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\hsize=0.587\hsize\sloppy\arraybackslash}X C{1.69cm} >{\hsize=1.811\hsize\sloppy\arraybackslash}X >{\hsize=0.602\hsize\sloppy\arraybackslash}X}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Elemento do Sistema} & \textbf{Adquirir Pronto?} & \textbf{Justificativa Arquitetural} & \textbf{Possível Fornecedor} \\
+\textbf{Elemento do sistema} & \textbf{Adquirir pronto?} & \textbf{Justificativa} & \textbf{Possível fornecedor} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Motor de Bilheteria e Reserva Atômica ACID & \textbf{Não} & Diferencial competitivo central. Exige controle estrito sobre locks pessimistas (\texttt{SELECT FOR UPDATE}) para impedir venda dupla entre web e guichê físico. & Desenvolvimento interno (CineSoft Solutions) \\
+Motor de Bilheteria e Reserva Atômica ACID & \textbf{Não} & Diferencial competitivo central. Exige controle estrito sobre locks pessimistas (\texttt{SELECT\ FOR\ UPDATE}) para impedir venda dupla entre web e guichê físico. & Desenvolvimento interno (CineSoft Solutions) \\
 \midrule
 Isolamento Multi-Tenant e Governança de Dados & \textbf{Não} & Núcleo do modelo SaaS B2B. A injeção automática de \texttt{tenant\_id} via Prisma Client Extensions garante isolamento seguro na mesma base relacional com baixo custo. & Desenvolvimento interno sobre Prisma Extensions \\
 \midrule
-Módulo de Criptografia e Anonimização LGPD & \textbf{Não} & Requisito legal (LGPD Art.~18 e 46). Exige anonimização irreversível sob demanda sem corromper o histórico fiscal de ingressos vendidos pelo cinema. & Desenvolvimento interno (\texttt{Node.js crypto}) \\
+Módulo de Criptografia e Anonimização LGPD & \textbf{Não} & Requisito legal (LGPD Art. 18 e 46). Exige anonimização irreversível sob demanda sem corromper o histórico fiscal de ingressos vendidos pelo cinema. & Desenvolvimento interno (\texttt{Node.js\ crypto}) \\
 \midrule
 Autenticação, Sessão JWT e Controle RBAC & \textbf{Parcial} & Adota biblioteca madura (\texttt{NextAuth.js}) para gerenciar sessões e cookies seguros, desenvolvendo internamente a matriz de perfis (\texttt{RBAC}) e o vínculo por cinema. & \texttt{NextAuth.js} + Middleware proprietário CineSoft \\
 \midrule
-Interface Gráfica e Mapa Interativo de Salas & \textbf{Parcial} & Aproveita bibliotecas de mercado (\texttt{Tailwind}, \texttt{Lucide}) para primitivas visuais, desenvolvendo sob medida a matriz reativa de poltronas e o fluxo do guichê. & \texttt{Tailwind CSS}, \texttt{Lucide Icons} + Componentes CineSoft \\
+Interface Gráfica e Mapa Interativo de Salas & \textbf{Parcial} & Aproveita bibliotecas de mercado (\texttt{Tailwind}, \texttt{Lucide}) para primitivas visuais, desenvolvendo sob medida a matriz reativa de poltronas e o fluxo do guichê. & \texttt{Tailwind\ CSS}, \texttt{Lucide\ Icons} + Componentes CineSoft \\
 \midrule
-ORM e Validação de Schemas de Entrada & \textbf{Sim} & Padrão de mercado que provê tipagem estrita (\emph{type-safety}) e proteção nativa contra \emph{SQL Injection}, sendo antieconômico construir do zero. & \texttt{Prisma ORM} e \texttt{Zod} (Open Source / MIT) \\
+ORM e Validação de Schemas de Entrada & \textbf{Sim} & Padrão de mercado que provê tipagem estrita (\emph{type-safety}) e proteção nativa contra \emph{SQL Injection}, sendo antieconômico construir do zero. & \texttt{Prisma\ ORM} e \texttt{Zod} (Open Source / MIT) \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}
+\end{tabularx}%
 }

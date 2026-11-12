@@ -1,0 +1,29 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\centering\arraybackslash}m{1.52cm} C{2.19cm} >{\hsize=1.007\hsize\sloppy\arraybackslash}X >{\hsize=0.993\hsize\sloppy\arraybackslash}X C{1.69cm}}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ID Cenário} & \textbf{Critério(s)} & \textbf{Descrição do Cenário Homologado} & \textbf{Evidência Observada em Produção} & \textbf{Status} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+UAT-01 & \texttt{CA-10} & Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. & 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco PostgreSQL gerenciado. & \textbf{Aprovado} \\
+\midrule
+UAT-02 & \texttt{CA-09}, \texttt{CA-11} & Seleção de poltronas no mapa 2D (mobile e desktop), reserva atômica e geração de voucher. & 11 reservas confirmadas (múltiplos ingressos de R\$ 30 a R\$ 75) sem falhas de layout. & \textbf{Aprovado} \\
+\midrule
+UAT-03 & \texttt{CA-01}, \texttt{CA-02} & Disputa simultânea de assentos e atualização do mapa por polling a cada 2 s. & 20 assentos vendidos (\texttt{SOLD}) e 10 reservados (\texttt{RESERVED}) com zero venda dupla. & \textbf{Aprovado} \\
+\midrule
+UAT-04 & \texttt{CA-12} & Consulta de histórico em \emph{``Minhas Reservas''} e cancelamento voluntário pelo cliente. & Liberação imediata das poltronas para \texttt{AVAILABLE} após cancelamento web. & \textbf{Aprovado} \\
+\midrule
+UAT-05 & \texttt{CA-13}, \texttt{CA-14} & Busca de reserva no balcão por código localizador, baixa para \texttt{SOLD} e expiração JIT a 60 min. & Conversão instantânea de reserva em ingresso emitido e liberação de vencidas. & \textbf{Aprovado} \\
+\midrule
+UAT-06 & \texttt{CA-03}, \texttt{CA-06} & Cancelamento de ingresso no guichê com justificativa e anonimização LGPD Art. 18. & Trigger PostgreSQL bloqueando deleção da auditoria e PII anonimizado \emph{in-place}. & \textbf{Aprovado} \\
+\midrule
+UAT-07 & \texttt{CA-04} & Tentativa de acesso \emph{cross-tenant} a filmes, salas, sessões e reservas de outro cinema com operador autenticado no \emph{Tenant A}. & Extensão de tenancy bloqueando 100\% dos 500 cenários de intrusão, sem vazamento entre \emph{tenants}. & \textbf{Aprovado} \\
+\midrule
+UAT-08 & \texttt{CA-05} & Acesso de \texttt{ATENDENTE} e \texttt{CLIENTE} a rotas administrativas (\texttt{/admin/*} e \texttt{/api/admin/*}). & Middleware retornando \texttt{HTTP\ 403\ Forbidden} em todas as tentativas, sem exposição de dados. & \textbf{Aprovado} \\
+\midrule
+UAT-09 & \texttt{CA-07} & Consulta ao painel de ocupação por sessão e verificação da trilha de logs das operações críticas. & Percentuais de vendidos/reservados/livres corretos e logs JSON no Axiom com \texttt{tenant\_id}, \texttt{user\_id}, timestamp UTC e retenção de 365 dias. & \textbf{Aprovado} \\
+\midrule
+UAT-10 & \texttt{CA-08} & Cadastro e edição de filmes, salas com layout de assentos e sessões com sobreposição de horário e campos ausentes. & Rejeição com \texttt{HTTP\ 422}, bloqueio do choque de horário na mesma sala e assentos pré-populados como \texttt{AVAILABLE}. & \textbf{Aprovado} \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

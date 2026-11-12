@@ -6,6 +6,7 @@
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{tabularx}
+\usepackage{xltabular}
 \usepackage{booktabs}
 \usepackage{colortbl}
 \usepackage{array}
@@ -47,6 +48,9 @@
 % -----------------------------------------------------------------------------
 % COMPONENTE 3: TEXTO CORRIDO E DESTAQUES
 % -----------------------------------------------------------------------------
+% Ponto opcional de quebra de linha em trechos de código longos (caminhos, arquivos, URLs)
+\newcommand{\quebra}{\hspace{0pt plus 1.5pt}\allowbreak}
+
 \newcommand{\termochave}[1]{\textcolor{BrandNavy}{\fontExtraBold #1}}
 \newcommand{\destaqueazul}[1]{\textcolor{BrandSecondary}{\fontSemiBold #1}}
 \newcommand{\codigoinline}[1]{%
@@ -169,6 +173,41 @@
   \end{minipage}%
   \par\vspace{8pt}%
 }
+
+% Variante para tabelas extensas: mesmo cabeçalho e fonte da \tabelaabnt, mas o
+% conteúdo (xltabular) pode continuar na página seguinte, repetindo o cabeçalho.
+% A linha "Fonte:" fica no último rodapé da tabela (\linhafontetabelalonga em
+% \endlastfoot), para que toda quebra de página seja feita pelo xltabular.
+\newcommand{\tabelaabntlonga}[4]{%
+  \par\vspace{6pt}%
+  \begingroup
+    \refstepcounter{editorialtabela}%
+    \label{#3}%
+    \addcontentsline{lot}{table}{\protect\numberline{\theeditorialtabela}#1}%
+    {\centering\fontsize{9.5pt}{12pt}\selectfont\textcolor{BrandNavy}{\textbf{Tabela \theeditorialtabela}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #1}\par}%
+    \nopagebreak\vspace{4pt}\nopagebreak
+    \renewcommand{\tabularxcolumn}[1]{m{##1}}%
+    \renewcommand{\arraystretch}{1.20}%
+    \setlength{\tabcolsep}{4.5pt}%
+    \setlength{\LTpre}{0pt}%
+    \setlength{\LTpost}{0pt}%
+    \emergencystretch=2em%
+    \tolerance=2500%
+    \hyphenpenalty=50%
+    \hbadness=2500%
+    \def\fontetabelalonga{#2}%
+    #4\par
+  \endgroup
+  \par\vspace{8pt}%
+}
+\newcommand{\linhafontetabelalonga}[1]{%
+  \multicolumn{#1}{@{}p{\textwidth}@{}}{\rule{0pt}{13pt}\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} \fontetabelalonga}\\}
+% Linha invisível de mesma altura no rodapé intermediário (\endfoot): o xltabular
+% só reserva a altura desse rodapé ao quebrar páginas, então ela precisa caber a
+% linha "Fonte:" do último rodapé; sem isso, a última linha pode ir sozinha para a
+% página seguinte, sem cabeçalho repetido.
+\newcommand{\reservafontetabelalonga}[1]{%
+  \multicolumn{#1}{@{}p{\textwidth}@{}}{\rule{0pt}{13pt}\fontsize{8.5pt}{11pt}\selectfont\phantom{\textbf{Fonte:}}}\\}
 
 \newcommand{\tabelaeditorial}[5]{%
   \par\vspace{10pt}%
@@ -430,6 +469,55 @@
   \vspace{4pt}%
 }
 
+% Bloco de diff (comparação entre versões de um arquivo), lido de assets/.
+% Linhas removidas (-) em vermelho, incluídas (+) em verde e cabeçalhos @@ em azul.
+\lstdefinelanguage{diffeditorial}{
+  morecomment=[f][\color{BrandDiffMeta}]{diff},
+  morecomment=[f][\color{BrandDiffMeta}]{---},
+  morecomment=[f][\color{BrandDiffMeta}]{+++},
+  morecomment=[f][\color{BrandDiffHunk}]{@@},
+  morecomment=[f][\color{BrandDiffDel}]{-},
+  morecomment=[f][\color{BrandDiffAdd}]{+}
+}
+
+\newtcbinputlisting{\diffeditorial}[2]{%
+  enhanced,
+  breakable,
+  colback=BrandCodeBg,
+  colframe=BrandCodeBg,
+  arc=3pt,
+  boxrule=0pt,
+  left=10pt,
+  right=10pt,
+  top=8pt,
+  bottom=12pt,
+  overlay unbroken and last={
+    \node[
+      fill=BrandCodePill,
+      text=white,
+      font=\fontsize{7.5pt}{9pt}\fontSemiBold,
+      inner xsep=6pt,
+      inner ysep=2.5pt,
+      rounded corners=2pt,
+      anchor=south east
+    ] at ($(frame.south east) + (-8pt, 4pt)$) {#2};
+  },
+  listing only,
+  listing file={#1},
+  listing options={
+    language=diffeditorial,
+    basicstyle=\codeMonoFont\fontsize{7.8pt}{10pt}\selectfont\color{BrandCodeText},
+    breaklines=true,
+    breakatwhitespace=false,
+    postbreak=\mbox{\textcolor{BrandGrayLight}{$\hookrightarrow$}\space},
+    tabsize=2,
+    showstringspaces=false,
+    columns=fullflexible,
+    keepspaces=true,
+    frame=none
+  }
+}
+
 \newcommand{\blocodigofonte}[1]{%
   \vspace{2pt}%
   \centering
@@ -448,7 +536,7 @@
 \newcommand{\refitem}[1]{%
   \par\noindent
   \hangindent=0cm\hangafter=1
-  {\fontsize{9.5pt}{13.5pt}\selectfont\color{BrandBodyText}#1}\par\vspace{7pt}%
+  {\fontsize{9.5pt}{13.5pt}\selectfont\raggedright\color{BrandBodyText}#1\par}\vspace{7pt}%
 }
 
 \newcommand{\subsecaoreferencias}[1]{%

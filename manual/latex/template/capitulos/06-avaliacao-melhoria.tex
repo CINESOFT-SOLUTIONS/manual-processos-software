@@ -1,91 +1,68 @@
 % =============================================================================
 % CAPÍTULO 6: AVALIAÇÃO E MELHORIA DOS PROCESSOS
+% Conteúdo sincronizado com manual/capitulos/06-avaliacao-melhoria.md (fonte da verdade).
+% As tabelas são importadas de assets/capitulo-06/tabelas/.
 % =============================================================================
 
 \aberturacapitulo{Capítulo 6}{Avaliação e melhoria dos processos}
-
-
 
 \subsecao{6.1 Referencial e recorte}
 
 Para avaliar e aprimorar continuamente a qualidade de sua governança de engenharia, a \textbf{CineSoft Solutions} adota o modelo \textbf{MPS.BR} como referência conceitual, com foco específico no processo de \textbf{Gerência de Projetos (\texttt{GPR})} definido no \emph{Guia Geral MPS de Software (MR-MPS-SW:2024)}. A análise conduzida neste capítulo fica estritamente delimitada ao planejamento, à gestão de riscos e ao acompanhamento do projeto documentados nas seções \textbf{4.1} (\emph{Plano de projeto: escopo, cronograma, recursos e entregas}), \textbf{4.2} (\emph{Plano de gestão de riscos: riscos identificados, probabilidade, impacto e respostas}) e \textbf{4.5} (\emph{Métricas de acompanhamento do projeto}) deste Manual de Processos de Software. As questões avaliadas a seguir constituem adaptações didáticas orientadas à melhoria contínua do processo da equipe, não atribuindo nível formal de maturidade MPS.BR nem atestando conformidade integral com todos os resultados esperados do modelo.
 
-
 \subsecao{6.2 Diagnóstico do manual}
 
 Antes da execução do ciclo de melhoria (sobre a linha de base documental da versão \texttt{1.7} do manual), a equipe realizou uma auditoria interna examinando as seções \textbf{4.1, 4.2 e 4.5} frente às quatro questões de diagnóstico. Cada item foi classificado como \textbf{Descrito} (informação explícita e suficiente), \textbf{Parcialmente Descrito} (informação existente, porém incompleta) ou \textbf{Não Descrito} (informação ausente):
 
-\tabelaabnt{Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7)}{CineSoft Solutions (2026)}{tab:diagnostico_inicial}{\input{../../../assets/capitulo-06/tabelas/diagnostico-processo.tex}}
-
+\tabelaabnt{Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7)}{CineSoft Solutions (2026)}{tab:diagnostico_de_avaliacao_e_maturidade_de_process}{\input{../../../assets/capitulo-06/tabelas/diagnostico-processo.tex}}
 
 \subsecao{6.3 Plano de uma melhoria}
 
 Com base nas lacunas identificadas no diagnóstico da seção 6.2 --- especialmente a ausência de atribuição nominal de responsáveis por entrega/Sprint, a falta de um protocolo claro para monitoramento e tratamento de atrasos e a incompletude da matriz de riscos ---, a equipe estruturou e executou o seguinte plano de ação:
 
-\tabelaabnt{Plano de Melhoria de Processo de Software (PMP)}{CineSoft Solutions (2026)}{tab:plano_pmp}{\input{../../../assets/capitulo-06/tabelas/plano-melhoria-pmp.tex}}
-
+\tabelaabnt{Plano de Melhoria de Processo de Software (PMP)}{CineSoft Solutions (2026)}{tab:plano_de_melhoria_de_processo_de_software_pmp}{\input{../../../assets/capitulo-06/tabelas/plano-melhoria-pmp.tex}}
 
 \subsecao{6.4 Atualização e verificação}
 
-A melhoria planejada foi efetivamente aplicada no Capítulo 4 deste manual. A tabela a seguir confronta diretamente o trecho que constava antes (Versão \texttt{1.7}) com a nova redação implementada (Versão \texttt{2.0}):
+A melhoria planejada foi efetivamente aplicada no Capítulo 4 deste manual. O quadro comparativo a seguir confronta diretamente o trecho que constava antes (Versão \texttt{1.7}) com a nova redação implementada (Versão \texttt{2.0}):
 
-\tabelaabnt{Quadro Comparativo: Antes vs.~Depois da Revisão de Processos}{CineSoft Solutions (2026)}{tab:comparativo_melhoria}{%
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.2cm} Y Y}
-\arrayrulecolor{GithubTableBorder}\toprule
-\rowcolor{BrandTableHeader}
-\textbf{Seção / Dimensão} & \textbf{Versão 1.7 (Antes da Melhoria)} & \textbf{Versão 2.0 (Após a Melhoria)} \\
-\midrule
-\arrayrulecolor{BrandGrayRule}
-Seção 4.1: Escopo e Cronograma & Cronograma empírico sem divisão formal de entregas e sem responsáveis nominais. & EAP em 3 níveis, 3 Macroentregas definidas e responsáveis nominais por Sprint. \\
-\midrule
-Seção 4.1: Tratamento de Desvios & Sem procedimento documentado para acompanhamento e contingência de atrasos. & Protocolo claro de 48h no GitHub Projects com pareamento técnico ou fatiamento MoSCoW. \\
-\midrule
-Seção 4.2: Matriz de Riscos & Registro de riscos resumido, sem severidade quantitativa (P×I) e sem ações reativas. & Risk Register com 7 riscos reais quantificados, mitigação preventiva e contingência. \\
-\midrule
-Seção 4.5: Métricas de Projeto & Ausência de tabela formal de indicadores, metas e ações corretivas de desvio. & 6 métricas objetivas (Lead Time, WIP, testes, taxa de defeitos, escopo e custos). \\
-\arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}%
-}
-}
+\subsubsecao{Quadro Comparativo: Antes vs.~Depois da Revisão (Seções 4.1, 4.2 e 4.5)}
+
+\tabelaabnt{Quadro Comparativo: Antes vs.~Depois da Revisão de Processos}{CineSoft Solutions (2026)}{tab:quadro_comparativo_antes_vs_depois_da_revisao_de}{\input{../../../assets/capitulo-06/tabelas/quadro-comparativo.tex}}
+
+O Código 1 registra a alteração efetiva do texto das seções 4.1, 4.2 e 4.5 no arquivo \texttt{manual/\quebra{}capitulos/\quebra{}04-\quebra{}gerenciamento-\quebra{}tecnico.\quebra{}md}, entre a Versão 1.7 (commit \texttt{02edc29}, linha de base do diagnóstico) e a Versão 2.0 (commit \texttt{bb40194}, de 09/11/2026, em que a melhoria foi aplicada). Linhas iniciadas por \texttt{-} foram removidas e linhas iniciadas por \texttt{+} foram incluídas. O mesmo conteúdo está em \href{../../assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff}{\texttt{assets/\quebra{}capitulo-\quebra{}06/\quebra{}diffs/\quebra{}melhoria-\quebra{}cap04-\quebra{}v1.\quebra{}7-\quebra{}v2.\quebra{}0.\quebra{}diff}}, e o diff completo do arquivo pode ser consultado com \texttt{git\ diff\ 02edc29\ bb40194\ -\quebra{}\/\quebra{}-\quebra{}\ manual/\quebra{}capitulos/\quebra{}04-\quebra{}gerenciamento-\quebra{}tecnico.\quebra{}md}.
+
+{\blocodigocaption{Diff das seções 4.1, 4.2 e 4.5 entre a Versão 1.7 e a Versão 2.0}{}{cod:diff_das_secoes_4_1_4_2_e_4_5_entre_a_versao_1_7}}
+\diffeditorial{../../../assets/capitulo-06/diffs/melhoria-cap04-v1.7-v2.0.diff}{git diff}
+{\blocodigofonte{Histórico de versões do repositório \texttt{manual-\quebra{}processos-\quebra{}software} no GitHub (2026)}}
 
 \subsubsecao{Reavaliação Pós-Melhoria (Verificação da Eficácia Documental)}
 
 Reavaliando as seções \textbf{4.1, 4.2 e 4.5} sob as mesmas quatro questões do diagnóstico inicial, comprova-se a superação integral das lacunas:
 
-\tabelaabnt{Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0)}{CineSoft Solutions (2026)}{tab:diagnostico_final}{\input{../../../assets/capitulo-06/tabelas/reavaliacao-processo.tex}}
-
+\tabelaabnt{Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0)}{CineSoft Solutions (2026)}{tab:reavaliacao_pos_melhoria_da_conformidade_do_manu}{\input{../../../assets/capitulo-06/tabelas/reavaliacao-processo.tex}}
 
 \subsecao{6.5 Acompanhamento da execução}
 
 Para assegurar que a melhoria incorporada ao manual continue sendo praticada de forma sustentável nas próximas iterações e ao longo das Macroentregas 2 e 3, a CineSoft Solutions estabeleceu a seguinte sistemática de verificação operacional:
 
 \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
 \tightlist
-\item
-  \textbf{Quem realiza a conferência:} \textbf{Kayque Vicente Silva} (Gerente de Projeto \& QA Lead), em conjunto com \textbf{Gabriel Henrique Lourenço Dias} (Tech Lead).
-\item
-  \textbf{Quando ocorre a verificação:} Semanalmente, durante a cerimônia de \emph{Sprint Planning / Review}, e continuamente a cada abertura de Pull Request no repositório do GitHub.
-\item
-  \textbf{Qual registro e medida são observados:}
+\item \textbf{Quem realiza a conferência:} \textbf{Kayque Vicente Silva} (Gerente de Projeto \& QA Lead), em conjunto com \textbf{Gabriel Henrique Lourenço Dias} (Tech Lead).
+\item \textbf{Quando ocorre a verificação:} Semanalmente, durante a cerimônia de \emph{Sprint Planning / Review}, e continuamente a cada abertura de Pull Request no repositório do GitHub.
+\item \textbf{Qual registro e medida são observados:}
 
-  \begin{itemize}
+\begin{itemize}
   \tightlist
-  \item
-    \textbf{Indicador de Conformidade do Quadro Kanban:} Percentual de cartões ativos nas colunas \emph{Sprint Backlog} e \emph{In Progress} do GitHub Projects que possuem simultaneamente \textbf{responsável atribuído (\texttt{Assignee})}, \textbf{prazo estipulado (\texttt{Iteration\ /\ Milestone})} e \textbf{requisitos vinculados} (Meta: \textbf{100\% dos cartões conformes}).
-  \item
-    \textbf{Registro de Auditoria:} Caso seja identificado qualquer cartão sem responsável ou acima do limite de 48h sem atualização, a pendência é registrada e corrigida imediatamente na abertura da reunião semanal, acionando o protocolo de pareamento descrito na seção 4.1.
-  \end{itemize}
+  \item   \textbf{Indicador de Conformidade do Quadro Kanban:} Percentual de cartões ativos nas colunas \emph{Sprint Backlog} e \emph{In Progress} do GitHub Projects que possuem simultaneamente \textbf{responsável atribuído (\texttt{Assignee})}, \textbf{prazo estipulado (\texttt{Iteration\ /\quebra{}\ Milestone})} e \textbf{requisitos vinculados} (Meta: \textbf{100\% dos cartões conformes}).
+  \item   \textbf{Registro de Auditoria:} Caso seja identificado qualquer cartão sem responsável ou acima do limite de 48h sem atualização, a pendência é registrada e corrigida imediatamente na abertura da reunião semanal, acionando o protocolo de pareamento descrito na seção 4.1.
+\end{itemize}
 \end{enumerate}
-
 
 \subsubsecao{Referências Normativas do Capítulo}
 
 \begin{itemize}
 \tightlist
-\item
-  \textbf{SOFTEX.} \emph{Guia Geral MPS de Software: 2024 (MR-MPS-SW)}. Associação para Promoção da Excelência do Software Brasileiro. Disponível em: https://softex.br/download/guia-geral-mps-de-software2024/.
-\item
-  \textbf{ABNT.} \emph{NBR ISO/IEC/IEEE 12207:2021 --- Engenharia de sistemas e software --- Processos de ciclo de vida de software}. Rio de Janeiro: ABNT, 2021.
+\item \textbf{SOFTEX.} \emph{Guia Geral MPS de Software: 2024 (MR-MPS-SW)}. Associação para Promoção da Excelência do Software Brasileiro. Disponível em: \url{https://softex.br/download/guia-geral-mps-de-software2024/}.
+\item \textbf{ABNT.} \emph{NBR ISO/IEC/IEEE 12207:2021 --- Engenharia de sistemas e software --- Processos de ciclo de vida de software}. Rio de Janeiro: ABNT, 2021.
 \end{itemize}

@@ -1,0 +1,17 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\raggedright\arraybackslash}m{2.02cm} >{\hsize=1.484\hsize\sloppy\arraybackslash}X >{\hsize=0.967\hsize\sloppy\arraybackslash}X >{\hsize=0.549\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Modalidade} & \textbf{Quando é acionada} & \textbf{Como é feita} & \textbf{Responsável} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Corretiva & Defeito apontado pelo cinema ou identificado nos logs (conflito de venda, e-mail de voucher que não chega) & \emph{Branch} \texttt{fix/*} → Pull Request → promoção faseada & Desenvolvedor do módulo, com revisão do Tech Lead \\
+\midrule
+Adaptativa & Mudança fora do controle da equipe: nova versão do Node.js ou do Next.js, alteração nas regras fiscais estaduais (R-07), instabilidade do provedor de e-mail (R-05) ou do banco de dados (R-02) & Atualização da versão e ajuste do ponto afetado, com a suíte de testes completa & Desenvolvedor do módulo e Engenheiro de Backend, Segurança \& DevOps \\
+\midrule
+Perfectiva & Evolução prevista no roadmap: emissão fiscal, portal gerencial e armazenamento de mídias das Macroentregas 2 e 3 & \emph{Branch} \texttt{feat/*} ligada ao requisito correspondente & Gerente de Projeto (Kayque Vicente) e equipe \\
+\midrule
+Preventiva & Revisão mensal do registro de riscos do capítulo 4 & \emph{Pull Request} de manutenção versionada: índices do banco por \texttt{tenant\_id} (R-02), revisão de dependências e ajuste de acessibilidade & Tech Lead \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

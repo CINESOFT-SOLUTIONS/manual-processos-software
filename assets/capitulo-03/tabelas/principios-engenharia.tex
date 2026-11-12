@@ -1,0 +1,17 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\hsize=0.513\hsize\sloppy\arraybackslash}X >{\hsize=1.621\hsize\sloppy\arraybackslash}X >{\hsize=0.866\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Princípio} & \textbf{Descrição} & \textbf{Verificação} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Spec-Driven Development (SDD) & Nenhuma funcionalidade é implementada sem especificação prévia em \texttt{specs/}, com schemas de entrada e saída validados por contratos formais (Zod). & O \emph{Pull Request} deve referenciar a especificação correspondente; caso contrário, é recusado na revisão. \\
+\midrule
+Domain-Driven Design (DDD) & Organização por contextos delimitados (\emph{Bounded Contexts}), isolando a lógica de negócio (sessões, ingressos, bloqueios temporários) de infraestrutura e persistência. & Checklist de revisão e regra \texttt{eslint\ no-cycle} contra dependências circulares. \\
+\midrule
+Princípios SOLID & Código modular com responsabilidade única, desacoplamento de serviços e injeção de dependências. & Checklist de revisão de código. \\
+\midrule
+TDD e Pirâmide de Testes & Testes automatizados das regras críticas de domínio escritos antes ou junto da implementação. & Gate de testes e meta de cobertura (Tabela de métricas). \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

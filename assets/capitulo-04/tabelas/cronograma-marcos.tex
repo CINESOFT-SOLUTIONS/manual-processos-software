@@ -1,14 +1,15 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.6cm} C{2.6cm} C{2.6cm} Y}
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\hsize=1.090\hsize\sloppy\arraybackslash}X C{1.36cm} >{\hsize=1.124\hsize\sloppy\arraybackslash}X >{\hsize=0.921\hsize\sloppy\arraybackslash}X >{\hsize=1.013\hsize\centering\arraybackslash}X >{\hsize=0.852\hsize\centering\arraybackslash}X C{1.70cm}}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Macroentrega} & \textbf{Período / Sprint} & \textbf{Responsável} & \textbf{Principais Entregáveis e Marcos} \\
+\textbf{Marco} & \textbf{Versão} & \textbf{Escopo} & \textbf{Critério de aceite} & \textbf{Responsável técnico} & \textbf{Janela} & \textbf{Status} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-\textbf{M1: MVP Core} & Sprints 1 a 3 & Gabriel / Kayque & Catálogo de filmes, trava atômica de assentos e bilheteria física. \\
-\textbf{M2: Escala e PIX} & Sprints 4 a 6 & Gabriel / Carlos & Gateway Mercado Pago Pix, webhook e disparo Resend. \\
-\textbf{M3: Enterprise} & Sprints 7 a 9 & Yury / Time & Emissão NFC-e SEFAZ, PDV bomboniere e relatórios avançados. \\
+\textbf{Macroentrega 1} (MVP Operacional) & \texttt{v1.0.0} & Multi-tenant, RBAC, criptografia de CPF, CRUDs de filmes, salas e sessões, bilheteria atômica, portal de reservas com expiração JIT, painel de ocupação, anonimização LGPD e deploy (\texttt{RF-01} a \texttt{RF-18}). & \texttt{RF-01} a \texttt{RF-18} entregues e suíte de testes 100\% aprovada. & Gabriel Lourenço & 29/09/2026 a 09/11/2026 & Concluído \\
+\midrule
+\textbf{Macroentrega 2} (Escala e Pagamentos) & \texttt{v2.0.0} & Gateway de pagamento (PIX e cartão), Resend Pro com domínio próprio, planos Pro de banco de dados e hospedagem. & Pagamento conciliado em homologação e e-mails com DKIM/SPF validados. & Carlos Eduardo & Dez/2026 a Jan/2027 & Planejado \\
+\midrule
+\textbf{Macroentrega 3} (Enterprise e Fiscal) & \texttt{v3.0.0} & NFC-e via Focus NFe/SEFAZ, bomboniere e estoque, fidelidade e console global de tenants. & Emissão fiscal validada em homologação e \emph{onboarding} de tenant sem intervenção manual. & Kayque Vicente e Yury Nogueira & Fev/2027 a Abr/2027 & Backlog \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}
-\end{center}
+\end{tabularx}%
+}

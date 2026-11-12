@@ -1,0 +1,21 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\hsize=1.229\hsize\sloppy\arraybackslash}X >{\hsize=1.127\hsize\sloppy\arraybackslash}X >{\hsize=0.917\hsize\sloppy\arraybackslash}X >{\hsize=0.726\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Métrica} & \textbf{Meta} & \textbf{Fonte de coleta} & \textbf{Frequência} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Cobertura de testes nas regras de domínio & ≥ 70\% (\emph{statements}, funções e linhas) e ≥ 80\% (\emph{branches}) & Relatório do Vitest no CI & A cada \emph{Pull Request} \\
+\midrule
+Aprovação da suíte de testes & 100\% & GitHub Actions & A cada \emph{Pull Request} \\
+\midrule
+Falhas de build no CI & Tendência decrescente & GitHub Actions & A cada macroentrega \\
+\midrule
+Defeitos escapados para produção & 0 críticos & Registro de incidentes & A cada macroentrega \\
+\midrule
+Tempo médio de correção de defeitos & Definido na primeira macroentrega e reavaliado depois & Quadro de tarefas (GitHub Projects) & A cada macroentrega \\
+\midrule
+Aderência aos critérios de aceitação & 100\% das funcionalidades entregues & Revisão do Engenheiro de Qualidade & A cada macroentrega \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

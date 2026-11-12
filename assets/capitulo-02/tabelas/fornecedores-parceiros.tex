@@ -1,0 +1,23 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\hsize=0.556\hsize\sloppy\arraybackslash}X >{\hsize=0.905\hsize\sloppy\arraybackslash}X >{\hsize=0.978\hsize\sloppy\arraybackslash}X >{\hsize=1.562\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Fornecedor} & \textbf{Categoria e serviço} & \textbf{Plano e custo comercial} & \textbf{Impacto e mitigação de riscos} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbf{Vercel Inc.} & \textbf{PaaS \& CDN Edge:} Next.js 14 e serverless & \textbf{US\$ 20/mês} por dev (Vercel Pro; piloto Hobby grátis) & SLA 99,99\% na borda. Mitigação: build determinístico e rollback instantâneo. \\
+\midrule
+\textbf{Supabase} & \textbf{DBaaS PostgreSQL:} Persistência ACID e pooling & \textbf{US\$ 25 a US\$ 69/mês} (Plano Pro compute dedicado) & Crítico para locks \texttt{SELECT\ FOR\ UPDATE}. Mitigação: réplicas e migrações Prisma. \\
+\midrule
+\textbf{Resend} & \textbf{E-mail transacional:} API de vouchers (DKIM/SPF) & \textbf{US\$ 20/mês} (franquia de 50.000 e-mails/mês) & Impacta envio de voucher (\texttt{CA-11}). Mitigação: exibição imediata em tela. \\
+\midrule
+\textbf{Axiom Inc.} & \textbf{Log drain:} Observabilidade e auditoria LGPD & \textbf{US\$ 25/mês} (1 TB/mês; retenção de 365 dias) & Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII. \\
+\midrule
+\textbf{GitHub Inc.} & \textbf{CI/CD \& Git:} Repositórios e GitHub Actions & \textbf{US\$ 4/usuário/mês} (Plano Team e branch rules) & Sustenta testes automatizados. Mitigação: bloqueio de merge sem testes. \\
+\midrule
+\textbf{Stripe / Pagar.me} \emph{(M2)} & \textbf{Gateway financeiro:} Checkout PIX e cartão & \textbf{0,99\% PIX / 3,99\% + R\$ 0,39 Cartão} (sem mensalidade) & Certificação PCI-DSS. Mitigação: webhooks idempotentes e balcão físico. \\
+\midrule
+\textbf{Focus NFe} \emph{(M3)} & \textbf{Mensageria fiscal:} Emissão de NFC-e SEFAZ & \textbf{R\$ 149/mês} (até 2.000 notas fiscais/mês) & Conformidade tributária. Mitigação: fila assíncrona com contingência offline. \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

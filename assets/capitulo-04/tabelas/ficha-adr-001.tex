@@ -1,0 +1,19 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\raggedright\arraybackslash}m{2.59cm} >{\hsize=1.000\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Elemento} & \textbf{Descrição} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Título e status & Arquitetura de monólito modular em Next.js 14 -- Aprovada \\
+\midrule
+Contexto & Integrar Portal do Cliente, Bilheteria e Back-office sob o mesmo motor transacional, com equipe enxuta \\
+\midrule
+Alternativas & (1) Monólito modular Next.js; (2) Microsserviços; (3) SPA e API separadas \\
+\midrule
+Decisão & Monólito modular com módulos de domínio verticais (\texttt{src/\allowbreak{}modules/\allowbreak{}*}) e regra ESLint \texttt{import/\allowbreak{}no-cycle} \\
+\midrule
+Consequências & (+) Transações ACID simples e tipagem unificada; (-) exige disciplina do \emph{linter} para manter as fronteiras entre módulos \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

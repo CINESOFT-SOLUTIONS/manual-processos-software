@@ -1,26 +1,25 @@
 {\footnotesize
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\arraybackslash}m{2.6cm} C{2.2cm} C{2.4cm} Y C{2.2cm}}
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\hsize=0.756\hsize\sloppy\arraybackslash}X L{2.74cm} >{\hsize=0.705\hsize\sloppy\arraybackslash}X >{\hsize=1.791\hsize\sloppy\arraybackslash}X >{\hsize=0.749\hsize\sloppy\arraybackslash}X}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Recurso / Serviço} & \textbf{Plano M1} & \textbf{Plano M2/M3} & \textbf{Finalidade no Projeto} & \textbf{Custo Estimado} \\
+\textbf{Recurso} & \textbf{Plano na M1} & \textbf{Plano na M2 e M3} & \textbf{Finalidade} & \textbf{Custo estimado} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Vercel (PaaS / Edge CDN) & Hobby (\emph{free tier}) & Pro (1 assento \emph{deploy}) & Hospedagem Next.js 14, CDN e ambientes Preview/Produção & US\$ 20/mês \\
+Vercel & Hobby (gratuito) & Pro & Hospedagem, CDN e ambientes de \emph{Preview} e Produção & US\$ 20/mês \\
 \midrule
-Neon / Supabase (DBaaS) & Free & Pro (PITR e réplicas) & Persistência ACID, pooler \emph{Supavisor} e migrações & US\$ 25/mês \\
+Supabase DBaaS PostgreSQL & Gratuito & Pro (PITR e réplicas) & Persistência ACID, \emph{pooler} e migrações Prisma & US\$ 25/mês \\
 \midrule
-Resend (E-mail transacional) & Free (console teste) & Pro (50k e-mails/mês) & Envio de vouchers e confirmações com DKIM/SPF & US\$ 20/mês \\
+Resend & Gratuito & Pro & Vouchers e confirmações com DKIM/SPF & US\$ 20/mês \\
 \midrule
-Axiom (Observabilidade) & Free & Cloud (1 TB/mês, 365d) & \emph{Log drain} estruturado e retenção legal LGPD & US\$ 25/mês \\
+Axiom & Gratuito & Cloud (retenção de 365 dias) & \emph{Log drain} e retenção legal & US\$ 25/mês \\
 \midrule
-GitHub (Código e CI/CD) & Free & Team (4 assentos) & Repositórios, Projects, Actions e branches protegidas & US\$ 4/usuário \\
+Subtotal dos serviços base & -- & -- & Vercel, banco, Resend e Axiom & \textbf{US\$ 90/mês} \\
 \midrule
-Focus NFe (Mensageria fiscal) & Não utilizado & Empresarial (M3) & Emissão e transmissão de NFC-e à SEFAZ & R\$ 149/mês \\
+GitHub & Gratuito & Team (4 assentos) & Repositórios, Projects e Actions & US\$ 4/usuário \\
 \midrule
-Stripe / Pagar.me (Gateway) & Não utilizado & Taxa transacional (M2) & Checkout PIX e cartão no Portal do Cliente & 3,99\% + R\$ 0,39 \\
+Focus NFe & Não utilizado & Somente M3 & Emissão de NFC-e & R\$ 149/mês \\
 \midrule
-\rowcolor{BrandTableHeader}
-\textbf{Total serviços base (M2/M3)} & --- & --- & Vercel + Neon + Resend + Axiom & \textbf{US\$ 90/mês} \\
+Gateway de pagamento & Não utilizado & Somente M2 & PIX e cartão & 3,99\% + R\$ 0,39 por transação \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
 \end{tabularx}%
 }

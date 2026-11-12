@@ -1,0 +1,33 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{C{1.05cm} >{\hsize=0.864\hsize\sloppy\arraybackslash}X >{\hsize=1.136\hsize\sloppy\arraybackslash}X C{1.55cm} L{2.74cm}}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ADR} & \textbf{Título} & \textbf{Decisão resumida} & \textbf{Status} & \textbf{Relacionado a} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+001 & Monólito modular em Next.js 14 & Módulos verticais e \texttt{import/\allowbreak{}no-cycle} & Aprovada & R-06 \\
+\midrule
+002 & Interface com Tailwind CSS & Tema escuro, sem CSS em tempo de execução & Aprovada & Usabilidade \\
+\midrule
+003 & Backend em TypeScript com Route Handlers & API REST tipada com validação \texttt{Zod} & Aprovada & R-06 \\
+\midrule
+004 & PostgreSQL com Prisma ORM & Banco relacional ACID com transações interativas & Aprovada & R-01 \\
+\midrule
+005 & Nuvem \emph{serverless} (Vercel, DBaaS e CI) & Hospedagem na borda, \emph{pooler} na porta \texttt{6543} e CI/CD no GitHub Actions & Aprovada & R-02 \\
+\midrule
+006 & API REST e \emph{polling} de 2s no mapa de sala & Atualização periódica sem conexões persistentes & Aprovada & \texttt{RF} de bilheteria \\
+\midrule
+007 & Pré-população de \texttt{SessionSeat} e \texttt{SELECT\ FOR\ UPDATE} & Lock pessimista ordenado por ID & Aprovada & R-01 \\
+\midrule
+008 & Criptografia de CPF & \texttt{HMAC-SHA256} (busca) e \texttt{AES-256-GCM} (confidencialidade) & Aprovada & R-03 \\
+\midrule
+009 & Anonimização \emph{in-place} (LGPD Art. 18) & Sobrescrita irreversível, preservando \texttt{Ticket} & Aprovada & R-03 \\
+\midrule
+010 & Auditoria \emph{append-only} por \emph{trigger} & \texttt{trg\_\allowbreak{}protect\_\allowbreak{}cancellation\_\allowbreak{}audits} impede \texttt{UPDATE} e \texttt{DELETE} & Aprovada & Auditoria \\
+\midrule
+011 & \emph{Log drain} gerenciado (Axiom, 365 dias) & Logs estruturados com PII mascarado & Aprovada & LGPD \\
+\midrule
+012 & Expiração \emph{Just-in-Time} de reservas & Avaliação de \texttt{expiresAt} na leitura e na escrita & Aprovada & R-04 \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

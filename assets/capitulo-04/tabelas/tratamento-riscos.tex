@@ -1,0 +1,31 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\centering\arraybackslash}m{1.05cm} >{\hsize=1.776\hsize\sloppy\arraybackslash}X >{\hsize=0.791\hsize\sloppy\arraybackslash}X >{\hsize=0.665\hsize\centering\arraybackslash}X >{\hsize=0.767\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ID} & \textbf{Resposta e mitigação} & \textbf{Gatilho de alerta} & \textbf{Responsável} & \textbf{Monitoramento} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+R-01 & Pré-população de \texttt{SessionSeat}, ordenação de IDs contra \emph{deadlock} e \texttt{SELECT\ .\allowbreak{}.\allowbreak{}.\allowbreak{}\ FOR\ UPDATE} em transação ACID, validados por teste de concorrência com 50 threads (ADR-007) & Falha no teste de concorrência & Gabriel Lourenço & CI a cada PR \\
+\midrule
+R-02 & \emph{Connection pooler} transacional (porta \texttt{6543}), índices por \texttt{tenant\_id} e migração para plano Pro com réplicas e PITR na M2 (ADR-005) & Erros de conexão na telemetria & Carlos Eduardo & Telemetria e revisão por Sprint \\
+\midrule
+R-03 & CPF nunca em texto puro (\texttt{HMAC-SHA256} e \texttt{AES-256-GCM}), extensão Prisma com \texttt{tenant\_id} automático e 500 cenários \emph{cross-tenant} (ADR-008) & Falha em cenário \emph{cross-tenant} & Carlos Eduardo e Yury Nogueira & CI a cada PR \\
+\midrule
+R-04 & Bloqueio de reservas web a menos de 60 minutos da sessão e expiração \emph{Just-in-Time} (ADR-012) & Taxa alta de reservas expiradas & Gabriel Lourenço & Painel de ocupação \\
+\midrule
+R-05 & Interface \texttt{EmailProvider} desacoplada, voucher exibido na confirmação e em ``Minhas Reservas'', e Resend Pro com domínio próprio na M2 & Falhas de entrega nos logs & Carlos Eduardo & Telemetria \\
+\midrule
+R-06 & Contratos \texttt{Zod}, CI bloqueante por PR e pareamento quando a tarefa excede 48h & Tarefa parada há mais de 48h & Kayque Vicente & Quadro Kanban \\
+\midrule
+R-07 & Fila assíncrona com contingência offline (Focus NFe) e recebimento presencial como alternativa ao gateway & Falhas de transmissão fiscal ou de pagamento & Gabriel Lourenço e Kayque Vicente & Telemetria (M2 e M3) \\
+\midrule
+R-08 & Revisão cruzada, ADRs e substituto por papel (Tabela 8) & Tarefa crítica dependente de uma só pessoa & Kayque Vicente & Revisão por macroentrega \\
+\midrule
+R-09 & Acompanhamento mensal do consumo e revisão de planos & Custo acima de 10\% do teto & Carlos Eduardo & Painéis de cobrança \\
+\midrule
+R-10 & Auditoria de dependências e varredura de segredos no CI (Seção 3.5) & Vulnerabilidade alta/crítica fora do baseline documentado & Carlos Eduardo & CI a cada PR \\
+\midrule
+R-11 & Workshops 3 e 4 antes das macroentregas (Tabela 11) & Critério de eficácia do workshop não atingido & Kayque Vicente & Revisão do plano de capacitação \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

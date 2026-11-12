@@ -1,0 +1,21 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\centering\arraybackslash}m{1.36cm} >{\hsize=0.481\hsize\sloppy\arraybackslash}X >{\hsize=1.519\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ID} & \textbf{Característica ISO 25010} & \textbf{Especificação e Métrica Objetiva} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+RNF-01 & \textbf{Eficiência de Desempenho} & Latência HTTP p95 \textless{} 800 ms e p99 \textless{} 1.500 ms nas transações de venda e reserva; sincronização visual do mapa de assentos por polling a cada 2 s. \\
+\midrule
+RNF-02 & \textbf{Confiabilidade e Atomicidade} & Zero ocorrências de venda ou reserva dupla (\emph{double-booking}) sob carga concorrente de 50 threads simultâneas disputando a mesma poltrona. \\
+\midrule
+RNF-03 & \textbf{Segurança e Isolamento} & Isolamento multi-tenant absoluto validado por 500 cenários automatizados de intrusão \emph{cross-tenant} e criptografia de CPF com \texttt{HMAC-SHA256} + \texttt{AES-256-GCM}. \\
+\midrule
+RNF-04 & \textbf{Usabilidade e Responsividade} & Interface adaptativa para smartphones (a partir de \texttt{320px}) e terminais desktop de bilheteria (\texttt{1024x768+}), aderente às diretrizes WCAG 2.1 Nível AA. \\
+\midrule
+RNF-05 & \textbf{Compatibilidade} & Operação integral via navegadores modernos (Chrome, Safari, Edge, Firefox) sem exigência de plugins locais ou aplicativos nativos. \\
+\midrule
+RNF-06 & \textbf{Manutenibilidade} & Arquitetura limpa orientada a módulos com tipagem estática estrita (\texttt{tsc\ -\/\allowbreak{}-noEmit}) e zero dependências circulares (\texttt{ESLint\ import/\allowbreak{}no-\allowbreak{}cycle}). \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

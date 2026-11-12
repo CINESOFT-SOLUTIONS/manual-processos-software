@@ -1,0 +1,33 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\centering\arraybackslash}m{1.52cm} >{\hsize=0.968\hsize\sloppy\arraybackslash}X >{\hsize=1.032\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ADR} & \textbf{Decisão} & \textbf{Efeito verificável} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+ADR-001 & Monólito modular em Next.js 14 com módulos verticais & \texttt{src/\allowbreak{}modules/\allowbreak{}*} e \texttt{src/shared/*}; lint \texttt{import/\allowbreak{}no-cycle} \\
+\midrule
+ADR-002 & Interface reativa com Tailwind CSS e React Server/Client Components & \texttt{src/app/}, \texttt{src/\allowbreak{}components/}, \texttt{SeatingGrid} como Client Component \\
+\midrule
+ADR-003 & Backend em TypeScript com Route Handlers & 31 \texttt{route.ts}, validação Zod e erros de domínio \\
+\midrule
+ADR-004 & PostgreSQL com Prisma ORM & \texttt{prisma/\allowbreak{}schema.\allowbreak{}prisma}; 11 modelos e 6 enums \\
+\midrule
+ADR-005 & Vercel + Supabase + GitHub Actions & \texttt{next.config.mjs}, \texttt{ci.yml}, \texttt{deploy.yml} \\
+\midrule
+ADR-006 & API RESTful com polling de 2 s no mapa de assentos & \texttt{useSessionSeats} e índice \texttt{(session\_\allowbreak{}id,\allowbreak{}\ status)} \\
+\midrule
+ADR-007 & Pré-população de \texttt{SessionSeat} e trava \texttt{SELECT\ FOR\ UPDATE} & \texttt{session-\allowbreak{}service.\allowbreak{}ts} e \texttt{sale-service.ts}/\texttt{portal-\allowbreak{}service.\allowbreak{}ts} \\
+\midrule
+ADR-008 & CPF com HMAC-SHA256 (busca) e AES-256-GCM (repouso) & \texttt{crypto-\allowbreak{}service.\allowbreak{}ts}; \texttt{cpf\_hash} e \texttt{cpf\_\allowbreak{}encrypted} \\
+\midrule
+ADR-009 & Anonimização \emph{in-place} para LGPD Art. 18 & \texttt{anonymization-\allowbreak{}service.\allowbreak{}ts} e \texttt{/\allowbreak{}api/\allowbreak{}titulares/\allowbreak{}anonimizar} \\
+\midrule
+ADR-010 & Auditoria de cancelamentos \emph{append-only} com trigger & \texttt{cancellation-\allowbreak{}service.\allowbreak{}ts}, modelo \texttt{CancellationAudit} e trigger em \texttt{prisma/\allowbreak{}triggers.\allowbreak{}sql} \\
+\midrule
+ADR-011 & Log estruturado no Axiom com retenção de 365 dias & \texttt{src/\allowbreak{}shared/\allowbreak{}logger/}, \texttt{x-request-id} e \texttt{CA-03}/\texttt{CA-07} \\
+\midrule
+ADR-012 & Portal do cliente com reserva JIT e notificação desacoplada & \texttt{portal-\allowbreak{}service.\allowbreak{}ts}, \texttt{notification-\allowbreak{}service.\allowbreak{}ts} e \texttt{CA-11}/\texttt{CA-14} \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

@@ -1,0 +1,11 @@
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+[*] --> Proposta : Necessidade de decisão estrutural
+Proposta --> EmRevisao : PR com ADR aberto
+EmRevisao --> Aprovada : Aprovação do Tech Lead
+EmRevisao --> Rejeitada : Alternativa mais adequada
+Aprovada --> Substituida : Novo ADR referencia o anterior
+Rejeitada --> [*]
+Substituida --> [*]
+@enduml

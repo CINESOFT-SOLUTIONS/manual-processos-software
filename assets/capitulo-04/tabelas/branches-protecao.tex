@@ -1,0 +1,17 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{L{2.14cm} >{\hsize=0.843\hsize\sloppy\arraybackslash}X >{\hsize=1.157\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Branch} & \textbf{Função} & \textbf{Regras} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\texttt{main} & Produção (\texttt{https:/\allowbreak{}/\allowbreak{}cinedoom.\allowbreak{}vercel.\allowbreak{}app/}) & Proibido \emph{force push}; somente código aprovado pelo CI; cada release recebe tag \\
+\midrule
+\texttt{staging} & Homologação e aceite & Espelha a produção; promoção somente após validação \\
+\midrule
+\texttt{develop} & Integração das entregas da Sprint & Recebe somente Pull Requests aprovados \\
+\midrule
+\texttt{feat/*} e \texttt{fix/*} & Trabalho por requisito ou correção (ex.: \texttt{feat/\allowbreak{}RF-\allowbreak{}06-\allowbreak{}venda-\allowbreak{}atomica}) & Criadas a partir de \texttt{develop}; vinculadas a uma issue \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

@@ -1,0 +1,15 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\hsize=0.534\hsize\sloppy\arraybackslash}X >{\hsize=0.945\hsize\sloppy\arraybackslash}X >{\hsize=1.522\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Fase de V\&V} & \textbf{Critérios de Entrada (\emph{Entry Criteria})} & \textbf{Critérios de Saída (\emph{Exit Criteria})} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+\textbackslash1. Testes Unitários e de Integração (CI) & Código implementado em branch de feature e schema Prisma atualizado. & 100\% dos 770 testes passando, zero erros de linter/tipagem e cobertura mínima de 70\% de \emph{statements}, funções e linhas e 80\% de \emph{branches} no domínio. \\
+\midrule
+\textbackslash2. Homologação em Staging & Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. & Fluxos ponta a ponta (cadastro → reserva → baixa no balcão → painel gerencial) executados sem falhas. \\
+\midrule
+\textbackslash3. Validação e Aceite em Produção (\emph{UAT}) & Ambiente de produção sincronizado na branch \texttt{main} com banco PostgreSQL ativo. & Operação validada por usuários externos reais sem ocorrência de \emph{double-booking} ou erros HTTP 500. \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}

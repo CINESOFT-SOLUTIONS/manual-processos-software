@@ -1,20 +1,57 @@
-\begin{center}
-\small
-\begin{tabularx}{\textwidth}{C{1.6cm} >{\fontSemiBold\color{BrandNavy}\arraybackslash}m{3.6cm} C{2.2cm} Y}
+{\footnotesize
+\begin{xltabular}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\centering\arraybackslash}m{1.19cm} >{\hsize=0.578\hsize\centering\arraybackslash}X >{\hsize=1.787\hsize\sloppy\arraybackslash}X C{2.02cm} >{\hsize=0.635\hsize\centering\arraybackslash}X}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{ID} & \textbf{Nome do Requisito} & \textbf{Tipo} & \textbf{Descrição e Regra Central} \\
+\textbf{ID} & \textbf{Módulo} & \textbf{Requisito Funcional} & \textbf{Prioridade} & \textbf{Macroentrega} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-RF-01 & Reserva Atômica de Poltrona & Funcional & Bloqueio temporário (10 min) prevenindo duplicidade. \\
+\endfirsthead
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{ID} & \textbf{Módulo} & \textbf{Requisito Funcional} & \textbf{Prioridade} & \textbf{Macroentrega} \\
 \midrule
-RF-02 & Emissão e Baixa de Ingressos & Funcional & Geração de QR Code criptográfico para catraca/guichê. \\
-\midrule
-RF-03 & Venda no Balcão (PDV Rápido) & Funcional & Operação simplificada para atendente em menos de 30s. \\
-\midrule
-RNF-01 & Tempo de Resposta em Checkout & Não Func. & P95 inferior a 300ms sob carga de 50 req/s. \\
-\midrule
-RNF-02 & Conformidade de Segurança & Não Func. & Sanitização Zod e isolamento total de tenants. \\
+\arrayrulecolor{BrandGrayRule}
+\endhead
 \arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}
-\end{center}
+\reservafontetabelalonga{5}
+\endfoot
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\linhafontetabelalonga{5}
+\endlastfoot
+RF-01 & Identidade \& RBAC & Autenticar usuários via credenciais seguras (\texttt{bcrypt} cost 12) e sessão JWT contendo \texttt{userId}, \texttt{role} (\texttt{GERENTE}, \texttt{ATENDENTE}, \texttt{CLIENTE}) e \texttt{tenantId}. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-02 & Gestão de Operadores & Permitir ao \texttt{GERENTE} criar, listar, atualizar e inativar operadores com perfil \texttt{ATENDENTE} vinculados ao seu cinema (\emph{tenant}), revogando sessões ativas. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-03 & Catálogo de Filmes & Permitir ao \texttt{GERENTE} manter o acervo de filmes (título, sinopse, gênero, duração em minutos, classificação indicativa e pôster). & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-04 & Salas e Assentos & Permitir ao \texttt{GERENTE} cadastrar salas de exibição (Clássica, IMAX, VIP) e gerar automaticamente a matriz 2D de poltronas (fileiras A--Z e colunas numeradas). & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-05 & Sessões & Permitir ao \texttt{GERENTE} agendar sessões (Filme + Sala + Data/Hora + Preço), validando choques de horário na mesma sala e pré-populando \texttt{SessionSeat}. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-06 & Bilheteria ACID & Disponibilizar mapa interativo da sessão com atualização por polling a cada 2 segundos. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-07 & Bilheteria ACID & Processar a venda presencial de múltiplos assentos em transação atômica ACID com bloqueio pessimista (\texttt{SELECT\ .\allowbreak{}.\allowbreak{}.\allowbreak{}\ FOR\ UPDATE}), impedindo \emph{double-booking}. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-08 & Bilheteria ACID & Emitir comprovante operacional de ingresso contendo código identificador único, filme, sala, horário, poltronas e valor pago. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-09 & Auditoria \& Guichê & Realizar o cancelamento síncrono de ingresso vendido na bilheteria mediante justificativa obrigatória, gravando trilha \emph{append-only} protegida por trigger SQL. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-10 & Governança LGPD & Proteger o CPF de compradores e clientes por indexação cega \texttt{HMAC-SHA256} e criptografia autenticada \texttt{AES-256-GCM}, permitindo anonimização \emph{in-place} (Art. 18). & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-11 & Ocupação \& Logs & Apresentar painel gerencial com cálculo em tempo real da taxa de ocupação (vendidos, reservados e livres) por sessão/sala e exportar logs para o Axiom. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-12 & Portal do Cliente & Exibir catálogo público responsivo de filmes em cartaz com busca por título/sinopse, filtro por gênero e exibição da sinopse. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-13 & Portal do Cliente & Permitir ao espectador selecionar poltronas no mapa interativo e confirmar reserva online com status \texttt{PENDING} e bloqueio dos assentos como \texttt{RESERVED}, exclusivamente quando faltarem 60 minutos ou mais para o início da sessão. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-14 & Portal do Cliente & Permitir o cadastro e login de espectadores (\texttt{CLIENTE}) com validação matemática de CPF (Módulo 11) e termo explícito de consentimento LGPD. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-15 & Notificações & Emitir voucher digital com localizador único (\texttt{CD-XXXX}) e acionar o \texttt{NotificationService} (\texttt{ResendProvider} / \texttt{ConsoleLogger}), registrando \texttt{email\_\allowbreak{}sent\_\allowbreak{}at}. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-16 & Portal do Cliente & Disponibilizar área autenticada \emph{``Minhas Reservas''} permitindo ao espectador consultar seus vouchers e realizar o cancelamento voluntário de reservas pendentes. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-17 & Bilheteria Híbrida & Permitir ao \texttt{ATENDENTE} localizar reservas web no balcão pelo código localizador (\texttt{CD-XXXX}) e confirmar o pagamento presencial, convertendo em \texttt{SOLD}. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\midrule
+RF-18 & Expiração JIT & Invalidar automaticamente reservas pendentes não pagas quando faltarem menos de 60 minutos para o início da sessão, liberando os assentos em tempo real. & \emph{Must Have} & Macroentrega 1 (\texttt{v1.0}) \\
+\end{xltabular}%
+}

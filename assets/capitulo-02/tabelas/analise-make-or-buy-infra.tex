@@ -1,13 +1,13 @@
-{\small
-\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\raggedright\arraybackslash}m{3.4cm} >{\centering\arraybackslash}m{2.0cm} Y >{\raggedright\arraybackslash}m{3.2cm}}
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\hsize=0.662\hsize\sloppy\arraybackslash}X C{1.69cm} >{\hsize=1.754\hsize\sloppy\arraybackslash}X >{\hsize=0.584\hsize\sloppy\arraybackslash}X}
 \arrayrulecolor{GithubTableBorder}\toprule
 \rowcolor{BrandTableHeader}
-\textbf{Elemento do Sistema} & \textbf{Adquirir Pronto?} & \textbf{Justificativa de Engenharia} & \textbf{Possível Fornecedor} \\
+\textbf{Elemento do sistema} & \textbf{Adquirir pronto?} & \textbf{Justificativa} & \textbf{Possível fornecedor} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Banco de Dados Relacional Gerenciado (DBaaS) & \textbf{Sim} & Elimina custos de DBA, provendo restauração pontual automatizada (PITR), \emph{connection pooling} para serverless e alta disponibilidade ($\ge 99,9\%$). & \textbf{Supabase Pro / Neon PostgreSQL} \\
+Banco de Dados Relacional Gerenciado (DBaaS) & \textbf{Sim} & Elimina custos de DBA, provendo restauração pontual automatizada (PITR), \emph{connection pooling} para serverless e alta disponibilidade (≥ 99,9\%). & \textbf{Supabase Pro (PostgreSQL)} \\
 \midrule
-Plataforma de Hospedagem Serverless e CDN & \textbf{Sim} & Elimina a manutenção de servidores dedicados, entregando deploys atômicos com \emph{rollback} instantâneo, proteção DDoS e distribuição global na borda. & \textbf{Vercel Pro} (Cloud PaaS) \\
+Plataforma de Hospedagem Serverless e CDN & \textbf{Sim} & Elimina a manutenção de servidores dedicados, entregando deploys atômicos com reversão para a versão anterior, proteção DDoS e distribuição global na borda. & \textbf{Vercel Pro} (Cloud PaaS) \\
 \midrule
 Serviço de Disparo de E-mails Transacionais & \textbf{Sim} & Evita que vouchers caiam em caixas de spam; a API especializada assegura entrega em milissegundos com autenticação SPF, DKIM e DMARC. & \textbf{Resend} (SaaS de E-mail Transacional) \\
 \midrule
@@ -17,5 +17,5 @@ Gateway de Pagamento Online (Macroentrega 2) & \textbf{Sim} & Transfere a comple
 \midrule
 Motor de Mensageria Fiscal NFC-e (Macroentrega 3) & \textbf{Sim} & Abstrai as constantes mudanças tributárias estaduais da SEFAZ, contingência offline e assinatura digital com certificado A1, evitando passivos fiscais. & \textbf{Focus NFe / PlugNotas} \\
 \arrayrulecolor{GithubTableBorder}\bottomrule
-\end{tabularx}
+\end{tabularx}%
 }

@@ -3,12 +3,12 @@ skinparam monochrome true
 skinparam shadowing false
 skinparam defaultFontName Helvetica
 
-state "feature/*" as feat
-state "develop" as dev
-state "staging" as stag
-state "main (Produção)" as prod
+state "feat/RF-XX\nou fix/escopo" as F
+state "develop\n(Integração Contínua)" as DEV
+state "staging\n(Homologação)" as STG
+state "main\n(Produção)" as MAIN
 
-feat --> dev : PR + 2 Reviews + CI
-dev --> stag : Release Candidate
-stag --> prod : Homologação UAT
+F --> DEV : PR + revisão\n+ Quality Gates
+DEV --> STG : Promoção verificada
+STG --> MAIN : Aprovação de release\n+ tag SemVer
 @enduml

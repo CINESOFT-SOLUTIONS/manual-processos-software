@@ -1,0 +1,17 @@
+{\footnotesize
+\begin{tabularx}{\textwidth}{>{\fontSemiBold\color{BrandNavy}\hsize=0.542\hsize\sloppy\arraybackslash}X >{\hsize=1.639\hsize\sloppy\arraybackslash}X >{\hsize=0.819\hsize\sloppy\arraybackslash}X}
+\arrayrulecolor{GithubTableBorder}\toprule
+\rowcolor{BrandTableHeader}
+\textbf{Zona} & \textbf{Responsabilidade} & \textbf{Regra de dependência} \\
+\midrule
+\arrayrulecolor{BrandGrayRule}
+Interface & Renderização (RSC/Client Components), navegação, modais, cabeçalho autenticado e Route Handlers & Depende de \texttt{modules} e \texttt{shared} \\
+\midrule
+Aplicação & Casos de uso, validação Zod, orquestração transacional e tradução de erros de domínio & Depende de \texttt{shared/db} e de outros módulos apenas via \texttt{index.ts} \\
+\midrule
+Domínio e segurança & Invariantes (antecedência de 60 min, expiração JIT, CPF Módulo 11), RBAC e criptografia & Não depende de \texttt{next/*} nem de componentes React \\
+\midrule
+Infraestrutura transversal & Conexão Prisma, contexto de tenant via \texttt{AsyncLocalStorage}, logging estruturado e guarda de rotas & É dependida pelas demais zonas; não depende de UI \\
+\arrayrulecolor{GithubTableBorder}\bottomrule
+\end{tabularx}%
+}
