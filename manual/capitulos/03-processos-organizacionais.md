@@ -1,141 +1,147 @@
 # Capítulo 3 – Processos Organizacionais Habilitadores
 
-## 3.1 Modelo de ciclo de vida adotado e justificado
+Este capítulo apresenta a estrutura organizacional, as práticas de engenharia e os recursos que sustentam a operação da **CineSoft Solutions** no desenvolvimento e na evolução da plataforma **CineDoom**. As diretrizes aqui descritas alinham-se às práticas de processos organizacionais da norma ABNT NBR ISO/IEC/IEEE 12207:2021, adaptadas de forma ágil e objetiva para a realidade de uma equipe de alta produtividade.
 
-A **CineSoft Solutions** adota o modelo de ciclo de vida **Iterativo e Incremental Ágil** (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.2.1), combinando Sprints de desenvolvimento com fluxo contínuo no quadro Kanban e integração/entrega contínua (CI/CD).
+---
 
-### Estrutura das Fases, Cerimônias e Macroentregas
+## 3.1 Modelo de Ciclo de Vida do Projeto
 
-O ciclo de vida do produto **CineDoom** é organizado em **três Macroentregas evolutivas (Releases Comerciais)**, cada qual subdividida em iterações (Sprints) que percorrem obrigatoriamente cinco etapas de engenharia: **Elicitação e Refinamento de Requisitos $\to$ Arquitetura e Design $\to$ Implementação e Integração $\to$ Verificação e Validação Automatizada $\to$ Implantação em Produção (Release)**.
+A CineSoft Solutions adota o modelo de ciclo de vida **Iterativo e Incremental Ágil**, unindo ciclos curtos de entrega (*Sprints*) à gestão visual contínua com quadro Kanban e automação de testes na esteira de integração contínua (CI/CD).
+
+### Fases de Engenharia e Evolução em Três Macroentregas
+
+O ciclo de vida do CineDoom é estruturado em **três Macroentregas evolutivas**. Cada iteração (Sprint de 2 semanas) percorre de ponta a ponta as etapas essenciais de engenharia de software:
 
 ```mermaid
 flowchart LR
-    subgraph Ciclo["Ciclo Iterativo por Sprint (Planning → Execução → Review → Retro)"]
+    subgraph Ciclo["Ciclo Iterativo por Sprint (Planejamento → Execução → Revisão)"]
         direction LR
         R["1. Requisitos & Backlog"] --> D["2. Arquitetura & ADRs"]
         D --> I["3. Implementação & Code Review"]
-        I --> T["4. V&V (711 Testes CI)"]
-        T --> P["5. Deploy & Telemetria"]
-        P -.->|"Feedback & Lições"| R
+        I --> T["4. Testes Automatizados (CI)"]
+        T --> P["5. Publicação & Monitoramento"]
+        P -.->|"Feedback Contínuo"| R
     end
 
-    Ciclo ==> M1["Macroentrega 1 (v1.0 - MVP)\nBilheteria ACID, Back-office,\nPortal de Reservas & LGPD"]
-    M1 ==> M2["Macroentrega 2 (v2.0 - Escala)\nGateway Stripe/PIX, Resend Pro\n& Banco Dedicado Pro"]
-    M2 ==> M3["Macroentrega 3 (v3.0 - Enterprise)\nEmissão Fiscal NFC-e/SEFAZ,\nBomboniere & SaaS Self-Service"]
+    Ciclo ==> M1["Macroentrega 1 (v1.0 - MVP)\nBilheteria Presencial, Mapa de Assentos,\nReservas Web e Governança LGPD"]
+    M1 ==> M2["Macroentrega 2 (v2.0 - Venda Digital)\nPagamento Online (PIX/Cartão),\nVouchers por E-mail e Expansão"]
+    M2 ==> M3["Macroentrega 3 (v3.0 - Operação Fiscal)\nEmissão Automática de NFC-e (SEFAZ),\nBomboniere e Painel Financeiro"]
 ```
 
-As cerimônias operacionais da equipe compreendem:
-1. **Sprint Planning:** Seleção e quebra das tarefas no GitHub Projects, estimativa de esforço e atribuição de responsáveis e prazos.
-2. **Daily Check-in Assíncrono/Síncrono:** Alinhamento diário sobre o avanço das branches, identificação de impedimentos técnicos e revisão de métricas da pipeline.
-3. **Code Review & Quality Gate:** Revisão por pares obrigatória em cada Pull Request antes da mesclagem em `develop`, `staging` e `main`.
-4. **Sprint Review & Homologação:** Demonstração do incremento funcional em ambiente de staging/produção e coleta de feedback com usuários reais e stakeholders.
-5. **Sprint Retrospective:** Avaliação contínua do processo e registro de ações de melhoria (conforme documentado no Capítulo 6).
+No dia a dia, a equipe mantém um fluxo de comunicação dinâmico e sem burocracia excessiva:
+1. **Planejamento da Sprint (*Sprint Planning*):** Seleção e priorização de tarefas no GitHub Projects, definindo objetivos claros e entregáveis testáveis para o período.
+2. **Alinhamento Diário (*Daily Check-in*):** Troca de informações ágil (assíncrona via chat ou síncrona quando há bloqueios) para destravar impedimentos técnicos.
+3. **Revisão por Pares (*Code Review*):** Nenhuma alteração entra na base principal sem a aprovação de pelo menos outro desenvolvedor, garantindo conformidade com padrões e ausência de regressões.
+4. **Demonstração e Homologação (*Sprint Review*):** Apresentação prática dos novos fluxos implementados para validação de usabilidade e funcionalidade.
+5. **Retrospectiva de Melhoria (*Retrospective*):** Análise rápida do que funcionou e ajuste imediato nas rotinas de trabalho da equipe.
 
-### Justificativa da Escolha do Modelo
-1. **Decomposição Modular de Risco:** O domínio de exibição cinematográfica permite desacoplar o núcleo transacional crítico (motor ACID de assentos e multi-tenancy) de integrações externas evolutivas (gateways de pagamento e mensageria fiscal).
-2. **Time-to-Market e Validação Antecipada:** A entrega da **Macroentrega 1 (`v1.0.0 — MVP Operacional`)** coloca o sistema em operação real em cinemas-piloto rapidamente, gerando valor imediato na bilheteria presencial e no portal de reservas enquanto financia a evolução das Macroentregas 2 e 3.
-3. **Adaptabilidade a Mudanças Regulatórias e de Mercado:** A abordagem iterativa permite incorporar ajustes de usabilidade mobile, políticas de privacidade da LGPD e novos modelos de salas (IMAX, VIP) sem retrabalho arquitetural.
+### Por que esse modelo foi escolhido?
+
+- **Redução Gradual de Riscos:** O núcleo mais sensível da aplicação — o bloqueio atômico de assentos para evitar venda duplicada e o isolamento seguro dos dados de cada cinema — foi construído e amplamente testado logo na primeira fase, antes de acoplar integrações externas como gateways bancários e sistemas fiscais.
+- **Entrega Rápida de Valor (*Time-to-Market*):** A Macroentrega 1 disponibiliza um produto imediatamente utilizável para cinemas-piloto realizarem vendas físicas e receberem reservas online, validando a aceitação do mercado antes dos investimentos das fases seguintes.
+- **Flexibilidade com Base em Feedback Real:** Ajustes no fluxo de atendimento de guichê, melhorias visuais no mapa de poltronas para telas menores e conformidade com a LGPD puderam ser incorporados com agilidade a partir de testes com operadores reais.
 
 ---
 
-## 3.2 Inventário de infraestrutura e ferramentas necessárias
+## 3.2 Ferramentas e Infraestrutura de Trabalho
 
-A gestão de infraestrutura (Cláusula 6.2.2) assegura que a CineSoft Solutions disponha de ferramentas padronizadas e ambientes resilientes para desenvolver, testar, implantar e operar o CineDoom:
+Para manter a produtividade alta e a operação estável, a equipe utiliza um conjunto consolidado de ferramentas modernas:
 
-| Categoria | Ferramenta / Infraestrutura | Finalidade no Projeto |
+**Tabela 7 – Inventário de Ferramentas e Ambientes de Trabalho**
+
+| Categoria | Ferramenta / Plataforma | Papel no Projeto |
 | :--- | :--- | :--- |
-| **Gestão e Código** | **GitHub & GitHub Projects v2** | Hospedagem do código-fonte (Git), controle de branches protegidas, gestão do quadro Kanban, issues, milestones e revisão de Pull Requests. |
-| **CI/CD e Automação** | **GitHub Actions** | Pipeline automatizada de integração e entrega contínua (validação de schema Prisma, TypeScript `tsc`, ESLint `no-cycle`, 711 testes e build). |
-| **Hospedagem e Computação** | **Vercel Serverless & Edge Network** | Execução das rotas de API e Server Components do Next.js 14, distribuição global de assets na borda (CDN) e ambientes isolados de *Preview* e *Production*. |
-| **Banco de Dados e ORM** | **Supabase / Neon PostgreSQL + Prisma ORM** | Persistência relacional ACID em nuvem, pooler de conexões transacional (*Supavisor* porta `6543`), migrações versionadas e triggers de auditoria imutável. |
-| **Design e Prototipação** | **Figma + Tailwind CSS + Lucide** | Prototipação de alta fidelidade, construção do Design System escuro (*Dark Cinema UI*) e componentes responsivos acessíveis (WCAG 2.1 AA). |
-| **Testes e Qualidade** | **Vitest + ESLint + TypeScript 5** | Execução rápida de testes unitários, de integração e de concorrência (50 threads simultâneas), análise estática de código e prevenção de dependências circulares. |
-| **Observabilidade e Mensageria** | **Axiom Cloud + Resend API** | Ingestão contínua de logs estruturados com retenção legal de 365 dias (LGPD) e despacho transacional de vouchers de reserva por e-mail. |
+| **Controle de Código e Tarefas** | **GitHub & GitHub Projects** | Repositório Git com branches protegidas, rastreamento de tarefas no quadro Kanban, discussões de design e revisão de Pull Requests. |
+| **Automação e CI/CD** | **GitHub Actions** | Execução automática de análise de tipos (`tsc`), regras de lint, verificação do schema do Prisma e execução de todos os testes a cada envio de código. |
+| **Hospedagem e Execução** | **Vercel Serverless & Edge** | Publicação das páginas e rotas de API do Next.js 14, geração de links de demonstração para cada Pull Request (*preview deployments*) e deploy de produção em segundos. |
+| **Banco de Dados Relacional** | **PostgreSQL (Supabase) + Prisma** | Persistência transacional com suporte a travas de concorrência (`SELECT FOR UPDATE`), migrações controladas por código e pooling eficiente de conexões. |
+| **Design de Interface** | **Figma + Tailwind CSS + Lucide** | Criação do protótipo de alta fidelidade com visual cinematográfico escuro (*Dark UI*) e componentes acessíveis e responsivos para balcão e celular. |
+| **Qualidade e Testes** | **Vitest + TypeScript** | Bateria de 711 testes automatizados executados em poucos segundos, validando desde regras simples até cenários simultâneos de concorrência pesada. |
+| **Auditoria e Comunicação** | **Axiom + Resend** | Armazenamento de logs estruturados para auditoria e segurança, e entrega rápida de ingressos e vouchers no e-mail dos clientes. |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ---
 
-## 3.3 Justificativa estratégica e viabilidade do projeto
+## 3.3 Viabilidade Técnica, Operacional e Financeira
 
-A gestão de portfólio (Cláusula 6.2.3) avalia o alinhamento do **CineDoom** aos objetivos estratégicos da **CineSoft Solutions** sob quatro dimensões de viabilidade:
+A criação do CineDoom apoia-se em quatro pilares de viabilidade:
 
-- **Alinhamento Estratégico e de Mercado:** O mercado brasileiro de exibição conta com centenas de cinemas independentes, salas de rua, centros culturais e redes regionais de pequeno e médio porte que sofrem com sistemas legados caros (cobrados por participação pesada na bilheteria) ou controles manuais em planilhas. O CineDoom posiciona a CineSoft Solutions como fornecedora de um SaaS moderno, leve e acessível para esse segmento.
-- **Viabilidade Técnica:** A stack selecionada (Next.js 14 App Router, TypeScript estrito, Prisma ORM e PostgreSQL) possui maturidade industrial comprovada. A arquitetura de Monólito Modular com extensão de tenancy no Prisma elimina a sobrecarga operacional de microsserviços mantendo isolamento lógico rigoroso e garantia ACID nativa.
-- **Viabilidade Operacional:** A operação 100% baseada em navegador web (desktop nos guichês físicos e mobile responsivo para espectadores) dispensa instalação de executáveis locais nas bilheterias dos cinemas clientes, reduzindo drasticamente o custo de suporte e implantação (*onboarding*).
-- **Viabilidade Econômica e Financeira (TCO vs. Receita SaaS):**
-  - **Fase de Validação e Homologação (Macroentrega 1):** A arquitetura *serverless* permite operar ambientes de piloto e homologação com custo fixo inicial próximo de zero, pagando apenas conforme o crescimento da demanda.
-  - **Fase de Escala Comercial (Macroentregas 2 e 3):** A estrutura de custos fixos da infraestrutura comercial paga — somando **Supabase/Neon Pro** (~US$ 25/mês), **Vercel Pro** (~US$ 20/mês), **Resend Pro** (~US$ 20/mês) e **Axiom Cloud** (~US$ 25/mês), totalizando cerca de **US$ 90/mês (~R$ 480/mês)** para sustentar dezenas de cinemas simultaneamente — é integralmente coberta já pela assinatura mensal do **primeiro cliente B2B contratante** (ticket médio estimado de R$ 590 a R$ 1.290/mês por complexo exibidor), proporcionando margem bruta recorrente superior a **80%**.
+- **Oportunidade de Mercado:** Cinemas independentes e salas culturais frequentemente utilizam planilhas manuais ou sistemas legados antigos, complexos e caros. O CineDoom entrega uma solução ágil, moderna e acessível no modelo SaaS B2B, permitindo que pequenos e médios exibidores operem com a mesma tecnologia de grandes redes.
+- **Viabilidade Técnica:** A escolha do Next.js 14 com TypeScript e PostgreSQL oferece robustez comprovada. Em vez de adotar uma arquitetura complexa de microsserviços, a CineSoft optou por um monólito modular bem organizado com isolamento lógico multi-tenant, o que simplifica a manutenção sem abrir mão de segurança e desempenho.
+- **Facilidade Operacional:** Toda a aplicação funciona 100% diretamente no navegador web. Isso elimina a necessidade de instalar programas locais nos computadores dos cinemas, facilitando o treinamento de atendentes e zerando custos de visita presencial para suporte técnico.
+- **Sustentabilidade Financeira:** Na fase inicial de validação, os custos de infraestrutura em nuvem mantêm-se mínimos. Na operação comercial com múltiplos cinemas, o custo total de ferramentas pagas em nuvem gira em torno de **US$ 90/mês (~R$ 480/mês)**, valor que é integralmente coberto já com a mensalidade do **primeiro cinema cliente contratante**, proporcionando alta margem para investimento em novas melhorias.
 
 ---
 
-## 3.4 Papéis, competências e plano de capacitação (RACI)
+## 3.4 Equipe, Responsabilidades e Capacitação
 
-A gestão de recursos humanos (Cláusula 6.2.4) estrutura os papéis técnicos da equipe da CineSoft Solutions, mapeia as competências requeridas para a stack tecnológica e define a matriz formal de responsabilidades.
+A equipe da CineSoft Solutions é multidisciplinar e organizada de forma a garantir autonomia técnica e cobertura completa do ciclo de desenvolvimento do software.
 
-### Composição da Equipe e Competências Requeridas
+### Integrantes e Frentes de Atuação
 
-| Integrante | Cargo na CineSoft Solutions | Competências Técnicas Exigidas no Stack |
+**Tabela 8 – Composição da Equipe Técnica**
+
+| Integrante | Função Principal | Foco Técnico e Especialidades |
 | :--- | :--- | :--- |
-| **Gabriel Henrique Lourenço Dias** | **Tech Lead & Arquiteto de Software** | Arquitetura Next.js 14, modelagem PostgreSQL avançada, transações ACID (`SELECT FOR UPDATE`), isolamento multi-tenant, segurança RBAC e testes de concorrência. |
-| **Carlos Eduardo Freire da Silva** | **Engenheiro de Backend, Segurança & DevOps** | Criptografia aplicada (`HMAC-SHA256`, `AES-256-GCM`), conformidade LGPD, APIs RESTful com Zod, pipelines GitHub Actions, integração Resend/Axiom e deploy Vercel. |
-| **Kayque Vicente Silva** | **Engenheiro de Qualidade (QA) & Gerente de Projeto** | Gestão ágil de projetos (ISO 12207 / MPS.BR), análise de riscos, automação de testes no Vitest, verificação e validação (V&V) e métricas de fluxo. |
-| **Yury Nogueira de Oliveira Silva** | **Engenheiro de Requisitos, UX & Compliance** | Engenharia de requisitos (MoSCoW, BDD), modelagem arquitetural C4 e UML, modelagem de ameaças STRIDE, experiência do usuário (UI/UX) e auditoria de processos. |
+| **Gabriel Henrique Lourenço Dias** | **Tech Lead & Arquiteto de Software** | Arquitetura Next.js 14, modelagem de banco de dados PostgreSQL, transações de concorrência ACID (`SELECT FOR UPDATE`), isolamento multi-tenant e segurança RBAC. |
+| **Carlos Eduardo Freire da Silva** | **Engenheiro de Backend, Segurança & DevOps** | Criptografia aplicada e conformidade com a LGPD, APIs seguras com validação Zod, pipelines de CI/CD no GitHub Actions e automação de infraestrutura. |
+| **Kayque Vicente Silva** | **Engenheiro de Qualidade (QA) & Gerente de Projeto** | Gestão de cronograma, análise de riscos técnicos, automação de testes no Vitest, controle de métricas e garantia da qualidade de ponta a ponta. |
+| **Yury Nogueira de Oliveira Silva** | **Engenheiro de Requisitos, UX & Compliance** | Elicitação de regras de negócio, modelagem de casos de uso e diagramas C4, design de experiência do usuário (UI/UX) e conformidade normativa. |
 
-### Matriz RACI Consolidada por Membro da Equipe
+*Fonte: CineSoft Solutions (2026).*
 
-Conforme as diretrizes de governança organizacional, a tabela abaixo relaciona diretamente cada membro da CineSoft Solutions às macroatividades do ciclo de vida do CineDoom:
+### Matriz de Responsabilidades (RACI)
 
-| Macroatividade / Entregável do Ciclo de Vida | Gabriel Lourenço (Tech Lead / Arquiteto) | Carlos Eduardo (Backend / DevOps) | Kayque Vicente (GP / QA Lead) | Yury Nogueira (Requisitos / Compliance) |
+Para assegurar clareza e evitar sobreposições ou lacunas nas tarefas, as principais atividades do projeto contam com papéis definidos:
+
+**Tabela 9 – Matriz de Responsabilidades (RACI)**
+
+| Atividade do Projeto | Gabriel Lourenço | Carlos Eduardo | Kayque Vicente | Yury Nogueira |
 | :--- | :---: | :---: | :---: | :---: |
-| **1. Planejamento do Projeto, Cronograma e Gestão de Riscos** | C | C | **A / R** | C |
-| **2. Elicitação de Requisitos, Histórias e Matriz de Rastreabilidade** | C | I | C | **A / R** |
-| **3. Arquitetura de Software, Modelagem C4/UML e ADRs** | **A / R** | C | I | R |
-| **4. Modelagem de Banco de Dados, Multi-Tenancy e Triggers SQL** | **A / R** | R | I | C |
-| **5. Criptografia PII (CPF), Anonimização LGPD e Threat Modeling** | A | **R** | C | **R** |
-| **6. Implementação do Motor ACID de Bilheteria, Salas e Portal Web** | **A / R** | R | C | I |
-| **7. Integração de Notificações (Resend), Observabilidade e CI/CD** | A | **R** | C | I |
-| **8. Suíte de Testes Automatizados (Vitest), Concorrência e V&V** | R | C | **A / R** | C |
-| **9. Auditoria de Qualidade do Processo e Melhoria Contínua (MPS.BR)** | C | I | **A / R** | R |
+| Planejamento de Sprints, Cronograma e Riscos | C | C | **A / R** | C |
+| Levantamento de Requisitos e Regras de Negócio | C | I | C | **A / R** |
+| Arquitetura da Solução e Decisões Técnicas (ADRs) | **A / R** | C | I | R |
+| Modelagem do Banco de Dados e Isolamento de Tenants | **A / R** | R | I | C |
+| Criptografia de Dados Pessoais e Governança LGPD | A | **R** | C | **R** |
+| Desenvolvimento do Motor de Bilheteria e Guichê | **A / R** | R | C | I |
+| Automação de CI/CD e Monitoramento de Produção | A | **R** | C | I |
+| Criação e Execução de Testes Automatizados (Vitest) | R | C | **A / R** | C |
+| Revisão de Processos e Padrões de Qualidade | C | I | **A / R** | R |
 
-*Legenda:* **R** = Responsável pela execução (*Responsible*); **A** = Aprovador final / Dono da conta (*Accountable*); **C** = Consultado (*Consulted*); **I** = Informado (*Informed*).
+*Legenda:* **R** = Responsável pela execução (*Responsible*); **A** = Aprovador final (*Accountable*); **C** = Consultado (*Consulted*); **I** = Informado (*Informed*).
 
-### Plano de Capacitação Técnica Contínua
+### Programa Prático de Capacitação Interna
 
-Para suprir lacunas técnicas e manter a alta produtividade ao longo das três Macroentregas, a CineSoft Solutions executa trilhas internas de capacitação prática (*hands-on workshops*):
-1. **Concorrência e Isolamento em Bancos Relacionais:** Treinamento em bloqueios pessimistas (`SELECT ... FOR UPDATE`), prevenção de *deadlocks* por ordenação determinística de chaves e configuração de *connection pooling* com Supavisor/PgBouncer.
-2. **Segurança Aplicada e Engenharia de Privacidade (LGPD):** Capacitação em criptografia simétrica autenticada (`AES-256-GCM`), indexação cega por `HMAC-SHA256` e técnicas de anonimização irreversível *in-place*.
-3. **Arquitetura Serverless e Testes Automatizados de Alta Carga:** Práticas de desenvolvimento em Next.js App Router, isolamento de contexto com `AsyncLocalStorage` e simulação de baterias de estresse concorrente no Vitest.
-4. **Integrações Financeiras e Fiscais (Preparação Macroentregas 2 e 3):** Estudo técnico de webhooks idempotentes do Stripe (PCI-DSS) e mensageria assíncrona de notas fiscais eletrônicas (NFC-e/SEFAZ).
-
----
-
-## 3.5 Plano de qualidade com critérios e métricas
-
-A gestão da qualidade organizacional (Cláusula 6.2.5) define padrões objetivos e bloqueios automatizados (*Quality Gates*) para assegurar que nenhuma alteração degrade a estabilidade do CineDoom em produção:
-
-1. **Padronização Estática e Arquitetural:**
-   - Tipagem estrita obrigatória (`TypeScript strict: true`) sem erros de compilação (`npm run typecheck`).
-   - Proibição de dependências circulares entre módulos validada automaticamente via regra `import/no-cycle` do ESLint.
-2. **Cobertura e Aprovação de Testes Automatizados:**
-   - **100% de aprovação obrigatória** nos **20 arquivos de teste (711 testes automatizados)** cobrindo regras de domínio, criptografia, reserva atômica, expiração JIT e 500 cenários de isolamento *cross-tenant*.
-   - Cobertura mínima de **100% nas funções críticas de negócio** (emissão de ingressos, bloqueio de assentos, cancelamento auditado e anonimização LGPD).
-3. **Política de Revisão de Código (*Code Review*):**
-   - Nenhuma alteração é enviada diretamente para a branch `main`. Todo código deve passar por validação da esteira do GitHub Actions e revisão técnica antes da promoção entre `develop`, `staging` e `main`.
-4. **Critérios de Estabilidade Pré-Deploy:**
-   - Zero vulnerabilidades críticas abertas, zero erros de build e validação de *smoke test* no ambiente de *Preview/Staging* antes da liberação para os cinemas clientes.
-5. **Diretrizes de Engenharia e Princípios de Construção:**
-   - Adoção estrita de **Domain-Driven Design (DDD)** para modelagem de entidades e isolamento vertical por contextos delimitados (*Bounded Contexts*).
-   - Aplicação sistemática dos princípios **SOLID** para garantir baixo acoplamento, manutenibilidade e alta testabilidade nos serviços de negócio.
-   - Disciplina de desenvolvimento orientado a testes (**Test-Driven Development — TDD**) prioritária nas transações críticas de concorrência ACID e regras de isolamento multi-tenant.
+A equipe realiza treinamentos práticos direcionados aos desafios reais da plataforma:
+- **Transações Concorrentes em Banco de Dados:** Práticas sobre ordenação de chaves para evitar travamentos (*deadlocks*) e uso correto de travas pessimistas sob alta concorrência.
+- **Engenharia de Privacidade e LGPD:** Aplicação prática de algoritmos de anonimização e criptografia para proteção de dados de clientes no banco.
+- **Simulação de Alta Carga com Testes Automatizados:** Criação de rotinas no Vitest disparando dezenas de transações simultâneas para garantir que o sistema não falhe em horários de pico.
+- **Preparação para Integrações Futuras:** Estudo dos padrões de webhooks de pagamento (Stripe/PIX) e rotinas assíncronas para mensageria fiscal (NFC-e).
 
 ---
 
-## 3.6 Estratégia de gestão do conhecimento
+## 3.5 Critérios de Qualidade e Boas Práticas
 
-A gestão do conhecimento (Cláusula 6.2.6) garante que o capital intelectual da CineSoft Solutions seja documentado, versionado e acessível a toda a organização, prevenindo dependência de indivíduos isolados (*bus factor*):
+A CineSoft adota barreiras de qualidade automatizadas (*Quality Gates*) para garantir que código instável ou inseguro não chegue aos cinemas clientes:
 
-- **Abordagem *Docs-as-Code* (Fonte Única da Verdade):** Todas as especificações de requisitos, modelos de dados, planos de testes, manuais operacionais e diretrizes residem no controle de versão Git (`specs/` e `manual/`), evoluindo no mesmo ritmo do código-fonte.
-- **Registro Formal de Decisões de Arquitetura (ADRs):** Qualquer decisão estrutural (escolha de banco, estratégia de lock, criptografia de CPF, modelo de polling ou provedor de e-mail) é imortalizada em fichas padronizadas (`ADR-001` a `ADR-012`), contendo contexto, alternativas descartadas, decisão e trade-offs.
-- **Rastreabilidade viva no Código:** Os arquivos de serviço, rotas de API e suítes de teste contêm cabeçalhos padronizados referenciando os requisitos (`RF-XX`), regras de negócio (`RN-XX`) e ADRs correspondentes.
-- **Base de Lições Aprendidas e Runbooks Operacionais:** Ao término de cada Sprint e Macroentrega, incidentes técnicos resolvidos (como ajustes de connection pooling, alinhamento responsivo de mapas de sala e otimizações de queries) são documentados em *runbooks* para acelerar diagnósticos futuros pela equipe de suporte.
+1. **Validação Automática em Cada Pull Request:**
+   - O código precisa compilar sem erros de tipos (`TypeScript strict`).
+   - A regra de lint impede dependências circulares entre módulos (`no-cycle`).
+   - **100% de aprovação obrigatória** em toda a suíte de testes (711 testes automatizados cobrindo regras de assento, transações de compra e isolamento entre cinemas).
+2. **Revisão Humana Obrigatória:**
+   - Nenhuma funcionalidade é mesclada na branch principal sem revisão prévia por outro desenvolvedor.
+3. **Ambiente de Teste Prévio (*Preview Deploy*):**
+   - Antes de subir para produção, cada alteração gera uma URL de demonstração automática na Vercel para validação visual e operacional da equipe.
+4. **Fundamentos de Arquitetura Limpa:**
+   - Separação clara de responsabilidades com foco nas regras de domínio do cinema (DDD) e aplicação contínua de código modular, legível e desacoplado (SOLID).
 
 ---
+
+## 3.6 Gestão do Conhecimento e Registro Técnico
+
+Para evitar dependência exclusiva de pessoas e garantir que qualquer integrante possa assumir tarefas com segurança, o conhecimento da CineSoft é formalizado através de três mecanismos:
+
+- **Documentação Versionada com o Código (*Docs-as-Code*):** Manuais, especificações funcionais e instruções de instalação ficam no mesmo repositório Git do projeto, sendo atualizados no mesmo momento em que o código evolui.
+- **Registro de Decisões de Arquitetura (ADRs):** Todas as escolhas estruturais importantes (como a decisão de usar travas pessimistas no banco relacional em vez de filas distribuídas, ou a seleção do Supabase) são registradas em fichas sucintas (`ADR-001` a `ADR-012`), explicando o motivo da escolha e as alternativas consideradas.
+- **Guias Operacionais e Resoluções de Incidentes:** Soluções para problemas encontrados em homologação (como ajustes de consultas lentas ou dimensionamento de conexões) são transformadas em passos objetivos para consulta rápida pelo time de suporte.
