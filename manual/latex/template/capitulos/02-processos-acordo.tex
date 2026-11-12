@@ -36,10 +36,10 @@ Para selecionar e manter esses provedores em operação contínua, a CineSoft So
 \begin{enumerate}
 \tightlist
 \item \textbf{Definição de Requisitos e Critérios:} O Arquiteto e os líderes técnicos mapeiam as restrições de cada necessidade --- limites de latência (priorizando servidores na América do Sul), compatibilidade com Node.js/Next.js, conformidade com a LGPD e facilidade de integração local.
-\item \textbf{Avaliação Técnica e Financeira:} São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus Neon, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
+\item \textbf{Avaliação Técnica e Financeira:} São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus PostgreSQL autogerenciado, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
 \item \textbf{Contratação e Formalização:} Assinatura digital dos planos corporativos, formalização de Aditivos de Proteção de Dados (\emph{Data Processing Agreements} -- DPA) para garantir sigilo sob a LGPD e armazenamento seguro de chaves de API em gerenciadores de segredos com rotação periódica.
 \item \textbf{Monitoramento e Acompanhamento de SLA:} A equipe monitora a disponibilidade real dos provedores via telemetria contínua, páginas de status e relatórios mensais de consumo, garantindo que o tempo de resposta e a taxa de erros permaneçam dentro dos padrões acordados.
-\item \textbf{Homologação e Aceite Técnico:} Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (\emph{sandbox}) na esteira de integração contínua (CI/CD), com planos de reversão (\emph{rollback}) já desenhados caso ocorram falhas.
+\item \textbf{Homologação e Aceite Técnico:} Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (\emph{sandbox}) na esteira de integração contínua (CI/CD), com procedimento de reversão (\emph{rollback}) documentado caso ocorram falhas.
 \end{enumerate}
 
 
@@ -101,7 +101,7 @@ Cada cinema contratante recebe:
 O cinema cliente formaliza a aceitação do sistema quando os seguintes requisitos são atendidos:
 \begin{enumerate}
 \tightlist
-\item Aprovação de todos os 711 testes automatizados do sistema e execução bem-sucedida dos testes práticos de balcão.
+\item Aprovação de todos os 770 testes automatizados do sistema e execução bem-sucedida dos testes práticos de balcão.
 \item Inexistência de qualquer defeito impeditivo ou crítico em aberto.
 \item Comprovação prática de que a trava atômica impede rigorosamente a venda simultânea da mesma poltrona entre a web e o guichê.
 \item Assinatura do Termo de Aceite de Implantação (TAI) pelo responsável do cinema.
@@ -120,7 +120,7 @@ Para manter a bilheteria funcionando sem interrupções nas horas de pico (finai
 \textbf{Severidade e Modalidade} & \textbf{Descrição do Cenário} & \textbf{1ª Resposta} & \textbf{Meta de Resolução} \\
 \midrule
 \arrayrulecolor{BrandGrayRule}
-Crítica (P1 --- Corretiva Urgente) & Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. & Até \textbf{15 min} & Até \textbf{2 horas} (rollback em \textless{} 5 min) \\
+Crítica (P1 --- Corretiva Urgente) & Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. & Até \textbf{15 min} & Até \textbf{2 horas} (reversão documentada para a versão anterior) \\
 \midrule
 Alta (P2 --- Corretiva Prioritária) & Degradação no painel gerencial, falha no envio de voucher por e-mail ou lentidão acima do SLA. & Até \textbf{1 hora} & Até \textbf{8 horas} \\
 \midrule
@@ -147,7 +147,7 @@ Para manter a plataforma CineDoom estável, rápida e segura com custos proporci
 \arrayrulecolor{BrandGrayRule}
 Vercel Inc. & PaaS \& CDN Edge (Next.js 14) & \textbf{US\$\ 20/mês} por dev (Plano Pro; piloto Hobby grátis) & SLA 99,99\% na borda. Mitigação: build determinístico e rollback em 1 clique. \\
 \midrule
-Supabase / Neon & DBaaS PostgreSQL (ACID) & \textbf{US\$\ 25 a US\$\ 69/mês} (Plano Pro) & Crítico para locks \texttt{SELECT FOR UPDATE}. Mitigação: réplicas e migrações Prisma. \\
+Supabase & DBaaS PostgreSQL (ACID) & \textbf{US\$\ 25 a US\$\ 69/mês} (Plano Pro) & Crítico para locks \texttt{SELECT FOR UPDATE}. Mitigação: réplicas e migrações Prisma. \\
 \midrule
 Resend & E-mail transacional (API) & \textbf{US\$\ 20/mês} (50.000 e-mails/mês) & Impacta envio de vouchers (\texttt{CA-11}). Mitigação: exibição imediata em tela. \\
 \midrule

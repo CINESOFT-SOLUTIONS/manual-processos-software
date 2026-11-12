@@ -20,7 +20,7 @@ Durante a fase inicial de arquitetura, duas ameaças críticas (`T-1` e `T-2`) f
 1. **`T-1` (Hash de CPF vulnerável a *Rainbow Table*):** Mitigada integralmente por meio da substituição do SHA-256 simples por **`HMAC-SHA256`** com chave secreta dedicada (`CINEDOOM_CPF_HMAC_KEY`), conforme formalizado no **[`ADR-008`](../adr/ADR-008-protecao-cpf-hmac-sha256-aes256gcm.md)** e implementado no módulo `CryptoService`.
 2. **`T-2` (Gestão de chaves criptográficas de PII):** Mitigada pelo armazenamento exclusivo de `CPF_ENCRYPTION_KEY` (AES-256-GCM) e `CINEDOOM_CPF_HMAC_KEY` no cofre cifrado **Vercel Environment Secrets**, com política documentada de rotação anual em lote (`ADR-008`).
 
-Todas as 17 ameaças mapeadas (`T-1` a `T-17`) possuem controles ativos implementados e validados por testes automatizados na suíte de integração e segurança (`711 testes` aprovados, incluindo a bateria de 500 cenários cross-tenant em [`security-cross-tenant-suite.md`](../quality/security-cross-tenant-suite.md)).
+Todas as 17 ameaças mapeadas (`T-1` a `T-17`) possuem controles ativos implementados e validados por testes automatizados na suíte de integração e segurança (`770 testes` aprovados, incluindo a bateria de 500 cenários cross-tenant em [`security-cross-tenant-suite.md`](../quality/security-cross-tenant-suite.md)).
 
 ---
 

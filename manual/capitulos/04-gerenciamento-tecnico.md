@@ -117,7 +117,7 @@ Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, e
 
 - **Premissas:** equipe de quatro engenheiros disponível durante todo o projeto; primeiro cinema contratante até a M2; câmbio de referência para a conversão de US\$ 90/mês em cerca de R\$ 480/mês.
 - **Restrições:** os limites dos planos gratuitos na M1; a dependência de serviços de terceiros (gateway, SEFAZ); o prazo fixo das macroentregas.
-- **Viabilidade:** com essas premissas, estima-se que o custo dos serviços base seja coberto pela mensalidade do primeiro cinema contratante, de R\$ 590 a R\$ 1.290/mês (Seção 3.3).
+- **Viabilidade:** com essas premissas, estima-se que o custo dos serviços base seja coberto pela mensalidade do primeiro cinema contratante, de R$ 910 a R$ 1.270/mês (Seção 3.3).
 
 ### Rotina de Acompanhamento e Tratamento de Desvios
 
@@ -201,7 +201,7 @@ Riscos **Críticos** exigem barreira arquitetural e teste automatizado obrigató
 | **R-07** | Fila assíncrona com contingência offline (Focus NFe) e recebimento presencial como alternativa ao gateway | Falhas de transmissão fiscal ou de pagamento | Gabriel Lourenço e Kayque Vicente | Telemetria (M2 e M3) |
 | **R-08** | Revisão cruzada, ADRs e substituto por papel (Tabela 8) | Tarefa crítica dependente de uma só pessoa | Kayque Vicente | Revisão por macroentrega |
 | **R-09** | Acompanhamento mensal do consumo e revisão de planos | Custo acima de 10% do teto | Carlos Eduardo | Painéis de cobrança |
-| **R-10** | Auditoria de dependências e varredura de segredos no CI (Seção 3.5) | Alerta de vulnerabilidade crítica | Carlos Eduardo | CI a cada PR |
+| **R-10** | Auditoria de dependências e varredura de segredos no CI (Seção 3.5) | Vulnerabilidade alta/crítica fora do baseline documentado | Carlos Eduardo | CI a cada PR |
 | **R-11** | Workshops 3 e 4 antes das macroentregas (Tabela 11) | Critério de eficácia do workshop não atingido | Kayque Vicente | Revisão do plano de capacitação |
 
 *Fonte: CineSoft Solutions (2026).*
@@ -221,7 +221,7 @@ A gestão de configuração (cláusula 6.3.5) assegura a integridade, o rastream
 | Item | Localização | Controle |
 | :--- | :--- | :--- |
 | Código-fonte da aplicação e APIs | `src/` | Git, via Pull Request |
-| Esquema e migrações do banco | `prisma/schema.prisma` e `prisma/migrations/` | Git, via Pull Request |
+| Esquema, *seed* e *triggers* do banco | `prisma/schema.prisma`, `prisma/seed.ts` e `prisma/triggers.sql` | Git, via Pull Request |
 | Testes automatizados | `tests/` | Git, via Pull Request |
 | Pipelines e configuração de deploy | `.github/workflows/` e `vercel.json` | Git, via Pull Request |
 | Especificações, ADRs e manual | `specs/` e `manual/` | Git, via Pull Request |
@@ -241,7 +241,7 @@ skinparam defaultFontName Helvetica
 
 state "feat/RF-XX\nou fix/escopo" as F
 state "develop\n(Integração Contínua)" as DEV
-state "staging\n(Homologação / Preview)" as STG
+state "staging\n(Homologação)" as STG
 state "main\n(Produção)" as MAIN
 
 F --> DEV : PR + revisão\n+ Quality Gates
@@ -320,7 +320,7 @@ stop
 
 
 ![Execução do GitHub Actions com todas as verificações aprovadas.](../../assets/capitulo-04/prints/CI.png) 
-*Figura 09 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
+*Figura 9 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
 
 ![Página de tags e releases do repositório (`v1.0.0`).](../../assets/capitulo-04/prints/releases.png) 
 > *Figura 10 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
@@ -336,7 +336,7 @@ A gestão de decisões (cláusula 6.3.3) fundamenta as escolhas de alto impacto 
 - **Quando registrar:** toda decisão que afete a arquitetura, a segurança, o banco de dados, a infraestrutura ou o custo exige um ADR.
 - **Quem decide:** o Tech Lead aprova, e o ADR é revisado em Pull Request por outro integrante.
 - **Conteúdo mínimo:** contexto, alternativas consideradas, decisão, justificativa e consequências.
-- **Ciclo de vida:** o ADR passa pelos estados da Figura 12. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
+- **Ciclo de vida:** o ADR passa pelos estados da Figura 11. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
 
 ```plantuml
 @startuml
@@ -414,7 +414,7 @@ As fichas completas dos 12 ADRs, com data e autor, estão em `specs/adrs/`. A ta
 
 ## 4.5 Métricas de acompanhamento do projeto
 
-O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 14 resume o ciclo de medição.
+O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 13 resume o ciclo de medição.
 
 ```plantuml
 @startuml
@@ -440,7 +440,7 @@ D --> N : Atualiza metas
 | **Lead time** (da abertura da issue ao merge em `develop`) | Fluxo | ≤ 48h por pacote | GitHub Projects, semanal | Kayque Vicente |
 | **WIP por engenheiro** | Fluxo | ≤ 2 tarefas | Quadro Kanban, diária | Kayque Vicente |
 | **Aprovação da suíte de testes** | Qualidade | 100% | GitHub Actions, a cada PR | Kayque Vicente |
-| **Cobertura nas regras de domínio** | Qualidade | ≥ 80% (Seção 3.5) | Relatório do Vitest, a cada PR | Kayque Vicente |
+| **Cobertura nas regras de domínio** | Qualidade | ≥ 70% (*statements*, funções e linhas) e ≥ 80% (*branches*) (Seção 3.5) | Relatório do Vitest, a cada PR | Kayque Vicente |
 | **Defeitos críticos em produção** | Qualidade | 0 | Telemetria e registro de incidentes, por macroentrega | Carlos Eduardo |
 | **Cumprimento do escopo** | Progresso | 100% dos requisitos do marco | Matriz de rastreabilidade (Seção 5.1.2), por Sprint | Kayque Vicente |
 | **Riscos críticos sem mitigação ativa** | Risco | 0 | Registro de riscos (Tabela 21), por Sprint | Kayque Vicente |
@@ -455,9 +455,9 @@ D --> N : Atualiza metas
 | :--- | :--- | :--- |
 | Lead time | Média de 18 a 32 horas por issue | Acima de 48h, o Gerente de Projeto aciona pareamento técnico |
 | WIP por engenheiro | Limite respeitado | Revisão do quadro na reunião diária |
-| Suíte de testes | 20 arquivos e 711 testes aprovados (100%), em cerca de 10,6s | O PR com teste falho não é integrado |
-| Cobertura nas regras de domínio | A registrar na primeira medição formal | Abrir ação corretiva no registro de não conformidades (Seção 3.5) |
-| Defeitos críticos em produção | 0 (apenas ajustes cosméticos e de responsividade) | Defeito crítico aciona rollback e correção urgente (Figura 8) |
+| Suíte de testes | 26 arquivos e 770 testes aprovados (100%) | O PR com teste falho não é integrado |
+| Cobertura nas regras de domínio | 71,2% de *statements*, 83,4% de *branches* e 76,3% de funções (gate: 70/80/70) | Abrir ação corretiva no registro de não conformidades (Seção 3.5) |
+| Defeitos críticos em produção | 0 (apenas ajustes cosméticos e de responsividade) | Defeito crítico aciona a reversão para a versão anterior e correção urgente (Figura 8) |
 | Cumprimento do escopo | 18 de 18 requisitos e 15 de 15 critérios de aceite | Ajuste de escopo conforme a Tabela 17 |
 | Riscos críticos sem mitigação | Medição iniciada a partir deste plano | Escalar à direção |
 | Custo mensal | US$ 0 (planos gratuitos) | Desvio acima de 10% do teto aciona revisão de planos |

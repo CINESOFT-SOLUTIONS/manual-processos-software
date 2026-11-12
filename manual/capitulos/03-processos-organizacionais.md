@@ -76,6 +76,15 @@ A evolução do produto está organizada em três macroentregas, que agrupam fun
 
 Cada macroentrega pode envolver diversas Sprints, e os incrementos produzidos ao longo desses ciclos contribuem progressivamente para sua conclusão.
 
+### Fluxo de Trabalho no Git (Política Corporativa de Branches)
+
+Para garantir estabilidade em produção e permitir desenvolvimento paralelo sem conflitos, a organização adota um fluxo de ramificação estruturado no Git:
+
+- **`main`:** ramo estável que reflete o código atualmente implantado em produção (`https://cinedoom.vercel.app/`). Commits diretos são bloqueados; apenas Pull Requests testados e aprovados vindos de `staging` são integrados.
+- **`staging`:** ambiente de pré-produção e homologação, que recebe as versões consolidadas de `develop` para validação com usuários e testes de ponta a ponta.
+- **`develop`:** ramo principal de integração contínua do dia a dia, onde as novas funcionalidades são unificadas e testadas pela esteira automática.
+- **`feat/*` e `fix/*`:** ramos temporários criados a partir de `develop` para uma história específica ou correção de não conformidade, excluídos após o merge do Pull Request.
+
 ### Organização das Iterações e Práticas de Trabalho
 
 Durante os ciclos de desenvolvimento, a equipe adota práticas de planejamento, acompanhamento, revisão e melhoria contínua:
@@ -161,7 +170,7 @@ O ciclo de vida do CineDoom opera em três ambientes segregados:
 A sustentação dessa infraestrutura é mantida por três rotinas contínuas da liderança técnica:
 1. **Segurança de Credenciais:** Tokens e chaves de API residem exclusivamente em cofres de variáveis protegidas (GitHub Secrets e painel da Vercel).
 2. **Controle de Cotas e Consumo:** Monitoramento quinzenal do uso de banco, logs e e-mails para garantir previsibilidade de custos.
-3. **Auditoria de Vulnerabilidades:** Execução frequente de `pnpm audit` para mitigar riscos de segurança em dependências externas.
+3. **Auditoria de Vulnerabilidades:** Execução frequente de `pnpm security:audit`, que bloqueia vulnerabilidades altas ou críticas fora do baseline documentado em `security/audit-baseline.json`.
 
 ---
 
@@ -191,7 +200,7 @@ O início do projeto foi autorizado pela direção da CineSoft Solutions, que é
 - **Viabilidade Operacional:** Por ser uma aplicação que opera integralmente no navegador web (tanto nos computadores da bilheteria quanto nos smartphones dos clientes), não há necessidade de instalar ou atualizar programas nas máquinas físicas dos cinemas, o que reduz custos operacionais de implantação e simplifica o suporte.
 - **Viabilidade Financeira:**
   - *Fase Inicial (Macroentrega 1):* Operação com custos de nuvem reduzidos para homologação e projetos-piloto.
-  - *Fase de Escala Comercial (Macroentregas 2 e 3):* A infraestrutura de produção em nuvem, somando planos corporativos de banco de dados, hospedagem, e-mail transacional e auditoria, totaliza cerca de **US$ 90/mês (aproximadamente R$ 480/mês, conforme câmbio de referência)**. Considerando o ticket médio previsto de R$ 590 a R$ 1.290/mês por complexo, estima-se que esse custo seja coberto já com a mensalidade do **primeiro cinema contratante**, o que indica sustentabilidade financeira e margem operacional positiva.
+  - *Fase de Escala Comercial (Macroentregas 2 e 3):* A infraestrutura de produção em nuvem, somando planos corporativos de banco de dados, hospedagem, e-mail transacional e auditoria, totaliza cerca de **US$ 90/mês (aproximadamente R$ 480/mês, conforme câmbio de referência)**. Considerando o ticket previsto de R$ 910 a R$ 1.270/mês por complexo (assinatura-base de R$ 790 mais R$ 120 por sala ativa), estima-se que esse custo seja coberto já com a mensalidade do **primeiro cinema contratante**, o que indica sustentabilidade financeira e margem operacional positiva.
 
 ### Alocação de Recursos
 
@@ -336,8 +345,8 @@ Para que qualquer código seja integrado aos ramos principais (`develop`, `stagi
 
 1. **Validação Estática e Compilação:** tipagem estrita sem erros (`tsc --noEmit`) e ausência de dependências circulares (`eslint no-cycle`).
 2. **Suíte de Testes:** **100% de aprovação nos testes do Vitest**, incluindo testes unitários de regras de negócio, testes de concorrência com 50 threads simultâneas e 500 cenários de isolamento *cross-tenant*.
-3. **Cobertura:** mínimo de 90% de cobertura nas regras de domínio.
-4. **Segurança:** auditoria de dependências vulneráveis e varredura de segredos no código, sem ocorrências críticas.
+3. **Cobertura:** mínimo de 70% de *statements*, funções e linhas e 80% de *branches* nas regras de domínio (`src/modules/**` e `src/shared/**`).
+4. **Segurança:** auditoria de dependências de produção (`pnpm security:audit`) sem vulnerabilidades altas ou críticas fora do baseline documentado, além de varredura de segredos no código sem ocorrências.
 5. **Revisão Humana de Código:** pelo menos uma aprovação de outro desenvolvedor, com base em checklist (aderência à especificação, SOLID, tratamento de erros, proteção de dados pessoais e isolamento de cinemas).
 6. **Verificação de Build:** compilação bem-sucedida do pacote de produção antes da autorização de deploy.
 
@@ -347,7 +356,7 @@ Para que qualquer código seja integrado aos ramos principais (`develop`, `stagi
 
 | Métrica | Meta | Fonte de coleta | Frequência |
 | :--- | :--- | :--- | :--- |
-| Cobertura de testes nas regras de domínio | ≥ 80% | Relatório do Vitest no CI | A cada *Pull Request* |
+| Cobertura de testes nas regras de domínio | ≥ 70% (*statements*, funções e linhas) e ≥ 80% (*branches*) | Relatório do Vitest no CI | A cada *Pull Request* |
 | Aprovação da suíte de testes | 100% | GitHub Actions | A cada *Pull Request* |
 | Falhas de build no CI | Tendência decrescente | GitHub Actions | A cada macroentrega |
 | Defeitos escapados para produção | 0 críticos | Registro de incidentes | A cada macroentrega |
@@ -398,7 +407,7 @@ A organização assegura que todo o conhecimento técnico, arquitetural e proces
 
 - **Abordagem *Docs-as-Code*:** especificações, modelos de dados, planos de teste e manuais de processo residem no repositório Git e são atualizados e revisados no mesmo fluxo de *Pull Requests* do código.
 - **Registro Formal de Decisões de Arquitetura (ADRs):** decisões estruturais, como o banco relacional gerenciado, os bloqueios pessimistas em vez de filas e a estratégia de multi-tenancy, são documentadas com contexto, opções avaliadas e consequências.
-- **Rastreabilidade nos Artefatos de Código:** serviços, controladores e testes referenciam requisitos funcionais (`RF-XX`), regras de negócio (`RN-XX`) e critérios de aceitação.
+- **Rastreabilidade nos Artefatos de Código:** serviços, controladores e testes referenciam requisitos funcionais (`RF-XX`), regras de negócio (`RN-XX`) e critérios de aceitação (`CA-XX`), consolidados na matriz de rastreabilidade da Seção 5.1.2.
 - **Lições Aprendidas e Guias Técnicos:** a solução de cada problema relevante, como limites de conexão no banco ou ajustes de concorrência, é registrada em guia interno ao final da correção.
 
 ### Compartilhamento do Conhecimento

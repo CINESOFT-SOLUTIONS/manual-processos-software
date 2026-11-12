@@ -18,7 +18,7 @@
 - Yury Nogueira de Oliveira Silva
 
 **Orientadora:** Profa. Dra. Juliana Pereira de Souza Zinader  
-**Referência:** ISO 12207:2017
+**Referência:** ABNT NBR ISO/IEC/IEEE 12207:2021
 
 ---
 
@@ -405,19 +405,22 @@ As seguintes condições foram assumidas como verdadeiras para viabilizar as reg
 
 # Capítulo 2 – Processos de Acordo
 
-## 2.1 Descrição do processo de aquisição
+Este capítulo estabelece como a **CineSoft Solutions** gerencia suas relações comerciais e técnicas, fundamentando-se nas boas práticas da norma ABNT NBR ISO/IEC/IEEE 12207:2021 para os processos de **Aquisição** e **Fornecimento**. 
 
-O processo de aquisição (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.1) estabelece a governança da **CineSoft Solutions** no papel de organização adquirente, definindo o que desenvolver internamente e o que contratar de terceiros para sustentar o produto **CineDoom**.
+A abordagem adotada busca equilibrar rigor de engenharia e pragmatismo operacional: define claramente o que construir internamente versus o que contratar de terceiros (*Make or Buy*), estrutura a jornada de entrega e suporte da plataforma **CineDoom** para os cinemas clientes, e mapeia os parceiros de infraestrutura que viabilizam o sistema.
 
-### Fronteira e Justificativa de Aquisição
+---
 
-A estratégia de engenharia da CineSoft Solutions concentra o desenvolvimento interno nos componentes que formam o **núcleo de valor e diferencial competitivo** da plataforma: o motor de bilheteria e reservas com trava atômica (`SELECT FOR UPDATE`), a máquina de estados de assentos com expiração *Just-in-Time*, o isolamento multi-tenant e o módulo de proteção de dados (LGPD).
+## 2.1 Processo de Aquisição: Decisões e Gestão de Provedores
 
-Em contrapartida, serviços de infraestrutura em nuvem, bancos de dados gerenciados, disparo de e-mails transacionais, retenção de logs, processamento de pagamentos e mensageria fiscal são adquiridos de provedores especializados para reduzir o tempo de desenvolvimento, diminuir custos operacionais e garantir alta disponibilidade (SLA $\ge 99,9\%$).
+No papel de adquirente, a CineSoft Solutions adota uma diretriz clara: **o esforço interno de desenvolvimento é concentrado no coração das regras de negócio do cinema e nos diferenciais competitivos do CineDoom**. Todo serviço em que o mercado já oferece soluções maduras, seguras e com economia de escala é contratado como serviço ou biblioteca, reduzindo tempo de desenvolvimento e custo operacional.
 
-### Tabela de Análise de Aquisição (*Make or Buy*)
+### O que construímos e o que contratamos (*Make or Buy*)
 
-A governança de aquisição da CineSoft Solutions consolida a decisão formal para cada elemento arquitetural do sistema, classificando a abordagem em **Sim** (solução madura/commodity adquirida pronta), **Não** (regra de negócio central desenvolvida internamente) ou **Parcial** (engine ou biblioteca externa combinada com regras de domínio proprietárias):
+- **Desenvolvimento Interno (*Make*):** O motor de bilheteria e reservas atômicas com bloqueio pessimista (`SELECT FOR UPDATE`), a máquina de estados de assentos com liberação automática de ingressos expirados, o isolamento lógico multi-tenant entre diferentes redes de cinema e os mecanismos de anonimização exigidos pela LGPD. Esses itens compõem a propriedade intelectual e o diferencial de confiabilidade da CineSoft.
+- **Soluções Prontas de Terceiros (*Buy*):** Infraestrutura de banco de dados gerenciado (PostgreSQL no Supabase), hospedagem serverless com distribuição global (Vercel), mensageria de e-mails transacionais (Resend), retenção de logs para auditoria (Axiom), processamento de pagamentos digitais (Stripe/Pagar.me na Macroentrega 2) e mensageria fiscal de notas (Focus NFe na Macroentrega 3).
+
+As tabelas a seguir detalham a justificativa técnica e econômica de cada decisão:
 
 **Tabela 2 – Análise de Aquisição: Componentes de Software e Domínio (Make or Buy)**
 
@@ -436,8 +439,8 @@ A governança de aquisição da CineSoft Solutions consolida a decisão formal p
 
 | Elemento do sistema | Adquirir pronto? | Justificativa | Possível fornecedor |
 | :--- | :---: | :--- | :--- |
-| **Banco de Dados Relacional Gerenciado (DBaaS)** | **Sim** | Elimina custos de DBA, provendo restauração pontual automatizada (PITR), *connection pooling* para serverless e alta disponibilidade ($\ge 99,9\%$). | **Supabase Pro / Neon PostgreSQL** |
-| **Plataforma de Hospedagem Serverless e CDN** | **Sim** | Elimina a manutenção de servidores dedicados, entregando deploys atômicos com *rollback* instantâneo, proteção DDoS e distribuição global na borda. | **Vercel Pro** (Cloud PaaS) |
+| **Banco de Dados Relacional Gerenciado (DBaaS)** | **Sim** | Elimina custos de DBA, provendo restauração pontual automatizada (PITR), *connection pooling* para serverless e alta disponibilidade ($\ge 99,9\%$). | **Supabase Pro (PostgreSQL)** |
+| **Plataforma de Hospedagem Serverless e CDN** | **Sim** | Elimina a manutenção de servidores dedicados, entregando deploys atômicos com reversão para a versão anterior, proteção DDoS e distribuição global na borda. | **Vercel Pro** (Cloud PaaS) |
 | **Serviço de Disparo de E-mails Transacionais** | **Sim** | Evita que vouchers caiam em caixas de spam; a API especializada assegura entrega em milissegundos com autenticação SPF, DKIM e DMARC. | **Resend** (SaaS de E-mail Transacional) |
 | **Observabilidade e Retenção Legal de Logs** | **Sim** | Cumpre a retenção legal de logs por 1 ano (Marco Civil e LGPD) sem sobrecarregar o armazenamento do banco relacional, com busca indexada rápida. | **Axiom Cloud** (Log Drain SaaS) |
 | **Gateway de Pagamento Online (Macroentrega 2)** | **Sim** | Transfere a complexidade regulatória da certificação PCI-DSS Nível 1 e antifraude, automatizando a liquidação de PIX dinâmico e cartões. | **Stripe / Pagar.me** |
@@ -445,96 +448,75 @@ A governança de aquisição da CineSoft Solutions consolida a decisão formal p
 
 *Fonte: CineSoft Solutions (2026).*
 
-### As Cinco Atividades do Processo de Aquisição (ISO/IEC/IEEE 12207:2017)
+### O Ciclo Prático de Aquisição de Provedores
 
-A CineSoft Solutions conduz a contratação e a governança de serviços e componentes especializados por meio das cinco atividades normativas da norma:
+Para selecionar e manter esses provedores em operação contínua, a CineSoft Solutions estrutura a contratação em cinco etapas práticas:
 
-1. **Preparação para a Aquisição:**
-   - *Descrição:* O Arquiteto de Software e a equipe técnica especificam as necessidades do sistema, volumetria estimada de transações e requisitos de segurança (TLS 1.3, criptografia de dados e conformidade com a LGPD).
-   - *Saídas:* Especificação Técnica de Aquisição e Matriz de Critérios de Seleção.
-2. **Divulgação e Seleção de Fornecedores:**
-   - *Descrição:* A equipe levanta e compara soluções consolidadas para cada categoria (ex.: Neon vs. Supabase; Resend vs. AWS SES; Vercel vs. AWS Amplify), pontuando maturidade do SDK, latência na América do Sul e custo escalonado.
-   - *Saídas:* Parecer Comparativo de Fornecedores e Registro de Seleção.
-3. **Estabelecimento e Manutenção do Acordo:**
-   - *Descrição:* Formalização contratual via Termos de Serviço Corporativos e Aditivo de Tratamento de Dados (*DPA* para a LGPD), assegurando SLA $\ge 99,9\%$, limites de requisição (*rate-limiting*) e portabilidade de dados.
-   - *Saídas:* Contrato de Serviço de Nuvem (DPA) e Registro de Credenciais em Cofre Seguro.
-4. **Monitoramento do Acordo:**
-   - *Descrição:* Integrado ao Controle de Projeto (Capítulo 4), acompanha-se a disponibilidade dos serviços via telemetria (latência p95/p99 e conexões do pooler), páginas públicas de status e conciliação mensal de consumo.
-   - *Saídas:* Relatório Mensal de SLA/Consumo e Registro de Incidentes do Provedor.
-5. **Aceitação do Produto ou Serviço:**
-   - *Descrição:* O serviço é validado em ambiente de homologação (*sandbox*) e integrado à esteira de CI/CD, exigindo aprovação em testes de estabilidade antes da liberação em produção acompanhada de plano de contingência (*rollback plan*).
-   - *Saídas:* Relatório de Testes em Sandbox e Termo de Liberação em Produção (*Go-Live*).
+1. **Definição de Requisitos e Critérios:** O Arquiteto e os líderes técnicos mapeiam as restrições de cada necessidade — limites de latência (priorizando servidores na América do Sul), compatibilidade com Node.js/Next.js, conformidade com a LGPD e facilidade de integração local.
+2. **Avaliação Técnica e Financeira:** São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus PostgreSQL autogerenciado, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
+3. **Contratação e Formalização:** Assinatura digital dos planos corporativos, formalização de Aditivos de Proteção de Dados (*Data Processing Agreements* – DPA) para garantir sigilo sob a LGPD e armazenamento seguro de chaves de API em gerenciadores de segredos com rotação periódica.
+4. **Monitoramento e Acompanhamento de SLA:** A equipe monitora a disponibilidade real dos provedores via telemetria contínua, páginas de status e relatórios mensais de consumo, garantindo que o tempo de resposta e a taxa de erros permaneçam dentro dos padrões acordados.
+5. **Homologação e Aceite Técnico:** Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (*sandbox*) na esteira de integração contínua (CI/CD), com procedimento de reversão (*rollback*) documentado caso ocorram falhas.
 
 ---
 
-## 2.2 Descrição do processo de fornecimento
+## 2.2 Processo de Fornecimento: Comercialização, Entrega e Operação
 
-O processo de fornecimento (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.1.2) regulamenta como a **CineSoft Solutions** comercializa, implanta, licencia, mantém e suporta a plataforma **CineDoom** junto aos cinemas clientes e parceiros de negócio.
+Como fornecedora de software, a CineSoft Solutions atende cinemas independentes, cinemas de rua e pequenas redes de exibição que buscam modernizar sua bilheteria física e expandir suas vendas online de forma integrada e sem riscos de sobreposição de assentos.
 
-### Perspectiva de Fornecimento e Ativos Comercializáveis
+### Modelos de Negócio e Ativos Disponíveis
 
-Além da oferta integral da plataforma, a arquitetura modular da CineSoft Solutions permite o fornecimento autônomo de subsistemas de alto valor agregado para diferentes perfis de adquirentes:
+O principal produto fornecido é a plataforma **CineDoom** em modelo SaaS (*Software as a Service*), cobrada por assinatura mensal mais taxa por sala ativa. No entanto, sua arquitetura modular também permite licenciar componentes específicos para parceiros ou exibidores com sistemas legados:
 
 **Tabela 4 – Perspectiva de Fornecimento e Ativos Comercializáveis**
 
-| Elemento com potencial | Possível adquirente | Modelo de acordo |
-| :--- | :--- | :--- |
-| **Plataforma CineDoom (Completa)** | Cinemas de rua, circuitos independentes e redes de médio porte | **Assinatura SaaS B2B:** **R$ 790/mês** base + **R$ 120/mês** por sala ativa (+ R$ 1.500 setup). |
-| **Engine de Trava Atômica (API)** | Teatros, casas de espetáculos e plataformas de eventos | **API Transacional:** **R$ 0,08** por assento emitido (franquia mínima de R$ 200/mês com SLA 99,5%). |
-| **Módulo de Governança LGPD (SDK)** | Software houses de varejo e entretenimento | **Licença de SDK:** **R$ 8.900/ano** (ou **R$ 16.000** perpétua com 10h de consultoria inclusas). |
-| **Portal White-Label de Reservas** | Cinemas com ERP fiscal próprio de balcão | **Módulo SaaS White-Label:** **R$ 490/mês** por exibidor (domínio próprio e SSL inclusos; R$ 800 setup). |
+| Ativo potencial                 | Possíveis adquirentes                                                                          | Modelo de fornecimento e preço estimado                                                                          |
+| ------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Plataforma CineDoom (completa)  | Cinemas independentes, cinemas de rua e pequenas redes de exibição.                            | SaaS B2B: R$ 790/mês de assinatura-base, acrescidos de R$ 120/mês por sala ativa e R$ 1.500 de implantação (faixa efetiva de R$ 910 a R$ 1.270/mês para complexos de uma a quatro salas). |
+| Engine de Trava Atômica (API)   | Plataformas de venda de ingressos, teatros e sistemas de reservas de eventos.                  | Licenciamento de API: R$ 0,08 por assento confirmado, com cobrança mínima de R$ 200/mês.                         |
+| Módulo de Governança LGPD (SDK) | Empresas de desenvolvimento de software e plataformas de entretenimento.                       | Licenciamento de SDK: R$ 8.900/ano ou R$ 16.000 por licença perpétua, incluindo 10 horas de consultoria técnica. |
+| Portal White-Label de Reservas  | Exibidores que utilizam sistemas administrativos próprios e desejam oferecer reservas on-line. | SaaS White-Label: R$ 490/mês por exibidor, com domínio próprio, SSL e taxa de implantação de R$ 800.             |
 
-*Fonte: CineSoft Solutions (2026).*
+*Fonte: CineSoft Solutions (2026). Valores comerciais estimados para fins de planejamento.*
 
-### As Cinco Atividades do Processo de Fornecimento (ISO/IEC/IEEE 12207:2017)
+### Jornada do Cliente: Da Contratação ao Pós-Venda
 
-A CineSoft Solutions conduz o ciclo comercial e operacional de atendimento ao cliente por meio das cinco atividades normativas:
+A relação entre a CineSoft Solutions e o cinema contratante segue um ciclo transparente e estruturado em cinco etapas:
 
-1. **Preparação do Fornecimento:**
-   - *Descrição:* A equipe de negócios e arquitetura mapeia os perfis de exibidores adquirentes, definindo a estratégia de monetização SaaS, matriz de precificação por sala e modelos de licenciamento de APIs desacopladas.
-   - *Saídas:* Matriz de Planos Comerciais e Catálogo de Ativos Licenciáveis.
-2. **Resposta à Solicitação:**
-   - *Descrição:* Ao receber solicitações de cotação ou RFPs de exibidores, a CineSoft avalia a viabilidade técnica e arquitetural da rede (quantidade de salas e integração fiscal), gerando proposta com cronograma e escopo de setup.
-   - *Saídas:* Proposta Técnica de Implantação e Proposta Comercial de Fornecimento.
-3. **Estabelecimento e Manutenção do Acordo:**
-   - *Descrição:* Formalização do Contrato de Licenciamento SaaS e Acordo de Tratamento de Dados (DPA/LGPD), estipulando SLA de 99,5%, isolamento multi-tenant (`tenant_id`), roadmap em 3 Macroentregas e condições de rescisão com portabilidade.
-   - *Saídas:* Contrato de Prestação de Serviço (SaaS) e Aditivo de Privacidade e DPA.
-4. **Execução do Acordo:**
-   - *Descrição:* Provisionamento do tenant isolado, carga inicial de salas/filmes, treinamento operacional de atendentes e evolução orientada à esteira de CI/CD com controle de versão e validação nos 711 testes automatizados.
-   - *Saídas:* Ambiente de Produção Provisionado e Relatório de Validação de CI/CD.
-5. **Entrega e Suporte:**
-   - *Descrição:* Condução da homologação assistida (*UAT*), assinatura do Termo de Aceite de Implantação (TAI) após comprovação de zero *double-booking* e ativação do suporte técnico contínuo estruturado nos 4 níveis de SLA.
-   - *Saídas:* Termo de Aceite de Implantação (TAI) e Relatório Mensal de Cumprimento de SLA.
+1. **Alinhamento e Diagnóstico Inicial:** A CineSoft compreende o perfil do cinema — quantidade de salas físicas, categorias de poltronas, volume médio de sessões semanais e necessidade de equipamentos físicos de guichê.
+2. **Proposta e Escopo de Implantação:** Apresentação da proposta comercial contendo valores claros, cronograma de parametrização e requisitos mínimos de rede e navegadores para os computadores da bilheteria.
+3. **Formalização Contratual:** Assinatura do Contrato de Licenciamento SaaS e do Termo de Tratamento de Dados (LGPD), definindo os níveis de serviço garantidos (SLA de 99,5%), a propriedade exclusiva dos dados pelo cinema e as regras de confidencialidade.
+4. **Implantação e Treinamento:** Provisionamento do ambiente isolado do cinema (`tenant_id`), cadastro de salas e filmes, simulação de vendas com a equipe de atendentes e treinamento operacional dos gerentes de bilheteria.
+5. **Entrada em Operação e Suporte Contínuo:** Liberação assistida do primeiro dia de operação em guichê (*go-live* assistido), assinatura do Termo de Aceite após comprovação prática de ausência de erros ou vendas duplicadas, e início do suporte técnico diário.
 
-### Termos do Acordo, Entregáveis e Evolução por Macroentregas
+### Entregáveis da Implantação e Evolução Funcional
 
-O fornecimento comercial aos cinemas adquirentes contempla os seguintes entregáveis contratuais e evolução funcional:
+Cada cinema contratante recebe:
+- **Tenant Exclusivo e Isolado:** Criação do identificador da organização (`tenant_id`) no banco de dados com isolamento lógico garantido em todas as consultas.
+- **Configuração de Salas e Catálogo:** Montagem do mapa visual de poltronas de cada sala física (comun, VIP, acessibilidade) e treinamento prático para cadastro de sessões e preços.
+- **Manual do Operador e Capacitação:** Guia rápido de utilização do ponto de venda no balcão e no portal web.
+- **Evolução Contínua em Três Fases (Macroentregas):**
+  - *Fase 1 (Atual):* Bilheteria presencial completa, controle de sessões, catálogo de filmes e portal web de reserva antecipada com pagamento no balcão.
+  - *Fase 2 (Próxima):* Venda online direta com pagamento imediato via PIX dinâmico e cartão, com emissão de vouchers digitais no e-mail do cliente.
+  - *Fase 3 (Futura):* Emissão integrada de notas fiscais (NFC-e na SEFAZ), controle de vendas de bomboniere/pipoca e relatórios consolidados de faturamento.
 
-- **Provisionamento de Tenant Isolado:** Criação da organização no banco de dados de produção com isolamento lógico garantido por `tenant_id`, configuração de domínio/acesso e credenciais iniciais de gerência.
-- **Carga de Dados e Parametrização Inicial:** Mapeamento das salas físicas do cinema (fileiras, colunas e categorias Clássica, IMAX ou VIP) e importação da grade inicial de filmes.
-- **Documentação Operacional e Capacitação:** Entrega do Manual de Operação de Guichê e sessão de treinamento remoto ou presencial para atendentes e gerentes.
-- **Roadmap Contratual em 3 Macroentregas:**
-  - *Macroentrega 1 (`Release 1.0` — Implantação Imediata):* Operação completa de back-office, bilheteria física atômica e portal web de reservas com pagamento presencial no balcão.
-  - *Macroentrega 2 (`Release 2.0` — Expansão Digital):* Habilitação de checkout online (PIX e cartão) e disparo de e-mails transacionais com domínio dedicado do exibidor.
-  - *Macroentrega 3 (`Release 3.0` — Automação Fiscal e Varejo):* Integração com SEFAZ para emissão automática de NFC-e, módulo de bomboniere e painel self-service de faturamento.
+### Critérios de Aceite Formal
 
-### Critérios de Aceite Formal pelo Cliente Adquirente
+O cinema cliente formaliza a aceitação do sistema quando os seguintes requisitos são atendidos:
+1. Aprovação de todos os testes da suíte automatizada do sistema (26 arquivos e 770 testes) e execução bem-sucedida dos testes práticos de balcão.
+2. Inexistência de qualquer defeito impeditivo ou crítico em aberto.
+3. Comprovação prática de que a trava atômica impede rigorosamente a venda simultânea da mesma poltrona entre a web e o guichê.
+4. Assinatura do Termo de Aceite de Implantação (TAI) pelo responsável do cinema.
 
-A entrega de cada implantação ou macroentrega é considerada formalmente aceita mediante:
-1. Aprovação integral da bateria de testes automatizados (711 testes unitários, de integração e isolamento *cross-tenant*) e homologação assistida (*UAT*).
-2. Inexistência de defeitos abertos de severidade **Crítica** (bloqueio de venda ou corrupção de dados) ou **Alta**.
-3. Comprovação prática de zero ocorrência de venda dupla (*double-booking*) sob disputa simultânea entre portal web e balcão físico.
-4. Assinatura digital do **Termo de Aceite de Implantação (TAI)** pelo representante legal do cinema contratante.
+### Níveis de Serviço (SLA) e Atendimento
 
-### Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega
-
-A CineSoft Solutions assegura disponibilidade mensal mínima de **99,5%** da plataforma e provê suporte contínuo estruturado em quatro modalidades de manutenção:
+Para manter a bilheteria funcionando sem interrupções nas horas de pico (finais de semana e estreias), a CineSoft estabelece tempos máximos de resposta e resolução:
 
 **Tabela 5 – Acordo de Nível de Serviço (SLA) e Suporte Pós-Entrega**
 
 | Severidade / Modalidade | Descrição do Cenário | Tempo de 1ª Resposta | Meta de Resolução / Contorno |
 | :--- | :--- | :---: | :---: |
-| **Crítica (P1 — Corretiva Urgente)** | Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. | Até **15 minutos** | Até **2 horas** (rollback imediato em < 5 min) |
+| **Crítica (P1 — Corretiva Urgente)** | Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. | Até **15 minutos** | Até **2 horas** (reversão documentada para a versão anterior) |
 | **Alta (P2 — Corretiva Prioritária)** | Degradação no painel gerencial, falha no envio de voucher por e-mail ou lentidão acima do SLA. | Até **1 hora** | Até **8 horas** |
 | **Normal (P3 — Adaptativa / Preventiva)** | Ajustes de compatibilidade de navegador, dúvidas operacionais ou otimização preventiva de índices. | Até **4 horas úteis** | Até **24 horas úteis** |
 | **Evolutiva (P4 — Perfectiva)** | Solicitação de novos relatórios, filtros ou melhorias de usabilidade no Portal do Cliente. | Até **2 dias úteis** | Planejada na próxima *Sprint / Release* |
@@ -543,16 +525,16 @@ A CineSoft Solutions assegura disponibilidade mensal mínima de **99,5%** da pla
 
 ---
 
-## 2.3 Identificação dos fornecedores e parceiros relevantes
+## 2.3 Fornecedores e Parceiros de Tecnologia
 
-A operação contínua e comercial da plataforma CineDoom apoia-se em provedores de tecnologia de primeira linha. A tabela abaixo detalha cada fornecedor crítico, seu papel arquitetural, a estrutura de contratação escalonada entre a validação inicial (Macroentrega 1) e a operação comercial plena (Macroentregas 2 e 3), bem como os impactos em disponibilidade, custo e segurança:
+Para manter a plataforma CineDoom estável, rápida e segura com custos proporcionais à escala dos cinemas, a CineSoft selecionou parceiros especializados para cada camada do sistema:
 
 **Tabela 6 – Identificação dos Fornecedores e Parceiros Relevantes**
 
 | Fornecedor | Categoria e serviço | Plano e custo comercial | Impacto e mitigação de riscos |
 | :--- | :--- | :--- | :--- |
 | **Vercel Inc.** | **PaaS & CDN Edge:** Next.js 14 e serverless | **US$ 20/mês** por dev (Vercel Pro; piloto Hobby grátis) | SLA 99,99% na borda. Mitigação: build determinístico e rollback instantâneo. |
-| **Supabase / Neon** | **DBaaS PostgreSQL:** Persistência ACID e pooling | **US$ 25 a US$ 69/mês** (Plano Pro compute dedicado) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma. |
+| **Supabase** | **DBaaS PostgreSQL:** Persistência ACID e pooling | **US$ 25 a US$ 69/mês** (Plano Pro compute dedicado) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma. |
 | **Resend** | **E-mail transacional:** API de vouchers (DKIM/SPF) | **US$ 20/mês** (franquia de 50.000 e-mails/mês) | Impacta envio de voucher (`CA-11`). Mitigação: exibição imediata em tela. |
 | **Axiom Inc.** | **Log drain:** Observabilidade e auditoria LGPD | **US$ 25/mês** (1 TB/mês; retenção de 365 dias) | Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII. |
 | **GitHub Inc.** | **CI/CD & Git:** Repositórios e GitHub Actions | **US$ 4/usuário/mês** (Plano Team e branch rules) | Sustenta testes automatizados. Mitigação: bloqueio de merge sem testes. |
@@ -561,347 +543,914 @@ A operação contínua e comercial da plataforma CineDoom apoia-se em provedores
 
 *Fonte: CineSoft Solutions (2026).*
 
----
-
 
 # Capítulo 3 – Processos Organizacionais Habilitadores
 
-## 3.1 Modelo de ciclo de vida adotado e justificado
+Este capítulo apresenta a estrutura organizacional, as políticas de engenharia e os recursos que sustentam a operação da **CineSoft Solutions** no desenvolvimento contínuo da plataforma **CineDoom**. As práticas aqui descritas alinham-se aos processos organizacionais da norma ABNT NBR ISO/IEC/IEEE 12207:2021, demonstrando como a organização fornece governança, infraestrutura centralizada, equipe capacitada e controle de qualidade para que o projeto atinja seus objetivos com previsibilidade.
 
-A **CineSoft Solutions** adota o modelo de ciclo de vida **Iterativo e Incremental Ágil** (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.2.1), combinando Sprints de desenvolvimento com fluxo contínuo no quadro Kanban e integração/entrega contínua (CI/CD).
+---
 
-### Estrutura das Fases, Cerimônias e Macroentregas
+## 3.1 Modelo de Ciclo de Vida do Projeto
 
-O ciclo de vida do produto **CineDoom** é organizado em **três Macroentregas evolutivas (Releases Comerciais)**, cada qual subdividida em iterações (Sprints) que percorrem obrigatoriamente cinco etapas de engenharia: **Elicitação e Refinamento de Requisitos $\to$ Arquitetura e Design $\to$ Implementação e Integração $\to$ Verificação e Validação Automatizada $\to$ Implantação em Produção (Release)**.
+A CineSoft Solutions adota o modelo de ciclo de vida **Iterativo e Incremental**, com práticas ágeis de desenvolvimento. O trabalho é organizado em ciclos de duas semanas (*Sprints*), nos quais são planejadas, desenvolvidas e avaliadas partes funcionais do sistema. O acompanhamento das atividades ocorre por meio de um quadro Kanban, enquanto práticas de integração contínua (CI) e entrega contínua (CD) apoiam a integração, a verificação e a disponibilização das alterações.
 
-```mermaid
-flowchart LR
-    subgraph Ciclo["Ciclo Iterativo por Sprint (Planning → Execução → Review → Retro)"]
-        direction LR
-        R["1. Requisitos & Backlog"] --> D["2. Arquitetura & ADRs"]
-        D --> I["3. Implementação & Code Review"]
-        I --> T["4. V&V (711 Testes CI)"]
-        T --> P["5. Deploy & Telemetria"]
-        P -.->|"Feedback & Lições"| R
-    end
+### Fases de Engenharia e Evolução em Três Macroentregas
 
-    Ciclo ==> M1["Macroentrega 1 (v1.0 - MVP)\nBilheteria ACID, Back-office,\nPortal de Reservas & LGPD"]
-    M1 ==> M2["Macroentrega 2 (v2.0 - Escala)\nGateway Stripe/PIX, Resend Pro\n& Banco Dedicado Pro"]
-    M2 ==> M3["Macroentrega 3 (v3.0 - Enterprise)\nEmissão Fiscal NFC-e/SEFAZ,\nBomboniere & SaaS Self-Service"]
+O desenvolvimento do CineDoom é conduzido por iterações sucessivas, nas quais as atividades de engenharia são realizadas conforme as necessidades de cada incremento. Essas atividades compreendem:
+
+1. **Requisitos e planejamento:** refinamento das necessidades, priorização do backlog e definição dos critérios de aceitação.
+2. **Arquitetura e design:** avaliação das soluções técnicas, definição de componentes e registro de decisões arquiteturais relevantes (ADRs), quando necessário.
+3. **Implementação e revisão:** desenvolvimento das funcionalidades, integração do código e revisão por pares (*Code Review*).
+4. **Verificação e testes:** execução de testes automatizados e verificações de qualidade para avaliar o comportamento das alterações.
+5. **Publicação e acompanhamento:** disponibilização dos incrementos em ambiente apropriado e monitoramento de seu funcionamento.
+
+As atividades não constituem fases sequenciais rígidas: podem ocorrer de maneira sobreposta e ser retomadas ao longo de uma mesma iteração, conforme a complexidade e as necessidades do desenvolvimento.
+
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam packageStyle rectangle
+skinparam roundcorner 8
+
+left to right direction
+
+package "Ciclo Iterativo de Desenvolvimento (Sprints de 2 semanas)" {
+    rectangle "1. Requisitos\n& Planejamento" as R
+    rectangle "2. Arquitetura\n& Design" as D
+    rectangle "3. Implementação\n& Code Review" as I
+    rectangle "4. Verificação\n& Testes" as T
+    rectangle "5. Publicação\n& Acompanhamento" as P
+
+    R --> D
+    D --> I
+    I --> T
+    T --> P
+    P ..> R : Feedback e refinamento
+}
+
+rectangle "Incrementos\nvalidados" as INC
+
+package "Roadmap de Evolução do Produto" {
+    rectangle "Macroentrega 1\nv1.0 – MVP\n\nBilheteria presencial\nMapa 2D\nReservas Web\nGovernança LGPD" as M1
+
+    rectangle "Macroentrega 2\nv2.0 – Expansão Digital\n\nPagamento PIX/Cartão\nVouchers por e-mail\nVenda digital" as M2
+
+    rectangle "Macroentrega 3\nv3.0 – Operação Fiscal\n\nNFC-e\nBomboniere\nPainel financeiro" as M3
+
+    M1 ==> M2
+    M2 ==> M3
+}
+
+P --> INC : Incrementos das iterações
+INC --> M1 : Consolidação progressiva
+
+note bottom of INC
+  Cada macroentrega pode envolver
+  múltiplas Sprints.
+end note
+
+@enduml
 ```
 
-As cerimônias operacionais da equipe compreendem:
-1. **Sprint Planning:** Seleção e quebra das tarefas no GitHub Projects, estimativa de esforço e atribuição de responsáveis e prazos.
-2. **Daily Check-in Assíncrono/Síncrono:** Alinhamento diário sobre o avanço das branches, identificação de impedimentos técnicos e revisão de métricas da pipeline.
-3. **Code Review & Quality Gate:** Revisão por pares obrigatória em cada Pull Request antes da mesclagem em `develop`, `staging` e `main`.
-4. **Sprint Review & Homologação:** Demonstração do incremento funcional em ambiente de staging/produção e coleta de feedback com usuários reais e stakeholders.
-5. **Sprint Retrospective:** Avaliação contínua do processo e registro de ações de melhoria (conforme documentado no Capítulo 6).
+A evolução do produto está organizada em três macroentregas, que agrupam funcionalidades relacionadas e representam marcos de evolução da solução:
 
-### Justificativa da Escolha do Modelo
-1. **Decomposição Modular de Risco:** O domínio de exibição cinematográfica permite desacoplar o núcleo transacional crítico (motor ACID de assentos e multi-tenancy) de integrações externas evolutivas (gateways de pagamento e mensageria fiscal).
-2. **Time-to-Market e Validação Antecipada:** A entrega da **Macroentrega 1 (`v1.0.0 — MVP Operacional`)** coloca o sistema em operação real em cinemas-piloto rapidamente, gerando valor imediato na bilheteria presencial e no portal de reservas enquanto financia a evolução das Macroentregas 2 e 3.
-3. **Adaptabilidade a Mudanças Regulatórias e de Mercado:** A abordagem iterativa permite incorporar ajustes de usabilidade mobile, políticas de privacidade da LGPD e novos modelos de salas (IMAX, VIP) sem retrabalho arquitetural.
+- **Macroentrega 1 (v1.0 – MVP):** bilheteria presencial, mapa de assentos 2D, reservas pela web e funcionalidades de governança e proteção de dados.
+- **Macroentrega 2 (v2.0 – Expansão Digital):** pagamento on-line por PIX e cartão, emissão de vouchers por e-mail e ampliação das funcionalidades de venda digital.
+- **Macroentrega 3 (v3.0 – Operação Fiscal e Financeira):** integração para emissão de NFC-e, módulo de bomboniere e painel financeiro.
+
+Cada macroentrega pode envolver diversas Sprints, e os incrementos produzidos ao longo desses ciclos contribuem progressivamente para sua conclusão.
+
+### Fluxo de Trabalho no Git (Política Corporativa de Branches)
+
+Para garantir estabilidade em produção e permitir desenvolvimento paralelo sem conflitos, a organização adota um fluxo de ramificação estruturado no Git:
+
+- **`main`:** ramo estável que reflete o código atualmente implantado em produção (`https://cinedoom.com`). Commits diretos são bloqueados; apenas Pull Requests testados e aprovados vindos de `staging` são integrados.
+- **`staging`:** ambiente de pré-produção e homologação, que recebe as versões consolidadas de `develop` para validação com usuários e testes de ponta a ponta.
+- **`develop`:** ramo principal de integração contínua do dia a dia, onde as novas funcionalidades são unificadas e testadas pela esteira automática.
+- **`feat/*` e `fix/*`:** ramos temporários criados a partir de `develop` para uma história específica ou correção de não conformidade, excluídos após o merge do Pull Request.
+
+### Organização das Iterações e Práticas de Trabalho
+
+Durante os ciclos de desenvolvimento, a equipe adota práticas de planejamento, acompanhamento, revisão e melhoria contínua:
+
+1. **Planejamento da Sprint (*Sprint Planning*):** seleção e detalhamento dos itens priorizados do backlog, com definição dos objetivos do ciclo e dos critérios de aceitação.
+2. **Alinhamento diário (*Daily Check-in*):** acompanhamento do progresso, predominantemente assíncrono pelos canais de comunicação da equipe, com reuniões síncronas quando necessário para discutir impedimentos.
+3. **Revisão de código (*Code Review*):** análise das alterações por outro desenvolvedor antes da integração à base comum, utilizando Pull Requests.
+4. **Revisão dos incrementos (*Sprint Review*):** demonstração e avaliação das funcionalidades desenvolvidas, com coleta de feedback e identificação de ajustes necessários.
+5. **Retrospectiva (*Sprint Retrospective*):** avaliação das práticas de trabalho, identificação de dificuldades e definição de melhorias para os ciclos seguintes.
+
+Essas práticas são complementadas pelo quadro Kanban, que permite visualizar o estado das atividades nas etapas de Backlog, Em progresso, Bloqueado, Em review e Feito.
+
+### Governança, Avaliação e Melhoria Contínua do Ciclo de Vida
+
+A governança do modelo adotado é sustentada por quatro diretrizes:
+
+- **Padronização do processo:** as práticas de desenvolvimento, revisão e validação são documentadas para orientar a execução das atividades e manter a consistência entre os ciclos.
+- **Responsabilidades:** o Gerente de Projeto e QA Lead, Kayque Vicente Silva, e o Tech Lead, Gabriel Henrique Lourenço Dias, acompanham a aplicação do processo em suas respectivas atribuições, apoiando sua manutenção e evolução.
+- **Avaliação periódica:** ao término de cada Sprint e na conclusão das macroentregas, a equipe avalia a eficácia do processo por meio de indicadores de fluxo, como Lead Time, tempo de revisão e identificação de gargalos no GitHub Projects.
+- **Melhoria contínua:** as oportunidades identificadas nas retrospectivas são avaliadas e, quando aprovadas, incorporadas à *Definition of Done* (DoD) e às práticas de desenvolvimento.
+
+Entre os critérios de qualidade estabelecidos para as entregas, destacam-se a execução de testes automatizados de concorrência nas operações críticas de bilheteria e a verificação estática de dependências circulares no código, por meio de ferramentas de análise configuradas no projeto.
+
+Dessa forma, o modelo adotado estabelece uma dinâmica de evolução progressiva do CineDoom, combinando planejamento, desenvolvimento, verificação e avaliação contínua, com mecanismos de acompanhamento e melhoria dos processos da CineSoft Solutions.
 
 ---
 
-## 3.2 Inventário de infraestrutura e ferramentas necessárias
+## 3.2 Infraestrutura e Ferramentas Organizacionais
 
-A gestão de infraestrutura (Cláusula 6.2.2) assegura que a CineSoft Solutions disponha de ferramentas padronizadas e ambientes resilientes para desenvolver, testar, implantar e operar o CineDoom:
+A infraestrutura da CineSoft Solutions provê os recursos computacionais, serviços em nuvem e ferramentas necessários para desenvolver, testar, implantar e manter o **CineDoom** ao longo de todo o seu ciclo de vida.
 
-| Categoria | Ferramenta / Infraestrutura | Finalidade no Projeto |
+### Critérios de Seleção e Requisitos
+
+A infraestrutura foi desenhada para viabilizar um SaaS multi-tenant sem a sobrecarga de gerenciar servidores físicos dedicados. A escolha dos recursos guiou-se por três requisitos centrais:
+
+- **Operação 100% em Nuvem:** Adoção de serviços gerenciados com alta disponibilidade e cobrança por uso, mantendo o custo fixo próximo de zero na fase inicial de validação.
+- **Consistência Transacional Estrita:** Banco relacional com suporte a travas de concorrência (`SELECT FOR UPDATE`), essencial para impedir reserva duplicada da mesma poltrona entre web e guichê.
+- **Segregação de Ambientes:** Isolamento rigoroso entre desenvolvimento local, *preview* por *Pull Request*, homologação (*staging*) e produção, com segredos protegidos fora do código-fonte.
+
+### A Organização no GitHub (`CINESOFT-SOLUTIONS`)
+
+Como base institucional de governança e trabalho colaborativo, a empresa estruturou a organização **`CINESOFT-SOLUTIONS`** no GitHub (`https://github.com/CINESOFT-SOLUTIONS`), centralizando:
+
+1. **Repositórios Segregados:** Separação formal entre a aplicação (`cinedoom-app`) e a documentação de engenharia e requisitos (`manual-processos-software`), tratada como código (*Docs-as-Code*).
+2. **Governança de Acessos:** Controle centralizado de permissões nominais da equipe com autenticação em dois fatores (2FA).
+3. **Gestão Visual com GitHub Projects v2:** Quadro Kanban corporativo para planejamento das Sprints e acompanhamento contínuo do fluxo de trabalho.
+
+![Organização Corporativa no GitHub CINESOFT-SOLUTIONS](../../assets/capitulo-03/prints/organizacao-github.png)
+
+*Figura: Organização corporativa CINESOFT-SOLUTIONS no GitHub e repositórios oficiais.*
+
+![Quadro Kanban Corporativo no GitHub Projects v2](../../assets/capitulo-03/prints/quadro_kanban.png)
+
+*Figura: Quadro Kanban corporativo no GitHub Projects v2.*
+
+### Inventário de Ferramentas Disponibilizadas
+
+A tabela a seguir consolida os recursos selecionados para sustentar o ciclo de vida da plataforma:
+
+**Tabela 7 – Inventário de infraestrutura e ferramentas organizacionais**
+
+| Categoria | Recurso / Ferramenta | Papel e Justificativa no Projeto |
 | :--- | :--- | :--- |
-| **Gestão e Código** | **GitHub & GitHub Projects v2** | Hospedagem do código-fonte (Git), controle de branches protegidas, gestão do quadro Kanban, issues, milestones e revisão de Pull Requests. |
-| **CI/CD e Automação** | **GitHub Actions** | Pipeline automatizada de integração e entrega contínua (validação de schema Prisma, TypeScript `tsc`, ESLint `no-cycle`, 711 testes e build). |
-| **Hospedagem e Computação** | **Vercel Serverless & Edge Network** | Execução das rotas de API e Server Components do Next.js 14, distribuição global de assets na borda (CDN) e ambientes isolados de *Preview* e *Production*. |
-| **Banco de Dados e ORM** | **Supabase / Neon PostgreSQL + Prisma ORM** | Persistência relacional ACID em nuvem, pooler de conexões transacional (*Supavisor* porta `6543`), migrações versionadas e triggers de auditoria imutável. |
-| **Design e Prototipação** | **Figma + Tailwind CSS + Lucide** | Prototipação de alta fidelidade, construção do Design System escuro (*Dark Cinema UI*) e componentes responsivos acessíveis (WCAG 2.1 AA). |
-| **Testes e Qualidade** | **Vitest + ESLint + TypeScript 5** | Execução rápida de testes unitários, de integração e de concorrência (50 threads simultâneas), análise estática de código e prevenção de dependências circulares. |
-| **Observabilidade e Mensageria** | **Axiom Cloud + Resend API** | Ingestão contínua de logs estruturados com retenção legal de 365 dias (LGPD) e despacho transacional de vouchers de reserva por e-mail. |
+| **Código e Governança** | **Git e GitHub (`CINESOFT-SOLUTIONS`)** | Hospedagem dos repositórios, controle de versões e gestão centralizada de membros. |
+| **Gestão do Trabalho** | **GitHub Projects v2** | Quadro Kanban para priorização do backlog, acompanhamento de Sprints e identificação de gargalos. |
+| **Integração e Entrega (CI/CD)** | **GitHub Actions** | Pipelines automatizadas de compilação, validação de lint e execução de testes a cada Pull Request. |
+| **Hospedagem e Servidores** | **Vercel** | Execução serverless do Next.js 14, distribuição em borda (CDN) e geração de ambientes de *Preview* e produção. |
+| **Banco de Dados Relacional** | **PostgreSQL (Supabase) + Prisma ORM** | Persistência transacional ACID com bloqueio pessimista de assentos e migrações versionadas. |
+| **Qualidade e Testes** | **Vitest + TypeScript 5** | Execução rápida de testes automatizados de unidade, concorrência e tipagem estática estrita. |
+| **Observabilidade e Auditoria** | **Axiom Cloud (Log Drain)** | Ingestão e retenção de logs estruturados por 365 dias para auditoria e conformidade com a LGPD. |
+| **E-mail Transacional** | **Resend API** | Disparo de vouchers e confirmações de reserva com autenticação SPF e DKIM. |
+| **Design de Interface** | **Figma + Tailwind CSS + Lucide** | Prototipação de telas e padronização do Design System no tema escuro (*Dark Cinema UI*). |
+
+*Fonte: CineSoft Solutions (2026).*
+
+### Ambientes de Execução e Manutenção Contínua
+
+O ciclo de vida do CineDoom opera em quatro ambientes segregados:
+- **Desenvolvimento Local:** Onde os desenvolvedores escrevem código, executam migrações e rodam os testes automatizados.
+- **Preview por *Pull Request*:** Ambiente efêmero gerado automaticamente pela Vercel para validação funcional e visual antes do merge.
+- **Homologação (`staging`):** Instância `https://hml.cinedoom.com`, alimentada pela branch `staging`, onde ocorrem os testes de aceitação (UAT) e o aceite formal.
+- **Produção (`main`):** Instância estável (`https://cinedoom.com`) acessível pelos cinemas e clientes finais, atualizada exclusivamente após aprovação da esteira de CI/CD.
+
+A sustentação dessa infraestrutura é mantida por três rotinas contínuas da liderança técnica:
+1. **Segurança de Credenciais:** Tokens e chaves de API residem exclusivamente em cofres de variáveis protegidas (GitHub Secrets e painel da Vercel).
+2. **Controle de Cotas e Consumo:** Monitoramento quinzenal do uso de banco, logs e e-mails para garantir previsibilidade de custos.
+3. **Auditoria de Vulnerabilidades:** Execução frequente de `pnpm security:audit`, que bloqueia vulnerabilidades altas ou críticas fora do baseline documentado em `security/audit-baseline.json`.
 
 ---
 
-## 3.3 Justificativa estratégica e viabilidade do projeto
+## 3.3 Justificativa Estratégica e Viabilidade do Projeto
 
-A gestão de portfólio (Cláusula 6.2.3) avalia o alinhamento do **CineDoom** aos objetivos estratégicos da **CineSoft Solutions** sob quatro dimensões de viabilidade:
+O investimento no desenvolvimento do CineDoom decorre de uma decisão estratégica da CineSoft Solutions para atender a um segmento de mercado historicamente desassistido por soluções tecnológicas acessíveis. Esta seção registra a justificativa do investimento, os critérios de autorização, a alocação de recursos e as regras de avaliação, continuidade e encerramento do projeto, conforme o Processo de Gerenciamento de Portfólio da ISO/IEC/IEEE 12207.
 
-- **Alinhamento Estratégico e de Mercado:** O mercado brasileiro de exibição conta com centenas de cinemas independentes, salas de rua, centros culturais e redes regionais de pequeno e médio porte que sofrem com sistemas legados caros (cobrados por participação pesada na bilheteria) ou controles manuais em planilhas. O CineDoom posiciona a CineSoft Solutions como fornecedora de um SaaS moderno, leve e acessível para esse segmento.
-- **Viabilidade Técnica:** A stack selecionada (Next.js 14 App Router, TypeScript estrito, Prisma ORM e PostgreSQL) possui maturidade industrial comprovada. A arquitetura de Monólito Modular com extensão de tenancy no Prisma elimina a sobrecarga operacional de microsserviços mantendo isolamento lógico rigoroso e garantia ACID nativa.
-- **Viabilidade Operacional:** A operação 100% baseada em navegador web (desktop nos guichês físicos e mobile responsivo para espectadores) dispensa instalação de executáveis locais nas bilheterias dos cinemas clientes, reduzindo drasticamente o custo de suporte e implantação (*onboarding*).
-- **Viabilidade Econômica e Financeira (TCO vs. Receita SaaS):**
-  - **Fase de Validação e Homologação (Macroentrega 1):** A arquitetura *serverless* permite operar ambientes de piloto e homologação com custo fixo inicial próximo de zero, pagando apenas conforme o crescimento da demanda.
-  - **Fase de Escala Comercial (Macroentregas 2 e 3):** A estrutura de custos fixos da infraestrutura comercial paga — somando **Supabase/Neon Pro** (~US$ 25/mês), **Vercel Pro** (~US$ 20/mês), **Resend Pro** (~US$ 20/mês) e **Axiom Cloud** (~US$ 25/mês), totalizando cerca de **US$ 90/mês (~R$ 480/mês)** para sustentar dezenas de cinemas simultaneamente — é integralmente coberta já pela assinatura mensal do **primeiro cliente B2B contratante** (ticket médio estimado de R$ 590 a R$ 1.290/mês por complexo exibidor), proporcionando margem bruta recorrente superior a **80%**.
+### Oportunidade e Alinhamento Estratégico
+
+O mercado brasileiro de exibição cinematográfica conta com centenas de salas independentes, cinemas de rua, centros culturais e redes regionais que frequentemente operam com processos manuais (planilhas) ou dependem de sistemas legados de alto custo, que cobram taxas excessivas sobre cada ingresso emitido. 
+
+O CineDoom posiciona a CineSoft Solutions como fornecedora de um SaaS moderno, cobrado por mensalidade fixa previsível, democratizando a tecnologia de reserva online e gestão de bilheteria para exibidores de pequeno e médio porte.
+
+### Identificação e Autorização do Projeto
+
+O CineDoom foi identificado como oportunidade prioritária por atender aos seguintes critérios:
+
+- **Alinhamento estratégico:** atende ao objetivo de oferecer um SaaS acessível a exibidores de pequeno e médio porte.
+- **Viabilidade:** apresenta viabilidade técnica, operacional e financeira, descrita a seguir.
+- **Retorno esperado:** possui modelo de receita recorrente, com mensalidade fixa por cinema.
+
+O início do projeto foi autorizado pela direção da CineSoft Solutions, que é responsável por decidir sobre sua continuidade, redirecionamento ou cancelamento. A gestão do projeto é atribuída ao gerente do projeto, que responde à direção pelo cumprimento de prazos, custos e requisitos.
+
+### Dimensões de Viabilidade
+
+- **Viabilidade Técnica:** A arquitetura adotada combina Next.js 14, TypeScript e PostgreSQL sobre Prisma ORM. A escolha de um monólito modular com isolamento lógico multi-tenant no banco relacional eliminou a alta complexidade e os custos de infraestrutura de microsserviços distribuídos, garantindo transações atômicas nativas e fácil manutenção.
+- **Viabilidade Operacional:** Por ser uma aplicação que opera integralmente no navegador web (tanto nos computadores da bilheteria quanto nos smartphones dos clientes), não há necessidade de instalar ou atualizar programas nas máquinas físicas dos cinemas, o que reduz custos operacionais de implantação e simplifica o suporte.
+- **Viabilidade Financeira:**
+  - *Fase Inicial (Macroentrega 1):* Operação com custos de nuvem reduzidos para homologação e projetos-piloto.
+  - *Fase de Escala Comercial (Macroentregas 2 e 3):* A infraestrutura de produção em nuvem, somando planos corporativos de banco de dados, hospedagem, e-mail transacional e auditoria, totaliza cerca de **US$ 90/mês (aproximadamente R$ 480/mês, conforme câmbio de referência)**. Considerando o ticket previsto de R$ 910 a R$ 1.270/mês por complexo (assinatura-base de R$ 790 mais R$ 120 por sala ativa), estima-se que esse custo seja coberto já com a mensalidade do **primeiro cinema contratante**, o que indica sustentabilidade financeira e margem operacional positiva.
+
+### Alocação de Recursos
+
+Os recursos do projeto são distribuídos por macroentrega:
+
+- **Pessoas:** equipe de desenvolvimento da CineSoft Solutions, com papéis definidos no Capítulo 2.
+- **Infraestrutura:** serviços em nuvem descritos na Seção 3.2, com custos reduzidos na fase inicial e plano de produção nas fases seguintes.
+- **Prazo:** as macroentregas 1, 2 e 3 estabelecem o cronograma de referência.
+
+### Avaliação, Sustentação e Encerramento
+
+O portfólio é avaliado ao término de cada macroentrega, verificando se o projeto continua justificando o investimento. Os critérios de avaliação são:
+
+- aderência aos requisitos dos stakeholders e do projeto;
+- cumprimento de prazo e custo previstos;
+- evolução do custo de infraestrutura em relação à receita prevista;
+- resultado do projeto-piloto, incluindo a contratação de cinemas.
+
+Com base nessa avaliação, a direção decide por uma das ações abaixo:
+
+- **Sustentar:** o projeto atende ao acordo e aos requisitos e segue para a próxima macroentrega.
+- **Redirecionar:** o projeto não atende parcialmente aos requisitos, e o escopo, o prazo ou os recursos são ajustados.
+- **Cancelar:** os riscos superam os benefícios, por exemplo, se o projeto-piloto não resultar em cinema contratante ou se o custo de infraestrutura superar a receita prevista.
+- **Encerrar:** o projeto atende integralmente ao acordo e a todos os requisitos, e as lições aprendidas são registradas para reutilização em projetos futuros.
 
 ---
 
-## 3.4 Papéis, competências e plano de capacitação (RACI)
+## 3.4 Papéis, Competências e Plano de Capacitação (RACI)
 
-A gestão de recursos humanos (Cláusula 6.2.4) estrutura os papéis técnicos da equipe da CineSoft Solutions, mapeia as competências requeridas para a stack tecnológica e define a matriz formal de responsabilidades.
+A equipe da CineSoft Solutions é organizada de maneira multidisciplinar, distribuindo competências técnicas complementares para cobrir as necessidades do ciclo de vida da plataforma. Esta seção descreve os papéis, as responsabilidades, as competências requeridas e o plano de desenvolvimento da equipe, conforme o processo de Gerenciamento de Recursos Humanos da ISO/IEC/IEEE 12207.
 
-### Composição da Equipe e Competências Requeridas
+### Composição da Equipe e Atribuição de Papéis
 
-| Integrante | Cargo na CineSoft Solutions | Competências Técnicas Exigidas no Stack |
-| :--- | :--- | :--- |
-| **Gabriel Henrique Lourenço Dias** | **Tech Lead & Arquiteto de Software** | Arquitetura Next.js 14, modelagem PostgreSQL avançada, transações ACID (`SELECT FOR UPDATE`), isolamento multi-tenant, segurança RBAC e testes de concorrência. |
-| **Carlos Eduardo Freire da Silva** | **Engenheiro de Backend, Segurança & DevOps** | Criptografia aplicada (`HMAC-SHA256`, `AES-256-GCM`), conformidade LGPD, APIs RESTful com Zod, pipelines GitHub Actions, integração Resend/Axiom e deploy Vercel. |
-| **Kayque Vicente Silva** | **Engenheiro de Qualidade (QA) & Gerente de Projeto** | Gestão ágil de projetos (ISO 12207 / MPS.BR), análise de riscos, automação de testes no Vitest, verificação e validação (V&V) e métricas de fluxo. |
-| **Yury Nogueira de Oliveira Silva** | **Engenheiro de Requisitos, UX & Compliance** | Engenharia de requisitos (MoSCoW, BDD), modelagem arquitetural C4 e UML, modelagem de ameaças STRIDE, experiência do usuário (UI/UX) e auditoria de processos. |
+Os papéis foram atribuídos com base na formação e na experiência de cada integrante, validada pela direção da CineSoft Solutions no início do projeto.
 
-### Matriz RACI Consolidada por Membro da Equipe
+**Tabela 8 – Composição da Equipe e Especialidades Técnicas**
 
-Conforme as diretrizes de governança organizacional, a tabela abaixo relaciona diretamente cada membro da CineSoft Solutions às macroatividades do ciclo de vida do CineDoom:
+| Integrante | Função Principal | Foco Técnico e Especialidades | Substituto |
+| :--- | :--- | :--- | :--- |
+| **Gabriel Henrique Lourenço Dias** | **Tech Lead & Arquiteto de Software** | Arquitetura Next.js 14, modelagem de banco relacional, transações concorrentes ACID (`SELECT FOR UPDATE`), multi-tenancy e testes de concorrência. | Carlos Eduardo |
+| **Carlos Eduardo Freire da Silva** | **Engenheiro de Backend, Segurança & DevOps** | Criptografia aplicada e conformidade LGPD, APIs com validação estrita (Zod), CI/CD no GitHub Actions e monitoramento. | Gabriel Lourenço |
+| **Kayque Vicente Silva** | **Engenheiro de Qualidade (QA) & Gerente de Projeto** | Gestão de cronograma e escopo, automação de testes no Vitest, métricas de qualidade e critérios de aceitação. | Yury Nogueira |
+| **Yury Nogueira de Oliveira Silva** | **Engenheiro de Requisitos, UX & Compliance** | Elicitação de regras de negócio, casos de uso, diagramas de arquitetura, usabilidade (UI/UX) e conformidade normativa. | Kayque Vicente |
 
-| Macroatividade / Entregável do Ciclo de Vida | Gabriel Lourenço (Tech Lead / Arquiteto) | Carlos Eduardo (Backend / DevOps) | Kayque Vicente (GP / QA Lead) | Yury Nogueira (Requisitos / Compliance) |
+*Fonte: CineSoft Solutions (2026).*
+
+A direção da CineSoft Solutions é responsável por autorizar o projeto e decidir sobre sua continuidade (Seção 3.3). O gerente do projeto responde à direção pelo cumprimento de prazos, custos e requisitos.
+
+### Matriz de Responsabilidades (RACI)
+
+A matriz abaixo estabelece a governança sobre as principais atividades do projeto. Cada atividade possui um único aprovador final (**A**).
+
+**Tabela 9 – Matriz de Responsabilidades por Atividade (RACI)**
+
+| Atividade do Ciclo de Vida | Gabriel Lourenço | Carlos Eduardo | Kayque Vicente | Yury Nogueira |
 | :--- | :---: | :---: | :---: | :---: |
-| **1. Planejamento do Projeto, Cronograma e Gestão de Riscos** | C | C | **A / R** | C |
-| **2. Elicitação de Requisitos, Histórias e Matriz de Rastreabilidade** | C | I | C | **A / R** |
-| **3. Arquitetura de Software, Modelagem C4/UML e ADRs** | **A / R** | C | I | R |
-| **4. Modelagem de Banco de Dados, Multi-Tenancy e Triggers SQL** | **A / R** | R | I | C |
-| **5. Criptografia PII (CPF), Anonimização LGPD e Threat Modeling** | A | **R** | C | **R** |
-| **6. Implementação do Motor ACID de Bilheteria, Salas e Portal Web** | **A / R** | R | C | I |
-| **7. Integração de Notificações (Resend), Observabilidade e CI/CD** | A | **R** | C | I |
-| **8. Suíte de Testes Automatizados (Vitest), Concorrência e V&V** | R | C | **A / R** | C |
-| **9. Auditoria de Qualidade do Processo e Melhoria Contínua (MPS.BR)** | C | I | **A / R** | R |
+| Planejamento de Sprints, Cronograma e Riscos | C | C | **A / R** | C |
+| Elicitação de Requisitos e Especificações Técnicas (SDD) | C | I | C | **A / R** |
+| Arquitetura da Solução e Decisões Técnicas (ADRs) | **A / R** | C | I | C |
+| Modelagem de Dados e Isolamento de Tenants | **A / R** | R | I | C |
+| Criptografia de Dados Pessoais e Conformidade LGPD | C | **A / R** | C | R |
+| Implementação do Motor de Reservas e Bilheteria | **A / R** | R | C | I |
+| Automação de CI/CD e Infraestrutura de Nuvem | C | **A / R** | C | I |
+| Criação e Execução de Testes Automatizados (Vitest) | R | C | **A / R** | C |
+| Governança de Qualidade e Revisão de Processos | C | I | **A / R** | C |
+| Documentação Técnica e de Processos | C | C | C | **A / R** |
+| Gestão de Configuração (Git) e Revisão de Código | **A** | R | R | I |
+| Suporte e Manutenção Pós-Implantação | C | **A / R** | R | I |
 
-*Legenda:* **R** = Responsável pela execução (*Responsible*); **A** = Aprovador final / Dono da conta (*Accountable*); **C** = Consultado (*Consulted*); **I** = Informado (*Informed*).
+*Legenda:* **R** = Responsável pela execução (*Responsible*); **A** = Aprovador final (*Accountable*); **C** = Consultado (*Consulted*); **I** = Informado (*Informed*).
 
-### Plano de Capacitação Técnica Contínua
+### Competências Requeridas e Lacunas
 
-Para suprir lacunas técnicas e manter a alta produtividade ao longo das três Macroentregas, a CineSoft Solutions executa trilhas internas de capacitação prática (*hands-on workshops*):
-1. **Concorrência e Isolamento em Bancos Relacionais:** Treinamento em bloqueios pessimistas (`SELECT ... FOR UPDATE`), prevenção de *deadlocks* por ordenação determinística de chaves e configuração de *connection pooling* com Supavisor/PgBouncer.
-2. **Segurança Aplicada e Engenharia de Privacidade (LGPD):** Capacitação em criptografia simétrica autenticada (`AES-256-GCM`), indexação cega por `HMAC-SHA256` e técnicas de anonimização irreversível *in-place*.
-3. **Arquitetura Serverless e Testes Automatizados de Alta Carga:** Práticas de desenvolvimento em Next.js App Router, isolamento de contexto com `AsyncLocalStorage` e simulação de baterias de estresse concorrente no Vitest.
-4. **Integrações Financeiras e Fiscais (Preparação Macroentregas 2 e 3):** Estudo técnico de webhooks idempotentes do Stripe (PCI-DSS) e mensageria assíncrona de notas fiscais eletrônicas (NFC-e/SEFAZ).
+**Tabela 10 – Competências Requeridas, Lacunas e Ações**
+
+| Competência requerida | Responsável | Nível atual | Lacuna | Ação |
+| :--- | :--- | :---: | :--- | :--- |
+| Transações concorrentes e prevenção de *deadlocks* | Gabriel, Carlos | Intermediário | Picos de acesso simultâneo | Workshop 1 |
+| Criptografia e privacidade (LGPD) | Carlos, Yury | Intermediário | Anonimização sem corromper históricos | Workshop 2 |
+| Testes de alta concorrência | Kayque, Gabriel | Básico | Cenários de estresse automatizados | Workshop 3 |
+| Pagamentos e documentos fiscais | Carlos, Gabriel | Básico | Webhooks, PIX, cartão e NFC-e | Workshop 4 |
+
+*Fonte: CineSoft Solutions (2026).*
+
+### Plano de Capacitação Contínua
+
+O desenvolvimento das competências ocorre por meio de workshops práticos internos, realizados antes da macroentrega em que a competência é necessária.
+
+**Tabela 11 – Plano de Capacitação**
+
+| Workshop | Conteúdo | Responsável | Prazo | Critério de eficácia |
+| :--- | :--- | :--- | :--- | :--- |
+| 1. Transações e Concorrência | Ordenação determinística de chaves contra *deadlocks* e travas pessimistas | Gabriel | Antes da Macroentrega 1 | Reservas simultâneas sem duplicidade de assento |
+| 2. Privacidade e LGPD | Criptografia autenticada, índices de busca anônimos e anonimização irreversível | Carlos | Antes da Macroentrega 2 | Dados pessoais anonimizados sem perda de histórico de vendas |
+| 3. Alta Concorrência com Vitest | Cenários de estresse com múltiplas requisições simultâneas ao motor de reservas | Kayque | Antes da Macroentrega 1 | Suíte de concorrência executada com zero falhas |
+| 4. Pagamentos e Fiscais | Conciliação de webhooks (PIX e cartão) e contingência de NFC-e na SEFAZ | Carlos | Antes da Macroentrega 3 | Fluxo de pagamento conciliado em ambiente de homologação |
+
+*Fonte: CineSoft Solutions (2026).*
+
+### Avaliação, Registros e Riscos da Equipe
+
+- **Avaliação da eficácia:** ao final de cada workshop, o critério de eficácia é verificado pelo gerente do projeto. Se não for atingido, a ação é repetida ou ajustada.
+- **Registros de competência:** as lacunas, os workshops realizados e os resultados ficam registrados no repositório do projeto e são atualizados a cada macroentrega.
+- **Dependência de pessoas-chave:** para reduzir o risco de concentração de conhecimento, adotam-se revisão cruzada de código, registro das decisões em ADRs e a designação de um substituto para cada papel (Tabela 8).
+- **Acúmulo de papéis:** o integrante que atua como QA e gerente de projeto acumula funções. Para evitar conflito entre testar e cobrar prazos, os resultados dos testes são revisados por outro integrante da equipe.
+
+---
+
+## 3.5 Plano de Qualidade: Diretrizes, Critérios e Métricas
+
+A política de qualidade da CineSoft Solutions estabelece barreiras automatizadas (*Quality Gates*) e princípios de desenvolvimento para garantir que nenhuma alteração degrade a segurança ou a estabilidade da plataforma em produção. Esta seção descreve a política, os objetivos, as responsabilidades, os critérios de controle, as métricas e o ciclo de melhoria, conforme o processo de Gerenciamento da Qualidade da ISO/IEC/IEEE 12207.
+
+### Política e Objetivos de Qualidade
+
+A direção da CineSoft Solutions aprova a política de qualidade, que consiste em entregar o CineDoom com integridade das reservas, isolamento entre cinemas e proteção de dados pessoais, verificados de forma automatizada antes de cada implantação.
+
+Os objetivos de qualidade são:
+
+- **Integridade das reservas:** nenhuma duplicidade de assento sob acesso concorrente.
+- **Isolamento entre cinemas:** nenhum acesso a dados de outro cinema (*cross-tenant*).
+- **Estabilidade:** nenhuma alteração integrada com falha nos gates.
+- **Rastreabilidade:** toda funcionalidade vinculada a uma especificação documentada.
+
+### Responsabilidades
+
+Conforme o RACI (Seção 3.4), o Engenheiro de Qualidade (Kayque Vicente) é o aprovador final da governança de qualidade e dos testes automatizados. A revisão de cada *Pull Request* é feita por integrante diferente do autor, garantindo independência. Os resultados dos testes do próprio Engenheiro de Qualidade são revisados por outro integrante da equipe.
+
+### Diretrizes e Princípios de Engenharia Adotados
+
+Quatro pilares técnicos orientam a escrita de código em todos os repositórios. Cada pilar possui uma forma de verificação:
+
+| Princípio | Descrição | Verificação |
+| :--- | :--- | :--- |
+| **Spec-Driven Development (SDD)** | Nenhuma funcionalidade é implementada sem especificação prévia em `specs/`, com schemas de entrada e saída validados por contratos formais (Zod). | O *Pull Request* deve referenciar a especificação correspondente; caso contrário, é recusado na revisão. |
+| **Domain-Driven Design (DDD)** | Organização por contextos delimitados (*Bounded Contexts*), isolando a lógica de negócio (sessões, ingressos, bloqueios temporários) de infraestrutura e persistência. | Checklist de revisão e regra `eslint no-cycle` contra dependências circulares. |
+| **Princípios SOLID** | Código modular com responsabilidade única, desacoplamento de serviços e injeção de dependências. | Checklist de revisão de código. |
+| **TDD e Pirâmide de Testes** | Testes automatizados das regras críticas de domínio escritos antes ou junto da implementação. | Gate de testes e meta de cobertura (Tabela de métricas). |
+
+### Critérios de Qualidade e Bloqueios Automatizados (*Quality Gates*)
+
+Para que qualquer código seja integrado aos ramos principais (`develop`, `staging` e `main`), os critérios abaixo devem ser atendidos na esteira do GitHub Actions:
+
+1. **Validação Estática e Compilação:** tipagem estrita sem erros (`tsc --noEmit`) e ausência de dependências circulares (`eslint no-cycle`).
+2. **Suíte de Testes:** **100% de aprovação nos testes do Vitest**, incluindo testes unitários de regras de negócio, testes de concorrência com 50 threads simultâneas e 500 cenários de isolamento *cross-tenant*.
+3. **Cobertura:** mínimo de 70% de *statements*, funções e linhas e 80% de *branches* nas regras de domínio (`src/modules/**` e `src/shared/**`).
+4. **Segurança:** auditoria de dependências de produção (`pnpm security:audit`) sem vulnerabilidades altas ou críticas fora do baseline documentado, além de varredura de segredos no código sem ocorrências.
+5. **Revisão Humana de Código:** pelo menos uma aprovação de outro desenvolvedor, com base em checklist (aderência à especificação, SOLID, tratamento de erros, proteção de dados pessoais e isolamento de cinemas).
+6. **Verificação de Build:** compilação bem-sucedida do pacote de produção antes da autorização de deploy.
+
+### Métricas e Indicadores de Qualidade
+
+**Tabela 12 – Métricas de Qualidade**
+
+| Métrica | Meta | Fonte de coleta | Frequência |
+| :--- | :--- | :--- | :--- |
+| Cobertura de testes nas regras de domínio | ≥ 70% (*statements*, funções e linhas) e ≥ 80% (*branches*) | Relatório do Vitest no CI | A cada *Pull Request* |
+| Aprovação da suíte de testes | 100% | GitHub Actions | A cada *Pull Request* |
+| Falhas de build no CI | Tendência decrescente | GitHub Actions | A cada macroentrega |
+| Defeitos escapados para produção | 0 críticos | Registro de incidentes | A cada macroentrega |
+| Tempo médio de correção de defeitos | Definido na primeira macroentrega e reavaliado depois | Quadro de tarefas (GitHub Projects) | A cada macroentrega |
+| Aderência aos critérios de aceitação | 100% das funcionalidades entregues | Revisão do Engenheiro de Qualidade | A cada macroentrega |
+
+*Fonte: CineSoft Solutions (2026).*
+
+### Avaliação do Processo e Tratamento de Não Conformidades
+
+Ao final de cada macroentrega, o Engenheiro de Qualidade realiza uma avaliação de conformidade com este manual, verificando se os gates foram respeitados e se as métricas atingiram as metas. As não conformidades são tratadas assim:
+
+1. **Registro:** descrição, origem e gravidade, no quadro de tarefas.
+2. **Ação corretiva:** definição de responsável e prazo.
+3. **Verificação:** confirmação da correção pelo Engenheiro de Qualidade.
+
+### Melhoria Contínua
+
+Ao término de cada macroentrega, a equipe realiza uma retrospectiva para analisar as métricas, as não conformidades e as lições aprendidas. Com base nela, os gates, as metas e o checklist de revisão são atualizados, e as mudanças são registradas neste manual.
 
 ---
 
-## 3.5 Plano de qualidade com critérios e métricas
+## 3.6 Estratégia de Gestão do Conhecimento
 
-A gestão da qualidade organizacional (Cláusula 6.2.5) define padrões objetivos e bloqueios automatizados (*Quality Gates*) para assegurar que nenhuma alteração degrade a estabilidade do CineDoom em produção:
+A organização assegura que todo o conhecimento técnico, arquitetural e processual do CineDoom seja documentado, versionado e facilmente acessível, reduzindo a dependência de pessoas isoladas e preservando o capital intelectual da empresa. Esta seção descreve os objetivos, os ativos, os mecanismos de registro e compartilhamento, a manutenção e a medição da eficácia, conforme o processo de Gerenciamento do Conhecimento da ISO/IEC/IEEE 12207.
 
-1. **Padronização Estática e Arquitetural:**
-   - Tipagem estrita obrigatória (`TypeScript strict: true`) sem erros de compilação (`npm run typecheck`).
-   - Proibição de dependências circulares entre módulos validada automaticamente via regra `import/no-cycle` do ESLint.
-2. **Cobertura e Aprovação de Testes Automatizados:**
-   - **100% de aprovação obrigatória** nos **20 arquivos de teste (711 testes automatizados)** cobrindo regras de domínio, criptografia, reserva atômica, expiração JIT e 500 cenários de isolamento *cross-tenant*.
-   - Cobertura mínima de **100% nas funções críticas de negócio** (emissão de ingressos, bloqueio de assentos, cancelamento auditado e anonimização LGPD).
-3. **Política de Revisão de Código (*Code Review*):**
-   - Nenhuma alteração é enviada diretamente para a branch `main`. Todo código deve passar por validação da esteira do GitHub Actions e revisão técnica antes da promoção entre `develop`, `staging` e `main`.
-4. **Critérios de Estabilidade Pré-Deploy:**
-   - Zero vulnerabilidades críticas abertas, zero erros de build e validação de *smoke test* no ambiente de *Preview/Staging* antes da liberação para os cinemas clientes.
-5. **Diretrizes de Engenharia e Princípios de Construção:**
-   - Adoção estrita de **Domain-Driven Design (DDD)** para modelagem de entidades e isolamento vertical por contextos delimitados (*Bounded Contexts*).
-   - Aplicação sistemática dos princípios **SOLID** para garantir baixo acoplamento, manutenibilidade e alta testabilidade nos serviços de negócio.
-   - Disciplina de desenvolvimento orientado a testes (**Test-Driven Development — TDD**) prioritária nas transações críticas de concorrência ACID e regras de isolamento multi-tenant.
+### Objetivos
 
----
+- Reduzir a dependência de integrantes específicos (risco registrado na Seção 3.4).
+- Acelerar a integração de novos desenvolvedores.
+- Preservar o histórico das decisões e a rastreabilidade entre requisitos, código e testes.
 
-## 3.6 Estratégia de gestão do conhecimento
+### Ativos de Conhecimento
 
-A gestão do conhecimento (Cláusula 6.2.6) garante que o capital intelectual da CineSoft Solutions seja documentado, versionado e acessível a toda a organização, prevenindo dependência de indivíduos isolados (*bus factor*):
+**Tabela 13 – Ativos de Conhecimento**
 
-- **Abordagem *Docs-as-Code* (Fonte Única da Verdade):** Todas as especificações de requisitos, modelos de dados, planos de testes, manuais operacionais e diretrizes residem no controle de versão Git (`specs/` e `manual/`), evoluindo no mesmo ritmo do código-fonte.
-- **Registro Formal de Decisões de Arquitetura (ADRs):** Qualquer decisão estrutural (escolha de banco, estratégia de lock, criptografia de CPF, modelo de polling ou provedor de e-mail) é imortalizada em fichas padronizadas (`ADR-001` a `ADR-012`), contendo contexto, alternativas descartadas, decisão e trade-offs.
-- **Rastreabilidade viva no Código:** Os arquivos de serviço, rotas de API e suítes de teste contêm cabeçalhos padronizados referenciando os requisitos (`RF-XX`), regras de negócio (`RN-XX`) e ADRs correspondentes.
-- **Base de Lições Aprendidas e Runbooks Operacionais:** Ao término de cada Sprint e Macroentrega, incidentes técnicos resolvidos (como ajustes de connection pooling, alinhamento responsivo de mapas de sala e otimizações de queries) são documentados em *runbooks* para acelerar diagnósticos futuros pela equipe de suporte.
+| Ativo | Conteúdo | Local | Responsável |
+| :--- | :--- | :--- | :--- |
+| Especificações (SDD) | Requisitos funcionais, regras de negócio e contratos Zod | `specs/` | Engenheiro de Requisitos |
+| ADRs | Decisões de arquitetura, `ADR-001` a `ADR-012` | `specs/adrs/` | Tech Lead |
+| Modelos de dados e planos de teste | Esquemas, cenários e critérios de aceitação | Repositório Git | Tech Lead e Engenheiro de Qualidade |
+| Manual de processos | Processos, papéis e planos | Repositório Git | Gerente do Projeto |
+| Guias técnicos e lições aprendidas | Soluções de problemas recorrentes | Repositório Git (guias internos) | Todos os integrantes |
 
----
+*Fonte: CineSoft Solutions (2026).*
+
+### Mecanismos de Registro e Preservação
+
+- **Abordagem *Docs-as-Code*:** especificações, modelos de dados, planos de teste e manuais de processo residem no repositório Git e são atualizados e revisados no mesmo fluxo de *Pull Requests* do código.
+- **Registro Formal de Decisões de Arquitetura (ADRs):** decisões estruturais, como o banco relacional gerenciado, os bloqueios pessimistas em vez de filas e a estratégia de multi-tenancy, são documentadas com contexto, opções avaliadas e consequências.
+- **Rastreabilidade nos Artefatos de Código:** serviços, controladores e testes referenciam requisitos funcionais (`RF-XX`), regras de negócio (`RN-XX`) e critérios de aceitação (`CA-XX`), consolidados na matriz de rastreabilidade da Seção 5.1.2.
+- **Lições Aprendidas e Guias Técnicos:** a solução de cada problema relevante, como limites de conexão no banco ou ajustes de concorrência, é registrada em guia interno ao final da correção.
+
+### Compartilhamento do Conhecimento
+
+- **Revisão cruzada de código:** todo *Pull Request* é revisado por outro integrante (Seção 3.5).
+- **Workshops internos:** o plano de capacitação (Seção 3.4) dissemina as competências críticas.
+- **Integração de novos integrantes:** a leitura do manual, dos ADRs e das especificações compõe o roteiro de entrada.
+- **Substitutos por papel:** cada papel crítico possui um substituto designado (Tabela 8).
+
+### Manutenção e Controle
+
+- **Atualização:** alterações de código que afetem um ativo exigem a atualização do documento no mesmo *Pull Request*.
+- **Revisão periódica:** ao final de cada macroentrega, os ativos são revisados quanto à atualidade.
+- **Obsolescência:** documentos substituídos são marcados como obsoletos, e os ADRs são mantidos com o status "substituído" para preservar o histórico.
+- **Controle de acesso:** o acesso ao repositório segue o controle descrito na Seção 3.2, e credenciais não são registradas na documentação.
+
+### Medição da Eficácia
+
+- Proporção de *Pull Requests* com referência a `RF-XX` ou `RN-XX`.
+- Proporção de decisões estruturais registradas em ADR.
+- Tempo para um novo integrante realizar sua primeira contribuição.
+- Resultado da revisão dos ativos ao final de cada macroentrega, avaliado na retrospectiva (Seção 3.5).
+
 
 
 # Capítulo 4 – Processos de Gerenciamento Técnico
 
 ## 4.1 Plano de projeto: escopo, cronograma, recursos e entregas
 
-O processo de planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 – Cláusula 6.3.1) estabelece a Estrutura Analítica do Projeto (EAP/WBS), o roadmap comercial em **três Macroentregas**, o cronograma detalhado de Sprints, a alocação nominal de responsáveis e a rotina formal para monitorar o progresso e corrigir eventuais desvios.
+O planejamento do projeto (ABNT NBR ISO/IEC/IEEE 12207:2021 – cláusula 6.3.1) define o escopo, as macroentregas, o cronograma, os recursos, as premissas e a rotina de acompanhamento do CineDoom. A baseline do plano é aprovada pela direção da CineSoft Solutions (Seção 3.3). Alterações de escopo, prazo ou recursos são propostas pelo Gerente de Projeto (Kayque Vicente), aprovadas pela direção e registradas na ata de revisão da Sprint.
 
-### Estrutura Analítica do Projeto (EAP / WBS em 3 Níveis)
+### Estrutura Analítica do Projeto (EAP)
 
-O diagrama abaixo decompõe o produto **CineDoom** em três níveis hierárquicos (Nível 1: Produto; Nível 2: Macroentregas e Governança; Nível 3: Pacotes de Trabalho e Entregáveis verificáveis):
+A Figura 4 decompõe o produto em três níveis: Nível 1 (produto), Nível 2 (macroentregas e governança) e Nível 3 (pacotes de trabalho verificáveis).
 
-```mermaid
-flowchart TD
-    Root["1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)"]
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 11
+skinparam roundcorner 4
 
-    Root --> M1["1.1 Macroentrega 1 (v1.0 - MVP Operacional)\nBilheteria, Back-office & Portal Web"]
-    Root --> M2["1.2 Macroentrega 2 (v2.0 - Escala Comercial)\nPagamentos Online, Mensageria & Cloud Pro"]
-    Root --> M3["1.3 Macroentrega 3 (v3.0 - Enterprise & Fiscal)\nNFC-e/SEFAZ, Bomboniere & SaaS Self-Service"]
-    Root --> GOV["1.4 Governança, Qualidade & Segurança\nContínua (ISO 12207 / LGPD)"]
-
-    M1 --> M1_1["1.1.1 Fundação Multi-Tenant,\nAuth RBAC & Criptografia CPF"]
-    M1 --> M1_2["1.1.2 Back-office Gerencial:\nFilmes, Salas, Sessões & Ocupação"]
-    M1 --> M1_3["1.1.3 Bilheteria Presencial ACID\n(SELECT FOR UPDATE) & Auditoria"]
-    M1 --> M1_4["1.1.4 Portal do Cliente: Reserva Web,\nExpiração JIT & Baixa no Balcão"]
-
-    M2 --> M2_1["1.2.1 Checkout Transparente\nStripe / Pagar.me (PIX & Cartão)"]
-    M2 --> M2_2["1.2.2 Mensageria Dedicada Resend Pro\n(Domínio Próprio DKIM/SPF)"]
-    M2 --> M2_3["1.2.3 Migração DBaaS Pro (PITR,\nRéplicas & Pooler Expandido)"]
-
-    M3 --> M3_1["1.3.1 Integração Fiscal SEFAZ\n(Emissão Automática NFC-e)"]
-    M3 --> M3_2["1.3.2 Módulo de Bomboniere,\nCombos & Controle de Estoque"]
-    M3 --> M3_3["1.3.3 Console Admin Global:\nSelf-Service Onboarding & Billing SaaS"]
-
-    GOV --> GOV_1["1.4.1 Pipeline CI/CD, Linter\ne 711 Testes Automatizados"]
-    GOV --> GOV_2["1.4.2 Telemetria Axiom (365 dias)\ne Anonimização LGPD Art. 18"]
+rectangle "1.0 Plataforma SaaS CineDoom\n(CineSoft Solutions)" as Root {
+  rectangle "1.1 Macroentrega 1 (v1.0 - MVP Operacional)\nBilheteria, Back-office & Portal Web" as M1 {
+    rectangle "1.1.1 Fundação Multi-Tenant,\nAuth RBAC & Cripto CPF" as M1_1
+    rectangle "1.1.2 Back-office Gerencial:\nFilmes, Salas, Sessões & Ocupação" as M1_2
+    rectangle "1.1.3 Bilheteria Presencial ACID\n(SELECT FOR UPDATE) & Auditoria" as M1_3
+    rectangle "1.1.4 Portal do Cliente: Reserva Web,\nExpiração JIT & Baixa no Balcão" as M1_4
+  }
+  rectangle "1.2 Macroentrega 2 (v2.0 - Escala Comercial)\nPagamentos Online, Mensageria & Cloud Pro" as M2 {
+    rectangle "1.2.1 Checkout Transparente\nStripe / Pagar.me (PIX & Cartão)" as M2_1
+    rectangle "1.2.2 Mensageria Dedicada Resend Pro\n(Domínio Próprio DKIM/SPF)" as M2_2
+    rectangle "1.2.3 Migração DBaaS Pro (PITR,\nRéplicas & Pooler Expandido)" as M2_3
+  }
+  rectangle "1.3 Macroentrega 3 (v3.0 - Enterprise & Fiscal)\nNFC-e/SEFAZ, Bomboniere & SaaS Self-Service" as M3 {
+    rectangle "1.3.1 Integração Fiscal SEFAZ\n(Emissão Automática NFC-e)" as M3_1
+    rectangle "1.3.2 Módulo de Bomboniere,\nCombos & Controle de Estoque" as M3_2
+    rectangle "1.3.3 Console Admin Global:\nSelf-Service Onboarding & Billing SaaS" as M3_3
+  }
+  rectangle "1.4 Governança, Qualidade & Segurança\nContínua (ISO 12207 / LGPD)" as GOV {
+    rectangle "1.4.1 Pipeline CI/CD, Linter\ne Suíte de Testes Automatizados" as GOV_1
+    rectangle "1.4.2 Telemetria Axiom (365 dias)\ne Anonimização LGPD Art. 18" as GOV_2
+  }
+}
+@enduml
 ```
 
-### Escopo e Marcos Comerciais por Macroentrega (Milestones)
+*Figura 4 – Estrutura Analítica do Projeto (EAP) do CineDoom. Fonte: CineSoft Solutions (2026).*
 
-A estratégia de produto da CineSoft Solutions divide o ciclo de vida do CineDoom em três grandes marcos contratuais de entrega:
+### Escopo e Marcos por Macroentrega
 
-| Marco (Milestone) | Versão Alvo | Escopo Funcional e Infraestrutura Associada | Responsável Geral | Prazo / Janela | Status |
-| :--- | :---: | :--- | :---: | :---: | :---: |
-| **Macroentrega 1 (MVP Operacional)** | `v1.0.0` | Núcleo Multi-tenant, RBAC (`GERENTE`, `ATENDENTE`, `CLIENTE`), criptografia CPF (`HMAC-SHA256` + `AES-256-GCM`), CRUDs de filmes/salas/sessões, bilheteria presencial atômica, portal de reservas web com expiração JIT, painel de ocupação, anonimização LGPD e deploy em produção (`RF-01` a `RF-18`). | **Gabriel Lourenço** | Out/2026 – Nov/2026 | **Concluído (Em Produção)** |
-| **Macroentrega 2 (Escala & Pagamentos)** | `v2.0.0` | Integração de gateway financeiro online (PIX QR Code dinâmico e cartão de crédito via Stripe PCI-DSS), ativação do **Resend Pro** com domínio corporativo próprio (`@cinedoom.com.br`), upgrade para **Supabase/Neon Pro** (backups PITR e réplicas) e **Vercel Pro**. | **Carlos Eduardo** | Dez/2026 – Jan/2027 | **Planejado (Próxima Fase)** |
-| **Macroentrega 3 (Enterprise & Fiscal)** | `v3.0.0` | Emissão fiscal eletrônica automatizada (**NFC-e / SAT** via API Focus NFe integrada à SEFAZ), módulo de bomboniere e estoque, programa de fidelidade, **Console Global de Administração de Tenants** (*Self-Service Billing*) e BI financeiro avançado. | **Kayque Vicente & Yury Nogueira** | Fev/2027 – Abr/2027 | **Backlog Evolutivo** |
+O ciclo de vida do CineDoom é dividido em três macroentregas, cada uma com critério de aceite verificável.
 
-### Cronograma Detalhado de Execução da Macroentrega 1 (`v1.0.0`)
+**Tabela 14 – Macroentregas, escopo e critérios de aceite**
 
-A construção da Macroentrega 1 foi executada em 3 Sprints intensivas de engenharia com pacotes de trabalho atribuídos nominalmente aos engenheiros da CineSoft Solutions:
+| Marco | Versão | Escopo | Critério de aceite | Responsável técnico | Janela | Status |
+| :--- | :---: | :--- | :--- | :---: | :---: | :---: |
+| **Macroentrega 1** (MVP Operacional) | `v1.0.0` | Multi-tenant, RBAC, criptografia de CPF, CRUDs de filmes, salas e sessões, bilheteria atômica, portal de reservas com expiração JIT, painel de ocupação, anonimização LGPD e deploy (`RF-01` a `RF-18`). | `RF-01` a `RF-18` entregues e suíte de testes 100% aprovada. | Gabriel Lourenço | 29/09/2026 a 09/11/2026 | Concluído |
+| **Macroentrega 2** (Escala e Pagamentos) | `v2.0.0` | Gateway de pagamento (PIX e cartão), Resend Pro com domínio próprio, planos Pro de banco de dados e hospedagem. | Pagamento conciliado em homologação e e-mails com DKIM/SPF validados. | Carlos Eduardo | Dez/2026 a Jan/2027 | Planejado |
+| **Macroentrega 3** (Enterprise e Fiscal) | `v3.0.0` | NFC-e via Focus NFe/SEFAZ, bomboniere e estoque, fidelidade e console global de tenants. | Emissão fiscal validada em homologação e *onboarding* de tenant sem intervenção manual. | Kayque Vicente e Yury Nogueira | Fev/2027 a Abr/2027 | Backlog |
 
-| Sprint / Iteração | Pacotes de Trabalho e Requisitos Entregues | Responsáveis Diretos | Início | Término | Status |
+*Fonte: CineSoft Solutions (2026).*
+
+A M2 depende da conclusão da M1 e da definição do gateway de pagamento. A M3 depende da M2, pois a emissão fiscal exige o fluxo de pagamento consolidado. Essas dependências compõem o caminho crítico do projeto.
+
+### Cronograma
+
+A Figura 5 apresenta o cronograma macro. A M1 foi executada em três Sprints de duas semanas.
+
+```plantuml
+@startgantt
+printscale weekly
+Project starts 2026-09-29
+[Sprint 1 - Fundação e Segurança] starts 2026-09-29 and lasts 14 days
+[Sprint 2 - Back-office e Bilheteria ACID] starts 2026-10-13 and lasts 14 days
+[Sprint 3 - Portal, LGPD e QA] starts 2026-10-27 and lasts 14 days
+[Marco: v1.0.0 em produção] happens 2026-11-09
+[Macroentrega 2 - Pagamentos e Cloud Pro] starts 2026-12-01 and ends 2027-01-31
+[Macroentrega 3 - Fiscal e Enterprise] starts 2027-02-01 and ends 2027-04-30
+[Sprint 1 - Fundação e Segurança] -> [Sprint 2 - Back-office e Bilheteria ACID]
+[Sprint 2 - Back-office e Bilheteria ACID] -> [Sprint 3 - Portal, LGPD e QA]
+[Sprint 3 - Portal, LGPD e QA] -> [Macroentrega 2 - Pagamentos e Cloud Pro]
+[Macroentrega 2 - Pagamentos e Cloud Pro] -> [Macroentrega 3 - Fiscal e Enterprise]
+@endgantt
+```
+
+*Figura 5 – Cronograma macro das macroentregas. Fonte: CineSoft Solutions (2026).*
+
+**Tabela 15 – Execução das Sprints da Macroentrega 1**
+
+| Sprint | Pacotes de trabalho entregues | Responsáveis | Início | Término | Status |
 | :--- | :--- | :--- | :---: | :---: | :---: |
-| **Sprint 1 — Fundação, Arquitetura e Segurança** | Setup Next.js 14/TypeScript (`#1`), modelagem Prisma/PostgreSQL e trigger append-only (`#2`), extensão Multi-tenant (`#3`), autenticação NextAuth/RBAC (`#4`), criptografia PII de CPF (`#5`), Log Drain Axiom (`#15`) e pipeline CI/CD (`#16`). | **Gabriel Lourenço** & **Carlos Eduardo** (Apoio: **Yury Nogueira**) | 23/10/2026 | 29/10/2026 | **100% Concluído** |
-| **Sprint 2 — Back-office, Salas e Bilheteria ACID** | Design System e mapa interativo 2D (`#17`), CRUDs de filmes, salas e sessões com pré-população (`#6`, `#7`, `#8`), polling a 2s (`#9`), venda atômica com `SELECT FOR UPDATE` (`#10`) e gestão de atendentes (`#13`). | **Gabriel Lourenço** & **Carlos Eduardo** (QA: **Kayque Vicente**) | 30/10/2026 | 04/11/2026 | **100% Concluído** |
-| **Sprint 3 — Portal do Cliente, Governança LGPD e QA** | Portal público e reserva web com expiração JIT (`#21`), autenticação de espectador e *"Minhas Reservas"* (`#22`), `NotificationService` e baixa de reserva no balcão (`#23`), cancelamento auditado (`#11`), painel de ocupação (`#12`), anonimização Art. 18 (`#14`) e suíte de 711 testes / 500 cenários *cross-tenant* (`#18`, `#19`). | **Gabriel Lourenço**, **Carlos Eduardo**, **Kayque Vicente** & **Yury Nogueira** | 05/11/2026 | 09/11/2026 | **100% Concluído** |
+| **Sprint 1** – Fundação, arquitetura e segurança | Setup Next.js 14/TypeScript (`#1`), modelagem Prisma/PostgreSQL e trigger append-only (`#2`), multi-tenant (`#3`), autenticação e RBAC (`#4`), criptografia de CPF (`#5`), *log drain* (`#16`) e pipeline CI/CD (`#17`). | Gabriel Lourenço e Carlos Eduardo (apoio: Yury Nogueira) | 29/09/2026 | 12/10/2026 | Concluído |
+| **Sprint 2** – Back-office, salas e bilheteria ACID | Design System e mapa 2D (`#9`), CRUDs de filmes, salas e sessões (`#6`, `#7`, `#8`), *polling* de 2s (`#10`), venda atômica (`#11`) e atendentes (`#14`). | Gabriel Lourenço e Carlos Eduardo (QA: Kayque Vicente) | 13/10/2026 | 26/10/2026 | Concluído |
+| **Sprint 3** – Portal do cliente, LGPD e QA | Portal e reserva web com expiração JIT (`#21`), "Minhas Reservas" (`#22`), notificações e baixa no balcão (`#23`), cancelamento auditado (`#12`), painel de ocupação (`#13`), anonimização (`#15`), *seed* (`#20`) e suíte de testes com 500 cenários *cross-tenant* (`#18`, `#19`). | Toda a equipe | 27/10/2026 | 09/11/2026 | Concluído |
+
+*Fonte: CineSoft Solutions (2026).*
 
 ### Recursos
 
-| Recurso / Serviço | Plano na Macroentrega 1 | Plano nas Macroentregas 2 e 3 | Finalidade no Projeto | Custo Estimado |
+A equipe é composta por quatro engenheiros (Seção 3.4). A infraestrutura é *serverless*, com planos gratuitos na M1 e planos pagos a partir da M2.
+
+**Tabela 16 – Recursos de infraestrutura e custo estimado**
+
+| Recurso | Plano na M1 | Plano na M2 e M3 | Finalidade | Custo estimado |
 | :--- | :--- | :--- | :--- | ---: |
-| **Vercel** (PaaS / Edge CDN) | Hobby (*free tier*) | Pro (1 assento de *deploy*) | Hospedagem do Next.js 14, CDN e ambientes de *Preview* e Produção | US$ 20/mês |
-| **Neon / Supabase** (DBaaS PostgreSQL) | Free | Pro (PITR e réplicas) | Persistência ACID, *connection pooler* e migrações Prisma | US$ 25/mês |
-| **Resend** (e-mail transacional) | Free (console de teste) | Pro (50 mil e-mails/mês) | Envio de vouchers e confirmações com DKIM/SPF | US$ 20/mês |
-| **Axiom** (observabilidade) | Free | Cloud (1 TB/mês, 365 dias) | *Log drain* estruturado e retenção legal (LGPD) | US$ 25/mês |
-| **GitHub** (código e CI/CD) | Free | Team (4 assentos) | Repositórios, Projects, Actions e branches protegidas | US$ 4/usuário |
-| **Focus NFe** (mensageria fiscal) | Não utilizado | Empresarial (somente M3) | Emissão e transmissão de NFC-e à SEFAZ | R$ 149/mês |
-| **Stripe / Pagar.me** (gateway financeiro) | Não utilizado | Taxa transacional (somente M2) | Checkout PIX e cartão no Portal do Cliente | 3,99% + R$ 0,39 |
-| **Total estimado dos serviços base (M2 e M3)** | — | — | Vercel + Neon + Resend + Axiom | **US$ 90/mês** |
+| **Vercel** | Hobby (gratuito) | Pro | Hospedagem, CDN e ambientes de *Preview* e Produção | US$ 20/mês |
+| **Supabase DBaaS PostgreSQL** | Gratuito | Pro (PITR e réplicas) | Persistência ACID, *pooler* e migrações Prisma | US$ 25/mês |
+| **Resend** | Gratuito | Pro | Vouchers e confirmações com DKIM/SPF | US$ 20/mês |
+| **Axiom** | Gratuito | Cloud (retenção de 365 dias) | *Log drain* e retenção legal | US$ 25/mês |
+| **Subtotal dos serviços base** | – | – | Vercel, banco, Resend e Axiom | **US$ 90/mês** |
+| **GitHub** | Gratuito | Team (4 assentos) | Repositórios, Projects e Actions | US$ 4/usuário |
+| **Focus NFe** | Não utilizado | Somente M3 | Emissão de NFC-e | R$ 149/mês |
+| **Gateway de pagamento** | Não utilizado | Somente M2 | PIX e cartão | 3,99% + R$ 0,39 por transação |
 
-O plano é viável com os recursos disponíveis: a equipe de **4 engenheiros** atua em dedicação integral, a infraestrutura é *serverless* com cobrança *pay-as-you-go* (planos gratuitos na Macroentrega 1, com **US$ 0 de custo fixo** e cobrança apenas por uso excedente) e o custo operacional estimado dos serviços base — **US$ 90/mês** (≈ R$ 480/mês) nas Macroentregas 2 e 3 — é integralmente coberto pela receita do primeiro contrato B2B, cujo ticket médio estimado é de **R$ 590 a R$ 1.290/mês** por complexo exibidor (Cap. 3.3, Viabilidade Econômica e Financeira).
+*Fonte: CineSoft Solutions (2026).*
 
-### Rotina de Acompanhamento e Tratamento de Desvios e Atrasos
+Os itens GitHub, Focus NFe e gateway têm base de cobrança distinta (assento, emissão e transação) e por isso ficam fora do subtotal.
 
-Para garantir o cumprimento dos prazos e a previsibilidade das entregas, a CineSoft Solutions aplica a seguinte rotina de controle:
-1. **Monitoramento Diário no Quadro Kanban (GitHub Projects):** Todo cartão de tarefa deve conter obrigatoriamente **responsável nominal**, **data-limite (deadline)**, **estimativa** e **critério de aceite**. Tarefas paradas na coluna *In Progress* por mais de **48 horas** sem commits ou atualização de status acionam um alerta automático de impedimento (*blocker*).
-2. **Revisão Semanal de Sprint e Burndown:** Ao final de cada semana, o Gerente de Projeto (**Kayque Vicente**) e o Tech Lead (**Gabriel Lourenço**) auditam o percentual de pacotes concluídos versus planejados.
-3. **Protocolo de Tratamento de Desvios e Atrasos:**
-   - **Desvio Leve (atraso $\le 24\text{h}$ em tarefa não crítica):** Realocação de par técnico (*pair programming*) entre os desenvolvedores de backend e frontend para destravar a entrega dentro da mesma Sprint.
-   - **Desvio Moderado/Crítico (bloqueio em caminho crítico ou dependência externa):** Aplicação imediata de re-priorização MoSCoW (protegendo os requisitos *Must Have* de integridade transacional e segurança LGPD) e fatiamento da funcionalidade secundária para a iteração seguinte, registrando a decisão em ata de revisão.
+### Premissas e Restrições
+
+- **Premissas:** equipe de quatro engenheiros disponível durante todo o projeto; primeiro cinema contratante até a M2; câmbio de referência para a conversão de US\$ 90/mês em cerca de R\$ 480/mês.
+- **Restrições:** os limites dos planos gratuitos na M1; a dependência de serviços de terceiros (gateway, SEFAZ); o prazo fixo das macroentregas.
+- **Viabilidade:** com essas premissas, estima-se que o custo dos serviços base seja coberto pela mensalidade do primeiro cinema contratante, de R$ 910 a R$ 1.270/mês (Seção 3.3).
+
+### Rotina de Acompanhamento e Tratamento de Desvios
+
+1. **Monitoramento diário:** todo cartão no GitHub Projects possui responsável nominal, data-limite, estimativa e critério de aceite. Tarefa parada em *In Progress* por mais de 48 horas sem atualização é sinalizada como impedimento.
+2. **Revisão semanal:** o Gerente de Projeto e o Tech Lead comparam os pacotes concluídos com os planejados.
+3. **Tratamento de desvios:** conforme a Tabela 17.
+
+**Tabela 17 – Protocolo de tratamento de desvios**
+
+| Tipo de desvio | Critério | Ação | Registro |
+| :--- | :--- | :--- | :--- |
+| Leve | Atraso de até 24h em tarefa fora do caminho crítico | Pareamento técnico (*pair programming*) dentro da mesma Sprint | Quadro Kanban |
+| Moderado ou crítico | Bloqueio no caminho crítico ou dependência externa | Repriorização MoSCoW, protegendo os requisitos *Must Have* de integridade transacional e LGPD, e adiamento do item secundário | Ata de revisão da Sprint, com ciência da direção |
+
+*Fonte: CineSoft Solutions (2026).*
+
+![Quadro Kanban do GitHub Projects com responsável, data-limite e limite de WIP visíveis](../../assets/capitulo-04/prints/kanban-board.png) 
+
+*Figura 6 – Quadro Kanban do projeto no GitHub Projects. Fonte: CineSoft Solutions (2026).*
 
 ---
 
 ## 4.2 Plano de gestão de riscos: identificação, probabilidade, impacto e respostas
 
-O processo de gestão de riscos (Cláusula 6.3.4) identifica continuamente ameaças técnicas, operacionais, de segurança e de fornecedores externos que possam afetar a disponibilidade ou a integridade financeira e legal do CineDoom.
+A gestão de riscos (cláusula 6.3.4) identifica, analisa, trata e monitora as ameaças técnicas, operacionais, de segurança e de fornecedores que afetem a disponibilidade, a integridade financeira ou a conformidade legal do CineDoom. O Gerente de Projeto mantém o registro de riscos (*Risk Register*), que é revisado ao final de cada Sprint e antes de cada macroentrega. Riscos críticos são comunicados à direção.
 
-### Critérios de Classificação e Reavaliação Contínua
+### Critérios de Classificação
 
-- **Probabilidade de Ocorrência:** **Alta** (forte tendência de ocorrer em operação normal ou picos de estreia), **Média** (pode ocorrer sob condições específicas de carga ou falha de terceiros) ou **Baixa** (evento raro ou já contido por barreiras nativas).
-- **Impacto no Negócio:** **Alto** (indisponibilidade da bilheteria, venda dupla de poltronas, perda financeira ou violação da LGPD), **Médio** (degradação parcial de funcionalidade secundária com contorno disponível) ou **Baixo** (inconveniência visual sem bloqueio operacional).
-- **Matriz de Prioridade:** A combinação de Probabilidade $\times$ Impacto define a prioridade de tratamento como **Crítico** (exige barreira arquitetural imediata e teste automatizado obrigatório), **Alto** (exige mitigação ativa e monitoramento) ou **Médio** (monitorado com plano de contingência).
-- **Ciclo de Reavaliação:** O *Risk Register* é revisado formalmente ao final de cada Sprint e antes do início de cada nova Macroentrega.
+**Tabela 18 – Escalas de probabilidade e impacto**
 
-### Matriz de Riscos do Produto (*Risk Register*)
+| Nível | Probabilidade | Impacto |
+| :--- | :--- | :--- |
+| **Alta / Alto** | Tende a ocorrer em operação normal ou em picos de estreia | Indisponibilidade da bilheteria, venda dupla de assentos, perda financeira ou violação da LGPD |
+| **Média / Médio** | Pode ocorrer sob condições específicas de carga ou falha de terceiros | Degradação parcial de funcionalidade secundária, com contorno disponível |
+| **Baixa / Baixo** | Evento raro ou já contido por barreiras nativas | Inconveniência sem bloqueio operacional |
 
-| ID | Risco identificado | Categoria | Probabilidade | Impacto | Prioridade | Resposta / Mitigação | Responsável |
-| :---: | :--- | :---: | :---: | :---: | :---: | :--- | :---: |
-| **R-01** | **Conflito de concorrência (*double-booking*)** entre compras simultâneas no portal web e nos guichês físicos em estreias de alta demanda. | Técnico / Core | Média | Alto | **Crítico** | Pré-população determinística de `SessionSeat`, ordenação de IDs anti-deadlock e bloqueio pessimista `SELECT ... FOR UPDATE` em transação ACID, validado por teste automatizado com 50 threads simultâneas. | **Gabriel Lourenço** |
-| **R-02** | **Exaustão do pool de conexões ou indisponibilidade do banco PostgreSQL** devido à criação efêmera de instâncias serverless em picos de acesso. | Infraestrutura / Externa | Média | Alto | **Crítico** | Uso obrigatório de *Connection Pooler* transacional (*Supavisor* porta `6543` com `pgbouncer=true`), índices compostos por `tenant_id` e migração para plano **Pro com réplicas e PITR** na Macroentrega 2. | **Carlos Eduardo** |
-| **R-03** | **Exposição de dados pessoais (CPF) ou vazamento de dados entre cinemas concorrentes (*cross-tenant leak*)**. | Segurança / Legal (LGPD) | Baixa | Alto | **Crítico** | Proibição de CPF em texto puro (uso de `HMAC-SHA256` + `AES-256-GCM`), extensão Prisma que injeta `WHERE tenant_id` automaticamente e suíte automatizada com **500 cenários de ataque cross-tenant**. | **Carlos Eduardo & Yury Nogueira** |
-| **R-04** | **Retenção ociosa de poltronas (*no-show*)** por espectadores que reservam online e não comparecem para pagar no balcão. | Negócio / Operacional | Alta | Médio | **Alto** | Bloqueio de novas reservas web a menos de 60 minutos da sessão e **Expiração Just-in-Time (JIT)** automática, liberando os assentos instantaneamente para venda presencial na bilheteria (`ADR-012`). | **Gabriel Lourenço** |
-| **R-05** | **Falha na entrega de e-mails transacionais de vouchers** ou retenção em filtros anti-spam sem domínio próprio verificado. | Dependência Externa | Média | Médio | **Alto** | Desacoplamento via interface `EmailProvider`, exibição imediata do voucher com código localizador na tela de confirmação e na área *"Minhas Reservas"*, e contratação do **Resend Pro com domínio DKIM/SPF** na Macroentrega 2. | **Carlos Eduardo** |
-| **R-06** | **Atraso na integração de dependências entre módulos** (ex.: acoplamento entre refatorações de UI responsiva e contratos de API). | Organizacional / Projeto | Média | Médio | **Médio** | Contratos de validação estritos via schemas `Zod`, esteira de CI bloqueante a cada Pull Request e protocolo de realocação em pares (*pair programming*) quando uma tarefa excede 48h. | **Kayque Vicente** |
-| **R-07** | **Instabilidade nos webservices estaduais da SEFAZ ou gateway de pagamento** durante o horário de pico noturno dos cinemas (Macroentregas 2 e 3). | Dependência Externa | Média | Alto | **Alto** | Processamento fiscal em fila assíncrona com emissão em contingência offline (Focus NFe) e fallback imediato para recebimento presencial no guichê caso o gateway online oscile. | **Gabriel Lourenço & Kayque Vicente** |
+*Fonte: CineSoft Solutions (2026).*
+
+**Tabela 19 – Matriz de prioridade (probabilidade × impacto)**
+
+| Probabilidade \ Impacto | Baixo | Médio | Alto |
+| :--- | :---: | :---: | :---: |
+| **Alta** | Médio | Alto | **Crítico** |
+| **Média** | Baixo | Médio | **Crítico** |
+| **Baixa** | Baixo | Baixo | **Alto** |
+
+*Fonte: CineSoft Solutions (2026).*
+
+Riscos **Críticos** exigem barreira arquitetural e teste automatizado obrigatório. Riscos **Altos** exigem mitigação ativa e monitoramento. Riscos **Médios** e **Baixos** são monitorados, com plano de contingência.
+
+### Registro de Riscos
+
+**Tabela 20 – Identificação e análise dos riscos**
+
+| ID | Risco | Categoria | Prob. | Impacto | Prioridade |
+| :---: | :--- | :--- | :---: | :---: | :---: |
+| **R-01** | Venda dupla de assento (*double-booking*) por compras simultâneas no portal e no guichê em estreias | Técnico | Média | Alto | **Crítico** |
+| **R-02** | Exaustão do pool de conexões ou indisponibilidade do banco por instâncias *serverless* em picos | Infraestrutura | Média | Alto | **Crítico** |
+| **R-03** | Exposição de CPF ou vazamento de dados entre cinemas (*cross-tenant*) | Segurança e LGPD | Baixa | Alto | **Alto** |
+| **R-04** | Retenção ociosa de poltronas (*no-show*) em reservas web | Negócio | Alta | Médio | **Alto** |
+| **R-05** | Falha na entrega de e-mails de vouchers ou bloqueio por filtros anti-spam | Dependência externa | Média | Médio | **Médio** |
+| **R-06** | Atraso por dependência entre módulos (UI responsiva e contratos de API) | Projeto | Média | Médio | **Médio** |
+| **R-07** | Instabilidade da SEFAZ ou do gateway de pagamento no horário de pico (M2 e M3) | Dependência externa | Média | Alto | **Crítico** |
+| **R-08** | Concentração de conhecimento em pessoas-chave (Seção 3.4) | Organizacional | Média | Médio | **Médio** |
+| **R-09** | Estouro dos limites dos planos gratuitos ou pagos, elevando o custo acima do previsto | Financeiro | Média | Médio | **Médio** |
+| **R-10** | Vulnerabilidade em dependências de terceiros | Segurança | Baixa | Alto | **Alto** |
+| **R-11** | Lacuna de competência em pagamentos e NFC-e atrasar a M2 e a M3 | Projeto | Média | Médio | **Médio** |
+
+*Fonte: CineSoft Solutions (2026).*
+
+**Tabela 21 – Tratamento e monitoramento dos riscos**
+
+| ID | Resposta e mitigação | Gatilho de alerta | Responsável | Monitoramento |
+| :---: | :--- | :--- | :---: | :--- |
+| **R-01** | Pré-população de `SessionSeat`, ordenação de IDs contra *deadlock* e `SELECT ... FOR UPDATE` em transação ACID, validados por teste de concorrência com 50 threads (ADR-007) | Falha no teste de concorrência | Gabriel Lourenço | CI a cada PR |
+| **R-02** | *Connection pooler* transacional (porta `6543`), índices por `tenant_id` e migração para plano Pro com réplicas e PITR na M2 (ADR-005) | Erros de conexão na telemetria | Carlos Eduardo | Telemetria e revisão por Sprint |
+| **R-03** | CPF nunca em texto puro (`HMAC-SHA256` e `AES-256-GCM`), extensão Prisma com `tenant_id` automático e 500 cenários *cross-tenant* (ADR-008) | Falha em cenário *cross-tenant* | Carlos Eduardo e Yury Nogueira | CI a cada PR |
+| **R-04** | Bloqueio de reservas web a menos de 60 minutos da sessão e expiração *Just-in-Time* (ADR-012) | Taxa alta de reservas expiradas | Gabriel Lourenço | Painel de ocupação |
+| **R-05** | Interface `EmailProvider` desacoplada, voucher exibido na confirmação e em "Minhas Reservas", e Resend Pro com domínio próprio na M2 | Falhas de entrega nos logs | Carlos Eduardo | Telemetria |
+| **R-06** | Contratos `Zod`, CI bloqueante por PR e pareamento quando a tarefa excede 48h | Tarefa parada há mais de 48h | Kayque Vicente | Quadro Kanban |
+| **R-07** | Fila assíncrona com contingência offline (Focus NFe) e recebimento presencial como alternativa ao gateway | Falhas de transmissão fiscal ou de pagamento | Gabriel Lourenço e Kayque Vicente | Telemetria (M2 e M3) |
+| **R-08** | Revisão cruzada, ADRs e substituto por papel (Tabela 8) | Tarefa crítica dependente de uma só pessoa | Kayque Vicente | Revisão por macroentrega |
+| **R-09** | Acompanhamento mensal do consumo e revisão de planos | Custo acima de 10% do teto | Carlos Eduardo | Painéis de cobrança |
+| **R-10** | Auditoria de dependências e varredura de segredos no CI (Seção 3.5) | Vulnerabilidade alta/crítica fora do baseline documentado | Carlos Eduardo | CI a cada PR |
+| **R-11** | Workshops 3 e 4 antes das macroentregas (Tabela 11) | Critério de eficácia do workshop não atingido | Kayque Vicente | Revisão do plano de capacitação |
+
+*Fonte: CineSoft Solutions (2026).*
+
+O risco residual é avaliado a cada revisão. Um risco é encerrado quando a barreira correspondente passa a ser verificada automaticamente e o gatilho não ocorre ao longo de uma macroentrega.
 
 ---
 
 ## 4.3 Plano de gestão de configuração: controle de versões, branches e releases
 
-O processo de gestão de configuração (Cláusula 6.3.5) assegura a integridade, o rastreamento e a reprodutibilidade de todos os ativos de software da CineSoft Solutions.
+A gestão de configuração (cláusula 6.3.5) assegura a integridade, o rastreamento e a reprodutibilidade dos ativos de software. O Tech Lead (Gabriel Lourenço) é o aprovador do controle de configuração, e o Engenheiro de DevOps (Carlos Eduardo) executa os processos de release (Seção 3.4).
 
-### Itens de Configuração (CIs) Controlados
-São submetidos a controle formal de versão no GitHub:
-1. Código-fonte da aplicação web e APIs (`src/`).
-2. Esquema relacional e migrações determinísticas do banco de dados (`prisma/schema.prisma` e `prisma/migrations/`).
-3. Suíte de testes unitários, de integração e de segurança (`tests/`).
-4. Pipelines de automação e configuração de deploy (`.github/workflows/ci.yml`, `.github/workflows/deploy.yml` e `vercel.json`).
-5. Especificações técnicas, ADRs e Manual de Processos (`specs/` e `manual/`).
+### Itens de Configuração
 
-### Estratégia de Branches e Regras de Pull Request
+**Tabela 22 – Itens de configuração controlados**
 
-A CineSoft Solutions adota um fluxo estruturado em três branches permanentes (`develop`, `staging` e `main`) aliado a branches efêmeras por funcionalidade:
+| Item | Localização | Controle |
+| :--- | :--- | :--- |
+| Código-fonte da aplicação e APIs | `src/` | Git, via Pull Request |
+| Esquema, *seed* e *triggers* do banco | `prisma/schema.prisma`, `prisma/seed.ts` e `prisma/triggers.sql` | Git, via Pull Request |
+| Testes automatizados | `tests/` | Git, via Pull Request |
+| Pipelines e configuração de deploy | `.github/workflows/` e `vercel.json` | Git, via Pull Request |
+| Especificações, ADRs e manual | `specs/` e `manual/` | Git, via Pull Request |
+| Segredos e variáveis de ambiente | Variáveis dos serviços (Seção 3.2) | Fora do repositório; acesso restrito |
 
-```mermaid
-flowchart LR
-    F["feat/RF-XX-descricao\nou fix/escopo"] -->|"PR + Code Review\n+ 711 Testes CI"| DEV["develop\n(Integração Contínua)"]
-    DEV -->|"Promoção Verificada"| STG["staging\n(Homologação / Preview)"]
-    STG -->|"Release Gate Aprovado\n+ Tag SemVer"| MAIN["main\n(Produção Vercel)"]
+*Fonte: CineSoft Solutions (2026).*
+
+### Estratégia de Branches
+
+O fluxo usa três branches permanentes e branches efêmeras por funcionalidade (Figura 7).
+
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+
+state "feat/RF-XX\nou fix/escopo" as F
+state "develop\n(Integração Contínua)" as DEV
+state "staging\n(Homologação)" as STG
+state "main\n(Produção)" as MAIN
+
+F --> DEV : PR + revisão\n+ Quality Gates
+DEV --> STG : Promoção verificada
+STG --> MAIN : Aprovação de release\n+ tag SemVer
+@enduml
 ```
 
-- **`main` (Produção Protegida):** Reflete exclusivamente o código estável em execução para os cinemas clientes (`https://cinedoom.vercel.app/`). Proíbe *force push* e exige que toda alteração tenha passado pela validação completa da esteira de CI.
-- **`staging` (Homologação e Pré-Produção):** Ambiente espelhado para validação integrada e testes de aceitação antes da promoção para produção.
-- **`develop` (Integração de Engenharia):** Branch base para consolidação diária das entregas aprovadas da Sprint.
-- **`feat/*` e `fix/*` (Branches de Trabalho):** Criadas a partir de `develop` para cada requisito ou correção (ex.: `feat/RF-06-venda-atomica`).
-- **Regras Obrigatórias de Pull Request:** Todo PR requer (1) compilação TypeScript limpa (`tsc --noEmit`), (2) zero erros de ESLint (`import/no-cycle`), (3) **100% dos 711 testes passando no Vitest** e (4) revisão técnica aprovada por outro engenheiro da equipe.
+*Figura 7 – Estratégia de branches. Fonte: CineSoft Solutions (2026).*
 
-### Versionamento Semântico (SemVer) e Convenção de Commits
-- **Padrão SemVer (`MAJOR.MINOR.PATCH`):**
-  - `MAJOR` (`v1.0.0`, `v2.0.0`, `v3.0.0`): Transição entre as **3 Macroentregas** ou mudanças estruturais de arquitetura.
-  - `MINOR` (`v1.1.0`, `v1.2.0`): Adição de novas funcionalidades retrocompatíveis dentro de uma Macroentrega.
-  - `PATCH` (`v1.0.1`, `v1.0.2`): Correções de bugs, ajustes de responsividade ou melhorias de performance sem quebra de contrato.
-- **Conventional Commits:** Mensagens padronizadas no formato `<tipo>(<escopo>): <descrição concisa>` (tipos permitidos: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`), garantindo geração automatizada de *changelogs* e rastreabilidade direta com as issues.
+**Tabela 23 – Branches e regras de proteção**
+
+| Branch | Função | Regras |
+| :--- | :--- | :--- |
+| `main` | Produção (`https://cinedoom.com/`) | Proibido *force push*; somente código aprovado pelo CI; cada release recebe tag |
+| `staging` | Homologação e aceite | Espelha a produção; promoção somente após validação |
+| `develop` | Integração das entregas da Sprint | Recebe somente Pull Requests aprovados |
+| `feat/*` e `fix/*` | Trabalho por requisito ou correção (ex.: `feat/RF-06-venda-atomica`) | Criadas a partir de `develop`; vinculadas a uma issue |
+
+*Fonte: CineSoft Solutions (2026).*
+
+Todo Pull Request deve passar pelos *Quality Gates* da Seção 3.5 (compilação, testes, cobertura, segurança, revisão por outro integrante e build). Toda mudança em item de configuração entra por Pull Request vinculado a uma issue.
+
+### Baselines, Versionamento e Releases
+
+Cada tag `vMAJOR.MINOR.PATCH` aplicada a `main` constitui uma **baseline** de release.
+
+**Tabela 24 – Versionamento semântico e convenção de commits**
+
+| Elemento | Regra |
+| :--- | :--- |
+| `MAJOR` (`v1.0.0`, `v2.0.0`, `v3.0.0`) | Transição entre macroentregas ou mudança estrutural de arquitetura |
+| `MINOR` (`v1.1.0`) | Funcionalidade retrocompatível dentro de uma macroentrega |
+| `PATCH` (`v1.0.1`) | Correção de defeito ou ajuste sem quebra de contrato |
+| Conventional Commits | `<tipo>(<escopo>): <descrição>`, com tipos `feat`, `fix`, `refactor`, `test`, `docs`, `chore` e `ci`, para gerar o *changelog* e rastrear as issues |
+
+*Fonte: CineSoft Solutions (2026).*
+
+O fluxo de release, incluindo a reversão e a correção urgente, segue a Figura 8.
+
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+start
+:Criar feat/RF-XX a partir de develop;
+:Abrir PR com issue vinculada;
+:Executar Quality Gates no CI;
+if (Gates aprovados e revisão aprovada?) then (sim)
+  :Merge em develop;
+else (não)
+  :Corrigir e atualizar o PR;
+  stop
+endif
+:Promover develop para staging;
+:Validar o aceite em homologação;
+:Promover staging para main e aplicar tag SemVer;
+:Deploy em produção (Vercel);
+if (Defeito crítico em produção?) then (sim)
+  :Reverter para a tag anterior (rollback);
+  :Corrigir em fix/* a partir de main e repetir o fluxo;
+else (não)
+  :Registrar a release no changelog;
+endif
+stop
+@enduml
+```
+
+*Figura 8 – Fluxo de release, reversão e correção urgente. Fonte: CineSoft Solutions (2026).*
+
+### Auditoria e Registro de Status
+
+- **Auditoria:** antes de cada release, o Engenheiro de Qualidade verifica se a tag corresponde ao código aprovado e se os gates passaram.
+- **Registro de status:** o *changelog*, as tags e o histórico de Pull Requests informam o estado de cada item de configuração.
+- **Reversão:** a reversão consiste em publicar novamente a tag anterior no ambiente de produção.
+
+
+![Execução do GitHub Actions com todas as verificações aprovadas.](../../assets/capitulo-04/prints/CI.png) 
+*Figura 9 – Execução do pipeline de integração contínua. Fonte: CineSoft Solutions (2026).*
+
+![Página de tags e releases do repositório (`v1.0.0`).](../../assets/capitulo-04/prints/releases.png) 
+> *Figura 10 – Baseline da versão `v1.0.0` no GitHub. Fonte: CineSoft Solutions (2026).*
 
 ---
 
 ## 4.4 Registro de decisões técnicas relevantes (ADRs)
 
-O processo de gestão de decisões (Cláusula 6.3.3) fundamenta as escolhas arquiteturais de alto impacto por meio de análise multicritério e fichas estruturadas de *Architecture Decision Records (ADRs)*.
+A gestão de decisões (cláusula 6.3.3) fundamenta as escolhas de alto impacto em análise multicritério e em fichas estruturadas de *Architecture Decision Records* (ADRs), mantidas em `specs/adrs/`.
 
-### Matriz de Decisão Ponderada (*Pugh Matrix*) — Escolha da Arquitetura Base (`ADR-001`)
+### Processo de Decisão
 
-Para definir a arquitetura central da plataforma CineDoom, a CineSoft Solutions avaliou três alternativas tecnológicas contra cinco critérios ponderados de negócio e engenharia (escala de `1` a `5`, onde `5` é a melhor aderência):
+- **Quando registrar:** toda decisão que afete a arquitetura, a segurança, o banco de dados, a infraestrutura ou o custo exige um ADR.
+- **Quem decide:** o Tech Lead aprova, e o ADR é revisado em Pull Request por outro integrante.
+- **Conteúdo mínimo:** contexto, alternativas consideradas, decisão, justificativa e consequências.
+- **Ciclo de vida:** o ADR passa pelos estados da Figura 11. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
 
-| Critério de Avaliação | Peso | Alt. A: Monólito Modular (Next.js 14 Fullstack + Prisma ACID) | Alt. B: Microsserviços Distribuídos (Node/Go + Mensageria Kafka) | Alt. C: SPA React Separada + Backend Tradicional em VM Dedicada |
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+[*] --> Proposta : Necessidade de decisão estrutural
+Proposta --> EmRevisao : PR com ADR aberto
+EmRevisao --> Aprovada : Aprovação do Tech Lead
+EmRevisao --> Rejeitada : Alternativa mais adequada
+Aprovada --> Substituida : Novo ADR referencia o anterior
+Rejeitada --> [*]
+Substituida --> [*]
+@enduml
+```
+
+*Figura 11 – Ciclo de vida de um ADR. Fonte: CineSoft Solutions (2026).*
+
+### Matriz de Decisão Ponderada: Arquitetura Base (ADR-001)
+
+A arquitetura central foi escolhida entre três alternativas, avaliadas em cinco critérios ponderados (nota de 1 a 5, sendo 5 a melhor aderência).
+
+**Tabela 25 – Matriz de decisão ponderada da arquitetura base**
+
+| Critério | Peso | A: Monólito modular (Next.js 14 e Prisma) | B: Microsserviços (Node/Go e Kafka) | C: SPA separada e backend em VM |
 | :--- | :---: | :---: | :---: | :---: |
-| **1. Garantia de Atomicidade Transacional (Anti-Double-Booking)** | **30%** | **5** *(Transação ACID única no banco relacional sem sagas distribuídas)* | **2** *(Consistência eventual complexa; alto risco de race condition)* | **5** *(Transação ACID direta em banco relacional único)* |
-| **2. Velocidade de Entrega e Produtividade da Equipe (4 Engenheiros)** | **25%** | **5** *(Repositório único, tipagem TypeScript ponta a ponta e deploy unificado)* | **1** *(Alta sobrecarga de orquestração, múltiplos deploys e contratos)* | **3** *(Duplicação de DTOs/tipagens e manutenção de dois pipelines)* |
-| **3. Eficiência de Custo Operacional (TCO Inicial e Escala SaaS)** | **20%** | **5** *(Serverless pay-as-you-go; escala do piloto ao Pro sem ociosidade)* | **2** *(Custo fixo elevado de clusters Kubernetes e brokers ativos 24/7)* | **3** *(Custo fixo de servidores ligados mesmo fora de horário de sessão)* |
-| **4. Isolamento Lógico Multi-Tenant e Segurança LGPD** | **15%** | **5** *(Middleware unificado + Prisma Extension centralizada no mesmo runtime)* | **3** *(Necessidade de propagar e auditar contexto de tenant em N serviços)* | **4** *(Isolamento centralizado no backend, mas exige gestão de CORS/Auth)* |
-| **5. Desempenho de Borda e SEO para o Catálogo Público** | **10%** | **5** *(Server Components + Edge CDN nativos para carregamento instantâneo)* | **4** *(Requer BFF / API Gateway adicional para agregação na borda)* | **2** *(CSR puro prejudica indexação e tempo de primeira renderização)* |
-| **Pontuação Final Ponderada ($\sum \text{Peso} \times \text{Nota}$)** | **100%** | **5,00 (Vencedora — Adotada)** | **2,10 (Descartada)** | **3,65 (Descartada)** |
+| Atomicidade transacional (anti-*double-booking*) | 30% | 5 | 2 | 5 |
+| Produtividade da equipe de 4 engenheiros | 25% | 5 | 1 | 3 |
+| Custo operacional (TCO inicial e escala) | 20% | 5 | 2 | 3 |
+| Isolamento multi-tenant e segurança LGPD | 15% | 5 | 3 | 4 |
+| Desempenho de borda e SEO do catálogo | 10% | 5 | 4 | 2 |
+| **Pontuação ponderada** | **100%** | **5,00 (adotada)** | **2,10** | **3,65** |
 
-### Fichas Estruturadas de Decisões Arquiteturais (`ADR-001` a `ADR-012`)
+*Fonte: CineSoft Solutions (2026).*
 
-Todas as 12 decisões arquiteturais do CineDoom estão documentadas integralmente em `specs/adrs/` e sintetizadas abaixo com seus cinco elementos formais:
+**Tabela 26 – Ficha do ADR-001**
 
-| Código e Título | Status | Contexto do Problema | Alternativas Consideradas | Decisão e Justificativa | Consequências e Trade-offs |
-| :--- | :---: | :--- | :--- | :--- | :--- |
-| **ADR-001:** Arquitetura Monólito Modular em Next.js 14 | **Aprovada** | Necessidade de integrar Portal do Cliente, Bilheteria e Back-office sob o mesmo motor transacional com equipe enxuta. | (1) Monólito Modular Next.js; (2) Microsserviços; (3) SPA + API separada. | Adotar Monólito Modular com módulos de domínio verticais (`src/modules/*`) e regra ESLint `import/no-cycle`. | (+) Transações ACID simples e tipagem unificada; (-) Exige disciplina de linter para manter fronteiras modulares. |
-| **ADR-002:** Interface Reativa com Tailwind CSS | **Aprovada** | Construção de mapa 2D de assentos e painéis responsivos para desktop (guichê) e mobile (espectador). | (1) Tailwind CSS + Componentes próprios; (2) Material UI / Chakra; (3) CSS-in-JS. | Adotar Tailwind CSS com tema escuro cinematográfico (*Dark UI*) e zero runtime JS de estilos. | (+) Bundle leve, alta performance mobile e identidade visual própria; (-) Classes utilitárias extensas no JSX. |
-| **ADR-003:** Backend em TypeScript com Route Handlers | **Aprovada** | Exigência de validação rigorosa de payloads e contratos seguros entre frontend e API. | (1) Next.js Route Handlers + Zod; (2) Express/NestJS separado; (3) GraphQL. | Utilizar Route Handlers RESTful tipados em TypeScript estrito combinados com schemas `Zod`. | (+) Zero incompatibilidade de tipos cliente-servidor e deploy serverless nativo; (-) Acoplado às convenções do Next.js. |
-| **ADR-004:** Banco PostgreSQL com Prisma ORM | **Aprovada** | Venda e reserva de poltronas exigem integridade relacional absoluta e bloqueio pessimista de linha. | (1) PostgreSQL + Prisma; (2) MongoDB (NoSQL); (3) MySQL + TypeORM. | Adotar PostgreSQL gerenciado com Prisma ORM e suporte a transações interativas e SQL bruto para locks. | (+) Conformidade ACID plena e migrações seguras; (-) Requer `queryRaw` pontual para `SELECT FOR UPDATE`. |
-| **ADR-005:** Cloud Serverless (Vercel + Supabase/Neon + CI) | **Aprovada** | Viabilizar operação altamente disponível desde a validação piloto (Macroentrega 1) até a escala comercial (Macroentrega 2). | (1) Vercel + DBaaS PostgreSQL + GitHub Actions; (2) AWS EC2/RDS manual; (3) Heroku/Render. | Adotar Vercel na borda, DBaaS PostgreSQL com pooler na porta `6543` e CI/CD no GitHub Actions, escalando para planos Pro. | (+) Deploy atômico, zero manutenção de SO e TCO enxuto; (-) Exige *connection pooling* para funções serverless. |
-| **ADR-006:** API RESTful e Polling de 2s no Mapa de Sala | **Aprovada** | Manter o mapa de assentos atualizado entre múltiplos clientes e guichês em arquitetura serverless. | (1) HTTP Polling leve a cada 2s; (2) WebSockets dedicados; (3) Server-Sent Events (SSE). | Implementar polling RESTful otimizado a cada 2s na rota `/api/sessoes/[id]/assentos`. | (+) Compatibilidade total com serverless sem conexões ociosas; (-) Latência máxima de até 2s na visualização passiva. |
-| **ADR-007:** Pré-população de `SessionSeat` e `SELECT FOR UPDATE` | **Aprovada** | Impedir *phantom reads* e *double-booking* quando dois usuários tentam comprar a mesma poltrona vazia simultaneamente. | (1) Pré-popular `SessionSeat` no agendamento + Lock pessimista; (2) Inserção sob demanda; (3) Lock otimista por versão. | Criar todas as linhas de `SessionSeat` (`AVAILABLE`) na criação da sessão e aplicar `SELECT ... FOR UPDATE` ordenado por ID. | (+) Elimina *phantom reads* e *deadlocks* com garantia matemática anti-venda dupla; (-) Mais linhas armazenadas por sessão. |
-| **ADR-008:** Criptografia de CPF (`HMAC-SHA256` + `AES-256-GCM`) | **Aprovada** | Proteger o CPF do comprador (LGPD Art. 46) permitindo ao mesmo tempo busca exata no balcão da bilheteria. | (1) Hash simples SHA-256 (vulnerável a *rainbow table*); (2) Cifra determinística; (3) `HMAC-SHA256` + `AES-256-GCM`. | Armazenar `cpf_hash` (`HMAC-SHA256` com chave secreta para busca indexada $O(1)$) e `cpf_encrypted` (`AES-256-GCM` com IV aleatório). | (+) Resistente a *rainbow tables* no universo finito de $10^{11}$ CPFs e confidencialidade total; (-) Não permite busca parcial (`LIKE`). |
-| **ADR-009:** Anonimização *In-Place* para LGPD Art. 18 | **Aprovada** | Atender ao direito de eliminação de dados pessoais do titular sem destruir o histórico contábil e fiscal de vendas do cinema. | (1) Deleção física (`DELETE CASCADE`); (2) Tabela paralela de expurgo; (3) Sobrescrita *in-place* irreversível. | Sobrescrever nome, e-mail e hashes de CPF do comprador por valores anonimizados irreversíveis, preservando os registros de `Ticket`. | (+) Concilia perfeitamente a LGPD (Art. 18) com a integridade financeira/fiscal; (-) Operação irreversível para o titular. |
-| **ADR-010:** Auditoria *Append-Only* via Trigger PostgreSQL | **Aprovada** | Garantir que registros de cancelamento de ingressos jamais sejam adulterados ou apagados, mesmo por credenciais de aplicação. | (1) Controle apenas no código TypeScript; (2) Trigger PostgreSQL `BEFORE UPDATE OR DELETE`; (3) Bucket S3 WORM externo. | Criar a trigger `trg_protect_cancellation_audits` no PostgreSQL que aborta qualquer `UPDATE` ou `DELETE` na tabela de auditoria. | (+) Imutabilidade garantida no nível do SGBD a custo zero; (-) Exige migração SQL customizada. |
-| **ADR-011:** Log Drain Gerenciado (Axiom) por 365 Dias | **Aprovada** | Cumprir a exigência legal de retenção de registros de acesso e auditoria por 1 ano fora do limite efêmero da plataforma serverless. | (1) Gravar logs no próprio PostgreSQL; (2) Axiom Log Drain SaaS; (3) Datadog Enterprise. | Exportar logs estruturados em JSON (com PII mascarado) para o Axiom Cloud com política de retenção de 365 dias. | (+) Conformidade legal sem inflar o armazenamento do banco transacional; (-) Dependência de conector externo de telemetria. |
-| **ADR-012:** Portal do Cliente com Expiração *Just-in-Time* | **Aprovada** | Permitir reserva online na Macroentrega 1 sem depender de gateway financeiro, evitando que reservas abandonadas bloqueiem a sessão. | (1) Cronjob de varredura a cada minuto; (2) Expiração *Just-in-Time (JIT)* na leitura/escrita; (3) Fila Redis com TTL. | Avaliar dinamicamente `expiresAt` (60 min antes da sessão) em toda consulta ao mapa e transação de balcão, liberando assentos vencidos na hora. | (+) Precisão de milissegundos sem depender de *workers* ou cronjobs externos; (-) Lógica de verificação embutida nas queries de sessão. |
+| Elemento | Descrição |
+| :--- | :--- |
+| **Título e status** | Arquitetura de monólito modular em Next.js 14 – Aprovada |
+| **Contexto** | Integrar Portal do Cliente, Bilheteria e Back-office sob o mesmo motor transacional, com equipe enxuta |
+| **Alternativas** | (1) Monólito modular Next.js; (2) Microsserviços; (3) SPA e API separadas |
+| **Decisão** | Monólito modular com módulos de domínio verticais (`src/modules/*`) e regra ESLint `import/no-cycle` |
+| **Consequências** | (+) Transações ACID simples e tipagem unificada; (-) exige disciplina do *linter* para manter as fronteiras entre módulos |
+
+*Fonte: CineSoft Solutions (2026).*
+
+### Índice de Decisões (ADR-001 a ADR-012)
+
+As fichas completas dos 12 ADRs, com data e autor, estão em `specs/adrs/`. A tabela abaixo as relaciona aos riscos e requisitos que sustentam.
+
+**Tabela 27 – Índice dos ADRs**
+
+| ADR | Título | Decisão resumida | Status | Relacionado a |
+| :---: | :--- | :--- | :---: | :--- |
+| 001 | Monólito modular em Next.js 14 | Módulos verticais e `import/no-cycle` | Aprovada | R-06 |
+| 002 | Interface com Tailwind CSS | Tema escuro, sem CSS em tempo de execução | Aprovada | Usabilidade |
+| 003 | Backend em TypeScript com Route Handlers | API REST tipada com validação `Zod` | Aprovada | R-06 |
+| 004 | PostgreSQL com Prisma ORM | Banco relacional ACID com transações interativas | Aprovada | R-01 |
+| 005 | Nuvem *serverless* (Vercel, DBaaS e CI) | Hospedagem na borda, *pooler* na porta `6543` e CI/CD no GitHub Actions | Aprovada | R-02 |
+| 006 | API REST e *polling* de 2s no mapa de sala | Atualização periódica sem conexões persistentes | Aprovada | `RF` de bilheteria |
+| 007 | Pré-população de `SessionSeat` e `SELECT FOR UPDATE` | Lock pessimista ordenado por ID | Aprovada | R-01 |
+| 008 | Criptografia de CPF | `HMAC-SHA256` (busca) e `AES-256-GCM` (confidencialidade) | Aprovada | R-03 |
+| 009 | Anonimização *in-place* (LGPD Art. 18) | Sobrescrita irreversível, preservando `Ticket` | Aprovada | R-03 |
+| 010 | Auditoria *append-only* por *trigger* | `trg_protect_cancellation_audits` impede `UPDATE` e `DELETE` | Aprovada | Auditoria |
+| 011 | *Log drain* gerenciado (Axiom, 365 dias) | Logs estruturados com PII mascarado | Aprovada | LGPD |
+| 012 | Expiração *Just-in-Time* de reservas | Avaliação de `expiresAt` na leitura e na escrita | Aprovada | R-04 |
+
+*Fonte: CineSoft Solutions (2026).*
+
+
+![Pasta `specs/adrs/` no GitHub, exibindo os 12 ADRs.](../../assets/capitulo-04/prints/ADRs.png) 
+*Figura 12 – Registro dos ADRs no repositório. Fonte: CineSoft Solutions (2026).*
 
 ---
 
 ## 4.5 Métricas de acompanhamento do projeto
 
-O processo de medição e avaliação (Cláusula 6.3.2) utiliza indicadores quantitativos coletados do GitHub, da pipeline de CI, do Vitest e dos painéis de *billing* dos provedores de nuvem para monitorar a saúde técnica e financeira da entrega:
+O processo de medição (cláusula 6.3.7), junto com a avaliação e o controle do projeto (cláusula 6.3.2), usa indicadores coletados do GitHub, do CI, do Vitest e dos painéis de cobrança para responder a quatro necessidades de informação: o fluxo está saudável? A qualidade é mantida? O escopo avança conforme o plano? O custo está sob controle? A Figura 13 resume o ciclo de medição.
 
-| Categoria de Métrica | Indicador Objetivo | Meta Organizacional | Resultado Aferido na Macroentrega 1 (`v1.0.0`) | Como é Monitorado e Ação em Caso de Desvio |
-| :--- | :--- | :---: | :---: | :--- |
-| **Métrica de Fluxo** | **Lead Time de Issues e PRs** (tempo entre abertura da tarefa e merge em `main`) | $\le 48\text{ horas}$ por pacote de trabalho | Média de **18 a 32 horas** por issue | Monitorado via GitHub Projects. Se exceder 48h, o GP aciona pareamento técnico imediato. |
-| **Métrica de Fluxo** | **Work in Progress (WIP Limit)** por engenheiro | Máximo de **2 tarefas** simultâneas em *In Progress* | Respeitado ($\le 2$ por membro) | Conferido na revisão diária do quadro Kanban para evitar gargalos de troca de contexto. |
-| **Métrica de Qualidade** | **Suíte de Testes Automatizados e Cobertura Crítica** | **100% de aprovação** e 100% nos serviços críticos | **20 arquivos / 711 testes passando (100%)** em ~10,6s | Bloqueio automático no GitHub Actions; PRs com qualquer teste quebrado são impedidos de merge. |
-| **Métrica de Qualidade** | **Densidade de Defeitos em Produção** (bugs críticos pós-deploy) | **0 defeitos críticos** (venda dupla ou perda de dados) | **0 defeitos críticos** (ajustes apenas cosméticos/mobile) | Monitorado via telemetria e testes de usuários reais; defeitos P1 acionam rollback em < 5 min. |
-| **Métrica de Progresso** | **Cumprimento do Escopo da Macroentrega (Throughput)** | **100% dos requisitos `RF-01` a `RF-18`** entregues no marco | **18/18 RFs (100%)** e **15/15 Critérios de Aceite** concluídos | Auditado ao final de cada Sprint na Matriz de Rastreabilidade (Capítulo 5.1.2). |
-| **Métrica de Custo** | **Custo Operacional dos Serviços Base (OPEX mensal)** | **$\le$ US$ 90/mês nas Macroentregas 2 e 3** (US$ 0 na M1 em *free tier*) | **US$ 0 na Macroentrega 1** (planos gratuitos/Hobby) | Monitorado nos painéis de *billing* de Vercel, Neon, Resend e Axiom, com revisão mensal do líder de DevOps; GitHub Team (US$ 4/usuário × 4 assentos) e Focus NFe (R$ 149/mês, somente M3) são controlados à parte, por terem base de cobrança distinta (assento e emissão). Desvio acima de 10% sobre o teto aciona revisão de planos e otimização de recursos. |
+```plantuml
+@startuml
+skinparam monochrome true
+skinparam shadowing false
+rectangle "Necessidade de\ninformação" as N
+rectangle "Coleta automatizada\n(GitHub, CI, Vitest, cobrança)" as C
+rectangle "Análise na revisão\nsemanal da Sprint" as A
+rectangle "Decisão: manter, ajustar\nou escalar à direção" as D
+N --> C
+C --> A
+A --> D
+D --> N : Atualiza metas
+@enduml
+```
+
+*Figura 13 – Ciclo de medição e decisão. Fonte: CineSoft Solutions (2026).*
+
+**Tabela 28 – Plano de medição**
+
+| Indicador | Necessidade atendida | Meta | Fonte e frequência | Responsável |
+| :--- | :--- | :---: | :--- | :---: |
+| **Lead time** (da abertura da issue ao merge em `develop`) | Fluxo | ≤ 48h por pacote | GitHub Projects, semanal | Kayque Vicente |
+| **WIP por engenheiro** | Fluxo | ≤ 2 tarefas | Quadro Kanban, diária | Kayque Vicente |
+| **Aprovação da suíte de testes** | Qualidade | 100% | GitHub Actions, a cada PR | Kayque Vicente |
+| **Cobertura nas regras de domínio** | Qualidade | ≥ 70% (*statements*, funções e linhas) e ≥ 80% (*branches*) (Seção 3.5) | Relatório do Vitest, a cada PR | Kayque Vicente |
+| **Defeitos críticos em produção** | Qualidade | 0 | Telemetria e registro de incidentes, por macroentrega | Carlos Eduardo |
+| **Cumprimento do escopo** | Progresso | 100% dos requisitos do marco | Matriz de rastreabilidade (Seção 5.1.2), por Sprint | Kayque Vicente |
+| **Riscos críticos sem mitigação ativa** | Risco | 0 | Registro de riscos (Tabela 21), por Sprint | Kayque Vicente |
+| **Custo mensal dos serviços base** | Custo | ≤ US$ 90/mês na M2 e na M3 | Painéis de cobrança, mensal | Carlos Eduardo |
+| **Rollbacks por release** | Configuração | Tendência decrescente | Tags e histórico de deploy, por release | Carlos Eduardo |
+
+*Fonte: CineSoft Solutions (2026).*
+
+**Tabela 29 – Resultados na Macroentrega 1 (`v1.0.0`) e ação em caso de desvio**
+
+| Indicador | Resultado aferido | Ação em caso de desvio |
+| :--- | :--- | :--- |
+| Lead time | Média de 18 a 32 horas por issue | Acima de 48h, o Gerente de Projeto aciona pareamento técnico |
+| WIP por engenheiro | Limite respeitado | Revisão do quadro na reunião diária |
+| Suíte de testes | 26 arquivos e 770 testes aprovados (100%) | O PR com teste falho não é integrado |
+| Cobertura nas regras de domínio | 71,2% de *statements*, 83,4% de *branches* e 76,3% de funções (gate: 70/80/70) | Abrir ação corretiva no registro de não conformidades (Seção 3.5) |
+| Defeitos críticos em produção | 0 (apenas ajustes cosméticos e de responsividade) | Defeito crítico aciona a reversão para a versão anterior e correção urgente (Figura 8) |
+| Cumprimento do escopo | 18 de 18 requisitos e 15 de 15 critérios de aceite | Ajuste de escopo conforme a Tabela 17 |
+| Riscos críticos sem mitigação | Medição iniciada a partir deste plano | Escalar à direção |
+| Custo mensal | US$ 0 (planos gratuitos) | Desvio acima de 10% do teto aciona revisão de planos |
+| Rollbacks por release | Medição iniciada a partir deste plano | Análise de causa na retrospectiva |
+
+*Fonte: CineSoft Solutions (2026).*
+
+Os valores da Tabela 29 referem-se à entrega da `v1.0.0` e são atualizados a cada macroentrega.
+
+![Quadro do GitHub Projects com o tempo de ciclo das issues.](../../assets/capitulo-04/prints/fluxo.png)
+*Figura 14 – Evidência do fluxo de trabalho. Fonte: CineSoft Solutions (2026).*
 
 ---
 
@@ -950,7 +1499,7 @@ A especificação formal de requisitos da plataforma **CineDoom** estrutura os r
 
 ---
 
-### Restrições Técnicas e Limites de Escopo (`RES-01` a `RES-06`)
+#### Restrições Técnicas e Limites de Escopo (`RES-01` a `RES-06`)
 
 Restrições arquiteturais e itens explicitamente fora do escopo da **Macroentrega 1 (MVP)**. As entregas previstas para as Macroentregas 2 e 3 (gateway de pagamento online, emissão fiscal NFC-e/SAT e bomboniere) são evoluções planejadas no roadmap e **não contradizem** estas restrições, que delimitam exclusivamente o MVP:
 
@@ -963,7 +1512,7 @@ Restrições arquiteturais e itens explicitamente fora do escopo da **Macroentre
 
 ---
 
-### Regras de Negócio Estruturantes (`RN-01` a `RN-12`)
+#### Regras de Negócio Estruturantes (`RN-01` a `RN-12`)
 
 As políticas de domínio que atravessam os requisitos estão consolidadas nas regras de negócio: exclusividade atômica do assento e máquina de estados (`RN-01`, `RN-02`); antecedência mínima de 60 minutos e expiração *Just-in-Time* (`RN-03`, `RN-04`); integridade do catálogo e anti-choque de sessões (`RN-05`, `RN-06`); auditoria imutável de cancelamento (`RN-07`); RBAC e segurança de credenciais (`RN-08`, `RN-09`); criptografia, consentimento e anonimização LGPD com retenção fiscal (`RN-10`, `RN-11`); e isolamento multi-tenant (`RN-12`).
 
@@ -991,7 +1540,6 @@ A integridade da engenharia de software da CineSoft Solutions é garantida por u
 **Evidência das restrições no repositório:** `RES-01`/`RES-02` — não existem rotas de gateway de pagamento nem modelos fiscais em `src/app/api/` e `prisma/schema.prisma`; `RES-03` — a aplicação é web (`src/app/`), sem projeto mobile nativo; `RES-04` — não há módulo de bomboniere/estoque; `RES-05` — não há *streaming* ou DRM; `RES-06` — `src/app/layout.tsx` declara `lang="pt-BR"`.
 
 ---
-> **Escopo da cobertura automatizada:** a suíte real do repositório possui **20 arquivos e 711 testes** (Vitest). Não possuem teste automatizado dedicado no `cinedoom-app`: `RF-12`/`CA-15(a)` (catálogo público), `RF-15` (disparo de e-mail e `email_sent_at`), `RF-16`/`CA-12` (cancelamento web), `RF-17`/`CA-13` (baixa presencial), `RNF-05` (compatibilidade de navegadores) e o cálculo percentual do `CA-07`; esses itens são verificados por UAT ou permanecem como lacuna declarada.
 
 ### 5.1.3 Critérios de aceitação (`CA-01` a `CA-15`)
 
@@ -1033,35 +1581,96 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 
 ### 5.2.1 Documento de arquitetura do sistema
 
-O **CineDoom** adota a arquitetura de **Monólito Modular em Next.js 14 (App Router)** fundamentada nos princípios de *Clean Architecture* (`ADR-001`), estruturada em cinco camadas lógicas com inversão de dependência e isolamento vertical por domínio (`src/modules/*` e `src/shared/*`):
+#### Identificação e escopo
 
-1. **Camada de Apresentação e UI Reativa (`src/app/`, `src/components/`):** Combina *React Server Components* para carregamento rápido do catálogo e *Client Components* interativos para o fluxo de reserva em 4 etapas, mapa bidimensional de poltronas (`SeatingGrid` com polling de 2s) e painéis administrativos.
-2. **Camada de Controladores HTTP (`src/app/api/**/route.ts`):** Route Handlers tipados que extraem o contexto de sessão/tenant, validam payloads de entrada com schemas `Zod` e traduzem exceções de domínio em códigos HTTP semânticos (`200`, `201`, `400`, `401`, `403`, `404`, `409`, `422`).
-3. **Camada de Serviços de Aplicação (`Application Services`):** Orquestra os casos de uso e transações de negócio (`SaleService`, `CancellationService`, `ReservationService`, `TemporaryHoldService`, `CounterService`, `UserService`, `AnonymizationService`, `NotificationService`).
-4. **Camada de Domínio e Segurança (`Domain & Security`):** Contém as entidades, invariantes de negócio (antecedência de 60 min, expiração JIT, validação Módulo 11 de CPF) e o `CryptoService` (`HMAC-SHA256` e `AES-256-GCM`).
-5. **Camada de Infraestrutura e Persistência Multi-Tenant (`src/shared/db/prisma.ts`):** Implementa os repositórios Prisma sobre PostgreSQL com extensão automática de contexto (`AsyncLocalStorage`) que injeta a cláusula `WHERE tenant_id` em todas as consultas e gerencia a conexão via pooler transacional.
+| Campo | Definição |
+| :--- | :--- |
+| **Sistema** | CineDoom — plataforma SaaS de bilheteria, back-office e portal do cliente para cinemas independentes e redes regionais |
+| **Repositório de referência** | `cinedoom-app/` — Next.js 14.2.35 (App Router), React 18.3, TypeScript 5.6, Prisma 5.21, PostgreSQL/Supabase |
+| **Norma de processo** | ABNT NBR ISO/IEC/IEEE 12207:2021, §6.4.4 e §6.4.5 |
+| **Stakeholders** | Gerente de cinema, atendente de bilheteria, espectador (cliente final) e equipe de operação/segurança |
+| **Fronteira do sistema** | Aplicação web responsiva (desktop e mobile). O MVP **não** processa pagamento online, emissão fiscal, bomboniere ou *streaming* de mídia |
+| **Fora do escopo deste documento** | Detalhamento de telas (`specs/architecture/ui-mockups.md`), modelo de dados completo (`specs/data-model/data-model.md`) e plano de testes (§5.3) |
 
-#### Princípios de Arquitetura e Modelagem: Domain-Driven Design (DDD)
+#### Visão geral da arquitetura
 
-A decomposição e estruturação do software são orientadas pelos fundamentos do **Domain-Driven Design (DDD)**, assegurando que as regras de negócio de exibição cinematográfica sejam refletidas diretamente no código:
+O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação Next.js 14 com *App Router*. A fronteira externa é composta por três atores (gerente, atendente e espectador) e quatro sistemas externos (Supabase PostgreSQL, Axiom, serviço de e-mail transacional e Vercel). Internamente, o código organiza-se em quatro zonas com dependência unidirecional:
 
-- **Linguagem Ubíqua (*Ubiquitous Language*):** Vocabulário unificado e compartilhado de forma inequívoca entre desenvolvedores, stakeholders e especificações técnicas. Termos como *Tenant* (cinema cliente), *SessionSeat* (poltrona alocada à sessão), *ReservationStatus* (`PENDING`, `CONFIRMED`, `CANCELLED`, `EXPIRED`), *Ticket* (`SOLD`) e *Double-booking* possuem significado rigoroso e idêntico no modelo de dados, no código TypeScript e nas regras de negócio.
-- **Contextos Delimitados (*Bounded Contexts*):** O sistema organiza-se em fronteiras de domínio verticalmente isoladas (`src/modules/*`), onde cada módulo encapsula seus modelos e casos de uso específicos:
-  - *Contexto de Bilheteria e Ocupação:* Focado na transacionalidade concorrente no guichê, mapa reativo de assentos e travas de venda presencial.
-  - *Contexto de Reservas e Atendimento Web:* Responsável pela jornada do espectador, reserva antecipada e despacho de vouchers transacionais.
-  - *Contexto de Catálogo e Programação:* Gestão de acervo de filmes, layout bidimensional de salas e prevenção de choques de grade.
-  - *Contexto de Governança e Privacidade:* Tratamento de dados pessoais, consentimento e conformidade com o Art. 18 da LGPD.
-- **Entidades e Invariantes de Domínio:** As regras de negócio críticas residem no núcleo da aplicação e no domínio, imunes a bypass na interface gráfica. Invariantes essenciais — como antecedência mínima de 60 minutos para reservas web, expiração automática *Just-in-Time* de assentos não confirmados e garantia de não duplicidade de assentos via bloqueio ACID — são fiscalizadas determinísticamente antes de qualquer gravação.
+| Zona | Responsabilidade | Regra de dependência |
+| :--- | :--- | :--- |
+| **Interface** | Renderização (RSC/Client Components), navegação, modais, cabeçalho autenticado e Route Handlers | Depende de `modules` e `shared` |
+| **Aplicação** | Casos de uso, validação Zod, orquestração transacional e tradução de erros de domínio | Depende de `shared/db` e de outros módulos apenas via `index.ts` |
+| **Domínio e segurança** | Invariantes (antecedência de 60 min, expiração JIT, CPF Módulo 11), RBAC e criptografia | Não depende de `next/*` nem de componentes React |
+| **Infraestrutura transversal** | Conexão Prisma, contexto de tenant via `AsyncLocalStorage`, logging estruturado e guarda de rotas | É dependida pelas demais zonas; não depende de UI |
 
-#### Princípios de Design de Software: SOLID
+#### Catálogo de componentes
 
-O projeto adota sistematicamente os cinco princípios **SOLID** para assegurar manutenibilidade, extensibilidade e modularidade:
+O sistema é composto pelos **11 módulos de domínio** de `src/modules/`. Cada um expõe um contrato público em `index.ts`, e a rastreabilidade entre módulos e requisitos está no §5.1.2.
 
-- **S — Single Responsibility Principle (Princípio da Responsabilidade Única):** Cada serviço e classe executa um papel único e bem delimitado. O `SaleService` trata exclusivamente a venda presencial e emissão de ingressos no balcão; o `ReservationService` gerencia a criação, cancelamento e confirmação de reservas web; e o `CryptoService` isola as operações criptográficas (`AES-256-GCM` e `HMAC-SHA256`).
-- **O — Open/Closed Principle (Princípio Aberto/Fechado):** Módulos são abertos para extensão, mas fechados para modificação. O subsistema de notificações (`NotificationService`) é estruturado sobre uma interface de provedores (`NotificationProvider`): a alternância entre `ConsoleLogger` (fase inicial de desenvolvimento) e `ResendProvider` (despacho de e-mails em produção) ocorre sem alterar as regras de negócio dos casos de uso.
-- **L — Liskov Substitution Principle (Princípio da Substituição de Liskov):** Contratos de persistência e serviços respeitam estritamente as interfaces estabelecidas. Mocks de teste e repositórios Prisma com tenancy automática substituem-se mutuamente nas baterias de verificação sem violar as asserções de negócio.
-- **I — Interface Segregation Principle (Princípio da Segregação de Interfaces):** Evitam-se interfaces genéricas infladas. A comunicação entre controladores e serviços adota DTOs e esquemas declarativos `Zod` estritamente específicos para cada operação (`createReservationSchema`, `sellTicketsSchema`, `createFilmSchema`).
-- **D — Dependency Inversion Principle (Princípio da Inversão de Dependência):** Módulos de alto nível (serviços de aplicação e regras de negócio) não dependem de módulos de baixo nível (frameworks ou bibliotecas de transporte). As rotas de API (`Route Handlers`) apenas orquestram requisições delegando a execução para as abstrações de serviço, mantendo a regra de negócio desacoplada do framework web.
+| Componente | Função |
+| :--- | :--- |
+| `auth` | Autenticação por credenciais, RBAC e gestão de operadores |
+| `backoffice` | Cadastro de filmes, salas (com matriz de assentos) e sessões |
+| `bilheteria` | Venda presencial, cancelamento com auditoria, baixa de reserva web e mapa de assentos |
+| `portal` | Catálogo público, cadastro do cliente, reserva online e cancelamento voluntário |
+| `compradores` | Cadastro e busca de comprador presencial por CPF |
+| `compliance` | Localização e anonimização de titulares (LGPD Art. 18) |
+| `crypto` | Criptografia, hash e validação de CPF |
+| `notificacoes` | Voucher de reserva com provedor de e-mail plugável |
+| `observability` | Log estruturado e rastreabilidade por requisição |
+| `ocupacao` | Indicadores de ocupação por sessão e por sala |
+| `tenancy` | Contexto de tenant e injeção do filtro `tenant_id` no Prisma |
+
+Além dos módulos, `src/shared/` concentra as peças transversais (cliente Prisma, logger e utilitários) e `src/app/` abriga a camada de interface.
+
+#### Interfaces
+
+**a) Interface HTTP.** O sistema expõe **31 Route Handlers** em `src/app/api/`, agrupados por perfil de acesso: rotas públicas (login e catálogo), `CLIENTE` (portal e mapa de assentos), `ATENDENTE` e `GERENTE` (bilheteria) e `GERENTE` (back-office, ocupação e LGPD). A autorização ocorre em `middleware.ts` e é reconfirmada no handler.
+
+**b) Interface entre módulos.** Cada módulo exporta funções e objetos de serviço, com entrada validada por schema Zod e erros de domínio tipados. Nenhum módulo acessa a implementação interna de outro, o que permite testar os casos de uso sem subir o servidor Next.js.
+
+**c) Interface de persistência.** Acesso por Prisma sobre PostgreSQL, com 11 modelos e 6 enums. Todo serviço recebe o `tenantId` e o aplica explicitamente nas consultas; transações e a trava `SELECT ... FOR UPDATE` garantem a exclusividade do assento.
+
+**d) Interfaces externas.** NextAuth (sessão JWT com `userId`, `role` e `tenantId`), Supabase (banco), Axiom (logs), Resend (e-mail, simulado no MVP) e Vercel com GitHub Actions (deploy e CI).
+
+**e) Interface de erros.** O serviço lança erro tipado e o Route Handler o traduz em status HTTP: `400` para JSON malformado, `401` sem sessão, `403` para RBAC ou conta inativa, `404` para recurso inexistente, `409` para assento ocupado, e-mail duplicado ou choque de grade, `422` para falha de validação, CPF inválido ou antecedência inferior a 60 minutos e `500` para erro inesperado.
+
+#### Decisões arquiteturais (ADRs)
+
+As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna “Efeito verificável” indica onde a decisão aparece no código ou nos critérios de aceite.
+
+| ADR | Decisão | Efeito verificável |
+| :---: | :--- | :--- |
+| **ADR-001** | Monólito modular em Next.js 14 com módulos verticais | `src/modules/*` e `src/shared/*`; lint `import/no-cycle` |
+| **ADR-002** | Interface reativa com Tailwind CSS e React Server/Client Components | `src/app/`, `src/components/`, `SeatingGrid` como Client Component |
+| **ADR-003** | Backend em TypeScript com Route Handlers | 31 `route.ts`, validação Zod e erros de domínio |
+| **ADR-004** | PostgreSQL com Prisma ORM | `prisma/schema.prisma`; 11 modelos e 6 enums |
+| **ADR-005** | Vercel + Supabase + GitHub Actions | `next.config.mjs`, `ci.yml`, `deploy.yml` |
+| **ADR-006** | API RESTful com polling de 2 s no mapa de assentos | `useSessionSeats` e índice `(session_id, status)` |
+| **ADR-007** | Pré-população de `SessionSeat` e trava `SELECT FOR UPDATE` | `session-service.ts` e `sale-service.ts`/`portal-service.ts` |
+| **ADR-008** | CPF com HMAC-SHA256 (busca) e AES-256-GCM (repouso) | `crypto-service.ts`; `cpf_hash` e `cpf_encrypted` |
+| **ADR-009** | Anonimização *in-place* para LGPD Art. 18 | `anonymization-service.ts` e `/api/titulares/anonimizar` |
+| **ADR-010** | Auditoria de cancelamentos *append-only* com trigger | `cancellation-service.ts`, modelo `CancellationAudit` e trigger em `prisma/triggers.sql` |
+| **ADR-011** | Log estruturado no Axiom com retenção de 365 dias | `src/shared/logger/`, `x-request-id` e `CA-03`/`CA-07` |
+| **ADR-012** | Portal do cliente com reserva JIT e notificação desacoplada | `portal-service.ts`, `notification-service.ts` e `CA-11`/`CA-14` |
+
+#### Princípios de modelagem: Domain-Driven Design (DDD)
+
+O domínio do cinema foi modelado segundo o **Domain-Driven Design**, o que se reflete em três propriedades do projeto:
+
+- **Linguagem Ubíqua:** o mesmo vocabulário é usado por desenvolvedores, stakeholders, especificações e código. Termos como *Tenant* (cinema cliente), *SessionSeat* (poltrona de uma sessão), *Reservation* e *Ticket* têm o mesmo significado no schema Prisma, no TypeScript e nas regras de negócio.
+- **Contextos Delimitados:** cada contexto de negócio corresponde a um módulo real — bilheteria e ocupação, portal e notificações, catálogo e programação, privacidade, identidade e acesso, observabilidade.
+- **Invariantes de domínio:** as regras críticas ficam nos serviços, não na interface. A antecedência de 60 minutos, a exclusividade do assento e a auditoria do cancelamento não podem ser contornadas pela UI.
+
+#### Princípios de design de software: SOLID
+
+O projeto aplica os cinco princípios **SOLID**, com evidência verificável no código:
+
+- **S — Single Responsibility Principle:** cada arquivo de serviço tem um papel delimitado. `sale-service.ts` (`SaleService.processSale`) trata exclusivamente a venda presencial e a emissão de ingressos; `portal-service.ts` (`createReservation`, `cancelMyReservation`) trata a reserva web; `crypto-service.ts` isola as operações criptográficas (`AES-256-GCM` e `HMAC-SHA256`); `ocupacao-service.ts` apenas calcula indicadores.
+- **O — Open/Closed Principle:** o subsistema de notificações é aberto para extensão e fechado para modificação por meio da interface `EmailProvider`, implementada por `ConsoleLoggerProvider` e `ResendProvider` e selecionada por `getProvider()`. Trocar o provedor não altera o caso de uso de reserva.
+- **L — Liskov Substitution Principle:** as implementações respeitam os contratos que declaram. `withTenancy` devolve um `TenantPrismaClient` compatível com `PrismaClient`, e os dublês de teste substituem os serviços reais sem alterar os casos de uso.
+- **I — Interface Segregation Principle:** não há interfaces genéricas infladas. Cada operação tem um schema Zod específico — `createSaleSchema`, `createReservationSchema`, `registerClientSchema`, `createFilmSchema`, `createRoomSchema`, `createSessionSchema`, `createUserSchema`, `cancelTicketSchema`, `anonymizeTitularSchema` — e os serviços recebem apenas os campos de que precisam.
+- **D — Dependency Inversion Principle:** as regras de negócio não dependem de `next/*`. Os Route Handlers apenas orquestram sessão, validação e tradução de erros; os serviços dependem de `prisma`/`rawPrisma` e de contratos internos, o que permite testá-los sem o framework web.
 
 ---
 
@@ -1069,16 +1678,16 @@ O projeto adota sistematicamente os cinco princípios **SOLID** para assegurar m
 
 Para documentar integralmente a estrutura estática e o comportamento dinâmico do sistema, apresentam-se a seguir os **seis diagramas formais de arquitetura e design** do CineDoom.
 
-#### 1. Diagrama C4 — Nível 2 (Diagrama de Contêineres)
+#### 1. Diagrama C4 - Nível 2 (Diagrama de Contêineres)
 
 O Diagrama de Contêineres ilustra a interação entre os três perfis de usuários (Espectador, Atendente e Gerente), a aplicação web e API serverless hospedada na Vercel, o banco de dados relacional PostgreSQL e os serviços externos de e-mail transacional (Resend) e observabilidade (Axiom):
 
 ```mermaid
 flowchart TB
     subgraph Usuarios["Atores e Dispositivos Clientes"]
-        Esp["Espectador (Cliente B2C)\n[Browser Mobile / Desktop]"]
-        Atd["Atendente de Guichê\n[Terminal Web Bilheteria]"]
-        Ger["Gerente do Cinema\n[Browser Back-office]"]
+        Esp["Público (Cliente)"]
+        Atd["Atendente (Balcão)"]
+        Ger["Gerente (Admin)"]
     end
 
     subgraph Vercel["Plataforma Cloud Vercel (Next.js 14 Monólito Modular)"]
@@ -1089,7 +1698,7 @@ flowchart TB
     end
 
     subgraph Externos["Infraestrutura de Dados e Serviços SaaS"]
-        DB[("PostgreSQL Gerenciado\n(Supabase / Neon DB)\nPooler 6543 + Triggers ACID")]
+        DB[("PostgreSQL Gerenciado\n(Supabase DB)\nPooler 6543 + Triggers ACID")]
         Resend["Resend API\n[Serviço de E-mail Transacional]"]
         Axiom["Axiom Cloud Log Drain\n[Retenção de Auditoria 365 Dias]"]
     end
@@ -1106,7 +1715,97 @@ flowchart TB
     API -->|"JSON Structured Logs"| Axiom
 ```
 
-#### 2. Diagrama de Classes UML (Modelo de Domínio)
+> **Diagrama vetorial (PDF):** [c4-containers.pdf](../../assets/capitulo-05/diagramas/c4-containers.pdf) — Fonte PlantUML: [c4-containers.puml](../../assets/capitulo-05/diagramas/c4-containers.puml)
+
+#### 2. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
+
+O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (`SELECT FOR UPDATE`), a emissão do voucher transacional e a posterior conversão em ingresso vendido (`SOLD`) no guichê físico:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Esp as Público (Cliente)
+    participant API as Next.js Route Handler / ReservationService
+    participant DB as PostgreSQL (Transação ACID)
+    participant Mail as NotificationService (Resend)
+    actor Atd as Atendente (Balcão)
+
+    Esp->>API: POST /api/portal/reservas (sessionId, seatIds, buyer)
+    activate API
+    API->>API: Valida antecedência (>= 60 min) e ordena seatIds
+    API->>DB: BEGIN TRANSACTION
+    API->>DB: SELECT * FROM session_seats WHERE id IN (...) FOR UPDATE
+    alt Algum assento não está AVAILABLE (e não expirado JIT)
+        DB-->>API: Retorna status != AVAILABLE
+        API->>DB: ROLLBACK
+        API-->>Esp: HTTP 409 Conflict (Poltrona indisponível)
+    else Todos os assentos disponíveis
+        API->>DB: INSERT INTO reservations (code: CD-XXXX, status: PENDING, expiresAt)
+        API->>DB: UPDATE session_seats SET status = 'RESERVED', reservation_id = id
+        API->>DB: COMMIT
+        API->>Mail: sendReservationVoucher(reservationId)
+        Mail->>DB: UPDATE reservations SET email_sent_at = NOW()
+        API-->>Esp: HTTP 201 Created (Voucher CD-XXXX)
+    end
+    deactivate API
+
+    Note over Esp,Atd: Espectador comparece à bilheteria até 60 min antes da sessão
+
+    Atd->>API: POST /api/bilheteria/reservas/confirmar (code: CD-XXXX)
+    activate API
+    API->>DB: BEGIN TRANSACTION + SELECT reservation FOR UPDATE
+    API->>DB: Verifica se NOW() <= expiresAt (Regra JIT 60 min)
+    API->>DB: UPDATE reservations SET status = 'CONFIRMED', confirmed_at = NOW()
+    API->>DB: UPDATE session_seats SET status = 'SOLD'
+    API->>DB: INSERT INTO tickets (status: 'SOLD', operator_id)
+    API->>DB: COMMIT
+    API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
+    deactivate API
+```
+
+> **Diagrama vetorial (PDF):** [diagrama-sequencia-reserva.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.pdf) - Fonte PlantUML: [diagrama-sequencia-reserva.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.puml)
+
+#### 3. Diagrama de Casos de Uso UML
+
+O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
+
+```mermaid
+flowchart LR
+    Esp(["👤 Espectador\n(Cliente Final)"])
+    Atd(["🎫 Atendente\n(Guichê Físico)"])
+    Ger(["👔 Gerente\n(Back-office)"])
+
+    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
+        UC1("Ver catálogo e horários")
+        UC2("Cadastrar conta e consentimento LGPD")
+        UC3("Fazer reserva online + voucher")
+        UC4("Cancelar reserva pelo site")
+        UC5("Vender ingresso no balcão")
+        UC6("Encontrar reserva pelo código")
+        UC7("Cancelar ingresso no guichê")
+        UC8("Gerenciar filmes, salas e sessões")
+        UC9("Gerenciar atendentes e ocupação")
+        UC10("Anonimizar dados LGPD")
+    end
+
+    Esp --> UC1
+    Esp --> UC2
+    Esp --> UC3
+    Esp --> UC4
+
+    Atd --> UC1
+    Atd --> UC5
+    Atd --> UC6
+    Atd --> UC7
+
+    Ger --> UC8
+    Ger --> UC9
+    Ger --> UC10
+```
+
+> **Diagrama vetorial (PDF):** [diagrama-casos-de-uso.pdf](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.pdf) - Fonte PlantUML: [diagrama-casos-de-uso.puml](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.puml)
+
+#### 4. Diagrama de Classes UML (Modelo de Domínio)
 
 O Diagrama de Classes representa as entidades nucleares do domínio do CineDoom, seus atributos tipados, métodos de negócio e multiplicidades de associação sob isolamento multi-tenant (`Tenant`):
 
@@ -1210,89 +1909,7 @@ classDiagram
     SessionSeat "1" --> "0..1" Ticket : gera
 ```
 
-#### 3. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
-
-O Diagrama de Sequência detalha o comportamento temporal da transação crítica que une o Portal do Cliente e a Bilheteria Presencial: o bloqueio pessimista ordenado (`SELECT FOR UPDATE`), a emissão do voucher transacional e a posterior conversão em ingresso vendido (`SOLD`) no guichê físico:
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Esp as Espectador (Portal Web)
-    participant API as Next.js Route Handler / ReservationService
-    participant DB as PostgreSQL (Transação ACID)
-    participant Mail as NotificationService (Resend)
-    actor Atd as Atendente (Guichê Físico)
-
-    Esp->>API: POST /api/portal/reservas (sessionId, seatIds, buyer)
-    activate API
-    API->>API: Valida antecedência (>= 60 min) e ordena seatIds
-    API->>DB: BEGIN TRANSACTION
-    API->>DB: SELECT * FROM session_seats WHERE id IN (...) FOR UPDATE
-    alt Algum assento não está AVAILABLE (e não expirado JIT)
-        DB-->>API: Retorna status != AVAILABLE
-        API->>DB: ROLLBACK
-        API-->>Esp: HTTP 409 Conflict (Poltrona indisponível)
-    else Todos os assentos disponíveis
-        API->>DB: INSERT INTO reservations (code: CD-XXXX, status: PENDING, expiresAt)
-        API->>DB: UPDATE session_seats SET status = 'RESERVED', reservation_id = id
-        API->>DB: COMMIT
-        API->>Mail: sendReservationVoucher(reservationId)
-        Mail->>DB: UPDATE reservations SET email_sent_at = NOW()
-        API-->>Esp: HTTP 201 Created (Voucher CD-XXXX)
-    end
-    deactivate API
-
-    Note over Esp,Atd: Espectador comparece à bilheteria até 60 min antes da sessão
-
-    Atd->>API: POST /api/bilheteria/reservas/confirmar (code: CD-XXXX)
-    activate API
-    API->>DB: BEGIN TRANSACTION + SELECT reservation FOR UPDATE
-    API->>DB: Verifica se NOW() <= expiresAt (Regra JIT 60 min)
-    API->>DB: UPDATE reservations SET status = 'CONFIRMED', confirmed_at = NOW()
-    API->>DB: UPDATE session_seats SET status = 'SOLD'
-    API->>DB: INSERT INTO tickets (status: 'SOLD', operator_id)
-    API->>DB: COMMIT
-    API-->>Atd: HTTP 200 OK (Ingressos Emitidos)
-    deactivate API
-```
-
-#### 4. Diagrama de Casos de Uso UML
-
-O Diagrama de Casos de Uso mapeia as fronteiras de interação dos três atores humanos com os módulos da plataforma:
-
-```mermaid
-flowchart LR
-    Esp(["👤 Espectador\n(Cliente Final)"])
-    Atd(["🎫 Atendente\n(Guichê Físico)"])
-    Ger(["👔 Gerente\n(Back-office)"])
-
-    subgraph CineDoom["Sistema SaaS Multi-Tenant CineDoom"]
-        UC1("Consultar Catálogo, Horários e Mapa 2D")
-        UC2("Cadastrar Conta e Consentimento LGPD")
-        UC3("Reservar Assentos Online e Emitir Voucher")
-        UC4("Cancelar Reserva Voluntariamente (Web)")
-        UC5("Vender Ingressos no Balcão (ACID)")
-        UC6("Localizar Reserva (Código Localizador) e Dar Baixa")
-        UC7("Cancelar Ingresso com Auditoria Imutável")
-        UC8("Gerenciar Filmes, Salas e Grade de Sessões")
-        UC9("Gerenciar Atendentes e Monitorar Ocupação")
-        UC10("Executar Anonimização de Titular (LGPD Art. 18)")
-    end
-
-    Esp --> UC1
-    Esp --> UC2
-    Esp --> UC3
-    Esp --> UC4
-
-    Atd --> UC1
-    Atd --> UC5
-    Atd --> UC6
-    Atd --> UC7
-
-    Ger --> UC8
-    Ger --> UC9
-    Ger --> UC10
-```
+> **Diagrama vetorial (PDF):** [diagrama-classes-dominio.pdf](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.pdf) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
 
 #### 5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)
 
@@ -1310,6 +1927,8 @@ stateDiagram-v2
 
     SOLD --> AVAILABLE : Cancelamento Síncrono no Guichê\n(Grava Trilha em cancellation_audits)
 ```
+
+> **Diagrama vetorial (PDF):** [diagrama-estados-assento.pdf](../../assets/capitulo-05/diagramas/diagrama-estados-assento.pdf) - Fonte PlantUML: [diagrama-estados-assento.puml](../../assets/capitulo-05/diagramas/diagrama-estados-assento.puml)
 
 #### 6. Diagrama Entidade-Relacionamento (DER — Modelo Relacional PostgreSQL)
 
@@ -1388,6 +2007,8 @@ erDiagram
     }
 ```
 
+> **Diagrama vetorial (PDF):** [diagrama-er-banco.pdf](../../assets/capitulo-05/diagramas/diagrama-er-banco.pdf) - Fonte PlantUML: [diagrama-er-banco.puml](../../assets/capitulo-05/diagramas/diagrama-er-banco.puml)
+
 ---
 
 ### 5.2.3 Justificativa das escolhas tecnológicas
@@ -1407,31 +2028,33 @@ O banco relacional armazena exclusivamente a referência textual (`poster_url VA
 
 ### 5.3.1 Padrões de codificação e engenharia adotados
 - **Estruturação Modular:** Organização em fatias de domínio (`src/modules/{auth,backoffice,bilheteria,compradores,compliance,crypto,notificacoes,observability,ocupacao,portal,tenancy}`) e utilitários compartilhados (`src/shared/`).
-- **Convenções de Nomenclatura:** Arquivos em `kebab-case.ts`, componentes e classes em `PascalCase`, métodos e variáveis em `camelCase` e constantes globais em `UPPER_SNAKE_CASE`.
-- **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle: error`).
+- **Convenções de Nomenclatura:** Os arquivos seguem convenções específicas por tipo:
+  - Arquivos de serviço, componentes, *hooks* e utilitários: `kebab-case` (ex.: `sale-service.ts`, `seating-grid.tsx`)
+  - Arquivos de schema: `kebab-case` (ex.: `sale-schema.ts`, `anonymization-schema.ts`)
+  - Métodos, variáveis e parâmetros: `camelCase`
+  - Componentes React e tipos: `PascalCase` (ex.: `SeatingGrid`, `SessionSeat`)
+- **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle` com `maxDepth: 5`).
 - **Metodologia Test-Driven Development (TDD):** A equipe adotou a disciplina do desenvolvimento orientado a testes (*Test-Driven Development*), seguindo o ciclo iterativo **Red $\to$ Green $\to$ Refactor**, com ênfase prioritária nas regras de negócio críticas e transações de alta concorrência:
   1. *Fase Red (Teste de Falha Inicial):* Antes de implementar as rotas e regras finais de negócio, os testes automatizados foram construídos para falhar intencionalmente, espelhando os critérios de aceite (`CA-01` a `CA-15`). Foram antecipadamente criados os testes de corrida concorrente com 50 threads disputando o mesmo assento e os 500 cenários de invasão *cross-tenant*.
   2. *Fase Green (Implementação da Solução Mínima):* Desenvolveu-se a lógica de bloqueio pessimista (`SELECT FOR UPDATE`), ordenação determinística de chaves para prevenção de deadlocks e extensão multi-tenant no Prisma até atingir aprovação plena com sinal verde.
   3. *Fase Refactor (Otimização e Limpeza):* O código aprovado foi refatorado aplicando os princípios SOLID, eliminando duplicações e assegurando tipagem estrita sem introduzir regressões na suíte.
-  Essa prática resultou em uma base consolidada de **20 arquivos e 711 testes automatizados no Vitest**, permitindo refatorações contínuas com garantia estrita de integridade.
+  Essa prática resultou em uma base consolidada de **26 arquivos e 770 testes automatizados no Vitest**, permitindo refatorações contínuas com garantia estrita de integridade.
 
 ### 5.3.2 Plano de integração entre componentes (CI/CD)
 A integração contínua é executada automaticamente pelo **GitHub Actions** (`.github/workflows/ci.yml` e `deploy.yml`) a cada push ou Pull Request:
 1. Instalação determinística de dependências com `pnpm install --frozen-lockfile`.
 2. Geração do cliente tipado do ORM (`pnpm prisma generate`).
 3. Verificação estática de tipos (`pnpm tsc --noEmit`) e regras de arquitetura (`pnpm eslint`).
-4. Execução integral da bateria de testes automatizados (`pnpm test`).
-5. Compilação de produção (`pnpm build`) e promoção automática para a Vercel.
+4. Execução da suíte com gate de cobertura (`pnpm vitest run --coverage`): mínimo de 70% de *statements*, funções e linhas e 80% de *branches* em `src/modules/**` e `src/shared/**`.
+5. Auditoria de dependências de produção (`pnpm security:audit`), que bloqueia vulnerabilidades altas ou críticas fora do baseline documentado.
+6. Compilação de produção (`pnpm build`) e publicação na Vercel após o merge.
 
 ### 5.3.3 Registro de testes unitários e de integração
-A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizando **20 arquivos de teste e 711 testes automatizados passando com 100% de sucesso** em ~10,6 segundos:
+A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizando **26 arquivos de teste e 770 testes automatizados passando com 100% de sucesso** em cerca de 9 segundos:
 - **Segurança e Isolamento Multi-Tenant (`security-cross-tenant-suite.test.ts` e `tenancy-isolation.test.ts`):** 509 testes verificando que nenhum tenant consegue ler, alterar ou apagar registros de outro cinema.
 - **Concorrência ACID com 50 Threads (`concurrency-acid-50-threads.test.ts`, `venda-atomica.test.ts` e `reserva-atomica.test.ts`):** Simulação de 50 requisições paralelas disputando o mesmo assento entre portal web e balcão, comprovando exatamente 1 aprovação e 49 rejeições `HTTP 409`.
 - **Criptografia e Conformidade LGPD (`cryptoservice.test.ts` e `compliance-anonymization.test.ts`):** 40 testes validando cifragem `AES-256-GCM`, busca `HMAC-SHA256`, validação Módulo 11 de CPF e expurgo irreversível *in-place*.
 - **Fluxos de Negócio e Interface (`reserva-atomica.test.ts`, `seating-grid.test.ts`, `users-management.test.ts`, `cancelamento-auditavel.test.ts`):** Validação completa de reservas, mapa 2D de poltronas, RBAC e triggers de auditoria.
-
-### ~~5.3.4 Rastreabilidade entre código e requisitos~~
-Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos normativos (ex.: `feat(auth): adicionar gerador aleatorio de CPF valido (Modulo 11)` e comentários `// Requisito: RF-07 | CA-01 | ADR-007`), permitindo auditoria imediata no histórico do Git.
 
 ---
 
@@ -1439,21 +2062,13 @@ Branches, commits e cabeçalhos de arquivos referenciam diretamente os artefatos
 
 ### 5.4.1 Plano de verificação e validação
 
-A CineSoft Solutions distingue e aplica complementarmente as atividades de **Verificação** e **Validação** (Cláusulas 6.4.9 e 6.4.11 da ISO 12207):
-
-| Critério de Comparação | Verificação (*Verification*) | Validação (*Validation*) |
-| :--- | :--- | :--- |
-| **Pergunta Central** | *"Estamos construindo o produto corretamente?"* | *"Estamos construindo o produto certo?"* |
-| **Foco Principal** | Conformidade técnica com as especificações, ADRs e regras de código | Adequação funcional e de usabilidade às reais necessidades dos cinemas e espectadores |
-| **Quando Ocorre** | Continuamente em cada commit e Pull Request | Ao final de cada Sprint e na homologação em produção com usuários reais |
-| **Quem Realiza** | Equipe de engenharia da CineSoft e pipeline automatizado (GitHub Actions) | Stakeholders, operadores de cinema-piloto e espectadores finais reais |
-| **Exemplos Aplicados no CineDoom** | Compilação TypeScript (`tsc`), linter `no-cycle` e execução dos **711 testes no Vitest** | Testes de aceitação (*UAT*) no ambiente `cinedoom.vercel.app` com cadastros e reservas reais |
+A verificação é feita no pipeline de CI (GitHub Actions) a cada commit e Pull Request, com compilação TypeScript, linter, 770 testes automatizados e gate de cobertura. A validação é feita na homologação em staging e na produção, com fluxos ponta a ponta e testes de aceitação (UAT) por usuários reais.
 
 #### Critérios Formais de Entrada e Saída de V&V (*Entry & Exit Criteria*)
 
 | Fase de V&V | Critérios de Entrada (*Entry Criteria*) | Critérios de Saída (*Exit Criteria*) |
 | :--- | :--- | :--- |
-| **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 711 testes passando, zero erros de linter/tipagem e cobertura de 100% nas regras críticas. |
+| **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 770 testes passando, zero erros de linter/tipagem e cobertura mínima de 70% de *statements*, funções e linhas e 80% de *branches* no domínio. |
 | **2. Homologação em Staging** | Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. | Fluxos ponta a ponta (cadastro $\to$ reserva $\to$ baixa no balcão $\to$ painel gerencial) executados sem falhas. |
 | **3. Validação e Aceite em Produção (*UAT*)** | Ambiente de produção sincronizado na branch `main` com banco PostgreSQL ativo. | Operação validada por usuários externos reais sem ocorrência de *double-booking* ou erros HTTP 500. |
 
@@ -1463,13 +2078,20 @@ A CineSoft Solutions distingue e aplica complementarmente as atividades de **Ver
 - **Espectador (`STK-04`):** Experiência fluida em dispositivos móveis e desktop para filtrar filmes, visualizar todas as colunas do mapa da sala, reservar poltronas e consultar o voucher em *"Minhas Reservas"*.
 - **Encarregado de Dados / DPO (`STK-05`):** Criptografia de CPF (`HMAC-SHA256` + `AES-256-GCM`), consentimento LGPD com *timestamp*, anonimização *in-place* (Art. 18) e retenção da trilha de auditoria por 365 dias comprovadas em produção.
 
+> **Nota:** As funcionalidades administrativas (configuração de salas, gestão de equipe) e os fluxos de exceção (cancelamento de ingresso, cancelamento online) são cobertas pelos critérios de aceite `CA-03`, `CA-08`, `CA-12` e `CA-14`, mantendo a rastreabilidade completa na matriz do item 5.1.2.
+
 ### 5.4.3 Relatório de testes de aceitação (Homologação e Produção)
 
-Todos os cenários de aceitação da Macroentrega 1 (`v1.0.0`) foram executados e homologados com usuários reais no ambiente de produção (`https://cinedoom.vercel.app/`):
+A validação do CineDoom seguiu duas fases de testes com usuários reais, conforme o contexto de uso:
+
+- **Teste Alfa:** ambiente controlado com usuários selecionados (equipe interna e parceiros).
+- **Teste Beta:** ambiente real de produção com grupo ampliado antes do lançamento oficial.
+
+Os resultados confirmam que o sistema atende às necessidades reais dos stakeholders no seu contexto de uso — não apenas ao que foi especificado. Os cenários abaixo representam o **critério final de aprovação** da Macroentrega 1 (`v1.0.0`):
 
 | ID Cenário | Critério(s) | Descrição do Cenário Homologado | Evidência Observada em Produção | Status |
 | :---: | :---: | :--- | :--- | :---: |
-| **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco Supabase. | **Aprovado** |
+| **UAT-01** | `CA-10` | Cadastro de novos espectadores com validação de CPF (Módulo 11) e aceite LGPD. | 13 usuários reais cadastrados com sucesso e CPFs cifrados no banco PostgreSQL gerenciado. | **Aprovado** |
 | **UAT-02** | `CA-09`, `CA-11` | Seleção de poltronas no mapa 2D (mobile e desktop), reserva atômica e geração de voucher. | 11 reservas confirmadas (múltiplos ingressos de R$ 30 a R$ 75) sem falhas de layout. | **Aprovado** |
 | **UAT-03** | `CA-01`, `CA-02` | Disputa simultânea de assentos e atualização do mapa por polling a cada 2 s. | 20 assentos vendidos (`SOLD`) e 10 reservados (`RESERVED`) com zero venda dupla. | **Aprovado** |
 | **UAT-04** | `CA-12` | Consulta de histórico em *"Minhas Reservas"* e cancelamento voluntário pelo cliente. | Liberação imediata das poltronas para `AVAILABLE` após cancelamento web. | **Aprovado** |
@@ -1480,35 +2102,102 @@ Todos os cenários de aceitação da Macroentrega 1 (`v1.0.0`) foram executados 
 | **UAT-09** | `CA-07` | Consulta ao painel de ocupação por sessão e verificação da trilha de logs das operações críticas. | Percentuais de vendidos/reservados/livres corretos e logs JSON no Axiom com `tenant_id`, `user_id`, timestamp UTC e retenção de 365 dias. | **Aprovado** |
 | **UAT-10** | `CA-08` | Cadastro e edição de filmes, salas com layout de assentos e sessões com sobreposição de horário e campos ausentes. | Rejeição com `HTTP 422`, bloqueio do choque de horário na mesma sala e assentos pré-populados como `AVAILABLE`. | **Aprovado** |
 
-### 5.4.4 Plano de transição/implantação do sistema e procedimento de rollback
+### 5.4.4 Plano de transição/implantação do sistema
 
-A transição para produção segue um protocolo automatizado e seguro:
-1. **Pré-Deploy e Migração:** Execução da pipeline no GitHub Actions validando `prisma migrate deploy` e os 711 testes antes de autorizar o build na Vercel.
-2. **Smoke Test Pós-Implantação:** Verificação imediata da rota de saúde (`/api/health`), carregamento do catálogo público e teste de autenticação em produção.
-3. **Procedimento Formal de Rollback (Tempo de Recuperação $< 5\text{ min}$):**
-   - *Camada de Aplicação:* Caso qualquer anomalia P1 seja detectada após o deploy, o líder de DevOps aciona o recurso **Instant Rollback** no painel da Vercel (ou reverte o commit em `main`), restaurando o build imutável anterior em menos de 30 segundos sem tempo de inatividade (*zero-downtime*).
-   - *Camada de Banco de Dados:* Todas as migrações da Macroentrega 1 são retrocompatíveis (*expand-and-contract*). Em caso de corrupção crítica, aciona-se a restauração *Point-in-Time (PITR)* do PostgreSQL gerenciado.
+A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207:2021 (Seção 6.4.10), encadeadas de forma controlada a partir das branches do repositório.
+
+#### Etapa 1 — Planejamento da transição
+
+Cada destino de implantação está amarrado a uma branch e a um ambiente próprio, de forma que a publicação só ocorre após o merge aprovado:
+
+| Branch | Ambiente | URL | Critério de sucesso da publicação |
+| :--- | :--- | :--- | :--- |
+| `develop` | Desenvolvimento | `https://dev.cinedoom.com` | Validação automatizada verde e catálogo consultável |
+| `staging` | Homologação | `https://hml.cinedoom.com` | UAT-01 a UAT-10 homologados (item 5.4.3) |
+| `main` | Produção | `https://cinedoom.com` | Aceite formal dos stakeholders (etapa 6) |
+
+- **Responsáveis:** o Tech Lead (Gabriel Lourenço) responde pela revisão de código e pelo merge; o Engenheiro de Backend, Segurança & DevOps (Carlos Eduardo) responde pela publicação e pelo monitoramento dos ambientes; no aceite, participam o gerente (`STK-01`/`STK-02`) e o encarregado de dados (`STK-05`).
+- **Cronograma:** a publicação é sequencial, ao final de cada Sprint de 2 semanas, com uma única versão em trânsito por ambiente.
+- **Critérios de sucesso (*Release Gate*):** todos os testes automatizados verdes (770 testes), build de produção concluído sem erros, smoke test sem falhas e aceite formal registrado.
+
+#### Etapa 2 — Preparação do ambiente
+
+O ambiente de destino é preparado **antes** de qualquer publicação, seguindo quatro cuidados:
+
+- **Compilação reprodutível:** a versão entregue em cada ambiente é sempre reconstruída a partir do mesmo código versionado e do mesmo conjunto de dependências travadas. Assim, o que foi homologado é exatamente o que vai para produção.
+- **Configuração por ambiente:** cada ambiente recebe suas próprias credenciais e chaves (banco de dados, autenticação, criptografia de CPF, e-mail e observabilidade), injetadas de forma segura pelo repositório e nunca gravadas no código. A versão publicada é ainda rotulada com o ambiente de destino, o que permite identificar a origem de qualquer alerta.
+- **Banco de dados sob controle:** o modelo de dados e a trigger de auditoria imutável (`prisma/triggers.sql`, ADR-010) são aplicados **manualmente e com revisão**, antes da abertura de tráfego. A esteira de publicação não altera o banco por conta própria — nenhum deploy muda o banco sem aprovação humana.
+- **Paridade entre ambientes:** a aplicação é empacotada em contêineres e o banco local é provisionado com a mesma versão usada em produção, com verificação automática de disponibilidade e dados persistidos em disco. Assim, o ambiente local e o de homologação reproduzem fielmente o ambiente de produção.
+
+Além disso, cada Pull Request é publicado em um ambiente de prévia temporário, com credenciais e base de dados isoladas, sem reutilizar a conexão de produção, de modo que nenhuma alteração em avaliação alcance a produção.
+
+#### Etapa 3 — Treinamento dos usuários
+
+- **Gestores e atendentes (`STK-02`, `STK-03`):** a capacitação é conduzida a partir do roteiro de demonstração do produto, que percorre o painel de ocupação do gerente, a venda no balcão e a baixa de reserva por código localizador com os usuários de demonstração semeados por `prisma/seed.ts` (`gerente@cinedoom.com` e `atendente@cinedoom.com`).
+- **Espectadores (`STK-04`):** dispensam treinamento formal — o portal é autosserviço (cadastro com CPF, mapa de poltronas e voucher em *"Minhas Reservas"*), e o próprio portal funciona como material de apoio.
+- **Encarregado de dados (`STK-05`):** briefing sobre consentimento LGPD, cifragem de CPF, auditoria imutável e anonimização do Art. 18 antes da abertura do ambiente.
+
+#### Etapa 4 — Implantação controlada
+
+- **Estratégia faseada (não *big bang*):** a publicação percorre os três ambientes na ordem `develop` $\to$ `staging` $\to$ `main`; nenhum ambiente avança sem o *Release Gate* aprovado.
+- **Publicação automatizada por branch:** cada branch tem seu próprio ambiente e sua própria URL, e a esteira publica sozinha assim que o merge é aceito. Como uma publicação em andamento não é interrompida por um novo *push*, o ambiente nunca fica pela metade.
+- **Proteção da produção:** a branch de produção é bloqueada contra reescrita de histórico e só recebe merge com revisão técnica aprovada e marcação de versão (SemVer), conforme a estratégia de versionamento do capítulo 4.
+- **Ensaio antes da homologação:** cada Pull Request é exercitado em ambiente isolado, com dados de teste próprios, funcionando como prévia da próxima publicação.
+
+#### Etapa 5 — Verificação pós-implantação
+
+- **Smoke test logo após a publicação:** são verificados o catálogo público, o painel de ocupação e o login com usuário real, na URL do ambiente recém-publicado.
+- **Monitoramento:** os logs estruturados da aplicação são centralizados no Axiom e alertam o Engenheiro de Backend, Segurança & DevOps (Carlos Eduardo) sobre erros e indisponibilidades.
+- **Validação funcional:** é reexecutado o fluxo ponta a ponta $\text{cadastro} \to \text{reserva} \to \text{baixa no balcão} \to \text{painel gerencial}$ no ambiente publicado.
+
+#### Etapa 6 — Aceite formal
+
+O aceite exige UAT-01 a UAT-10 **aprovados** (item 5.4.3), smoke test sem falhas, nenhum alerta crítico em aberto e o registro do aceite por `STK-01`/`STK-02` (operação), `STK-03` (atendente), `STK-04` (espectador) e `STK-05` (LGPD). Assinado o aceite, a versão recebe a marcação SemVer (`v1.0.0` da Macroentrega 1) e a fase de desenvolvimento é encerrada, abrindo a Macroentrega 2.
 
 ---
 
 ## 5.5 Operação, Manutenção e Descontinuação
 
 ### 5.5.1 Procedimentos de operação e monitoramento
-A operação em produção é monitorada continuamente por meio de:
-- **Telemetria e Logs Estruturados (Axiom):** Registro em JSON de todas as vendas, reservas, cancelamentos e falhas de autenticação, com mascaramento automático de dados sensíveis e retenção de 365 dias.
-- **Monitoramento de Banco e Conexões:** Acompanhamento da saúde do pooler transacional (`porta 6543`), uso de memória e latência de queries no painel do Supabase/Neon.
+
+A operação em produção é contínua e cobre três frentes simultâneas: o suporte aos usuários dos cinemas, o acompanhamento do desempenho do serviço e o tratamento de incidentes operacionais (Seção 6.4.12 da ISO 12207:2021).
+
+- **Suporte contínuo ao usuário:** canal único de abertura de chamados pelo gerente do cinema, com triagem pela criticidade e pelos prazos da Tabela 5 do capítulo 2 (P1: resposta em até 15 minutos e resolução em até 2 horas). Nos casos críticos o escalonamento ao Tech Lead é imediato.
+- **Coleta de logs e correlação:** o logger estruturado registra em JSON as vendas, os cancelamentos auditados, os conflitos de concorrência ACID, as tentativas de acesso entre cinemas, as falhas de autenticação, os acessos negados por perfil e as anonimizações LGPD. Cada requisição recebe um identificador único (`x-request-id`) que permite rastrear o incidente de ponta a ponta, e o mascaramento automático remove dados sensíveis. A retenção é de 365 dias (ADR-011).
+- **Monitoramento de desempenho:** latência e código de retorno de cada requisição, com alerta automático para erro 5xx, além da saúde do pooler transacional do PostgreSQL gerenciado (porta `6543`) e dos índices compostos por `tenant_id` (R-02).
+- **Tratamento de incidentes operacionais:** o alerta centralizado dispara a triagem; nos incidentes críticos a versão anterior do sistema é promovida em menos de 5 minutos, o cinema é comunicado e o incidente é registrado para análise posterior.
+- **Garantia dos parâmetros e requisitos:** o serviço é acompanhado contra a latência máxima de venda e reserva do `RNF-01` (p95 < 800 ms e p99 < 1.500 ms), a meta de disponibilidade de 99,5% pactuada no contrato (capítulo 2) e a exigência de zero venda duplicada do `RNF-02`, com verificação consolidada no relatório mensal de acompanhamento de SLA.
 
 ### 5.5.2 Plano de manutenção
-A CineSoft Solutions classifica e executa a manutenção contínua da plataforma nas quatro categorias normativas da ISO 12207:
-1. **Manutenção Corretiva:** Correção prioritária de defeitos reportados por usuários ou detectados via logs (ex.: ajuste de alinhamento horizontal da coluna 1 no mapa de assentos em telas estreitas).
-2. **Manutenção Adaptativa:** Adequação do sistema a atualizações de navegadores, novas versões do Node.js/Next.js ou mudanças nas regras estaduais de emissão fiscal.
-3. **Manutenção Perfectiva (Evolutiva):** Implementação de melhorias de usabilidade, performance e entrega dos novos módulos planejados nas **Macroentregas 2 e 3**.
-4. **Manutenção Preventiva:** Otimização periódica de índices SQL, rotação programada de chaves criptográficas (`NEXTAUTH_SECRET`, `CINEDOOM_CPF_KEY`) e atualização de dependências de segurança.
+
+Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiza essas alterações nas quatro modalidades da ISO 12207:2021 (Seção 6.4.13), sempre pelo mesmo fluxo: a alteração entra como *branch* `fix/*` ou `feat/*`, passa pelo Pull Request com a validação automatizada do capítulo 4 e só é promovida depois de homologada em `staging`.
+
+| Modalidade | Quando é acionada | Como é feita | Responsável |
+| :--- | :--- | :--- | :--- |
+| **Corretiva** | Defeito apontado pelo cinema ou identificado nos logs (conflito de venda, e-mail de voucher que não chega) | *Branch* `fix/*` → Pull Request → promoção faseada | Desenvolvedor do módulo, com revisão do Tech Lead |
+| **Adaptativa** | Mudança fora do controle da equipe: nova versão do Node.js ou do Next.js, alteração nas regras fiscais estaduais (R-07), instabilidade do provedor de e-mail (R-05) ou do banco de dados (R-02) | Atualização da versão e ajuste do ponto afetado, com a suíte de testes completa | Desenvolvedor do módulo e Engenheiro de Backend, Segurança & DevOps |
+| **Perfectiva** | Evolução prevista no roadmap: emissão fiscal, portal gerencial e armazenamento de mídias das Macroentregas 2 e 3 | *Branch* `feat/*` ligada ao requisito correspondente | Gerente de Projeto (Kayque Vicente) e equipe |
+| **Preventiva** | Revisão mensal do registro de riscos do capítulo 4 | *Pull Request* de manutenção versionada: índices do banco por `tenant_id` (R-02), revisão de dependências e ajuste de acessibilidade | Tech Lead |
+
+- **Prioridade e registro:** toda manutenção é classificada pela criticidade do capítulo 2 (P1 a P4) e registrada no *changelog*, gerado a partir das mensagens padronizadas de commit (capítulo 4). Defeitos P1 acionam a reversão da versão em menos de 5 minutos.
+- **Limite conhecido:** a rotação da chave de sessão pode ser feita a qualquer momento. Já a rotação da chave que cifra o CPF dos compradores **não pode** — como os valores já gravados não são versionados por chave, a troca deixaria os CPF antigos ilegíveis. Esse procedimento está previsto para a Macroentrega 2, junto da re-criptografia dos dados.
 
 ### 5.5.3 Estratégia de descontinuação e migração de dados
-Caso um cinema cliente encerre seu contrato SaaS ou o produto seja descontinuado no futuro, o processo de encerramento (Cláusula 6.4.14) assegura conformidade legal estrita:
-1. **Notificação Prévia e Exportação Portável:** Comunicação formal com 60 dias de antecedência e entrega de arquivo criptografado (JSON/CSV e dump SQL filtrado por `tenant_id`) contendo todo o histórico operacional e contábil do cinema.
-2. **Expurgo e Anonimização LGPD:** Execução em lote do `AnonymizationService` para expurgar permanentemente todos os dados pessoais identificáveis (nomes, e-mails e CPFs cifrados) dos espectadores daquele tenant, preservando apenas estatísticas agregadas não identificáveis até a desativação definitiva da instância.
+
+O encerramento do CineDoom — seja o fim do contrato de um cinema, seja a descontinuação do produto — segue quatro etapas planejadas (Seção 6.4.14 da ISO 12207:2021). A regra que orienta todo o processo é simples: **o histórico do cinema é preservado e os dados pessoais são apagados, nunca o contrário**.
+
+| Etapa | O que acontece | Como é feita |
+| :--- | :--- | :--- |
+| **1. Planejamento e aviso** | Decisão de encerrar, definição do prazo e comunicação oficial | Notificação formal ao cinema e aos atendentes, aviso de desligamento do serviço, encerramento do contrato e da taxa de suporte |
+| **2. Arquivamento dos dados** | Guardar o que precisa ser guardado e apagar o que é pessoal | Extração do histórico do cinema e anonimização, um a um, dos dados dos espectadores |
+| **3. Desativação controlada** | Cortar o acesso sem destruir nada | Inativação das contas dos atendentes, desativação da instância do cinema e do portal |
+| **4. Encerramento da infraestrutura** | Desligar o que estiver ligado | Desativação do ambiente e do banco após o prazo legal, com o arquivo de auditoria preservado |
+
+- **Como os dados pessoais são apagados:** a anonimização substitui nome, e-mail e CPF por valores fictícios, mas mantém o registro do espectador e todos os ingressos vinculados. É o que permite ao cinema guardar o histórico fiscal exigido pelo Código de Defesa do Consumidor mesmo depois do encerramento. Os cancelamentos são imutáveis por definição: o banco recusa qualquer alteração ou apagamento nessa trilha.
+- **A extração é rotina do time de DevOps:** o produto não oferece tela de exportação, então o histórico do cinema é extraído diretamente do banco, filtrado pelo cinema, e entregue em arquivo cifrado.
+- **O que nunca é feito:** apagar o cinema do banco. O próprio modelo de dados impede a exclusão de um cinema que tenha espectadores, reservas ou ingressos — a garantia está nas regras de integridade do banco. O encerramento é sempre desativação, não exclusão.
+- **Quem executa:** o gerente do cinema solicita o encerramento; o encarregado de dados (`STK-05`, DPO) conduz a anonimização e valida a guarda legal; o Engenheiro de Backend, Segurança & DevOps realiza a extração do histórico e a desativação do ambiente; a direção da CineSoft Solutions formaliza o aviso e o encerramento do contrato.
+- **Prazos:** o acesso ao sistema cessa no fim do contrato, e a infraestrutura só é desligada depois de cumprido o prazo legal de guarda — 5 anos para os dados fiscais e contábeis e 365 dias para os logs de auditoria.
 
 ---
 
@@ -1578,7 +2267,7 @@ A melhoria planejada foi efetivamente aplicada no Capítulo 4 deste manual. O qu
 - (Sem coluna Prioridade, sem critérios de reavaliação e sem metas nas métricas da Seção 4.5)
 + | ID | Risco identificado | Categoria | Probabilidade | Impacto | Prioridade | Resposta / Mitigação | Responsável |
 + (Incluídos 7 riscos reais de produto/engenharia classificados em Crítico/Alto/Médio + critérios formais)
-+ (Seção 4.5 atualizada com metas numéricas: Lead Time <= 48h, WIP <= 2, 711 testes verdes e 18/18 RFs entregues)
++ (Seção 4.5 atualizada com metas numéricas: Lead Time <= 48h, WIP <= 2, 770 testes verdes e 18/18 RFs entregues)
 ```
 
 ### Reavaliação Pós-Melhoria (Verificação da Eficácia Documental)
@@ -1590,7 +2279,7 @@ Reavaliando as seções **4.1, 4.2 e 4.5** sob as mesmas quatro questões do dia
 | **1. O escopo e as entregas do projeto estão claros?** | `4.1` | **Descrito.** A seção 4.1 agora inclui o diagrama da EAP em 3 níveis e a tabela das **3 Macroentregas** (`v1.0.0`, `v2.0.0` e `v3.0.0`), detalhando exatamente os pacotes entregues em produção e a evolução comercial. |
 | **2. As atividades possuem responsáveis e prazos?** | `4.1` | **Descrito.** Tanto a tabela de Marcos Comerciais quanto a tabela das 3 Sprints de execução especificam nominalmente os engenheiros responsáveis (`Gabriel Lourenço`, `Carlos Eduardo`, `Kayque Vicente`, `Yury Nogueira`) e as datas de início e término. |
 | **3. Os riscos e suas respostas estão definidos?** | `4.2` | **Descrito.** A seção 4.2 explicita os critérios de Probabilidade, Impacto e Prioridade, o ciclo de reavaliação por Sprint e a matriz com 7 riscos reais de engenharia/negócio, respostas técnicas e responsáveis nominais. |
-| **4. Está definido como acompanhar o andamento e tratar atrasos?** | `4.1` e `4.5` | **Descrito.** A seção 4.1 formaliza a subseção *"Rotina de Acompanhamento e Tratamento de Desvios e Atrasos"* (gatilho de 48h e pareamento técnico), complementada na seção 4.5 por métricas com metas objetivas e resultados aferidos (`Lead Time <= 48h`, `WIP <= 2`, `711 testes`). |
+| **4. Está definido como acompanhar o andamento e tratar atrasos?** | `4.1` e `4.5` | **Descrito.** A seção 4.1 formaliza a subseção *"Rotina de Acompanhamento e Tratamento de Desvios e Atrasos"* (gatilho de 48h e pareamento técnico), complementada na seção 4.5 por métricas com metas objetivas e resultados aferidos (`Lead Time <= 48h`, `WIP <= 2`, `770 testes`). |
 
 ---
 
@@ -1622,7 +2311,7 @@ Para assegurar que a melhoria incorporada ao manual continue sendo praticada de 
 
 **SOMMERVILLE, Ian**. *Engenharia de Software*. 10. ed. São Paulo: Pearson Education do Brasil, 2019.
 
-**VERCEL INC.** *Next.js 16 Documentation: Full-stack Web Architecture*. San Francisco: Vercel, 2026. Disponível em: <https://nextjs.org/docs>. Acesso em: 09 nov. 2026.
+**VERCEL INC.** *Next.js 14 Documentation: Full-stack Web Architecture*. San Francisco: Vercel, 2026. Disponível em: <https://nextjs.org/docs>. Acesso em: 09 nov. 2026.
 
 ### Normas e Documentos Técnicos
 
@@ -1633,7 +2322,7 @@ Para assegurar que a melhoria incorporada ao manual continue sendo praticada de 
 
 ### Sites e Plataformas Técnicas
 
-- **NEON INC.** *Database Architecture and Serverless Postgres*. Disponível em: <https://neon.tech>. Acesso em: 09 nov. 2026.
+- **SUPABASE INC.** *Supabase Documentation: Postgres, Auth and Realtime*. Disponível em: <https://supabase.com/docs>. Acesso em: 09 nov. 2026.
 - **RESEND INC.** *Email API for Developers and Transactional Workflows*. Disponível em: <https://resend.com>. Acesso em: 09 nov. 2026.
 - **PRISMA DATA INC.** *Prisma ORM Schema Reference and Concurrency*. Disponível em: <https://prisma.io>. Acesso em: 09 nov. 2026.
 

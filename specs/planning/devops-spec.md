@@ -30,7 +30,7 @@ Especificação de DevOps, Engenharia de Confiabilidade de Sites (SRE) e Infraes
 - Ambientes *Vercel Preview* provisionados automaticamente para cada Pull Request / branch.
 - Ambiente de pré-visualização isolado da Vercel conectado a banco de testes dedicado/isolado no Supabase, populado exclusivamente com dados sintéticos.
 - Domínio efêmero: `cinedoom-<branch>.vercel.app`.
-- O pipeline de CI no GitHub Actions executa verificação de tipos (`tsc --noEmit`), linting (`ESLint import/no-cycle`), os **711 testes unitários/integração (Vitest)** e a suíte E2E (**Playwright** em Chromium e Firefox) como *gate* obrigatório antes do merge.
+- O pipeline de CI no GitHub Actions executa verificação de tipos (`tsc --noEmit`), linting (`ESLint import/no-cycle`), os **770 testes unitários/integração (Vitest)** com gate de cobertura no domínio e a auditoria de dependências de produção com baseline documentado, como *gate* obrigatório antes do merge.
 
 ### 1.3 Ambiente de Produção (`prod`)
 - **Hospedagem:** Vercel Production (região primária de execução: `gru1` — São Paulo via Vercel Edge Network).

@@ -90,4 +90,4 @@ manual-processos/
 
 A solução CineDoom divide-se em dois repositórios na organização GitHub:
 1. `manual-processos`: Processos de software, documentação ABNT e governança ISO 12207.
-2. `cinedoom-app`: Implementação real do software (Next.js 15, Prisma ORM, PostgreSQL Neon).
+2. `cinedoom-app`: Implementação real do software (Next.js 14, Prisma ORM, PostgreSQL no Supabase).

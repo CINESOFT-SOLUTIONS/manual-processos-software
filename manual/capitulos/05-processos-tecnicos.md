@@ -129,7 +129,7 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 | Campo | Definição |
 | :--- | :--- |
 | **Sistema** | CineDoom — plataforma SaaS de bilheteria, back-office e portal do cliente para cinemas independentes e redes regionais |
-| **Repositório de referência** | `cinedoom-app/` — Next.js 14.2.15 (App Router), React 18.3, TypeScript 5.6, Prisma 5.21, PostgreSQL/Neon |
+| **Repositório de referência** | `cinedoom-app/` — Next.js 14.2.35 (App Router), React 18.3, TypeScript 5.6, Prisma 5.21, PostgreSQL/Supabase |
 | **Norma de processo** | ABNT NBR ISO/IEC/IEEE 12207:2021, §6.4.4 e §6.4.5 |
 | **Stakeholders** | Gerente de cinema, atendente de bilheteria, espectador (cliente final) e equipe de operação/segurança |
 | **Fronteira do sistema** | Aplicação web responsiva (desktop e mobile). O MVP **não** processa pagamento online, emissão fiscal, bomboniere ou *streaming* de mídia |
@@ -137,7 +137,7 @@ O levantamento de requisitos combinou quatro técnicas complementares de engenha
 
 #### Visão geral da arquitetura
 
-O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação Next.js 14 com *App Router*. A fronteira externa é composta por três atores (gerente, atendente e espectador) e quatro sistemas externos (Neon PostgreSQL, Axiom, serviço de e-mail transacional e Vercel). Internamente, o código organiza-se em quatro zonas com dependência unidirecional:
+O CineDoom é um **monólito modular** (`ADR-001`) implantado como aplicação Next.js 14 com *App Router*. A fronteira externa é composta por três atores (gerente, atendente e espectador) e quatro sistemas externos (Supabase PostgreSQL, Axiom, serviço de e-mail transacional e Vercel). Internamente, o código organiza-se em quatro zonas com dependência unidirecional:
 
 | Zona | Responsabilidade | Regra de dependência |
 | :--- | :--- | :--- |
@@ -168,13 +168,13 @@ Além dos módulos, `src/shared/` concentra as peças transversais (cliente Pris
 
 #### Interfaces
 
-**a) Interface HTTP.** O sistema expõe **25 Route Handlers** em `src/app/api/`, agrupados por perfil de acesso: rotas públicas (login e catálogo), `CLIENTE` (portal e mapa de assentos), `ATENDENTE` e `GERENTE` (bilheteria) e `GERENTE` (back-office, ocupação e LGPD). A autorização ocorre em `middleware.ts` e é reconfirmada no handler.
+**a) Interface HTTP.** O sistema expõe **31 Route Handlers** em `src/app/api/`, agrupados por perfil de acesso: rotas públicas (login e catálogo), `CLIENTE` (portal e mapa de assentos), `ATENDENTE` e `GERENTE` (bilheteria) e `GERENTE` (back-office, ocupação e LGPD). A autorização ocorre em `middleware.ts` e é reconfirmada no handler.
 
 **b) Interface entre módulos.** Cada módulo exporta funções e objetos de serviço, com entrada validada por schema Zod e erros de domínio tipados. Nenhum módulo acessa a implementação interna de outro, o que permite testar os casos de uso sem subir o servidor Next.js.
 
 **c) Interface de persistência.** Acesso por Prisma sobre PostgreSQL, com 11 modelos e 6 enums. Todo serviço recebe o `tenantId` e o aplica explicitamente nas consultas; transações e a trava `SELECT ... FOR UPDATE` garantem a exclusividade do assento.
 
-**d) Interfaces externas.** NextAuth (sessão JWT com `userId`, `role` e `tenantId`), Neon (banco), Axiom (logs), Resend (e-mail, simulado no MVP) e Vercel com GitHub Actions (deploy e CI).
+**d) Interfaces externas.** NextAuth (sessão JWT com `userId`, `role` e `tenantId`), Supabase (banco), Axiom (logs), Resend (e-mail, simulado no MVP) e Vercel com GitHub Actions (deploy e CI).
 
 **e) Interface de erros.** O serviço lança erro tipado e o Route Handler o traduz em status HTTP: `400` para JSON malformado, `401` sem sessão, `403` para RBAC ou conta inativa, `404` para recurso inexistente, `409` para assento ocupado, e-mail duplicado ou choque de grade, `422` para falha de validação, CPF inválido ou antecedência inferior a 60 minutos e `500` para erro inesperado.
 
@@ -186,9 +186,9 @@ As decisões abaixo estão registradas e aprovadas em `specs/adrs/`; a coluna �
 | :---: | :--- | :--- |
 | **ADR-001** | Monólito modular em Next.js 14 com módulos verticais | `src/modules/*` e `src/shared/*`; lint `import/no-cycle` |
 | **ADR-002** | Interface reativa com Tailwind CSS e React Server/Client Components | `src/app/`, `src/components/`, `SeatingGrid` como Client Component |
-| **ADR-003** | Backend em TypeScript com Route Handlers | 25 `route.ts`, validação Zod e erros de domínio |
+| **ADR-003** | Backend em TypeScript com Route Handlers | 31 `route.ts`, validação Zod e erros de domínio |
 | **ADR-004** | PostgreSQL com Prisma ORM | `prisma/schema.prisma`; 11 modelos e 6 enums |
-| **ADR-005** | Vercel + Neon + GitHub Actions | `next.config.mjs`, `ci.yml`, `deploy.yml` |
+| **ADR-005** | Vercel + Supabase + GitHub Actions | `next.config.mjs`, `ci.yml`, `deploy.yml` |
 | **ADR-006** | API RESTful com polling de 2 s no mapa de assentos | `useSessionSeats` e índice `(session_id, status)` |
 | **ADR-007** | Pré-população de `SessionSeat` e trava `SELECT FOR UPDATE` | `session-service.ts` e `sale-service.ts`/`portal-service.ts` |
 | **ADR-008** | CPF com HMAC-SHA256 (busca) e AES-256-GCM (repouso) | `crypto-service.ts`; `cpf_hash` e `cpf_encrypted` |
@@ -241,7 +241,7 @@ flowchart TB
     end
 
     subgraph Externos["Infraestrutura de Dados e Serviços SaaS"]
-        DB[("PostgreSQL Gerenciado\n(Supabase / Neon DB)\nPooler 6543 + Triggers ACID")]
+        DB[("PostgreSQL Gerenciado\n(Supabase DB)\nPooler 6543 + Triggers ACID")]
         Resend["Resend API\n[Serviço de E-mail Transacional]"]
         Axiom["Axiom Cloud Log Drain\n[Retenção de Auditoria 365 Dias]"]
     end
@@ -258,7 +258,7 @@ flowchart TB
     API -->|"JSON Structured Logs"| Axiom
 ```
 
-> **Vetor editavel (SVG):** [c4-containers.svg](../../assets/capitulo-05/diagramas/c4-containers.svg) - Fonte PlantUML: [c4-containers.puml](../../assets/capitulo-05/diagramas/c4-containers.puml)
+> **Diagrama vetorial (PDF):** [c4-containers.pdf](../../assets/capitulo-05/diagramas/c4-containers.pdf) — Fonte PlantUML: [c4-containers.puml](../../assets/capitulo-05/diagramas/c4-containers.puml)
 
 #### 2. Diagrama de Sequência UML (Reserva Online Atômica e Baixa Presencial no Balcão)
 
@@ -306,7 +306,7 @@ sequenceDiagram
     deactivate API
 ```
 
-> **Vetor editavel (SVG):** [diagrama-sequencia-reserva.svg](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.svg) - Fonte PlantUML: [diagrama-sequencia-reserva.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.puml)
+> **Diagrama vetorial (PDF):** [diagrama-sequencia-reserva.pdf](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.pdf) - Fonte PlantUML: [diagrama-sequencia-reserva.puml](../../assets/capitulo-05/diagramas/diagrama-sequencia-reserva.puml)
 
 #### 3. Diagrama de Casos de Uso UML
 
@@ -346,7 +346,7 @@ flowchart LR
     Ger --> UC10
 ```
 
-> **Vetor editavel (SVG):** [diagrama-casos-de-uso.svg](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.svg) - Fonte PlantUML: [diagrama-casos-de-uso.puml](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.puml)
+> **Diagrama vetorial (PDF):** [diagrama-casos-de-uso.pdf](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.pdf) - Fonte PlantUML: [diagrama-casos-de-uso.puml](../../assets/capitulo-05/diagramas/diagrama-casos-de-uso.puml)
 
 #### 4. Diagrama de Classes UML (Modelo de Domínio)
 
@@ -452,7 +452,7 @@ classDiagram
     SessionSeat "1" --> "0..1" Ticket : gera
 ```
 
-> **Vetor editavel (SVG):** [diagrama-classes-dominio.svg](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.svg) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
+> **Diagrama vetorial (PDF):** [diagrama-classes-dominio.pdf](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.pdf) - Fonte PlantUML: [diagrama-classes-dominio.puml](../../assets/capitulo-05/diagramas/diagrama-classes-dominio.puml)
 
 #### 5. Diagrama de Máquina de Estados UML (Ciclo de Vida do Assento na Sessão)
 
@@ -471,7 +471,7 @@ stateDiagram-v2
     SOLD --> AVAILABLE : Cancelamento Síncrono no Guichê\n(Grava Trilha em cancellation_audits)
 ```
 
-> **Vetor editavel (SVG):** [diagrama-estados-assento.svg](../../assets/capitulo-05/diagramas/diagrama-estados-assento.svg) - Fonte PlantUML: [diagrama-estados-assento.puml](../../assets/capitulo-05/diagramas/diagrama-estados-assento.puml)
+> **Diagrama vetorial (PDF):** [diagrama-estados-assento.pdf](../../assets/capitulo-05/diagramas/diagrama-estados-assento.pdf) - Fonte PlantUML: [diagrama-estados-assento.puml](../../assets/capitulo-05/diagramas/diagrama-estados-assento.puml)
 
 #### 6. Diagrama Entidade-Relacionamento (DER — Modelo Relacional PostgreSQL)
 
@@ -550,7 +550,7 @@ erDiagram
     }
 ```
 
-> **Vetor editavel (SVG):** [diagrama-er-banco.svg](../../assets/capitulo-05/diagramas/diagrama-er-banco.svg) - Fonte PlantUML: [diagrama-er-banco.puml](../../assets/capitulo-05/diagramas/diagrama-er-banco.puml)
+> **Diagrama vetorial (PDF):** [diagrama-er-banco.pdf](../../assets/capitulo-05/diagramas/diagrama-er-banco.pdf) - Fonte PlantUML: [diagrama-er-banco.puml](../../assets/capitulo-05/diagramas/diagrama-er-banco.puml)
 
 ---
 
@@ -572,27 +572,28 @@ O banco relacional armazena exclusivamente a referência textual (`poster_url VA
 ### 5.3.1 Padrões de codificação e engenharia adotados
 - **Estruturação Modular:** Organização em fatias de domínio (`src/modules/{auth,backoffice,bilheteria,compradores,compliance,crypto,notificacoes,observability,ocupacao,portal,tenancy}`) e utilitários compartilhados (`src/shared/`).
 - **Convenções de Nomenclatura:** Os arquivos seguem convenções específicas por tipo:
-  - Arquivos de serviço e utils: `PascalCase` (ex.: `sale-service.ts`, `crypto-service.ts`)
+  - Arquivos de serviço, componentes, *hooks* e utilitários: `kebab-case` (ex.: `sale-service.ts`, `seating-grid.tsx`)
   - Arquivos de schema: `kebab-case` (ex.: `sale-schema.ts`, `anonymization-schema.ts`)
   - Métodos, variáveis e parâmetros: `camelCase`
-  - Constantes globais: ainda não adotadas em todo o código; verificar existência em `src/shared/`
+  - Componentes React e tipos: `PascalCase` (ex.: `SeatingGrid`, `SessionSeat`)
 - **Qualidade Estática:** `strict: true` no `tsconfig.json` e proibição de ciclos de dependência via ESLint (`import/no-cycle` com `maxDepth: 5`).
 - **Metodologia Test-Driven Development (TDD):** A equipe adotou a disciplina do desenvolvimento orientado a testes (*Test-Driven Development*), seguindo o ciclo iterativo **Red $\to$ Green $\to$ Refactor**, com ênfase prioritária nas regras de negócio críticas e transações de alta concorrência:
   1. *Fase Red (Teste de Falha Inicial):* Antes de implementar as rotas e regras finais de negócio, os testes automatizados foram construídos para falhar intencionalmente, espelhando os critérios de aceite (`CA-01` a `CA-15`). Foram antecipadamente criados os testes de corrida concorrente com 50 threads disputando o mesmo assento e os 500 cenários de invasão *cross-tenant*.
   2. *Fase Green (Implementação da Solução Mínima):* Desenvolveu-se a lógica de bloqueio pessimista (`SELECT FOR UPDATE`), ordenação determinística de chaves para prevenção de deadlocks e extensão multi-tenant no Prisma até atingir aprovação plena com sinal verde.
   3. *Fase Refactor (Otimização e Limpeza):* O código aprovado foi refatorado aplicando os princípios SOLID, eliminando duplicações e assegurando tipagem estrita sem introduzir regressões na suíte.
-  Essa prática resultou em uma base consolidada de **20 arquivos e 711 testes automatizados no Vitest**, permitindo refatorações contínuas com garantia estrita de integridade.
+  Essa prática resultou em uma base consolidada de **26 arquivos e 770 testes automatizados no Vitest**, permitindo refatorações contínuas com garantia estrita de integridade.
 
 ### 5.3.2 Plano de integração entre componentes (CI/CD)
 A integração contínua é executada automaticamente pelo **GitHub Actions** (`.github/workflows/ci.yml` e `deploy.yml`) a cada push ou Pull Request:
 1. Instalação determinística de dependências com `pnpm install --frozen-lockfile`.
 2. Geração do cliente tipado do ORM (`pnpm prisma generate`).
 3. Verificação estática de tipos (`pnpm tsc --noEmit`) e regras de arquitetura (`pnpm eslint`).
-4. Execução integral da bateria de testes automatizados (`pnpm test`).
-5. Compilação de produção (`pnpm build`) e promoção automática para a Vercel.
+4. Execução da suíte com gate de cobertura (`pnpm vitest run --coverage`): mínimo de 70% de *statements*, funções e linhas e 80% de *branches* em `src/modules/**` e `src/shared/**`.
+5. Auditoria de dependências de produção (`pnpm security:audit`), que bloqueia vulnerabilidades altas ou críticas fora do baseline documentado.
+6. Compilação de produção (`pnpm build`) e publicação na Vercel após o merge.
 
 ### 5.3.3 Registro de testes unitários e de integração
-A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizando **20 arquivos de teste e 711 testes automatizados passando com 100% de sucesso** em ~10,6 segundos:
+A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizando **26 arquivos de teste e 770 testes automatizados passando com 100% de sucesso** em cerca de 9 segundos:
 - **Segurança e Isolamento Multi-Tenant (`security-cross-tenant-suite.test.ts` e `tenancy-isolation.test.ts`):** 509 testes verificando que nenhum tenant consegue ler, alterar ou apagar registros de outro cinema.
 - **Concorrência ACID com 50 Threads (`concurrency-acid-50-threads.test.ts`, `venda-atomica.test.ts` e `reserva-atomica.test.ts`):** Simulação de 50 requisições paralelas disputando o mesmo assento entre portal web e balcão, comprovando exatamente 1 aprovação e 49 rejeições `HTTP 409`.
 - **Criptografia e Conformidade LGPD (`cryptoservice.test.ts` e `compliance-anonymization.test.ts`):** 40 testes validando cifragem `AES-256-GCM`, busca `HMAC-SHA256`, validação Módulo 11 de CPF e expurgo irreversível *in-place*.
@@ -604,13 +605,13 @@ A aplicação conta com uma suíte robusta executada pelo **Vitest**, totalizand
 
 ### 5.4.1 Plano de verificação e validação
 
-A verificação é feita no pipeline de CI (GitHub Actions) a cada commit e Pull Request, com compilação TypeScript, linter e 711 testes automatizados. A validação é feita na homologação em staging e na produção, com fluxos ponta a ponta e testes de aceitação (UAT) por usuários reais.
+A verificação é feita no pipeline de CI (GitHub Actions) a cada commit e Pull Request, com compilação TypeScript, linter, 770 testes automatizados e gate de cobertura. A validação é feita na homologação em staging e na produção, com fluxos ponta a ponta e testes de aceitação (UAT) por usuários reais.
 
 #### Critérios Formais de Entrada e Saída de V&V (*Entry & Exit Criteria*)
 
 | Fase de V&V | Critérios de Entrada (*Entry Criteria*) | Critérios de Saída (*Exit Criteria*) |
 | :--- | :--- | :--- |
-| **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 711 testes passando, zero erros de linter/tipagem e cobertura de 100% nas regras críticas. |
+| **1. Testes Unitários e de Integração (CI)** | Código implementado em branch de feature e schema Prisma atualizado. | 100% dos 770 testes passando, zero erros de linter/tipagem e cobertura mínima de 70% de *statements*, funções e linhas e 80% de *branches* no domínio. |
 | **2. Homologação em Staging** | Pull Request aprovado em Code Review e build concluído com sucesso na Vercel. | Fluxos ponta a ponta (cadastro $\to$ reserva $\to$ baixa no balcão $\to$ painel gerencial) executados sem falhas. |
 | **3. Validação e Aceite em Produção (*UAT*)** | Ambiente de produção sincronizado na branch `main` com banco PostgreSQL ativo. | Operação validada por usuários externos reais sem ocorrência de *double-booking* ou erros HTTP 500. |
 
@@ -646,7 +647,7 @@ Os resultados confirmam que o sistema atende às necessidades reais dos stakehol
 
 ### 5.4.4 Plano de transição/implantação do sistema
 
-A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207 (Seção 6.4.13), encadeadas de forma controlada a partir das branches do repositório.
+A transição do CineDoom para o ambiente operacional segue as seis etapas do *Software Transition Process* da ISO 12207 (Seção 6.4.10), encadeadas de forma controlada a partir das branches do repositório.
 
 #### Etapa 1 — Planejamento da transição
 
@@ -658,9 +659,9 @@ Cada destino de implantação está amarrado a uma branch e a um ambiente própr
 | `staging` | Homologação | `https://hml.cinedoom.com` | UAT-01 a UAT-10 homologados (item 5.4.3) |
 | `main` | Produção | `https://cinedoom.com` | Aceite formal dos stakeholders (etapa 6) |
 
-- **Responsáveis:** o Tech Lead responde pela revisão de código e pelo merge; o líder de DevOps responde pela publicação e pelo monitoramento dos ambientes; no aceite, participam o gerente (`STK-01`/`STK-02`) e o encarregado de dados (`STK-05`).
+- **Responsáveis:** o Tech Lead (Gabriel Lourenço) responde pela revisão de código e pelo merge; o Engenheiro de Backend, Segurança & DevOps (Carlos Eduardo) responde pela publicação e pelo monitoramento dos ambientes; no aceite, participam o gerente (`STK-01`/`STK-02`) e o encarregado de dados (`STK-05`).
 - **Cronograma:** a publicação é sequencial, ao final de cada Sprint de 2 semanas, com uma única versão em trânsito por ambiente.
-- **Critérios de sucesso (*Release Gate*):** todos os testes automatizados verdes (711 testes), build de produção concluído sem erros, smoke test sem falhas e aceite formal registrado.
+- **Critérios de sucesso (*Release Gate*):** todos os testes automatizados verdes (770 testes), build de produção concluído sem erros, smoke test sem falhas e aceite formal registrado.
 
 #### Etapa 2 — Preparação do ambiente
 
@@ -671,11 +672,11 @@ O ambiente de destino é preparado **antes** de qualquer publicação, seguindo 
 - **Banco de dados sob controle:** o modelo de dados e a trigger de auditoria imutável (`prisma/triggers.sql`, ADR-010) são aplicados **manualmente e com revisão**, antes da abertura de tráfego. A esteira de publicação não altera o banco por conta própria — nenhum deploy muda o banco sem aprovação humana.
 - **Paridade entre ambientes:** a aplicação é empacotada em contêineres e o banco local é provisionado com a mesma versão usada em produção, com verificação automática de disponibilidade e dados persistidos em disco. Assim, o ambiente local e o de homologação reproduzem fielmente o ambiente de produção.
 
-Além disso, cada Pull Request é publicado em um ambiente de prévia temporário, com uma base de dados isolada (cópia dos dados reais do Neon), de modo que nenhuma alteração em avaliação alcance a produção.
+Além disso, cada Pull Request é publicado em um ambiente de prévia temporário, com credenciais e base de dados isoladas, sem reutilizar a conexão de produção, de modo que nenhuma alteração em avaliação alcance a produção.
 
 #### Etapa 3 — Treinamento dos usuários
 
-- **Gestores e atendentes (`STK-02`, `STK-03`):** a capacitação é conduzida a partir do roteiro de demonstração do produto (`ROTEIRO_DEMO.md`), que percorre o painel de ocupação do gerente, a venda no balcão e a baixa de reserva por código localizador com usuários de demonstração já semeados.
+- **Gestores e atendentes (`STK-02`, `STK-03`):** a capacitação é conduzida a partir do roteiro de demonstração do produto, que percorre o painel de ocupação do gerente, a venda no balcão e a baixa de reserva por código localizador com os usuários de demonstração semeados por `prisma/seed.ts` (`gerente@cinedoom.com` e `atendente@cinedoom.com`).
 - **Espectadores (`STK-04`):** dispensam treinamento formal — o portal é autosserviço (cadastro com CPF, mapa de poltronas e voucher em *"Minhas Reservas"*), e o próprio portal funciona como material de apoio.
 - **Encarregado de dados (`STK-05`):** briefing sobre consentimento LGPD, cifragem de CPF, auditoria imutável e anonimização do Art. 18 antes da abertura do ambiente.
 
@@ -684,12 +685,12 @@ Além disso, cada Pull Request é publicado em um ambiente de prévia temporári
 - **Estratégia faseada (não *big bang*):** a publicação percorre os três ambientes na ordem `develop` $\to$ `staging` $\to$ `main`; nenhum ambiente avança sem o *Release Gate* aprovado.
 - **Publicação automatizada por branch:** cada branch tem seu próprio ambiente e sua própria URL, e a esteira publica sozinha assim que o merge é aceito. Como uma publicação em andamento não é interrompida por um novo *push*, o ambiente nunca fica pela metade.
 - **Proteção da produção:** a branch de produção é bloqueada contra reescrita de histórico e só recebe merge com revisão técnica aprovada e marcação de versão (SemVer), conforme a estratégia de versionamento do capítulo 4.
-- **Ensaio antes da homologação:** cada Pull Request é exercitado em ambiente isolado, com dados reais copiados, funcionando como prévia da próxima publicação.
+- **Ensaio antes da homologação:** cada Pull Request é exercitado em ambiente isolado, com dados de teste próprios, funcionando como prévia da próxima publicação.
 
 #### Etapa 5 — Verificação pós-implantação
 
 - **Smoke test logo após a publicação:** são verificados o catálogo público, o painel de ocupação e o login com usuário real, na URL do ambiente recém-publicado.
-- **Monitoramento:** os logs estruturados da aplicação são centralizados no Axiom e alertam o líder de DevOps sobre erros e indisponibilidades.
+- **Monitoramento:** os logs estruturados da aplicação são centralizados no Axiom e alertam o Engenheiro de Backend, Segurança & DevOps (Carlos Eduardo) sobre erros e indisponibilidades.
 - **Validação funcional:** é reexecutado o fluxo ponta a ponta $\text{cadastro} \to \text{reserva} \to \text{baixa no balcão} \to \text{painel gerencial}$ no ambiente publicado.
 
 #### Etapa 6 — Aceite formal
@@ -702,7 +703,7 @@ O aceite exige UAT-01 a UAT-10 **aprovados** (item 5.4.3), smoke test sem falhas
 
 ### 5.5.1 Procedimentos de operação e monitoramento
 
-A operação em produção é contínua e cobre três frentes simultâneas: o suporte aos usuários dos cinemas, o acompanhamento do desempenho do serviço e o tratamento de incidentes operacionais (Seção 6.4.14 da ISO 12207:2017).
+A operação em produção é contínua e cobre três frentes simultâneas: o suporte aos usuários dos cinemas, o acompanhamento do desempenho do serviço e o tratamento de incidentes operacionais (Seção 6.4.12 da ISO 12207:2021).
 
 - **Suporte contínuo ao usuário:** canal único de abertura de chamados pelo gerente do cinema, com triagem pela criticidade e pelos prazos da Tabela 5 do capítulo 2 (P1: resposta em até 15 minutos e resolução em até 2 horas). Nos casos críticos o escalonamento ao Tech Lead é imediato.
 - **Coleta de logs e correlação:** o logger estruturado registra em JSON as vendas, os cancelamentos auditados, os conflitos de concorrência ACID, as tentativas de acesso entre cinemas, as falhas de autenticação, os acessos negados por perfil e as anonimizações LGPD. Cada requisição recebe um identificador único (`x-request-id`) que permite rastrear o incidente de ponta a ponta, e o mascaramento automático remove dados sensíveis. A retenção é de 365 dias (ADR-011).
@@ -712,21 +713,21 @@ A operação em produção é contínua e cobre três frentes simultâneas: o su
 
 ### 5.5.2 Plano de manutenção
 
-Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiza essas alterações nas quatro modalidades da ISO 12207 (Seção 6.4.15), sempre pelo mesmo fluxo: a alteração entra como *branch* `fix/*` ou `feat/*`, passa pelo Pull Request com a validação automatizada do capítulo 4 e só é promovida depois de homologada em `staging`.
+Após a entrega, o sistema continua sendo alterado. A CineSoft Solutions organiza essas alterações nas quatro modalidades da ISO 12207:2021 (Seção 6.4.13), sempre pelo mesmo fluxo: a alteração entra como *branch* `fix/*` ou `feat/*`, passa pelo Pull Request com a validação automatizada do capítulo 4 e só é promovida depois de homologada em `staging`.
 
 | Modalidade | Quando é acionada | Como é feita | Responsável |
 | :--- | :--- | :--- | :--- |
 | **Corretiva** | Defeito apontado pelo cinema ou identificado nos logs (conflito de venda, e-mail de voucher que não chega) | *Branch* `fix/*` → Pull Request → promoção faseada | Desenvolvedor do módulo, com revisão do Tech Lead |
-| **Adaptativa** | Mudança fora do controle da equipe: nova versão do Node.js ou do Next.js, alteração nas regras fiscais estaduais (R-07), instabilidade do provedor de e-mail (R-05) ou do banco de dados (R-02) | Atualização da versão e ajuste do ponto afetado, com a suíte de testes completa | Desenvolvedor e líder de DevOps |
-| **Perfectiva** | Evolução prevista no roadmap: emissão fiscal, portal gerencial e armazenamento de mídias das Macroentregas 2 e 3 | *Branch* `feat/*` ligada ao requisito correspondente | Product Owner e equipe |
+| **Adaptativa** | Mudança fora do controle da equipe: nova versão do Node.js ou do Next.js, alteração nas regras fiscais estaduais (R-07), instabilidade do provedor de e-mail (R-05) ou do banco de dados (R-02) | Atualização da versão e ajuste do ponto afetado, com a suíte de testes completa | Desenvolvedor do módulo e Engenheiro de Backend, Segurança & DevOps |
+| **Perfectiva** | Evolução prevista no roadmap: emissão fiscal, portal gerencial e armazenamento de mídias das Macroentregas 2 e 3 | *Branch* `feat/*` ligada ao requisito correspondente | Gerente de Projeto (Kayque Vicente) e equipe |
 | **Preventiva** | Revisão mensal do registro de riscos do capítulo 4 | *Pull Request* de manutenção versionada: índices do banco por `tenant_id` (R-02), revisão de dependências e ajuste de acessibilidade | Tech Lead |
 
-- **Prioridade e registro:** toda manutenção é classificada pela criticidade do capítulo 2 (P1 a P3) e registrada no *changelog*, gerado a partir das mensagens padronizadas de commit (capítulo 4). Defeitos P1 acionam a reversão da versão em menos de 5 minutos.
+- **Prioridade e registro:** toda manutenção é classificada pela criticidade do capítulo 2 (P1 a P4) e registrada no *changelog*, gerado a partir das mensagens padronizadas de commit (capítulo 4). Defeitos P1 acionam a reversão da versão em menos de 5 minutos.
 - **Limite conhecido:** a rotação da chave de sessão pode ser feita a qualquer momento. Já a rotação da chave que cifra o CPF dos compradores **não pode** — como os valores já gravados não são versionados por chave, a troca deixaria os CPF antigos ilegíveis. Esse procedimento está previsto para a Macroentrega 2, junto da re-criptografia dos dados.
 
 ### 5.5.3 Estratégia de descontinuação e migração de dados
 
-O encerramento do CineDoom — seja o fim do contrato de um cinema, seja a descontinuação do produto — segue quatro etapas planejadas (Seção 6.4.16 da ISO 12207:2017). A regra que orienta todo o processo é simples: **o histórico do cinema é preservado e os dados pessoais são apagados, nunca o contrário**.
+O encerramento do CineDoom — seja o fim do contrato de um cinema, seja a descontinuação do produto — segue quatro etapas planejadas (Seção 6.4.14 da ISO 12207:2021). A regra que orienta todo o processo é simples: **o histórico do cinema é preservado e os dados pessoais são apagados, nunca o contrário**.
 
 | Etapa | O que acontece | Como é feita |
 | :--- | :--- | :--- |
@@ -738,7 +739,7 @@ O encerramento do CineDoom — seja o fim do contrato de um cinema, seja a desco
 - **Como os dados pessoais são apagados:** a anonimização substitui nome, e-mail e CPF por valores fictícios, mas mantém o registro do espectador e todos os ingressos vinculados. É o que permite ao cinema guardar o histórico fiscal exigido pelo Código de Defesa do Consumidor mesmo depois do encerramento. Os cancelamentos são imutáveis por definição: o banco recusa qualquer alteração ou apagamento nessa trilha.
 - **A extração é rotina do time de DevOps:** o produto não oferece tela de exportação, então o histórico do cinema é extraído diretamente do banco, filtrado pelo cinema, e entregue em arquivo cifrado.
 - **O que nunca é feito:** apagar o cinema do banco. O próprio modelo de dados impede a exclusão de um cinema que tenha espectadores, reservas ou ingressos — a garantia está nas regras de integridade do banco. O encerramento é sempre desativação, não exclusão.
-- **Quem executa:** o gerente do cinema solicita o encerramento; o encarregado de dados (`STK-05`, DPO) conduz a anonimização e valida a guarda legal; o líder de DevOps realiza a extração do histórico e a desativação do ambiente; o gerente da CineSoft formaliza o aviso e o encerramento do contrato.
+- **Quem executa:** o gerente do cinema solicita o encerramento; o encarregado de dados (`STK-05`, DPO) conduz a anonimização e valida a guarda legal; o Engenheiro de Backend, Segurança & DevOps realiza a extração do histórico e a desativação do ambiente; a direção da CineSoft Solutions formaliza o aviso e o encerramento do contrato.
 - **Prazos:** o acesso ao sistema cessa no fim do contrato, e a infraestrutura só é desligada depois de cumprido o prazo legal de guarda — 5 anos para os dados fiscais e contábeis e 365 dias para os logs de auditoria.
 
 ---

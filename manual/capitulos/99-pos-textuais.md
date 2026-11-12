@@ -8,7 +8,7 @@
 
 **SOMMERVILLE, Ian**. *Engenharia de Software*. 10. ed. São Paulo: Pearson Education do Brasil, 2019.
 
-**VERCEL INC.** *Next.js 16 Documentation: Full-stack Web Architecture*. San Francisco: Vercel, 2026. Disponível em: <https://nextjs.org/docs>. Acesso em: 09 nov. 2026.
+**VERCEL INC.** *Next.js 14 Documentation: Full-stack Web Architecture*. San Francisco: Vercel, 2026. Disponível em: <https://nextjs.org/docs>. Acesso em: 09 nov. 2026.
 
 ### Normas e Documentos Técnicos
 
@@ -19,7 +19,7 @@
 
 ### Sites e Plataformas Técnicas
 
-- **NEON INC.** *Database Architecture and Serverless Postgres*. Disponível em: <https://neon.tech>. Acesso em: 09 nov. 2026.
+- **SUPABASE INC.** *Supabase Documentation: Postgres, Auth and Realtime*. Disponível em: <https://supabase.com/docs>. Acesso em: 09 nov. 2026.
 - **RESEND INC.** *Email API for Developers and Transactional Workflows*. Disponível em: <https://resend.com>. Acesso em: 09 nov. 2026.
 - **PRISMA DATA INC.** *Prisma ORM Schema Reference and Concurrency*. Disponível em: <https://prisma.io>. Acesso em: 09 nov. 2026.
 

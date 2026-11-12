@@ -12,7 +12,7 @@
 - Yury Nogueira de Oliveira Silva
 
 **Orientadora:** Profa. Dra. Juliana Pereira de Souza Zinader  
-**Referência:** ISO 12207:2017
+**Referência:** ABNT NBR ISO/IEC/IEEE 12207:2021
 
 ---
 

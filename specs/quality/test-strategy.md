@@ -13,7 +13,7 @@ norma_referencia: "ABNT NBR ISO/IEC/IEEE 12207:2021 (Seções 6.4.9 e 6.4.11)"
 
 ## 1. Resumo da Cobertura de Verificação e Validação
 
-A suíte de qualidade cobre os **15 Critérios de Aceite (`CA-01` a `CA-15`)** e os **18 Requisitos Funcionais (`RF-01` a `RF-18`)** por meio de **26 Casos de Teste formais (`CT-01` a `CT-26`)** implementados no repositório `cinedoom-app` (totalizando **20 arquivos e 711 testes** automatizados na suíte Vitest).
+A suíte de qualidade cobre os **15 Critérios de Aceite (`CA-01` a `CA-15`)** e os **18 Requisitos Funcionais (`RF-01` a `RF-18`)** por meio de **26 Casos de Teste formais (`CT-01` a `CT-26`)** implementados no repositório `cinedoom-app` (totalizando **26 arquivos e 770 testes** automatizados na suíte Vitest).
 
 ### Cobertura por Critério de Aceite (`CA-01` a `CA-15`)
 

@@ -34,8 +34,8 @@ As tabelas a seguir detalham a justificativa técnica e econômica de cada decis
 
 | Elemento do sistema | Adquirir pronto? | Justificativa | Possível fornecedor |
 | :--- | :---: | :--- | :--- |
-| **Banco de Dados Relacional Gerenciado (DBaaS)** | **Sim** | Elimina custos de DBA, provendo restauração pontual automatizada (PITR), *connection pooling* para serverless e alta disponibilidade ($\ge 99,9\%$). | **Supabase Pro / Neon PostgreSQL** |
-| **Plataforma de Hospedagem Serverless e CDN** | **Sim** | Elimina a manutenção de servidores dedicados, entregando deploys atômicos com *rollback* instantâneo, proteção DDoS e distribuição global na borda. | **Vercel Pro** (Cloud PaaS) |
+| **Banco de Dados Relacional Gerenciado (DBaaS)** | **Sim** | Elimina custos de DBA, provendo restauração pontual automatizada (PITR), *connection pooling* para serverless e alta disponibilidade ($\ge 99,9\%$). | **Supabase Pro (PostgreSQL)** |
+| **Plataforma de Hospedagem Serverless e CDN** | **Sim** | Elimina a manutenção de servidores dedicados, entregando deploys atômicos com reversão para a versão anterior, proteção DDoS e distribuição global na borda. | **Vercel Pro** (Cloud PaaS) |
 | **Serviço de Disparo de E-mails Transacionais** | **Sim** | Evita que vouchers caiam em caixas de spam; a API especializada assegura entrega em milissegundos com autenticação SPF, DKIM e DMARC. | **Resend** (SaaS de E-mail Transacional) |
 | **Observabilidade e Retenção Legal de Logs** | **Sim** | Cumpre a retenção legal de logs por 1 ano (Marco Civil e LGPD) sem sobrecarregar o armazenamento do banco relacional, com busca indexada rápida. | **Axiom Cloud** (Log Drain SaaS) |
 | **Gateway de Pagamento Online (Macroentrega 2)** | **Sim** | Transfere a complexidade regulatória da certificação PCI-DSS Nível 1 e antifraude, automatizando a liquidação de PIX dinâmico e cartões. | **Stripe / Pagar.me** |
@@ -48,10 +48,10 @@ As tabelas a seguir detalham a justificativa técnica e econômica de cada decis
 Para selecionar e manter esses provedores em operação contínua, a CineSoft Solutions estrutura a contratação em cinco etapas práticas:
 
 1. **Definição de Requisitos e Critérios:** O Arquiteto e os líderes técnicos mapeiam as restrições de cada necessidade — limites de latência (priorizando servidores na América do Sul), compatibilidade com Node.js/Next.js, conformidade com a LGPD e facilidade de integração local.
-2. **Avaliação Técnica e Financeira:** São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus Neon, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
+2. **Avaliação Técnica e Financeira:** São realizados testes práticos de integração (provas de conceito) entre alternativas de mercado (por exemplo, comparando Supabase versus PostgreSQL autogerenciado, ou Resend versus AWS SES), analisando a previsibilidade de custos à medida que o volume de bilheteria cresce.
 3. **Contratação e Formalização:** Assinatura digital dos planos corporativos, formalização de Aditivos de Proteção de Dados (*Data Processing Agreements* – DPA) para garantir sigilo sob a LGPD e armazenamento seguro de chaves de API em gerenciadores de segredos com rotação periódica.
 4. **Monitoramento e Acompanhamento de SLA:** A equipe monitora a disponibilidade real dos provedores via telemetria contínua, páginas de status e relatórios mensais de consumo, garantindo que o tempo de resposta e a taxa de erros permaneçam dentro dos padrões acordados.
-5. **Homologação e Aceite Técnico:** Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (*sandbox*) na esteira de integração contínua (CI/CD), com planos de reversão (*rollback*) já desenhados caso ocorram falhas.
+5. **Homologação e Aceite Técnico:** Antes de qualquer serviço entrar em produção com clientes reais, o fluxo é validado em ambiente de testes (*sandbox*) na esteira de integração contínua (CI/CD), com procedimento de reversão (*rollback*) documentado caso ocorram falhas.
 
 ---
 
@@ -67,7 +67,7 @@ O principal produto fornecido é a plataforma **CineDoom** em modelo SaaS (*Soft
 
 | Ativo potencial                 | Possíveis adquirentes                                                                          | Modelo de fornecimento e preço estimado                                                                          |
 | ------------------------------- | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Plataforma CineDoom (completa)  | Cinemas independentes, cinemas de rua e pequenas redes de exibição.                            | SaaS B2B: R$ 790/mês de assinatura-base, acrescidos de R$ 120/mês por sala ativa e R$ 1.500 de implantação.      |
+| Plataforma CineDoom (completa)  | Cinemas independentes, cinemas de rua e pequenas redes de exibição.                            | SaaS B2B: R$ 790/mês de assinatura-base, acrescidos de R$ 120/mês por sala ativa e R$ 1.500 de implantação (faixa efetiva de R$ 910 a R$ 1.270/mês para complexos de uma a quatro salas). |
 | Engine de Trava Atômica (API)   | Plataformas de venda de ingressos, teatros e sistemas de reservas de eventos.                  | Licenciamento de API: R$ 0,08 por assento confirmado, com cobrança mínima de R$ 200/mês.                         |
 | Módulo de Governança LGPD (SDK) | Empresas de desenvolvimento de software e plataformas de entretenimento.                       | Licenciamento de SDK: R$ 8.900/ano ou R$ 16.000 por licença perpétua, incluindo 10 horas de consultoria técnica. |
 | Portal White-Label de Reservas  | Exibidores que utilizam sistemas administrativos próprios e desejam oferecer reservas on-line. | SaaS White-Label: R$ 490/mês por exibidor, com domínio próprio, SSL e taxa de implantação de R$ 800.             |
@@ -98,7 +98,7 @@ Cada cinema contratante recebe:
 ### Critérios de Aceite Formal
 
 O cinema cliente formaliza a aceitação do sistema quando os seguintes requisitos são atendidos:
-1. Aprovação de todos os 711 testes automatizados do sistema e execução bem-sucedida dos testes práticos de balcão.
+1. Aprovação de todos os testes da suíte automatizada do sistema (26 arquivos e 770 testes) e execução bem-sucedida dos testes práticos de balcão.
 2. Inexistência de qualquer defeito impeditivo ou crítico em aberto.
 3. Comprovação prática de que a trava atômica impede rigorosamente a venda simultânea da mesma poltrona entre a web e o guichê.
 4. Assinatura do Termo de Aceite de Implantação (TAI) pelo responsável do cinema.
@@ -111,7 +111,7 @@ Para manter a bilheteria funcionando sem interrupções nas horas de pico (finai
 
 | Severidade / Modalidade | Descrição do Cenário | Tempo de 1ª Resposta | Meta de Resolução / Contorno |
 | :--- | :--- | :---: | :---: |
-| **Crítica (P1 — Corretiva Urgente)** | Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. | Até **15 minutos** | Até **2 horas** (rollback imediato em < 5 min) |
+| **Crítica (P1 — Corretiva Urgente)** | Indisponibilidade total da bilheteria ou falha na emissão de ingressos em horário de sessão. | Até **15 minutos** | Até **2 horas** (reversão documentada para a versão anterior) |
 | **Alta (P2 — Corretiva Prioritária)** | Degradação no painel gerencial, falha no envio de voucher por e-mail ou lentidão acima do SLA. | Até **1 hora** | Até **8 horas** |
 | **Normal (P3 — Adaptativa / Preventiva)** | Ajustes de compatibilidade de navegador, dúvidas operacionais ou otimização preventiva de índices. | Até **4 horas úteis** | Até **24 horas úteis** |
 | **Evolutiva (P4 — Perfectiva)** | Solicitação de novos relatórios, filtros ou melhorias de usabilidade no Portal do Cliente. | Até **2 dias úteis** | Planejada na próxima *Sprint / Release* |
@@ -129,7 +129,7 @@ Para manter a plataforma CineDoom estável, rápida e segura com custos proporci
 | Fornecedor | Categoria e serviço | Plano e custo comercial | Impacto e mitigação de riscos |
 | :--- | :--- | :--- | :--- |
 | **Vercel Inc.** | **PaaS & CDN Edge:** Next.js 14 e serverless | **US$ 20/mês** por dev (Vercel Pro; piloto Hobby grátis) | SLA 99,99% na borda. Mitigação: build determinístico e rollback instantâneo. |
-| **Supabase / Neon** | **DBaaS PostgreSQL:** Persistência ACID e pooling | **US$ 25 a US$ 69/mês** (Plano Pro compute dedicado) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma. |
+| **Supabase** | **DBaaS PostgreSQL:** Persistência ACID e pooling | **US$ 25 a US$ 69/mês** (Plano Pro compute dedicado) | Crítico para locks `SELECT FOR UPDATE`. Mitigação: réplicas e migrações Prisma. |
 | **Resend** | **E-mail transacional:** API de vouchers (DKIM/SPF) | **US$ 20/mês** (franquia de 50.000 e-mails/mês) | Impacta envio de voucher (`CA-11`). Mitigação: exibição imediata em tela. |
 | **Axiom Inc.** | **Log drain:** Observabilidade e auditoria LGPD | **US$ 25/mês** (1 TB/mês; retenção de 365 dias) | Rastreabilidade legal (Marco Civil/LGPD). Mitigação: mascaramento de PII. |
 | **GitHub Inc.** | **CI/CD & Git:** Repositórios e GitHub Actions | **US$ 4/usuário/mês** (Plano Team e branch rules) | Sustenta testes automatizados. Mitigação: bloqueio de merge sem testes. |
