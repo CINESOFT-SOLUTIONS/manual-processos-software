@@ -53,8 +53,8 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | 22/10/2026 | Versão 1.6 | Padronização formal da estrutura editorial dos Capítulos 1 a 5. |
 | 23/10/2026 | Versão 1.7 | Consolidação do conteúdo dos Capítulos 1 a 5 e organização dos artefatos. |
 | 05/11/2026 | Versão 1.8 | Elaboração e estruturação inicial do Capítulo 6. |
-| 09/11/2026 | Versão 2.0 | Revisão das seções 4.1, 4.2 e 4.5 conforme o plano de melhoria e consolidação do Capítulo 6. |
-| 09/11/2026 | Versão 2.1 | Revisão e adequação dos elementos dos capítulos e integração à estrutura geral do manual. |
+| 09/11/2026 | Versão 2.0 | Revisão. |
+| 09/11/2026 | Versão 2.1 | Revisão geral do manual. |
 | 12/11/2026 | Versão 2.2 | Revisão. |
 
 *Fonte: Elaborado pelos autores (2026).*
