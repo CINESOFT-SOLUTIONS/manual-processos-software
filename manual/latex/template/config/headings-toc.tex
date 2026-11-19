@@ -157,7 +157,11 @@
 
 \renewcommand{\cfttabindent}{0pt}
 \renewcommand{\cfttabnumwidth}{2.2cm}
-\renewcommand{\cfttabpresnum}{\fontExtraBold Tabela }
+% Entradas iniciadas por "Q" (quadros) aparecem como "Quadro N"; as demais, como "Tabela N".
+\makeatletter
+\def\lotquadroprefixo Q{Quadro }
+\renewcommand{\cfttabpresnum}{\fontExtraBold\@ifnextchar Q\lotquadroprefixo{Tabela }}
+\makeatother
 \renewcommand{\cfttabaftersnum}{ -- }
 \renewcommand{\cfttabfont}{\fontsize{9.5pt}{12.5pt}\fontRegular\color{BrandBodyText}}
 \renewcommand{\cfttabpagefont}{\fontsize{9.5pt}{12.5pt}\fontSemiBold\color{BrandBodyText}}
