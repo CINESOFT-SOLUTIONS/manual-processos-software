@@ -1,10 +1,14 @@
 @startuml
 skinparam monochrome true
 skinparam shadowing false
+state "Em revisão" as EmRevisao
+state "Substituída" as Substituida
+state "Aprovada" as Aprovada
+Aprovada : Permanece vigente até\nser substituída
 [*] --> Proposta : Necessidade de decisão estrutural
 Proposta --> EmRevisao : PR com ADR aberto
 EmRevisao --> Aprovada : Aprovação do Tech Lead
-EmRevisao --> Rejeitada : Alternativa mais adequada
+EmRevisao --> Rejeitada : Rejeição do Tech Lead
 Aprovada --> Substituida : Novo ADR referencia o anterior
 Rejeitada --> [*]
 Substituida --> [*]

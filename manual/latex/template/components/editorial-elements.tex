@@ -491,6 +491,55 @@
   morecomment=[f][\color{BrandDiffHunk}][0]{@@}
 }
 
+% Quadro comparativo "antes e depois" em texto corrido (ABNT: Quadro), com
+% células em vermelho suave (removido) e verde suave (incluído). Quebra entre
+% páginas e repete o cabeçalho. Uso:
+% \quadroantesdepois{<título>}{<fonte>}{<label>}{<linhas: elemento & \antes{..} & \depois{..} \\ \midrule ...>}
+\definecolor{DiffDelBg}{HTML}{FFEBE9}
+\definecolor{DiffDelFg}{HTML}{82071E}
+\definecolor{DiffDelHead}{HTML}{FFD7D5}
+\definecolor{DiffAddBg}{HTML}{E6FFEC}
+\definecolor{DiffAddFg}{HTML}{116329}
+\definecolor{DiffAddHead}{HTML}{CCFFD8}
+\newcommand{\antes}[1]{\cellcolor{DiffDelBg}{\color{DiffDelFg}#1\strut}}
+\newcommand{\depois}[1]{\cellcolor{DiffAddBg}{\color{DiffAddFg}#1\strut}}
+\usepackage{needspace}
+\newcommand{\quadroantesdepois}[4]{%
+  \par\needspace{14\baselineskip}\vspace{6pt}%
+  \refstepcounter{editorialquadro}%
+  \label{#3}%
+  \addcontentsline{lot}{table}{\protect\numberline{Q\theeditorialquadro}#1}%
+  {\centering\fontsize{9.5pt}{12pt}\selectfont\textcolor{BrandNavy}{\textbf{Quadro \theeditorialquadro}} \textendash\ \textcolor{BrandBodyText}{\fontSemiBold #1}\par}%
+  \vspace{4pt}%
+  \begingroup
+    \small
+    \renewcommand{\tabularxcolumn}[1]{p{##1}}%
+    \renewcommand{\arraystretch}{1.05}%
+    \setlength{\tabcolsep}{5pt}%
+    \emergencystretch=2em\tolerance=2500\hyphenpenalty=50\hbadness=2500%
+    \setlength{\LTpre}{0pt}\setlength{\LTpost}{0pt}%
+    \footnotesize\setlength{\parskip}{0pt}
+    \begin{xltabular}{\textwidth}{>{\raggedright\arraybackslash\hsize=0.40\hsize}X >{\raggedright\arraybackslash\hsize=1.30\hsize}X >{\raggedright\arraybackslash\hsize=1.30\hsize}X}
+      \arrayrulecolor{GithubTableBorder}\toprule
+      \rowcolor{BrandTableHeader}\textbf{Seção / elemento} & \cellcolor{DiffDelHead}\textcolor{DiffDelFg}{\textbf{Antes (Versão 1.7)}} & \cellcolor{DiffAddHead}\textcolor{DiffAddFg}{\textbf{Depois (Versão 2.0)}} \\
+      \midrule\arrayrulecolor{BrandGrayRule}
+    \endfirsthead
+      \arrayrulecolor{GithubTableBorder}\toprule
+      \rowcolor{BrandTableHeader}\textbf{Seção / elemento} & \cellcolor{DiffDelHead}\textcolor{DiffDelFg}{\textbf{Antes (Versão 1.7)}} & \cellcolor{DiffAddHead}\textcolor{DiffAddFg}{\textbf{Depois (Versão 2.0)}} \\
+      \midrule\arrayrulecolor{BrandGrayRule}
+    \endhead
+      \arrayrulecolor{GithubTableBorder}\bottomrule
+    \endfoot
+      \arrayrulecolor{GithubTableBorder}\bottomrule
+    \endlastfoot
+    #4
+    \end{xltabular}%
+  \endgroup
+  \vspace{3pt}%
+  {\fontsize{8.5pt}{11pt}\selectfont\raggedright\fontRegular\color{BrandGrayMed}\textbf{Fonte:} #2\par}%
+  \par\vspace{8pt}%
+}
+
 \newcommand{\blocodigofonte}[1]{%
   \vspace{2pt}%
   \centering

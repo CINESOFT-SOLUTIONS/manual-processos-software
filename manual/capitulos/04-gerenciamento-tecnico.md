@@ -336,16 +336,20 @@ A gestão de decisões (cláusula 6.3.3) fundamenta as escolhas de alto impacto 
 - **Quando registrar:** toda decisão que afete a arquitetura, a segurança, o banco de dados, a infraestrutura ou o custo exige um ADR.
 - **Quem decide:** o Tech Lead aprova, e o ADR é revisado em Pull Request por outro integrante.
 - **Conteúdo mínimo:** contexto, alternativas consideradas, decisão, justificativa e consequências.
-- **Ciclo de vida:** o ADR passa pelos estados da Figura 14. Uma decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
+- **Ciclo de vida:** o ADR passa pelos estados da Figura 14: nasce como proposta, é revisado em Pull Request e termina aprovado ou rejeitado. Um ADR aprovado permanece vigente até que um novo ADR o substitua; a decisão substituída é mantida no histórico, com referência ao ADR que a substituiu.
 
 ```plantuml
 @startuml
 skinparam monochrome true
 skinparam shadowing false
+state "Em revisão" as EmRevisao
+state "Substituída" as Substituida
+state "Aprovada" as Aprovada
+Aprovada : Permanece vigente até\nser substituída
 [*] --> Proposta : Necessidade de decisão estrutural
 Proposta --> EmRevisao : PR com ADR aberto
 EmRevisao --> Aprovada : Aprovação do Tech Lead
-EmRevisao --> Rejeitada : Alternativa mais adequada
+EmRevisao --> Rejeitada : Rejeição do Tech Lead
 Aprovada --> Substituida : Novo ADR referencia o anterior
 Rejeitada --> [*]
 Substituida --> [*]

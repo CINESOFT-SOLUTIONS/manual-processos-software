@@ -148,7 +148,8 @@ Manual de Processos de Software apresentado à disciplina de Processos de Engenh
 | **Tabela 44** | Diagnóstico de Avaliação e Maturidade de Processo (Versão 1.7) |
 | **Tabela 45** | Plano de Melhoria de Processo de Software (PMP) |
 | **Tabela 46** | Quadro Comparativo: Antes vs. Depois da Revisão de Processos |
-| **Tabela 47** | Reavaliação Pós-Melhoria da Conformidade do Manual (Versão 2.0) |
+| **Tabela 47** | Reavaliação Pós-Melhoria da Conformidade do Manual (Estado Atual) |
+| **Quadro 1** | Alterações das seções 4.1, 4.2 e 4.5 entre a Versão 1.7 e a Versão 2.0 |
 
 ---
 
